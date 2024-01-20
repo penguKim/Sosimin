@@ -100,7 +100,7 @@
                             </div>
                         </div>
                         <div class="search-input">
-                            <input type="text" placeholder="Search" id="search">
+                            <input type="text" id="searchKeyword" placeholder="Search" >
                         </div>
                         <!-- input 타입으로 바꾸면 css 달라짐 -->
                         <div class="search-btn">
@@ -191,33 +191,28 @@
             <div class="nav-inner">
                 <!-- Start Mega Category Menu -->
                 <div class="mega-category-menu">
-                    <span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
+                    <span class="cat-button"><i class="lni lni-menu"></i>카테고리</span>
                     <ul class="sub-category">
-                        <li><a href="product-grids.html">Electronics <i class="lni lni-chevron-right"></i></a>
+                        <li><a href="product-grids.html">상의 <i class="lni lni-chevron-right"></i></a>
                             <ul class="inner-sub-category">
-                                <li><a href="product-grids.html">Digital Cameras</a></li>
-                                <li><a href="product-grids.html">Camcorders</a></li>
-                                <li><a href="product-grids.html">Camera Drones</a></li>
-                                <li><a href="product-grids.html">Smart Watches</a></li>
-                                <li><a href="product-grids.html">Headphones</a></li>
-                                <li><a href="product-grids.html">MP3 Players</a></li>
-                                <li><a href="product-grids.html">Microphones</a></li>
-                                <li><a href="product-grids.html">Chargers</a></li>
-                                <li><a href="product-grids.html">Batteries</a></li>
-                                <li><a href="product-grids.html">Cables & Adapters</a></li>
+                            	<!-- 하위 카테고리 -->
+                                <li><a href="product-grids.html">상의</a></li>
+                                <li><a href="product-grids.html">하의</a></li>
+                                <li><a href="product-grids.html">아우터</a></li>
+                                <li><a href="product-grids.html">아동복</a></li>
+                                <li><a href="product-grids.html">셋업/세트</a></li>
+                                <li><a href="product-grids.html">패션/잡화</a></li>
+                                <li><a href="product-grids.html">신발</a></li>
+                                <li><a href="product-grids.html">기타</a></li>
                             </ul>
                         </li>
-                        <li><a href="product-grids.html">accessories</a></li>
-                        <li><a href="product-grids.html">Televisions</a></li>
-                        <li><a href="product-grids.html">best selling</a></li>
-                        <li><a href="product-grids.html">top 100 offer</a></li>
-                        <li><a href="product-grids.html">sunglass</a></li>
-                        <li><a href="product-grids.html">watch</a></li>
-                        <li><a href="product-grids.html">man’s product</a></li>
-                        <li><a href="product-grids.html">Home Audio & Theater</a></li>
-                        <li><a href="product-grids.html">Computers & Tablets </a></li>
-                        <li><a href="product-grids.html">Video Games </a></li>
-                        <li><a href="product-grids.html">Home Appliances </a></li>
+                        <li><a href="product-grids.html">하의</a></li>
+                        <li><a href="product-grids.html">아우터</a></li>
+                        <li><a href="product-grids.html">아동복</a></li>
+                        <li><a href="product-grids.html">셋업/세트</a></li>
+                        <li><a href="product-grids.html">패션/잡화</a></li>
+                        <li><a href="product-grids.html">신발</a></li>
+                        <li><a href="product-grids.html">기타</a></li>
                     </ul>
                 </div>
                 <!-- End Mega Category Menu -->
