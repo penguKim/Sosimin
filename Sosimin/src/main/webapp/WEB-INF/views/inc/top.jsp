@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!-- Start Topbar -->
 <div class="topbar">
@@ -9,6 +12,7 @@
                 <div class="top-left">
                     <ul class="menu-top-link">
                         <li>
+                        	<!-- 나라별 화폐 선택 -->
                             <div class="select-position">
                                 <select id="select4">
                                     <option value="0" selected>$ USD</option>
@@ -21,6 +25,7 @@
                             </div>
                         </li>
                         <li>
+                        	<!-- 나라별 언어 선택 -->
                             <div class="select-position">
                                 <select id="select5">
                                     <option value="0" selected>English</option>
@@ -39,7 +44,7 @@
             <div class="col-lg-4 col-md-4 col-12">
                 <div class="top-middle">
                     <ul class="useful-links">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="./">Home</a></li>
                         <li><a href="about-us.html">About Us</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
                     </ul>
@@ -65,6 +70,7 @@
     </div>
 </div>
 <!-- End Topbar -->
+
 <!-- Start Header Middle -->
 <div class="header-middle">
     <div class="container">
@@ -94,10 +100,11 @@
                             </div>
                         </div>
                         <div class="search-input">
-                            <input type="text" placeholder="Search">
+                            <input type="text" placeholder="Search" id="search">
                         </div>
+                        <!-- input 타입으로 바꾸면 css 달라짐 -->
                         <div class="search-btn">
-                            <button><i class="lni lni-search-alt"></i></button>
+                            <button onclick="location.href='searchProduct'">검색</button>
                         </div>
                     </div>
                     <!-- navbar search Ends -->

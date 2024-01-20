@@ -29,12 +29,11 @@
         your experience and security.
       </p>
     <![endif]-->
-
     <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
             <div class="preloader-icon">
-                <span></span>
+                <span>로딩중</span>
                 <span></span>
             </div>
         </div>
