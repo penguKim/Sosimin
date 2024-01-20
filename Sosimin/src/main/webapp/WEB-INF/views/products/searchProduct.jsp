@@ -15,141 +15,7 @@
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
-	
-<!-- 	 <section class="trending-product section" style="margin-top: 12px;"> -->
-<!--         <div class="container"> -->
-<!--             <div class="row"> -->
-<!--                 <div class="col-12"> -->
-<!--                     <div class="section-title"> -->
-<!--                         <h2>상품목록</h2> -->
-<!--                         <p>여기는 상품 목록 자리입니다</p> -->
-<!--                     </div> -->
-<!--                 </div> -->
-<!--             </div> -->
-<!--             <div class="row"> -->
-<!--                 <div class="col-lg-3 col-md-6 col-12"> -->
-<!--                     Start Single Product -->
-<!--                     <div class="single-product"> -->
-<!--                         <div class="product-image"> -->
-<%--                             <img src="${pageContext.request.contextPath}/resources/images/products/product-1.jpg" alt="#"> --%>
-<!--                             <div class="button"> -->
-<!--                                 <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                         <div class="product-info"> -->
-<!--                             <span class="category">Watches</span> -->
-<!--                             <h4 class="title"> -->
-<!--                                 <a href="product-grids.html">Xiaomi Mi Band 5</a> -->
-<!--                             </h4> -->
-<!--                             <ul class="review"> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star"></i></li> -->
-<!--                                 <li><span>4.0 Review(s)</span></li> -->
-<!--                             </ul> -->
-<!--                             <div class="price"> -->
-<!--                                 <span>$199.00</span> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                     </div> -->
-<!--                     End Single Product -->
-<!--                 </div> -->
-<!--                 <div class="col-lg-3 col-md-6 col-12"> -->
-<!--                     Start Single Product -->
-<!--                     <div class="single-product"> -->
-<!--                         <div class="product-image"> -->
-<%--                             <img src="${pageContext.request.contextPath}/resources/images/products/product-2.jpg" alt="#"> --%>
-<!--                             <span class="sale-tag">-25%</span> -->
-<!--                             <div class="button"> -->
-<!--                                 <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                         <div class="product-info"> -->
-<!--                             <span class="category">Speaker</span> -->
-<!--                             <h4 class="title"> -->
-<!--                                 <a href="product-grids.html">Big Power Sound Speaker</a> -->
-<!--                             </h4> -->
-<!--                             <ul class="review"> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><span>5.0 Review(s)</span></li> -->
-<!--                             </ul> -->
-<!--                             <div class="price"> -->
-<!--                                 <span>$275.00</span> -->
-<!--                                 <span class="discount-price">$300.00</span> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                     </div> -->
-<!--                     End Single Product -->
-<!--                 </div> -->
-<!--                 <div class="col-lg-3 col-md-6 col-12"> -->
-<!--                     Start Single Product -->
-<!--                     <div class="single-product"> -->
-<!--                         <div class="product-image"> -->
-<%--                             <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#"> --%>
-<!--                             <div class="button"> -->
-<!--                                 <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                         <div class="product-info"> -->
-<!--                             <span class="category">Camera</span> -->
-<!--                             <h4 class="title"> -->
-<!--                                 <a href="product-grids.html">WiFi Security Camera</a> -->
-<!--                             </h4> -->
-<!--                             <ul class="review"> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><span>5.0 Review(s)</span></li> -->
-<!--                             </ul> -->
-<!--                             <div class="price"> -->
-<!--                                 <span>$399.00</span> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                     </div> -->
-<!--                     End Single Product -->
-<!--                 </div> -->
-<!--                 <div class="col-lg-3 col-md-6 col-12"> -->
-<!--                     Start Single Product -->
-<!--                     <div class="single-product"> -->
-<!--                         <div class="product-image"> -->
-<%--                             <img src="${pageContext.request.contextPath}/resources/images/products/product-4.jpg" alt="#"> --%>
-<!--                             <span class="new-tag">New</span> -->
-<!--                             <div class="button"> -->
-<!--                                 <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                         <div class="product-info"> -->
-<!--                             <span class="category">Phones</span> -->
-<!--                             <h4 class="title"> -->
-<!--                                 <a href="product-grids.html">iphone 6x plus</a> -->
-<!--                             </h4> -->
-<!--                             <ul class="review"> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><i class="lni lni-star-filled"></i></li> -->
-<!--                                 <li><span>5.0 Review(s)</span></li> -->
-<!--                             </ul> -->
-<!--                             <div class="price"> -->
-<!--                                 <span>$400.00</span> -->
-<!--                             </div> -->
-<!--                         </div> -->
-<!--                     </div> -->
-<!--                     End Single Product -->
-<!--                 </div> -->
-<!--             </div> -->
-<!--         </div> -->
-<!--     </section> -->
-<!--     End Trending Product Area -->
+
 	<!-- Start Product Grids -->
     <section class="product-grids section">
         <div class="container">
@@ -157,12 +23,18 @@
                 <div class="col-lg-3 col-12">
                     <!-- Start Product Sidebar -->
                     <div class="product-sidebar">
-                        <!-- Start Single Widget -->
-                        <div class="single-widget search">
-                            <h3>Search Product</h3>
+                       <!-- Start Single Widget -->
+                        <div class="single-widget">
+                            <h3>결과내 검색</h3>
                             <form action="#">
+                            	<p>포함할 단어</p>
                                 <input type="text" placeholder="Search Here...">
-                                <button type="submit"><i class="lni lni-search-alt"></i></button>
+                                <p>제외할 단어</p>
+                                <input type="text" placeholder="Search Here...">
+                                <div class="resultSearch">
+                                	<button class="reset-btn">초기화</button>
+                                	<button type="submit" class="resultSearch-btn">적용하기</button>
+                                </div>
                             </form>
                         </div>
                         <!-- End Single Widget -->
@@ -171,43 +43,46 @@
                             <h3>카테고리</h3>
                             <ul class="list">
                                 <li>
-                                    <a href="product-grids.html">Computers & Accessories </a><span>(1138)</span>
+                                    <a href="product-grids.html">상의 </a><span>(1138)</span>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">Smartphones & Tablets</a><span>(2356)</span>
+                                    <a href="product-grids.html">하의</a><span>(2356)</span>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">TV, Video & Audio</a><span>(420)</span>
+                                    <a href="product-grids.html">아우터</a><span>(420)</span>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">Cameras, Photo & Video</a><span>(874)</span>
+                                    <a href="product-grids.html">아동복</a><span>(874)</span>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">Headphones</a><span>(1239)</span>
+                                    <a href="product-grids.html">셋업/세트</a><span>(1239)</span>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">Wearable Electronics</a><span>(340)</span>
+                                    <a href="product-grids.html">패션/잡화</a><span>(340)</span>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">Printers & Ink</a><span>(512)</span>
+                                    <a href="product-grids.html">신발</a><span>(512)</span>
+                                </li>
+                                <li>
+                                    <a href="product-grids.html">기타</a><span>(512)</span>
                                 </li>
                             </ul>
                         </div>
                         <!-- End Single Widget -->
-                        <!-- Start Single Widget -->
-                        <div class="single-widget range">
-                            <h3>Price Range</h3>
-                            <input type="range" class="form-range" name="range" step="1" min="100" max="10000"
-                                value="10" onchange="rangePrimary.value=value">
-                            <div class="range-inner">
-                                <label>$</label>
-                                <input type="text" id="rangePrimary" placeholder="100" />
-                            </div>
-                        </div>
-                        <!-- End Single Widget -->
+<!--                         Start Single Widget -->
+<!--                         <div class="single-widget range"> -->
+<!--                             <h3>상품 가격</h3> -->
+<!--                             <input type="range" class="form-range" name="range" step="1" min="100" max="10000" -->
+<!--                                 value="10" onchange="rangePrimary.value=value"> -->
+<!--                             <div class="range-inner"> -->
+<!--                                 <label>$</label> -->
+<!--                                 <input type="text" id="rangePrimary" placeholder="100" /> -->
+<!--                             </div> -->
+<!--                         </div> -->
+<!--                         End Single Widget -->
                         <!-- Start Single Widget -->
                         <div class="single-widget condition">
-                            <h3>Filter by Price</h3>
+                            <h3>가격필터</h3>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
                                 <label class="form-check-label" for="flexCheckDefault1">
@@ -236,53 +111,23 @@
                         <!-- End Single Widget -->
                         <!-- Start Single Widget -->
                         <div class="single-widget condition">
-                            <h3>Filter by Brand</h3>
+                            <h3>상품 상태</h3>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11">
                                 <label class="form-check-label" for="flexCheckDefault11">
-                                    Apple (254)
+                                    보통
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault22">
                                 <label class="form-check-label" for="flexCheckDefault22">
-                                    Bosh (39)
+                                    좋은 상태
                                 </label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault33">
                                 <label class="form-check-label" for="flexCheckDefault33">
-                                    Canon Inc. (128)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault44">
-                                <label class="form-check-label" for="flexCheckDefault44">
-                                    Dell (310)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault55">
-                                <label class="form-check-label" for="flexCheckDefault55">
-                                    Hewlett-Packard (42)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault66">
-                                <label class="form-check-label" for="flexCheckDefault66">
-                                    Hitachi (217)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault77">
-                                <label class="form-check-label" for="flexCheckDefault77">
-                                    LG Electronics (310)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault88">
-                                <label class="form-check-label" for="flexCheckDefault88">
-                                    Panasonic (74)
+                                    새상품
                                 </label>
                             </div>
                         </div>
@@ -290,7 +135,10 @@
                     </div>
                     <!-- End Product Sidebar -->
                 </div>
+                
+                <!-- 상품 목록 -->
                 <div class="col-lg-9 col-12">
+                	<!-- 상품 검색 조건 -->
                     <div class="product-grids-head">
                         <div class="product-grid-topbar">
                             <div class="row align-items-center">
@@ -314,11 +162,11 @@
                                             <button class="nav-link active" id="nav-grid-tab" data-bs-toggle="tab"
                                                 data-bs-target="#nav-grid" type="button" role="tab"
                                                 aria-controls="nav-grid" aria-selected="true"><i
-                                                    class="lni lni-grid-alt"></i></button>
+                                                    class="lni lni-grid-alt">버튼</i></button>
                                             <button class="nav-link" id="nav-list-tab" data-bs-toggle="tab"
                                                 data-bs-target="#nav-list" type="button" role="tab"
                                                 aria-controls="nav-list" aria-selected="false"><i
-                                                    class="lni lni-list"></i></button>
+                                                    class="lni lni-list">버튼</i></button>
                                         </div>
                                     </nav>
                                 </div>
@@ -332,7 +180,7 @@
                                         <!-- Start Single Product -->
                                         <div class="single-product">
                                             <div class="product-image">
-                                                <img src="assets/images/products/product-1.jpg" alt="#">
+                                                <img src="${pageContext.request.contextPath}/resources/images/products/product-2.jpg" alt="#">
                                                 <div class="button">
                                                     <a href="product-details.html" class="btn"><i
                                                             class="lni lni-cart"></i> Add to Cart</a>
@@ -362,8 +210,7 @@
                                         <!-- Start Single Product -->
                                         <div class="single-product">
                                             <div class="product-image">
-                                                <img src="assets/images/products/product-2.jpg" alt="#">
-                                                <span class="sale-tag">-25%</span>
+                                                <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
                                                 <div class="button">
                                                     <a href="product-details.html" class="btn"><i
                                                             class="lni lni-cart"></i> Add to Cart</a>
@@ -383,8 +230,7 @@
                                                     <li><span>5.0 Review(s)</span></li>
                                                 </ul>
                                                 <div class="price">
-                                                    <span>$275.00</span>
-                                                    <span class="discount-price">$300.00</span>
+                                                    <span>$275.00</span> 
                                                 </div>
                                             </div>
                                         </div>
@@ -394,7 +240,7 @@
                                         <!-- Start Single Product -->
                                         <div class="single-product">
                                             <div class="product-image">
-                                                <img src="assets/images/products/product-3.jpg" alt="#">
+                                                <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
                                                 <div class="button">
                                                     <a href="product-details.html" class="btn"><i
                                                             class="lni lni-cart"></i> Add to Cart</a>
@@ -424,7 +270,7 @@
                                         <!-- Start Single Product -->
                                         <div class="single-product">
                                             <div class="product-image">
-                                                <img src="assets/images/products/product-4.jpg" alt="#">
+                                                <img src="${pageContext.request.contextPath}/resources/images/products/product-4.jpg" alt="#">
                                                 <span class="new-tag">New</span>
                                                 <div class="button">
                                                     <a href="product-details.html" class="btn"><i

@@ -6077,6 +6077,38 @@ blockquote span {
   font-weight: 500;
 }
 
+.product-sidebar .single-widget .resultSearch {
+	margin-top:5px;
+}
+
+.product-sidebar .single-widget .resultSearch .resultSearch-btn{
+  background-color: #0167F3;
+  color: #fff;
+  width: 50px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  margin-left: -2px;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  font-size: 12px;
+}
+
+.product-sidebar .single-widget .resultSearch .reset-btn{
+  background-color: #777;
+  color: #fff;
+  width: 50px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;;
+  margin-left: -2px;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  font-size: 12px;
+}
+
 .product-sidebar .single-widget.search form {
   position: relative;
 }
