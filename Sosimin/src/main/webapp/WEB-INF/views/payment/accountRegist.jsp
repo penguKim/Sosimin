@@ -46,7 +46,7 @@
                                 <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
                             </div>
                            	<div class="msg">페이에 등록할 계좌를 선택해주세요</div>
-                            <!-- Cart Single List list -->
+                            <!-- 계좌리스트 한 줄 시작 -->
 			                <div class="cart-single-list">
 			                    <div class="row align-items-center">
 			                        <div class="col-lg-2 col-md-2 col-12">
@@ -60,13 +60,14 @@
 			                        </div>
 			                        <div class="col-lg-4 col-md-4 col-12">
 			                             <div class="button">
-			                                <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">등록하기</button>
+			                                <button class="btn" class="btn review-btn" data-bs-toggle="modal"
+                            				    data-bs-target="#exampleModal">등록하기</button>
 			                            </div>
 			                        </div>
 			                    </div>
 			                </div>
-			                <!-- End Single List list -->
-                            <!-- Cart Single List list -->
+			                <!-- 계좌리스트 한 줄 끝 -->
+                            <!-- 계좌리스트 한 줄 시작 -->
 			                <div class="cart-single-list">
 			                    <div class="row align-items-center">
 			                        <div class="col-lg-2 col-md-2 col-12">
@@ -85,7 +86,7 @@
 			                        </div>
 			                    </div>
 			                </div>
-			                <!-- End Single List list -->
+			                <!-- 계좌리스트 한 줄 끝 -->
                         </div>
                     </div>
                 </div>

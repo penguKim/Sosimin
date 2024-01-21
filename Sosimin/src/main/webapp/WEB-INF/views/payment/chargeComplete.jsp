@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 </head>
 <body>
     <div class="preloader">
@@ -35,6 +36,44 @@
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
 	
+	 <div class="account-login section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+                    <div class="card login-form pay-card">
+                        <div class="card-body">
+                            <div class="title paytitle">
+                                <h3 class="user-name">00님</h3> <!-- 사용자프로필/sId -->
+                                <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
+                            </div>
+                            <div class="complete-msg">10,000원 충전 완료</div>
+                           	<div class="pay-info col-lg-6 col-md-6 col-12">
+								페이잔액
+							</div>
+                           	<div class="pay-balance col-lg-6 col-md-6 col-12">
+								10,000원
+							</div>
+                           	<div class="pay-info col-lg-6 col-md-6 col-12">
+								출금계좌
+							</div>
+                           	<div class="pay-balance col-lg-6 col-md-6 col-12">
+								00은행 0000-00-000***
+							</div>
+                           	<div class="info-msg">
+								- 페이머니는 환급하기 페이지에서 무료로 즉시 인출 가능합니다
+							</div>
+                            <div class="button col-lg-6 col-md-6 col-12">
+                                <button class="btn" onclick="location.href='PayCharge'">추가 충전하기</button>
+                            </div>
+                            <div class="button col-lg-6 col-md-6 col-12">
+                                <button class="btn" onclick="location.href='PayInfo'">내역보기</button>
+                            </div>
+                        </div>
+                     </div>   
+                </div>
+            </div>
+        </div>
+    </div>
 	
 	
 	

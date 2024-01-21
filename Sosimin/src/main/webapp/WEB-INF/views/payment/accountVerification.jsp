@@ -39,7 +39,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
-                    <div class="card">
+                    <div class="card login-form">
                         <div class="card-body">
                             <div class="title paytitle">
                                 <h3 class="user-name">00님</h3> <!-- 사용자프로필/sId -->
