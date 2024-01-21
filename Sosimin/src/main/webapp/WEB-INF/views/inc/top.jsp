@@ -58,10 +58,10 @@
                     </div>
                     <ul class="user-login">
                         <li>
-                            <a href="login.html">Sign In</a>
+                            <a href="MemberLogin">로그인</a>
                         </li>
                         <li>
-                            <a href="register.html">Register</a>
+                            <a href="MemberJoin">회원가입</a>
                         </li>
                         <li>
                             <a href="CsMain">고객센터</a>
