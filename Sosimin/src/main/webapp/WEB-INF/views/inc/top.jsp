@@ -63,6 +63,9 @@
                         <li>
                             <a href="register.html">Register</a>
                         </li>
+                        <li>
+                            <a href="CsMain">고객센터</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -253,6 +256,7 @@
                                     <li class="nav-item"><a href="product-details.html">shop Single</a></li>
                                     <li class="nav-item"><a href="cart.html">Cart</a></li>
                                     <li class="nav-item"><a href="checkout.html">Checkout</a></li>
+                                    <li class="nav-item"><a href="productDetail">상품상세</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">

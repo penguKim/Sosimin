@@ -12,4 +12,13 @@ public class ProductController {
 		
 		return "products/searchProduct";
 	}
+	
+	@GetMapping("productDetail")
+	public String productDetail() {
+		
+		return "products/productDetail";
+	}
+	
+	
+	
 }

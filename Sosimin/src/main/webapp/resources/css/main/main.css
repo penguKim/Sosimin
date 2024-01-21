@@ -1285,13 +1285,13 @@ ol {
   text-align: center;
 }
 
-.button .btn {
+.button .btn{
   display: inline-block;
   text-transform: capitalize;
   font-size: 14px;
   font-weight: 600;
   padding: 13px 30px;
-  background-color: #0167F3;
+  background-color: #ff0000;
   color: #fff;
   border: none;
   -webkit-transition: 0.2s;
