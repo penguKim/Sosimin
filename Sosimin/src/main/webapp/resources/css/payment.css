@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+.paytitle {
+	display: flex;
+	justify-content: space-between;
+}
+
+.user-name {
+	display: inline-block;
+}
+
+.pay-name {
+	display: inline-block;
+	text-align: right;	
+}
+
+.msg {
+	font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    line-height: 28px;
+}
+
+.button {
+	
+}
