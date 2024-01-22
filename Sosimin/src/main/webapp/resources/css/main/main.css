@@ -1457,6 +1457,7 @@ ol {
 .header .topbar {
 /*   background-color: #081828; */
 /* 최상단 영역 배경 */
+	margin-top: 5px;
 }
 
 @media (max-width: 767px) {
@@ -1641,7 +1642,7 @@ ol {
           align-items: center;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
-          justify-content: space-around;
+          justify-content: space-evenly;
 }
 
 @media (max-width: 767px) {
@@ -2492,7 +2493,7 @@ ol {
 
 .header .navbar-brand {
   margin: 0;
-  margin-bottom: 40px;
+  margin-bottom: -10px;
   
 }
 
