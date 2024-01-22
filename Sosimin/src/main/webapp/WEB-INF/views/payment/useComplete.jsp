@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 </head>
 <body>
     <div class="preloader">
@@ -35,6 +36,64 @@
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
 	
+	
+	 <div class="account-login section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+                    <div class="card login-form pay-card">
+                        <div class="card-body">
+                            <div class="title paytitle">
+                                <h3 class="user-name">00님</h3> <!-- 사용자프로필/sId -->
+                                <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
+                            </div>
+                            <div class="complete-msg">10,000원 결제 완료</div>
+                            <hr>
+                           	<div class="complete-msg-center">거래정보</div>
+                           	<div class="complete-msg-left">판매자 : 닉네임</div>
+                           	<div class="complete-msg-left">상품명 : 게시글</div>
+                           	<div class="complete-msg-left">가격 : 가격</div>
+                           	<div class="complete-msg-left">거래유형 : 직거래</div>
+                           	<hr id="hr">
+                            <div class="row">
+	                           	<div class="complete-msg-center col-lg-12 col-md-12 col-12">
+									페이 사용 내역
+								</div>
+	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
+									출금계좌
+								</div>
+	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
+									은행명 계좌번호
+								</div>
+	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
+									충전금액
+								</div>
+	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
+									100,000원
+								</div>
+	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
+									페이 머니 잔액
+								</div>
+	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
+									400,000원
+								</div>
+							</div>
+							<hr id="hr">
+							<div class="row">
+								<p class="info-msg">- 페이머니는 환급하기 페이지에서 무료로 즉시 인출 가능합니다</p>
+	                            <div class="button col-lg-6 col-md-6 col-12">
+	                                <button class="btn" onclick="location.href='MemberMyPageMain'">구매 내역보기</button>
+	                            </div>
+	                            <div class="button col-lg-6 col-md-6 col-12">
+	                                <button class="btn" onclick="location.href='PayInfo'">페이 내역보기</button>
+	                            </div>
+                            </div>
+                        </div>
+                     </div>   
+                </div>
+            </div>
+        </div>
+    </div>
 	
 	
 	

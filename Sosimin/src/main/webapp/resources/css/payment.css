@@ -15,16 +15,16 @@
 }
 
 .msg {
-	font-size: 20px;
+	font-size: 25px;
     font-weight: 600;
-    line-height: 28px;
+    line-height: 35px;
 }
 
 .complete-msg {
 	text-align: center;
-	font-size: 20px;
+	font-size: 30px;
     font-weight: 600;
-    line-height: 28px;
+    line-height: 35px;
 }
 
 .info-msg {
@@ -34,16 +34,16 @@
 }
 
 .pay-info {
-	font-size: 20px;
+	font-size: 30px;
     font-weight: 600;
-    line-height: 28px;
+    line-height: 35px;
 }
 
 .pay-balance {
 	text-align: right;
-	font-size: 20px;
+	font-size: 30px;
     font-weight: 600;
-    line-height: 28px;
+    line-height: 35px;
 }
 
 .pay-card {
@@ -52,4 +52,72 @@
 
 .collect>li {
 	display: inline-block;
+}
+
+.product-name, .bank-name {
+    font-size: 25px;	
+}
+
+.pay-info-sub, .fintech-no, .account-no {
+	margin: 0;
+    padding: 0;
+    font-size: 17px;
+    line-height: 24px;
+}
+
+.pay-amount {
+	text-align: right;
+	font-size: 25px;	
+}
+
+.amount-btn {
+	width: 100%;
+	margin: 0;
+	margin-bottom: 30px;
+}
+
+.pay-balance-sub {
+	text-align: right;
+	margin: 0;
+    padding: 0;
+    font-size: 17px;
+    line-height: 24px;
+}
+
+.account-info {
+  position: relative;
+  font-weight: 400;
+  clear: both;
+  z-index: 1;
+  padding: 15px;
+  border-radius: 0;
+  border: 1px solid #e2e2e2;
+  border-radius: 4px;
+}
+
+.complete-msg-left {
+	font-size: 20px;
+    font-weight: 300;
+    line-height: 30px;
+    margin-top: 10px;
+}
+
+.complete-msg-right {
+	font-size: 20px;
+    font-weight: 300;
+    line-height: 30px;
+	text-align: right;	
+    margin-top: 10px;
+}
+
+.complete-msg-center {
+	font-size: 20px;
+    font-weight: 300;
+    line-height: 30px;
+	text-align: center;	
+    margin-top: 10px;
+}
+
+#hr {
+	margin-top: 20px;
 }

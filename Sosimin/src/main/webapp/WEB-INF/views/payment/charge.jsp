@@ -50,29 +50,31 @@
                                 <input class="form-control" type="email" id="reg-email" required
                                 	placeholder="충전을 원하시는 금액을 입력해주세요">
                             </div>
-                            <div class="col-lg-3 col-md-3 col-12"><input type="button" value="1만원" class=""></div>
-                            <div class="col-lg-3 col-md-3 col-12"><input type="button" value="3만원" class=""></div>
-                            <div class="col-lg-3 col-md-3 col-12"><input type="button" value="5만원" class=""></div>
-                            <div class="col-lg-3 col-md-3 col-12"><input type="button" value="10만원" class=""></div>
+                            <div class="row amount-btn">
+                            	<input type="button" value="1만원" class="col-lg-3 col-md-3 col-12">
+	                            <input type="button" value="3만원" class="col-lg-3 col-md-3 col-12">
+	                            <input type="button" value="5만원" class="col-lg-3 col-md-3 col-12">
+	                            <input type="button" value="10만원" class="col-lg-3 col-md-3 col-12">
+                            </div>
                             
                             <div class="msg">출금 계좌 확인</div>
                              <!-- 계좌리스트 한 줄 시작 -->
-			                <div class="cart-single-list">
-			                    <div class="row align-items-center">
+                            <div class="account-info">    
+			                    <div class="row">
 			                        <div class="col-lg-3 col-md-3 col-12">
 			                           은행마크
 			                        </div>
 			                        <div class="col-lg-9 col-md-9 col-12">
-			                            <h5 class="product-name">은행명</h5>
-			                            <p class="product-des">
-			                                계좌번호
-			                            </p>
-			                        </div>
-			                    </div>
-			                </div>
+				                        <h5 class="bank-name">은행명</h5>
+				                        <p class="account-no">
+				                                계좌번호
+				                         </p>
+			                   		</div>
+			                   	</div>
+                            </div>
 			                <!-- 계좌리스트 한 줄 끝 -->
                             <div class="button">
-                                <button class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">충전하기</button>
+                                <button class="btn" data-bs-toggle="modal" data-bs-target="#password-modal">충전하기</button>
                             </div>
                         </div>
                     </div>
@@ -83,7 +85,7 @@
 	
 	
     <!-- Review Modal -->
-    <div class="modal review-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal review-modal" id="password-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -96,14 +98,14 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="review-name">비밀번호</label>
-                                <input class="form-control" type="text" id="review-name" required
+                                <input class="form-control" type="password" id="review-name" required
                                 	placeholder="6자리 숫자를 입력해주세요">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer button">
-                    <button type="button" class="btn">충전하기</button>
+                    <button type="button" class="btn" onclick="location.href='PayChargeComplete'">충전하기</button>
                 </div>
             </div>
         </div>
