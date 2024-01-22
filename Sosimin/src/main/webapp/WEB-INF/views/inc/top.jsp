@@ -244,7 +244,7 @@
 								<a href="./">커뮤니티</a>
                                 <ul class="sub-menu collapse" id="submenu-1-2">
                                     <li class="nav-item"><a href="about-us.html">About Us</a></li>
-                                    <li class="nav-item"><a href="faq.html">Faq</a></li>
+                                    <li class="nav-item"><a href="csMain">고객센터</a></li>
                                     <li class="nav-item"><a href="login.html">Login</a></li>
                                     <li class="nav-item"><a href="register.html">Register</a></li>
                                     <li class="nav-item"><a href="mail-success.html">Mail Success</a></li>
@@ -318,4 +318,3 @@
     </div>
 </div>
 <!-- End Header Bottom -->
->>>>>>> Stashed changes
