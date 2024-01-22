@@ -10,10 +10,21 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-<!--     <link rel="stylesheet" href="https://bootstrapmade.com/assets/css/demo.css?v=5.2"> -->
 <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script type="text/javascript">
+	$(function() {
+		$("#option1").on("change", function() {
+			console.log("별로입니다");
+		});
+		$("#option2").on("change", function() {
+			console.log("최고입니다");
+		});
+	});
+
+</script>
 </head>
 <body>
 	<header class="header navbar-area">
@@ -26,13 +37,13 @@
 		<br>
 		<br>
 		<br>
-		<div class="row">
+		<div class="row mb-5">
 			<div class="col btn-group">
-				<input type="button" class="btn btn-outline-primary" value="전체">
-				<input type="button" class="btn btn-outline-primary" value="인기글">
-				<input type="button" class="btn btn-outline-primary" value="동네소식">
-				<input type="button" class="btn btn-outline-primary" value="동네질문">
-				<input type="button" class="btn btn-outline-primary" value="일상">
+				<input type="button" class="btn btn-primary" value="전체">
+				<input type="button" class="btn btn-primary" value="인기글">
+				<input type="button" class="btn btn-primary" value="동네소식">
+				<input type="button" class="btn btn-primary" value="동네질문">
+				<input type="button" class="btn btn-primary" value="일상">
 			</div>
 			<div class="col">
 				<form action="">
@@ -73,6 +84,35 @@
 				</table>
 			</div>
 	</div>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Launch static backdrop modal
+</button>
+
+<!-- Modal -->
+<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="d-flex justify-content-center">
+					<input type="radio" class="btn-check" name="options" id="option1" autocomplete="off">
+					<label class="btn btn-outline-primary mx-4" for="option1">별로예요</label>
+					<input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+					<label class="btn btn-outline-primary mx-4" for="option2">최고예요</label>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
+				<button type="button" class="btn btn-primary">후기 등록</button>
+			</div>
+		</div>
+	</div>
+</div>
+	
 <!-- 	<footer class="footer"> -->
 <%-- 		<jsp:include page="../inc/bottom.jsp"></jsp:include> --%>
 <!-- 	</footer> -->

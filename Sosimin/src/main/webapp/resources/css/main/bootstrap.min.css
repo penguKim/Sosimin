@@ -239,12 +239,13 @@ sup {
 }
 
 a {
-    color: #0d6efd;
-    text-decoration: underline
+    color: #081828;
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 a:hover {
-    color: #0a58ca
+    color: #39d274;
 }
 
 a:not([href]):not([class]),
@@ -1416,7 +1417,12 @@ progress {
         flex: 0 0 auto;
         width: 33.3333333333%
     }
-
+    
+    .col-lg-4-1 {
+     	flex: 0 0 auto;
+        width: 25%
+    }
+    
     .col-lg-5 {
         flex: 0 0 auto;
         width: 41.6666666667%
