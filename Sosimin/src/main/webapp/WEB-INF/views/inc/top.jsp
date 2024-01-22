@@ -105,7 +105,6 @@
                         <div class="search-input">
                             <input type="text" id="searchKeyword" placeholder="Search" >
                         </div>
-                        <!-- input 타입으로 바꾸면 css 달라짐 -->
                         <div class="search-btn">
                             <button onclick="location.href='searchProduct'">
                             	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
