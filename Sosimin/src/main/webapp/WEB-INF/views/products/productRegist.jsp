@@ -282,11 +282,23 @@ function setThumbnail(event) {
 }
 
 function removeImage(button) {
-	  var imageItem = button.parentNode;
-	  var imageContainer = imageItem.parentNode;
-	  imageContainer.removeChild(imageItem);
-	  
-	  document.querySelector(".mainImage").style.display = "none";
+  var imageItem = button.parentNode;
+  var imageContainer = imageItem.parentNode;
+  imageContainer.removeChild(imageItem);
+
+  // 대표 이미지가 없는 경우 숨김 처리
+  var imageText = document.querySelector(".mainImage");
+  if (imageContainer.children.length === 1) {
+    imageText.style.display = "none";
+  }
+}
+
+function addFileInput() {
+	  // 파일 선택 input 요소를 선택합니다.
+	  var fileInput = document.getElementById('product_image');
+
+	  // 파일 선택 input 요소를 클릭합니다.
+	  fileInput.click();
 	}
 
 //이미지를 선택할 때마다 imageClose와 mainImage 요소를 생성하고, 모든 이미지에 적용합니다.
@@ -333,13 +345,6 @@ function removeImage(button) {
 //   setThumbnail(event);
 // });
 
-function addFileInput() {
-	  // 파일 선택 input 요소를 선택합니다.
-	  var fileInput = document.getElementById('product_image');
-
-	  // 파일 선택 input 요소를 클릭합니다.
-	  fileInput.click();
-	}
 
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
@@ -358,18 +363,28 @@ function addFileInput() {
 					<li class="td" id="imageTd">
 					</li>
 				</ul>
-						<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()">
+<%-- 						<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()"> --%>
 
-						<div class="form-group">
-						  <input class="form-control form-control-user" type="file" style="display: none;"
-						    name="product_image" id="product_image" onchange="setThumbnail(event);">
+<!-- 						<div class="form-group"> -->
+<!-- 						  <input class="form-control form-control-user" type="file" style="display: none;" -->
+<!-- 						    name="product_image" id="product_image" onchange="setThumbnail(event);"> -->
 						    
-						<span id="image_container">
-						    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span>
-						    <button type="button" class="imageClose" style="display: none;"></button>
-					    </span>
-					    
-						</div>
+<!-- 						<span id="image_container"> -->
+<!-- 						    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span> -->
+<!-- 						    <button type="button" class="imageClose" style="display: none;"></button> -->
+<!-- 					    </span> -->
+<!-- 							</div> -->
+					<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()">
+
+				<input class="form-control form-control-user" type="file" style="display: none;"
+				  name="product_image" id="product_image" onchange="setThumbnail(event);">
+				
+				<div class="form-group">
+				  <div id="image_container">
+				    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span>
+				  </div>
+				</div>
+						
 				<hr>
 				<!-- 현재 등록돼 있는 카테고리 목록 호출, 사용자가 추가 가능 -->
 				<ul>
