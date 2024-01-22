@@ -116,7 +116,8 @@
             </div>
             <div class="col-lg-4 col-md-2 col-5">
                 <div class="middle-right-area">
-                	<a href="ProductRegist">판매하기  </a>
+                	<a href="./">판매하기  </a>
+
                 	<a href="./">관심  </a>
                 	<a href="./">채팅톡</a>
 <!--                     <div class="nav-hotline"> -->
@@ -244,7 +245,9 @@
 								<a href="./">커뮤니티</a>
                                 <ul class="sub-menu collapse" id="submenu-1-2">
                                     <li class="nav-item"><a href="about-us.html">About Us</a></li>
-                                    <li class="nav-item"><a href="faq.html">Faq</a></li>
+                                    <li class="nav-item"><a href="csMain">고객센터</a></li>
+
+
                                     <li class="nav-item"><a href="login.html">Login</a></li>
                                     <li class="nav-item"><a href="register.html">Register</a></li>
                                     <li class="nav-item"><a href="mail-success.html">Mail Success</a></li>
