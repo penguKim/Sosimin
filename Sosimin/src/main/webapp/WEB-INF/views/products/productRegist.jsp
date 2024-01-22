@@ -7,6 +7,11 @@
 
 <meta charset="UTF-8">
 <title>소시민 상품등록</title>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 <style type="text/css">
 	article {
 		text-align: center;
@@ -208,12 +213,14 @@ file.onchange = function () {
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
 <body>
-	<header>
+	
+	<header class="header navbar-area">
+		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
-	<h1>상품 등록</h1>
 	<div class="container content-wrapper">
 		<div class="addBox">
 			<form id="addForm" name="addForm" class="add-form" th:action="@{/admin/product/add}" method="post" enctype="multipart/form-data">
+			<h1>상품 등록</h1>
 				<ul>
 					<li class="th"><p>상품이미지</p></li>
 					<li class="td">
