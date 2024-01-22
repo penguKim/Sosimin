@@ -65,6 +65,7 @@
      border-radius: 12px; 
      font-size: 12px; 
      vertical-align: middle;
+     z-index: 1;
       }
       
 .imageClose {
@@ -78,16 +79,45 @@
     opacity: 0.3;
     border-radius: 50%;
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    right: 10px;
+/*     top: 0.5rem; */
 }      
 
 
 #image_container{
 	position: relative;
 }
+  p span {
+    color: red;
+  }
+  p {
+  	font-size: 20px;
+  	color: black;
+  }
 
 
+#tradeX{
+	position:relative;
+	left: 70em;
+	bottom: 29px;
+    right: 1rem;
+    font-size: 1rem;
+    color: rgb(153, 153, 153);
+    font-weight: 400;
+    line-height: 125%;
+    text-decoration: underline;
+    
+}
+
+#productName{
+	display: inline-block;
+	position: relative;
+}
+
+.imageItem {
+	display: inline-block;
+	position: relative;
+}
 </style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 </head>
@@ -272,6 +302,7 @@ function setThumbnail(event) {
     closeButton.setAttribute("onclick", "removeImage(this)");
 
     var imageItem = document.createElement("span");
+    imageItem.classList.add("imageItem");
     imageItem.appendChild(img);
     imageItem.appendChild(closeButton);
 
@@ -301,49 +332,6 @@ function addFileInput() {
 	  fileInput.click();
 	}
 
-//이미지를 선택할 때마다 imageClose와 mainImage 요소를 생성하고, 모든 이미지에 적용합니다.
-// function setThumbnail(event) {
-//   var imageContainer = document.getElementById("image_container");
-
-//   // 이미지를 감싸는 div 요소를 생성합니다.
-//   var thumbnailDiv = document.createElement("div");
-//   thumbnailDiv.classList.add("thumbnailDiv");
-
-//   // 이미지를 표시할 img 요소를 생성합니다.
-//   var thumbnailImage = document.createElement("img");
-//   thumbnailImage.src = URL.createObjectURL(event.target.files[0]);
-//   thumbnailImage.classList.add("thumbnailImage");
-
-//   // mainImage 요소를 생성합니다.
-//   var mainImage = document.createElement("span");
-//   mainImage.classList.add("mainImage");
-//   mainImage.textContent = "대표이미지";
-
-//   // imageClose 버튼을 생성합니다.
-//   var imageClose = document.createElement("button");
-//   imageClose.classList.add("imageClose");
-//   imageClose.addEventListener("click", function() {
-//     thumbnailDiv.remove(); // 해당 이미지 요소를 삭제합니다.
-//   });
-
-//   // 생성한 요소들을 순서대로 추가합니다.
-//   thumbnailDiv.appendChild(thumbnailImage);
-//   thumbnailDiv.appendChild(mainImage);
-//   thumbnailDiv.appendChild(imageClose);
-//   imageContainer.appendChild(thumbnailDiv);
-// }
-
-// // 이미지를 선택하면 mainImage와 imageClose 요소를 표시합니다.
-// var productImage = document.getElementById("product_image");
-// productImage.addEventListener("change", function(event) {
-//   var mainImage = document.querySelector(".mainImage");
-//   mainImage.style.display = "inline";
-
-//   var imageClose = document.querySelector(".imageClose");
-//   imageClose.style.display = "inline";
-
-//   setThumbnail(event);
-// });
 
 
 </script>
@@ -359,7 +347,7 @@ function addFileInput() {
 			<h1>상품 등록</h1>
 			
 				<ul>
-					<li class="th"><p>상품이미지</p></li>
+					<li class="th"><p>상품이미지<span>*</span></p></li>
 					<li class="td" id="imageTd">
 					</li>
 				</ul>
@@ -374,7 +362,7 @@ function addFileInput() {
 <!-- 						    <button type="button" class="imageClose" style="display: none;"></button> -->
 <!-- 					    </span> -->
 <!-- 							</div> -->
-					<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()">
+				<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()">
 
 				<input class="form-control form-control-user" type="file" style="display: none;"
 				  name="product_image" id="product_image" onchange="setThumbnail(event);">
@@ -388,18 +376,20 @@ function addFileInput() {
 				<hr>
 				<!-- 현재 등록돼 있는 카테고리 목록 호출, 사용자가 추가 가능 -->
 				<ul>
-					<li class="th"><p>상품명</p></li>
+					<li class="col-md-6"><p>상품명<span>*</span></p></li>
 					<li class="td">
-						<input type="text" id="productName" onkeyup="key()" maxlength="40" oninput="limitInputLength(this, 40)"
-						placeholder="상품명을 입력해 주세요." size="100">
-						<a href="https://help.bunjang.co.kr/faq/2/220" target="_blank">
-						 <span>거래금지 품목 보기</span></a>
-						 <span id="productNameLength">0</span><span>/40</span>
+						<div>
+							<input type="text" id="productName" onkeyup="key()" maxlength="40" oninput="limitInputLength(this, 40)"
+							placeholder="상품명을 입력해 주세요." class="form-control">
+							<a href="https://help.bunjang.co.kr/faq/2/220" target="_blank" id="tradeX">
+							 <span>거래금지 품목 보기</span></a>
+							 <span id="productNameLength">0</span><span>/40</span>
+						</div>
 					</li>
 				</ul>
 				<hr>
 				<ul>
-					<li class="th"><p>카테고리</p></li>
+					<li class="th"><p>카테고리<span>*</span></p></li>
 					<li class="td">
 						<select id="categoryName" name="categoryName" class="dataTable-selector selector" onchange="addACategory();">
 							<option value="default">카테고리를 선택하세요.</option>
@@ -420,7 +410,7 @@ function addFileInput() {
 				
 				
 				<ul>
-					<li class="th"><p>거래지역</p></li>
+					<li class="th"><p>거래지역<span>*</span></p></li>
 					<li class="td">
 						<input type="hidden" id="map">
 						<div><input type="button" id="myMapButton" value="내 위치"></div>
@@ -429,7 +419,7 @@ function addFileInput() {
 				</ul>
 				
 				<ul>
-					<li class="th"><p>상품 상태</p></li>
+					<li class="th"><p>상품 상태<span>*</span></p></li>
 					<li class="td">
 						<input type="radio" id="productStatus1" name="productStatus">보통<br>
 						<input type="radio" id="productStatus2" name="productStatus">좋은상태<br>
@@ -438,7 +428,7 @@ function addFileInput() {
 				</ul>
 				
 				<ul>
-					<li class="th"><p>가격</p></li>
+					<li class="th"><p>가격<span>*</span></p></li>
 					<li class="td">
 						<input type="text" id="priceInput" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11" size="15" style="text-align: right">원
 						<div><input type="checkbox">가격제안 받기</div>
@@ -446,7 +436,7 @@ function addFileInput() {
 				</ul>
 				
 				<ul>
-					<li class="th"><p>설명</p></li>
+					<li class="th"><p>설명<span>*</span></p></li>
 					<li class="td">
 						<div>
 							<textarea rows="6" cols="100" style="resize: none;" id="ProductDescription" maxlength="2000" onkeyup="key()" 
