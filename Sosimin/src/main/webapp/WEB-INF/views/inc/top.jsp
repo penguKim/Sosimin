@@ -116,7 +116,7 @@
             </div>
             <div class="col-lg-4 col-md-2 col-5">
                 <div class="middle-right-area">
-                	<a href="./">판매하기  </a>
+                	<a href="ProductRegist">판매하기  </a>
 
                 	<a href="./">관심  </a>
                 	<a href="./">채팅톡</a>

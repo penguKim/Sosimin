@@ -31,6 +31,63 @@
     color: red;
     cursor: pointer;
 }
+
+.imageSize {
+	width: 201px;
+	height: 201px;
+	margin-left: 1em;
+}	
+	.jyaWFk {
+    display: flex;
+    width: 856px;
+    flex-wrap: wrap;
+    overflow-x: hidden;
+}
+#imageTd {
+	display: inline-block;
+}
+
+.form-group {
+	display: inline-block;
+}
+
+ .mainImage { 
+     position: absolute; 
+     height: 1.5rem; 
+     padding: 0px 0.5rem; 
+     display: flex; 
+     -webkit-box-align: center; 
+     align-items: center; 
+     top: 0.5rem; 
+     left: 17px; 
+     background: rgba(25, 25, 25, 0.3);
+     color: rgb(255, 255, 255); 
+     border-radius: 12px; 
+     font-size: 12px; 
+     vertical-align: middle;
+      }
+      
+.imageClose {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 12px 12px;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDEyIDEyIj4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0iZXZlbm9kZCIKICAgICAgICBkPSJNNi44NDggNmwzLjc3Ni0zLjc3NmEuNi42IDAgMSAwLS44NDgtLjg0OEw2IDUuMTUgMi4yMjQgMS4zNzZhLjYuNiAwIDAgMC0uODQ4Ljg0OEw1LjE1MiA2IDEuMzc2IDkuNzc1YS42LjYgMCAxIDAgLjg0OC44NDlMNiA2Ljg0OGwzLjc3NiAzLjc3NmEuNTk4LjU5OCAwIDAgMCAxLjAyNC0uNDI1LjYuNiAwIDAgMC0uMTc2LS40MjRMNi44NDggNnoiIC8+Cjwvc3ZnPg==);
+    background-color: rgb(25, 25, 25);
+    opacity: 0.3;
+    border-radius: 50%;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}      
+
+
+#image_container{
+	position: relative;
+}
+
+
 </style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 </head>
@@ -196,20 +253,94 @@ $(document).on("click", ".close-button", function() {
     $("#tagName").prop("disabled", false);
 });
 
-var file = document.querySelector("#getfile");
+// 썸네일 이미지 작업을 위한 코드
+function setThumbnail(event) {
+  var reader = new FileReader();
+  var imageContainer = document.getElementById("image_container");
 
-file.onchange = function () {
-    var fileList = file.files ;
+  reader.onload = function(event) {
+    var img = document.createElement("img");
+    img.setAttribute("src", event.target.result);
+    img.setAttribute("class", "imageSize");
 
-    // 읽기
-    var reader = new FileReader();
-    reader.readAsDataURL(fileList [0]);
+    var imageText = document.querySelector(".mainImage");
+    imageText.style.display = "inline";
 
-    //로드 한 후
-    reader.onload = function  () {
-        document.querySelector("#preview").src = reader.result ;
-    };
+    var closeButton = document.createElement("button");
+    closeButton.setAttribute("type", "button");
+    closeButton.setAttribute("class", "imageClose");
+    closeButton.setAttribute("onclick", "removeImage(this)");
+
+    var imageItem = document.createElement("span");
+    imageItem.appendChild(img);
+    imageItem.appendChild(closeButton);
+
+    imageContainer.appendChild(imageItem);
+  };
+
+  reader.readAsDataURL(event.target.files[0]);
 }
+
+function removeImage(button) {
+	  var imageItem = button.parentNode;
+	  var imageContainer = imageItem.parentNode;
+	  imageContainer.removeChild(imageItem);
+	  
+	  document.querySelector(".mainImage").style.display = "none";
+	}
+
+//이미지를 선택할 때마다 imageClose와 mainImage 요소를 생성하고, 모든 이미지에 적용합니다.
+// function setThumbnail(event) {
+//   var imageContainer = document.getElementById("image_container");
+
+//   // 이미지를 감싸는 div 요소를 생성합니다.
+//   var thumbnailDiv = document.createElement("div");
+//   thumbnailDiv.classList.add("thumbnailDiv");
+
+//   // 이미지를 표시할 img 요소를 생성합니다.
+//   var thumbnailImage = document.createElement("img");
+//   thumbnailImage.src = URL.createObjectURL(event.target.files[0]);
+//   thumbnailImage.classList.add("thumbnailImage");
+
+//   // mainImage 요소를 생성합니다.
+//   var mainImage = document.createElement("span");
+//   mainImage.classList.add("mainImage");
+//   mainImage.textContent = "대표이미지";
+
+//   // imageClose 버튼을 생성합니다.
+//   var imageClose = document.createElement("button");
+//   imageClose.classList.add("imageClose");
+//   imageClose.addEventListener("click", function() {
+//     thumbnailDiv.remove(); // 해당 이미지 요소를 삭제합니다.
+//   });
+
+//   // 생성한 요소들을 순서대로 추가합니다.
+//   thumbnailDiv.appendChild(thumbnailImage);
+//   thumbnailDiv.appendChild(mainImage);
+//   thumbnailDiv.appendChild(imageClose);
+//   imageContainer.appendChild(thumbnailDiv);
+// }
+
+// // 이미지를 선택하면 mainImage와 imageClose 요소를 표시합니다.
+// var productImage = document.getElementById("product_image");
+// productImage.addEventListener("change", function(event) {
+//   var mainImage = document.querySelector(".mainImage");
+//   mainImage.style.display = "inline";
+
+//   var imageClose = document.querySelector(".imageClose");
+//   imageClose.style.display = "inline";
+
+//   setThumbnail(event);
+// });
+
+function addFileInput() {
+	  // 파일 선택 input 요소를 선택합니다.
+	  var fileInput = document.getElementById('product_image');
+
+	  // 파일 선택 input 요소를 클릭합니다.
+	  fileInput.click();
+	}
+
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
 <body>
@@ -221,15 +352,24 @@ file.onchange = function () {
 		<div class="addBox">
 			<form id="addForm" name="addForm" class="add-form" th:action="@{/admin/product/add}" method="post" enctype="multipart/form-data">
 			<h1>상품 등록</h1>
+			
 				<ul>
 					<li class="th"><p>상품이미지</p></li>
-					<li class="td">
-<!-- 						<img id="mainImage" src="" width="700"> -->
-<!-- 						<input type="file" id="getFile" class="file" name="eventFile1" accept=".gif, .jpg, .png"> -->
-							<img id="preview" src="" width="700" alt="로컬에 있는 이미지가 보여지는 영역">
-							<input type="file" id="getfile" accept="image/*">
+					<li class="td" id="imageTd">
 					</li>
 				</ul>
+						<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()">
+
+						<div class="form-group">
+						  <input class="form-control form-control-user" type="file" style="display: none;"
+						    name="product_image" id="product_image" onchange="setThumbnail(event);">
+						    
+						<span id="image_container">
+						    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span>
+						    <button type="button" class="imageClose" style="display: none;"></button>
+					    </span>
+					    
+						</div>
 				<hr>
 				<!-- 현재 등록돼 있는 카테고리 목록 호출, 사용자가 추가 가능 -->
 				<ul>
