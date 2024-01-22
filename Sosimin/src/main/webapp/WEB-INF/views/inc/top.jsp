@@ -61,10 +61,10 @@
                            <a href="login.html">내상점</a>
                         </li>
                         <li>
-                            <a href="MemberLogin">로그인</a>
+                            <a href="login.html">로그인</a>
                         </li>
                         <li>
-                            <a href="MemberJoin">회원가입</a>
+                            <a href="register.html">회원가입</a>
                         </li>
                     </ul>
                 </div>
@@ -116,7 +116,7 @@
             </div>
             <div class="col-lg-4 col-md-2 col-5">
                 <div class="middle-right-area">
-                	<a href="./">판매하기  </a>
+                	<a href="ProductRegist">판매하기  </a>
                 	<a href="./">관심  </a>
                 	<a href="./">채팅톡</a>
 <!--                     <div class="nav-hotline"> -->
@@ -318,4 +318,3 @@
     </div>
 </div>
 <!-- End Header Bottom -->
->>>>>>> Stashed changes

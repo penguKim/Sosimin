@@ -19,6 +19,10 @@ public class ProductController {
 		return "products/productDetail";
 	}
 	
-	
+	@GetMapping("ProductRegist")
+	public String ProductRegist() {
+		
+		return "products/productRegist";
+	}
 	
 }
