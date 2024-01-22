@@ -61,10 +61,10 @@
                            <a href="login.html">내상점</a>
                         </li>
                         <li>
-                            <a href="login.html">로그인</a>
+                            <a href="MemberLogin">로그인</a>
                         </li>
                         <li>
-                            <a href="register.html">회원가입</a>
+                            <a href="MemberJoin">회원가입</a>
                         </li>
                     </ul>
                 </div>

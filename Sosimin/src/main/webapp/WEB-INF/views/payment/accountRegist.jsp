@@ -50,18 +50,18 @@
 			                <div class="cart-single-list">
 			                    <div class="row align-items-center">
 			                        <div class="col-lg-2 col-md-2 col-12">
-			                           예금주명
+			                           <p class="pay-info-sub">예금주</p>
 			                        </div>
 			                        <div class="col-lg-6 col-md-6 col-12">
-			                            <h5 class="product-name">은행명</h5>
-			                            <p class="product-des">
+			                            <h5 class="bank-name">은행명</h5>
+			                            <p class="fintech-no">
 			                                핀테크 이용번호
 			                            </p>
 			                        </div>
 			                        <div class="col-lg-4 col-md-4 col-12">
-			                             <div class="button">
-			                                <button class="btn" class="btn review-btn" data-bs-toggle="modal"
-                            				    data-bs-target="#exampleModal">등록하기</button>
+			                             <div class="button" id="regist-btn">
+			                                <button class="btn" 
+			                                	data-bs-toggle="modal" data-bs-target="#password-modal">등록하기</button>
 			                            </div>
 			                        </div>
 			                    </div>
@@ -71,17 +71,18 @@
 			                <div class="cart-single-list">
 			                    <div class="row align-items-center">
 			                        <div class="col-lg-2 col-md-2 col-12">
-			                           예금주명
+			                           <p class="pay-info-sub">예금주</p>
 			                        </div>
 			                        <div class="col-lg-6 col-md-6 col-12">
-			                            <h5 class="product-name">은행명</h5>
-			                            <p class="product-des">
+			                            <h5 class="bank-name">은행명</h5>
+			                            <p class="fintech-no">
 			                                핀테크 이용번호
 			                            </p>
 			                        </div>
 			                        <div class="col-lg-4 col-md-4 col-12">
-			                             <div class="button">
-			                                <button class="btn" onclick="#">등록하기</button>
+			                             <div class="button" id="regist-btn">
+			                                <button class="btn" 
+			                                	data-bs-toggle="modal" data-bs-target="#password-modal">등록하기</button>
 			                            </div>
 			                        </div>
 			                    </div>
@@ -95,7 +96,7 @@
     </div>
 	
     <!-- Review Modal -->
-    <div class="modal review-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal review-modal" id="password-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -122,7 +123,7 @@
                     </div>
                 </div>
                 <div class="modal-footer button">
-                    <button type="button" class="btn">등록하기</button>
+                    <button type="button" class="btn" onclick="location.href='PayInfo'">등록하기</button>
                 </div>
             </div>
         </div>

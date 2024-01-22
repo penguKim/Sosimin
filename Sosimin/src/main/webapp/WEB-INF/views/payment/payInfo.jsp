@@ -45,17 +45,19 @@
                                 <h3 class="user-name">00님</h3> <!-- 사용자프로필/sId -->
                                 <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
                             </div>
-                           	<div class="pay-info col-lg-6 col-md-6 col-12">
-								페이잔액
-							</div>
-                           	<div class="pay-balance col-lg-6 col-md-6 col-12">
-								10,000원
-							</div>
-                            <div class="button col-lg-6 col-md-6 col-12">
-                                <button class="btn" onclick="location.href='PayCharge'">충전하기</button>
-                            </div>
-                            <div class="button col-lg-6 col-md-6 col-12">
-                                <button class="btn" onclick="location.href='PayRefund'">환급하기</button>
+                            <div class="row">
+	                           	<div class="pay-info col-lg-6 col-md-6 col-12">
+									페이잔액
+								</div>
+	                           	<div class="pay-balance col-lg-6 col-md-6 col-12">
+									10,000원
+								</div>
+	                            <div class="button col-lg-6 col-md-6 col-12">
+	                                <button class="btn" onclick="location.href='PayCharge'">충전하기</button>
+	                            </div>
+	                            <div class="button col-lg-6 col-md-6 col-12">
+	                                <button class="btn" onclick="location.href='PayRefund'">환급하기</button>
+	                            </div>
                             </div>
                         </div>
                      </div>   
@@ -74,17 +76,17 @@
 			                <div class="cart-single-list">
 			                    <div class="row align-items-center">
 			                        <div class="col-lg-2 col-md-2 col-12">
-			                           날짜
+			                           <p class="pay-info-sub">날짜</p>
 			                        </div>
 			                        <div class="col-lg-6 col-md-6 col-12">
 			                            <h5 class="product-name">상품명</h5>
-			                            <p class="product-des">
+			                            <p class="pay-info-sub">
 			                                시간 | 유형
 			                            </p>
 			                        </div>
 			                        <div class="col-lg-4 col-md-4 col-12">
-			                            <h5 class="product-name">사용금액</h5>
-			                            <p class="product-des">
+			                            <h5 class="pay-amount">사용금액</h5>
+			                            <p class="pay-balance-sub">
 			                                잔액
 			                            </p>
 			                        </div>
@@ -95,17 +97,17 @@
 			                <div class="cart-single-list">
 			                    <div class="row align-items-center">
 			                        <div class="col-lg-2 col-md-2 col-12">
-			                           날짜
+			                           <p class="pay-info-sub">날짜</p>
 			                        </div>
 			                        <div class="col-lg-6 col-md-6 col-12">
 			                            <h5 class="product-name">상품명</h5>
-			                            <p class="product-des">
+			                            <p class="pay-info-sub">
 			                                시간 | 유형
 			                            </p>
 			                        </div>
 			                        <div class="col-lg-4 col-md-4 col-12">
-			                            <h5 class="product-name">사용금액</h5>
-			                            <p class="product-des">
+			                            <h5 class="pay-amount">사용금액</h5>
+			                            <p class="pay-balance-sub">
 			                                잔액
 			                            </p>
 			                        </div>

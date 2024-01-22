@@ -7154,7 +7154,7 @@ blockquote span {
   color: #39d274;
 }
 
-.account-login .button {
+.account-login .button:not(#regist-btn) {
   margin-top: 30px;
 }
 
