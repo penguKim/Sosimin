@@ -39,16 +39,14 @@
         </div>
     </div>
     <!-- /End Preloader -->
-
 	<header class="header navbar-area">
 		<jsp:include page="inc/top.jsp"></jsp:include>
 	</header>
-	
     <!-- Start Hero Area -->
     <section class="hero-area">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-12 custom-padding-right">
+                <div class="col-lg-12 col-12 custom-padding-right">
                     <div class="slider-head">
                         <!-- Start Hero Slider -->
                         <div class="hero-slider">
@@ -88,37 +86,37 @@
                         <!-- End Hero Slider -->
                     </div>
                 </div>
-                <div class="col-lg-4 col-12">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-6 col-12 md-custom-padding">
-                            <!-- Start Small Banner -->
-                            <div class="hero-small-banner"
-                                style="background-image: url('${pageContext.request.contextPath}/resources/images/hero/slider-bnr.jpg');">
-                                <div class="content">
-                                    <h2>
-                                        <span>New line required</span>
-                                        iPhone 12 Pro Max
-                                    </h2>
-                                    <h3>$259.99</h3>
-                                </div>
-                            </div>
-                            <!-- End Small Banner -->
-                        </div>
-                        <div class="col-lg-12 col-md-6 col-12">
-                            <!-- Start Small Banner -->
-                            <div class="hero-small-banner style2">
-                                <div class="content">
-                                    <h2>Weekly Sale!</h2>
-                                    <p>Saving up to 50% off all online store items this week.</p>
-                                    <div class="button">
-                                        <a class="btn" href="product-grids.html">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Start Small Banner -->
-                        </div>
-                    </div>
-                </div>
+<!--                 <div class="col-lg-4 col-12"> -->
+<!--                     <div class="row"> -->
+<!--                         <div class="col-lg-12 col-md-6 col-12 md-custom-padding"> -->
+<!--                             Start Small Banner -->
+<!--                             <div class="hero-small-banner" -->
+<%--                                 style="background-image: url('${pageContext.request.contextPath}/resources/images/hero/slider-bnr.jpg');"> --%>
+<!--                                 <div class="content"> -->
+<!--                                     <h2> -->
+<!--                                         <span>New line required</span> -->
+<!--                                         iPhone 12 Pro Max -->
+<!--                                     </h2> -->
+<!--                                     <h3>$259.99</h3> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                             End Small Banner -->
+<!--                         </div> -->
+<!--                         <div class="col-lg-12 col-md-6 col-12"> -->
+<!--                             Start Small Banner -->
+<!--                             <div class="hero-small-banner style2"> -->
+<!--                                 <div class="content"> -->
+<!--                                     <h2>Weekly Sale!</h2> -->
+<!--                                     <p>Saving up to 50% off all online store items this week.</p> -->
+<!--                                     <div class="button"> -->
+<!--                                         <a class="btn" href="product-grids.html">Shop Now</a> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!--                             Start Small Banner -->
+<!--                         </div> -->
+<!--                     </div> -->
+<!--                 </div> -->
             </div>
         </div>
     </section>
@@ -143,7 +141,7 @@
                         <div class="product-image">
                             <img src="${pageContext.request.contextPath}/resources/images/products/product-1.jpg" alt="#">
                             <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
+                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
@@ -173,7 +171,7 @@
                             <img src="${pageContext.request.contextPath}/resources/images/products/product-2.jpg" alt="#">
                             <span class="sale-tag">-25%</span>
                             <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
+                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
@@ -203,7 +201,7 @@
                         <div class="product-image">
                             <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
                             <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
+                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
@@ -233,7 +231,7 @@
                             <img src="${pageContext.request.contextPath}/resources/images/products/product-4.jpg" alt="#">
                             <span class="new-tag">New</span>
                             <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
+                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
@@ -262,7 +260,13 @@
                         <div class="product-image">
                             <img src="${pageContext.request.contextPath}/resources/images/products/product-5.jpg" alt="#">
                             <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
+                                <a href="product-details.html" class="btn">
+                                	상세보기
+	                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
+										<path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/>
+									    <path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/>
+									</svg>
+								</a>
                             </div>
                         </div>
                         <div class="product-info">
@@ -291,7 +295,7 @@
                         <div class="product-image">
                             <img src="${pageContext.request.contextPath}/resources/images/products/product-6.jpg" alt="#">
                             <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
+                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
@@ -321,7 +325,7 @@
                             <img src="${pageContext.request.contextPath}/resources/images/products/product-7.jpg" alt="#">
                             <span class="sale-tag">-50%</span>
                             <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
+                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
@@ -351,7 +355,7 @@
                         <div class="product-image">
                             <img src="${pageContext.request.contextPath}/resources/images/products/product-8.jpg" alt="#">
                             <div class="button">
-                                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
+                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
@@ -508,7 +512,7 @@
             items: 1,
             nav: false,
             controls: true,
-            controlsText: ['<i class="lni lni-chevron-left"></i>', '<i class="lni lni-chevron-right"></i>'],
+            controlsText: ['<', '>'],
         });
 
         //======== Brand Slider
