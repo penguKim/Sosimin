@@ -117,7 +117,7 @@ function searchKeywordChange(keyWord){
 <!--                     </div> -->
                     <ul class="user-login">
                         <li>
-                           <a href="login.html">내상점</a>
+                           <a href="MyPage">내상점</a>
                         </li>
                         <li>
                             <a href="MemberLogin">로그인</a>

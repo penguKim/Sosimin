@@ -23,14 +23,16 @@ a {
 
 /* 프로필 영역 */
 #profileArea {
-	border: 1px solid red;
-	width: 1200px;
-	height: 200px;
-	margin: 0 auto;
+	width: 1200px !important;
+	height: 200px !important;
+	margin: 0 auto !important;
+	box-sizing: content-box !important;
+	padding: 0 !important;
 }
 
 #profileLeft {
 	float: left;
+/* 	box-sizing: content-box !important; */
 }
 
 #profileLeft img {
@@ -40,6 +42,7 @@ a {
 }
 
 #profileRight {
+/* 	box-sizing: content-box !important; */
 	width: 1000px;
 	height: 180px;
 	float: left;
@@ -50,16 +53,18 @@ a {
 #profileRightUpperLeft {
 	display: inline-block;
 	float: left;
+	margin-top: 10px;
 	
 }
 
 #profileRightUpperRight {
 	display: inline-block;
 	float: right;
+	margin-top: 10px;
 }
 
 #profileRightMiddle {
-	margin-top: 30px !important;
+	margin-top: 40px !important;
 	text-align: center;
 }
 
@@ -75,9 +80,14 @@ a {
 
 /* 카테고리 영역 */
 #categoryArea {
-	width: 1200px;
-	margin: 0 auto;
-	padding-bottom: 50px;
+	width: 1200px !important;
+	margin: 0 auto !important;
+/* 	padding-bottom: 50px; */
+	
+	background-color: #fff;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 4px;
 }
 
 #categoryArea li {
@@ -87,8 +97,9 @@ a {
 
 #tabArea {
 	width: 1200px;
-	height: 60px;
+	height: 25px;
 	margin: 0 auto;
+	margin-top: 60px;
 }
 
 #tabArea ul {
@@ -106,35 +117,51 @@ a {
 	width: 1200px;
 	margin: 0 auto;
 	text-align: center;
+	padding: 0 !important;
+	
 }
 
 #singleProductArea {
 	width: 290px;
 	height: 400px;
 	display: inline-block;
-	margin-bottom: 10px;
-	margin-left: 2px;
-	margin-right: 2px;
+	margin-bottom: 10px !important;
+	margin-left: 2px !important;
+	margin-right: 2px !important;
+	box-sizing: content-box !important;
+	padding: 0 !important;
+	
+	
 }
 
 #singleProductArea img {
 	width: 250px;
 	height: 250px;
-	margin: 20px;
+	margin: 20px 20px 5px;
 	vertical-align: middle;
 }
 
 #singleProductTitleArea b {
 	color: black;
 	font-size: medium;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#singleProductInfoArea {
+	font-size: small;
+	margin-bottom: 5px !important;
+	margin-top: 10px !important;
 }
 
 #singleProductContactArea {
 	font-size: small;
+	margin-bottom: 5px !important;
 }
 
-/* =============================================== */
-/* ---------- 받은 후기 탭 선택 시 --------------- */
+#singleProductButtonArea input[type="button"] {
+	margin-top: 0px;
+}
 
 
 
@@ -148,28 +175,37 @@ a {
 	text-align: right;
 }
 
+#communityButtonArea input[type="button"] {
+	margin-top: 10px;
+}
+
 #wholeCommunityArea {
-	border: 1px solid red;
 	width: 1200px;
 	margin: 0 auto;
+	text-align: center;
+	padding: 0 !important;
 }
 
 #communityCheckboxContainingArea {
 	margin-bottom: 20px;
 }
 
-input[type="checkbox"] {
+#communityCheckboxContainingArea input[type="checkbox"] {
 	display: inline-block !important;
 	align-items: center;
+/* 	margin-top: 50% !important; */
 }
 
 /* 커뮤니티 작성글 탭 */
-#communitySingleArea {
-	border: 1px solid red;
+#singleCommunityArea {
 	width: 1170px;
 	height: 200px;
-	margin: 0 auto;
-/* 	margin-bottom: 20px; */
+	display: inline-block;
+	margin-bottom: 10px !important;
+	margin-left: 2px !important;
+	margin-right: 2px !important;
+	box-sizing: content-box !important;
+	padding: 0 !important;
 }
 
 
@@ -221,20 +257,25 @@ input[type="checkbox"] {
 
 
 /* 커뮤니티 댓글 탭 */
-#communityReplySingleArea {
-	border: 1px solid;
+#singleCommunityReplyArea {
 	width: 1170px;
 	height: 120px;
-	margin: 0 auto;
-	margin-bottom: 20px;
+	display: inline-block;
+	margin-bottom: 10px !important;
+	margin-left: 2px !important;
+	margin-right: 2px !important;
+	box-sizing: content-box !important;
+	padding: 0 !important;
 }
 
 #communityReplyTitleArea {
 	float: left;
-	border: 1px solid;
+/* 	border: 1px solid; */
 	width: 1170px;
 	height: 50px;
-	margin: 0 auto;
+/* 	margin: 0 auto; */
+	
+	
 	
 }
 

@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class MemberController {
 	
-	// 관리자페이지 회원관리(충돌예방을 위해 임시로 MemberController에 매핑)
+	// ********* 관리자페이지 회원관리 *************
+	// 관리자페이지 회원관리
 	@GetMapping("MemberList")
 	public String MemberList() {
 		return "admin/memberList";
 	}
-
+	
+	// ****************** 회원가입 ****************
+	
 	// 회원가입 메인페이지로 이동
 	@GetMapping("MemberJoin")
 	public String MemberJoin() {
@@ -36,7 +39,8 @@ public class MemberController {
 	public String MemberJoinComplete() {
 		return "member/joinComplete";
 	}
-	
+
+	// ************ 로그인 ********************
 
 	// 로그인 메인페이지로 이동
 	@GetMapping("MemberLogin")
@@ -86,29 +90,18 @@ public class MemberController {
 		return "";
 	}
 	
-	
-	// 마이페이지 예시
-	@GetMapping("MypageEx")
-	public String MypageEx() {
-		return "member/mypage_example";
-	}
-
+	// *********** 마이페이지 **************
+	// 뷰 제작 작업의 편의성을 위해 마이페이지는 임시로 서블릿 나눠서 매핑
 	// 마이페이지 상품 관련 탭(판매내역, 구매내역, 관심목록)
-	@GetMapping("Mypage")
-	public String Mypage() {
-		return "member/mypage";
-	}
-
-	// 마이페이지 받은 후기 탭
-	@GetMapping("Mypage2")
-	public String Mypage2() {
-		return "member/mypage2";
+	@GetMapping("MyPage")
+	public String MyPage() {
+		return "member/myPage";
 	}
 
 	// 마이페이지 커뮤니티 관련 탭(커뮤니티 작성글, 커뮤니티 작성 댓글)
-	@GetMapping("Mypage3")
-	public String Mypage3() {
-		return "member/mypage3";
+	@GetMapping("MyPage2")
+	public String MyPage2() {
+		return "member/myPage2";
 	}
 	
 }
