@@ -6,108 +6,321 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-<link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
 <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 	$(function() {
+		<%-- 후기 코드 --%>
+		$("#reviewCheckFrom").on("click", function() {
+			$("#staticBackdropLabel").text("후기 등록");
+			$(".modal-body input[type='radio']").attr("disabled", false);
+			$("#reviewCheck").empty();
+			$("#reviewCheck").html(
+					
+					'<ul class="list-group">'
+						+ '<li class="list-group-item">'
+							+ '<input class="form-check-input me-1" type="checkbox" name="hugi1" id="hugi1">'
+							+ '<label class="form-check-label" for="hugi1" id="hugiLabel1">'
+								+ '제가 있는곳까지 와서 거래했어요'
+							+ '</label>'
+						+ '</li>'
+						+ '<li class="list-group-item">'
+							+ '<input class="form-check-input me-1" type="checkbox" name="hugi2" id="hugi2">'
+							+ '<label class="form-check-label" for="hugi2" id="hugiLabel2">'
+								+ '친절하고 매너가 좋아요'
+							+ '</label>'
+						+ '</li>'
+						+ '<li class="list-group-item">'
+							+ '<input class="form-check-input me-1" type="checkbox" name="hugi3" id="hugi3">'
+							+ '<label class="form-check-label" for="hugi3" id="hugiLabel3">'
+								+ '시간 약속을 잘 지켜요'
+							+ '</label>'
+						+ '</li>'
+						+ '<li class="list-group-item">'
+							+ '<input class="form-check-input me-1" type="checkbox" name="hugi4" id="hugi4">'
+							+ '<label class="form-check-label" for="hugi4" id="hugiLabel4">'
+								+ '응답이 빨라요'
+							+ '</label>'
+						+ '</li>'
+					+ '</ul>'
+					
+// 					'<div class="form-check">'
+// 						+ '<input class="form-check-input" type="checkbox" name="hugi1" id="hugi1">'
+// 						+ '<label class="form-check-label" for="hugi1" id="hugiLabel1">'
+// 							+ '제가 있는곳까지 와서 거래했어요'
+// 						+ '</label>'
+// 				+ '	</div>'
+// 				+ '	<div class="form-check">'
+// 					+ '<input class="form-check-input" type="checkbox" name="hugi2" id="hugi2">'
+// 					+ '<label class="form-check-label" for="hugi2" id="hugiLabel2">'
+// 						+ '친절하고 매너가 좋아요'
+// 					+ '</label>'
+// 				+ '</div>'
+// 				+ '<div class="form-check">'
+// 					+ '<input class="form-check-input" type="checkbox" name="hugi3" id="hugi3">'
+// 					+ '<label class="form-check-label" for="hugi3" id="hugiLabel3">'
+// 						+ '시간 약속을 잘 지켜요'
+// 					+ '</label>'
+// 				+ '</div>'
+// 				+ '<div class="form-check">'
+// 					+ '<input class="form-check-input" type="checkbox" name="hugi4" id="hugi4">'
+// 					+ '<label class="form-check-label" for="hugi4" id="hugiLabel4">'
+// 						+ '응답이 빨라요'
+// 					+ '</label>'
+// 				+ '</div>'
+			);
+			$(".modal-footer").html(
+					'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
+					+ '<button type="submit" class="btn btn-primary" id="reviewBtn" onclick="reviewRegist()">'
+					+'후기 등록</button>'	
+			);
+		});
+		
+		$("#reviewViewFrom").on("click", function() {
+			$("#staticBackdropLabel").text("보낸 후기");
+			$(".modal-body input[type='radio']").attr("disabled", true);
+			$("#reviewCheck").empty();
+			$("#reviewCheck").html(
+					'<ul class="list-group list-group-flush">'
+						+'<li class="list-group-item">후기입니다1.</li>'
+						+'<li class="list-group-item">후기입니다1.</li>'
+						+'<li class="list-group-item">후기입니다1.</li>'
+						+'<li class="list-group-item">후기입니다1.</li>'
+					+'</ul>'
+			);
+			$(".modal-footer").html(
+					'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
+					+ '<button type="button" class="btn btn-primary" id="reviewBtn" onclick="reviewDelete()">'
+					+'후기 삭제</button>'	
+			);
+		});
+		
 		$("#option1").on("change", function() {
-			console.log("별로입니다");
+			$(".modal-body input[type='checkbox']").prop('checked', false);
+			$("#hugiLabel1").text("약속 장소에 나타나지 않아요");
+			$("#hugiLabel2").text("상품 상태가 설명과 달라요");
+			$("#hugiLabel3").text("시간 약속을 잘 지켜요");
+			$("#hugiLabel4").text("응답이 없어요");
 		});
+		
 		$("#option2").on("change", function() {
-			console.log("최고입니다");
+			$(".modal-body input[type='checkbox']").prop('checked', false);
+			$("#hugiLabel1").text("제가 있는곳까지 와서 거래했어요");
+			$("#hugiLabel2").text("친절하고 매너가 좋아요");
+			$("#hugiLabel3").text("시간 약속을 잘 지켜요");
+			$("#hugiLabel4").text("응답이 빨라요");
 		});
-	});
+		
+// 		$("#reviewRegist").on("click", function() {
+// 			if($(".modal-body input[type='checkbox']:checked").length == 0) {
+// 				alert("후기를 선택해주세요");
+// 			} else {
+// 				if(confirm("후기를 등록하시겠습니까?")) {
+// 					let data = {};
 
+// 					$(".modal input:checked").each(function() {
+// 					    data[$(this).attr('name')] = $(this).val();
+// 					});
+// 					console.log(data);
+// 					$.ajax({
+// 						type: "POST",
+// 						url: "reviewRegist",
+// 						data: data,
+// 						success: function(result) {
+// 							if(result == 'true') {
+// 								alert("후기를 등록했습니다.");
+// 								$("#reviewClose").click();
+// 							}
+// 						}
+// 					});
+// 				}
+// 			}
+// 		});
+		
+// 		$("#reviewDelete").on("click", function() {
+// 			console.log("123");
+// 			if(confirm("후기를 삭제하시겠습니까?")) {
+// 				alert("후기를 삭제했습니다.");
+// 				$("#reviewClose").click();
+// 			}
+// 		});
+		
+	});
+	
+	function reviewRegist() {
+		if($(".modal-body input[type='checkbox']:checked").length == 0) {
+			alert("후기를 선택해주세요");
+		} else {
+			if(confirm("후기를 등록하시겠습니까?")) {
+				let data = {};
+
+				$(".modal input:checked").each(function() {
+				    data[$(this).attr('name')] = $(this).val();
+				});
+				console.log(data);
+				$.ajax({
+					type: "POST",
+					url: "reviewRegist",
+					data: data,
+					success: function(result) {
+						if(result == 'true') {
+							alert("후기를 등록했습니다.");
+							$("#reviewClose").click();
+						} else if(result == 'false') {
+							alert("후기 등록을 실패했습니다.");
+						}
+					}
+				});
+			}
+		}
+	}
+	
+	function reviewDelete() {
+		if(confirm("후기를 삭제하시겠습니까?")) {
+			alert("후기를 삭제했습니다.");
+			$("#reviewClose").click();
+		}
+	}
 </script>
 </head>
 <body>
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
-	<div class="container-sm">
+	<div class="container-lg">
 		<div>
 			부산진구의 게시글입니다.
 		</div>
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewCheckFrom">
+			후기 작성 모달창
+		</button>
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewViewFrom">
+			후기 보기 모달창
+		</button>
 		<br>
 		<br>
 		<br>
+		
 		<div class="row mb-5">
-			<div class="col btn-group">
-				<input type="button" class="btn btn-primary" value="전체">
-				<input type="button" class="btn btn-primary" value="인기글">
-				<input type="button" class="btn btn-primary" value="동네소식">
-				<input type="button" class="btn btn-primary" value="동네질문">
-				<input type="button" class="btn btn-primary" value="일상">
+			<div class="btn-group col">
+		        <input type="radio" name="options" class="btn-check" id="btn-check1" value="전체" autocomplete="off">
+			    <label class="btn btn-outline-primary" for="btn-check1">전체</label>
+		        <input type="radio" name="options" class="btn-check" id="btn-check2" value="인기글" autocomplete="off">
+			    <label class="btn btn-outline-primary" for="btn-check2">인기글</label>
+		        <input type="radio" name="options"class="btn-check" id="btn-check3" value="동네소식" autocomplete="off">
+			    <label class="btn btn-outline-primary" for="btn-check3">동네소식</label>
+		        <input type="radio" name="options" class="btn-check" id="btn-check4" value="동네질문" autocomplete="off">
+			    <label class="btn btn-outline-primary" for="btn-check4">동네질문</label>
+		        <input type="radio" name="options" class="btn-check" id="btn-check5" value="일상" autocomplete="off">
+			    <label class="btn btn-outline-primary" for="btn-check5">일상</label>
 			</div>
 			<div class="col">
 				<form action="">
 <!-- 					<div class="form-group row row-cols-1 row-cols-sm-2 row-cols-md-2"> -->
 					<div class="form-group row">
 						<input type="text" name="searchKeyword" class="col-5 col-md-7 form-control w-50">
-						<input type="button" value="검색" class=" col-3 col-md-2 btn btn-primary">
-						<input type="button" value="글쓰기" class="col-4 col-md-2 btn btn-primary mx-1" onclick="location.href='CommunityWrite'" />
+						<input type="button" value="검색" class="btn col-3 col-md-2 btn btn-primary mx-2">
+						<div class="col-md-1"></div>
+						<input type="button" value="글쓰기" class="btn col-4 col-md-2 btn btn-primary ml-5" onclick="location.href='CommunityWrite'" />
 					</div>
 				</form>
 			</div>
 		</div>
-			<div>
-				<table class="table table-hover">
+		<div>
+			<table class="table table-hover">
+				<thead>
 					<tr class="table-light">
-						<td width="100px">번호</td>
-						<td>제목</td>
-						<td width="150px">작성자</td>
-						<td width="150px">날짜</td>
-						<td width="100px">조회수</td>
+						<th width=5%>번호</td>
+						<th>제목</td>
+						<th width=15%>작성자</td>
+						<th width=20%>날짜</td>
+						<th width=8%>조회수</td>
 					</tr>
-					<c:forEach var="board" begin="0" end="15" varStatus="status">
-						<tr>
-							<td>${status.index }</td>
-							<td id="subject">
-								<a href="CommunityDetail?community_id=1&pageNum=1">
-									제목입니다.
-									</a>
-							</td>
-							<td>작성자</td>
-							<td>
-		<%-- 						<fmt:formatDate value="${board.board_date }" pattern="yy-MM-dd HH:mm"/> --%>
-								2024-01-19
-							</td>
-							<td>0</td>
-						</tr>
-					</c:forEach>
-				</table>
-			</div>
+				</thead>
+				<c:forEach var="board" begin="0" end="15" varStatus="status">
+					<tr class="table-hover">
+						<td>${status.index }</td>
+						<td id="subject">
+							<a href="CommunityDetail?community_id=1&pageNum=1">
+								제목입니다.
+								</a>
+						</td>
+						<td>작성자</td>
+						<td>
+	<%-- 						<fmt:formatDate value="${board.board_date }" pattern="yy-MM-dd HH:mm"/> --%>
+							2024-01-19
+						</td>
+						<td>0</td>
+					</tr>
+				</c:forEach>
+			</table>
+		</div>
+		<nav aria-label="Page navigation">
+			<ul class="pagination justify-content-center">
+				<li class="page-item disabled">
+					<a class="page-link">&laquo;</a>
+				</li>
+				<li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item">
+					<a class="page-link" href="#">&raquo;</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Launch static backdrop modal
-</button>
-
-<!-- Modal -->
+	
+<%-- 후기 모달 설정 --%>
 <div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<h1 class="modal-title fs-5" id="staticBackdropLabel">후기 등록</h1>
+<!-- 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
 			</div>
 			<div class="modal-body">
 				<div class="d-flex justify-content-center">
-					<input type="radio" class="btn-check" name="options" id="option1" autocomplete="off">
+					<input type="radio" class="btn-check" name="options" id="option1" value="bad" autocomplete="off">
 					<label class="btn btn-outline-primary mx-4" for="option1">별로예요</label>
-					<input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+					<input type="radio" class="btn-check" name="options" id="option2" value="good" autocomplete="off" checked>
 					<label class="btn btn-outline-primary mx-4" for="option2">최고예요</label>
+				</div>
+				<div id="reviewCheck" class="mx-auto my-5 w-75">
+<!-- 					<div class="form-check"> -->
+<!-- 						<input class="form-check-input" type="checkbox" name="hugi1" id="hugi1"> -->
+<!-- 						<label class="form-check-label" for="hugi1" id="hugiLabel1"> -->
+<!-- 							제가 있는곳까지 와서 거래했어요 -->
+<!-- 						</label> -->
+<!-- 					</div> -->
+<!-- 					<div class="form-check"> -->
+<!-- 						<input class="form-check-input" type="checkbox" name="hugi2" id="hugi2"> -->
+<!-- 						<label class="form-check-label" for="hugi2" id="hugiLabel2"> -->
+<!-- 							친절하고 매너가 좋아요 -->
+<!-- 						</label> -->
+<!-- 					</div> -->
+<!-- 					<div class="form-check"> -->
+<!-- 						<input class="form-check-input" type="checkbox" name="hugi3" id="hugi3"> -->
+<!-- 						<label class="form-check-label" for="hugi3" id="hugiLabel3"> -->
+<!-- 							시간 약속을 잘 지켜요 -->
+<!-- 						</label> -->
+<!-- 					</div> -->
+<!-- 					<div class="form-check"> -->
+<!-- 						<input class="form-check-input" type="checkbox" name="hugi4" id="hugi4"> -->
+<!-- 						<label class="form-check-label" for="hugi4" id="hugiLabel4"> -->
+<!-- 							응답이 빨라요 -->
+<!-- 						</label> -->
+<!-- 					</div> -->
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">창닫기</button>
-				<button type="button" class="btn btn-primary">후기 등록</button>
+<!-- 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button> -->
+<!-- 				<button type="submit" class="btn btn-primary" id="reviewRegist">후기 등록</button> -->
 			</div>
 		</div>
 	</div>
