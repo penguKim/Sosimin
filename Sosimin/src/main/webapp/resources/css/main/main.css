@@ -2007,6 +2007,22 @@ ol {
   display: flex;
 }
 
+/* 이민석 작업 start*/
+#searchArea{
+	position:fixed;
+}
+.fixTopBar{
+/* 	position:fixed; */
+/* top.jsp 고정하려 했으나 실패!*/
+}
+
+#searchArea table td{
+	width: 187px;
+	background-color: yellow;
+}
+
+/* 이민석 작업 end */
+
 .header .main-menu-search .select-position {
   position: relative;
 }
@@ -2071,8 +2087,8 @@ ol {
 }
 
 .header .main-menu-search .search-btn button {
-  background-color: #39d274;
-  color: #fff;
+/*   background-color: #39d274; */
+  color: black;
   width: 45px;
   height: 45px;
   padding: 0;
@@ -2085,7 +2101,7 @@ ol {
 }
 
 .header .main-menu-search .search-btn button:hover {
-  color: #fff;
+  color: white;
   background-color: #081828;
 }
 
