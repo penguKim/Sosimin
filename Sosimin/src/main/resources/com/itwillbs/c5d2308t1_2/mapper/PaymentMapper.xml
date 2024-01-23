@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.c5d2308t1_2.mapper.PaymentMapper">
+	<!-- 아이디조회 -->
+	<select id="selectId" resultType="String">
+		SELECT id
+		FROM Token
+		WHERE id = #{id}
+	</select>
+
+	<!-- 엑세스 토큰 저장 - INSERT -->
+	<insert id="insertAccessToken">
+		INSERT INTO Token
+		VALUES (
+			#{id}
+			, #{token.access_token} 
+			, #{token.refresh_token} 
+			, #{token.user_seq_no} 
+			, null
+		)
+	</insert>
+
+	<!-- 엑세스 토큰 업데이트 - UPDATE -->
+	<update id="updateAccessToken">
+		UPDATE Token
+		SET 
+			access_token = #{token.access_token}
+			, refresh_token = #{token.refresh_token}
+			, user_seq_no = #{token.user_seq_no}
+		WHERE id = #{id}
+	</update>
+	
+
+</mapper>

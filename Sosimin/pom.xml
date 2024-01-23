@@ -144,6 +144,14 @@
 		    <version>20231013</version>
 		</dependency>
 		
+		<!-- REST API 요청 등의 과정에서 JSON 데이터를 자동으로 파싱할 라이브러리(Gson, Jackson) -->
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <version>2.10.1</version>
+		</dependency>
+		
 		<!-- 12. 스프링 JUnit 테스트에 필요한 라이브러리(스프링 기본 버전 공유) -->
 		<!--     단, JUnit 라이브러리는 기본적으로 등록되어 있음(240 ~ 250 라인 정도)-->
 		<!--     해당 JUnit 라이브러리 버전 업 필요 -->

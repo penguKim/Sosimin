@@ -1,5 +1,6 @@
 package com.itwillbs.c5d2308t1_2.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.c5d2308t1_2.service.PaymentService;
@@ -87,9 +89,22 @@ public class PaymentController {
 			return "forward";
 		}
 		
+		// 토큰 관련 정보 저장
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id); // 세션아이디 저장
+		map.put("token", responseToken);
 		
+		service.registAccessToken(map);
 		
-		return "";
+		// 세션 객체에 엑세스 토큰(access_token), 사용자번호 저장
+		session.setAttribute("access_token", responseToken.getAccess_token());
+		session.setAttribute("user_seq_no", responseToken.getUser_seq_no());
+		
+		// 인증창을 닫고 계좌 등록 페이지로 이동
+		model.addAttribute("msg", "계좌 인증 완료!");
+		model.addAttribute("isClose", true); // 현재 창(서브 윈도우) 닫도록 명령
+		model.addAttribute("targetURL", "AccountRegist"); 
+		return "forward";
 	}
 	
 	
@@ -105,10 +120,22 @@ public class PaymentController {
 		return "payment/payInfo";
 	}
 	
+	
+	// ----------- 페이충전 ---------------
 	// 페이 충전 페이지로 이동
 	@GetMapping("PayCharge")
 	public String payCharge() {
 		return "payment/charge";
+	}
+
+	// 페이 충전 처리
+	@PostMapping("PayChargePro")
+	public String payChargePro(@RequestParam Map<String, String> map) {
+		log.info(map.toString());
+		
+		
+		
+		return "redirect:/PayChargeComplete";
 	}
 	
 	// 페이 충전 완료 페이지로 이동
@@ -117,10 +144,19 @@ public class PaymentController {
 		return "payment/chargeComplete";
 	}
 	
+	// ----------- 페이환급 ---------------	
 	// 페이 환급 페이지로 이동
 	@GetMapping("PayRefund")
 	public String payRefund() {
 		return "payment/refund";
+	}
+	
+	// 페이 환급 처리
+	@PostMapping("PayRefundPro")
+	public String payRefundPro(@RequestParam Map<String, String> map) {
+		log.info(map.toString());
+		
+		return "redirect:/PayRefundComplete";
 	}
 	
 	// 페이 환급 완료 페이지로 이동
@@ -129,10 +165,20 @@ public class PaymentController {
 		return "payment/refundComplete";
 	}
 	
+	
+	// ----------- 페이사용 ---------------
 	// 페이 사용 페이지로 이동
 	@GetMapping("PayUse")
 	public String payUse() {
 		return "payment/use";
+	}
+	
+	// 페이 사용 처리
+	@PostMapping("PayUsePro")
+	public String payUsePro(@RequestParam Map<String, String> map) {
+		log.info(map.toString());
+		
+		return "redirect:/PayUseComplete";
 	}
 	
 	// 페이 사용 완료 페이지로 이동
@@ -140,6 +186,14 @@ public class PaymentController {
 	public String payUseComplete() {
 		return "payment/useComplete";
 	}
+	
+	
+	
+	
+	
+	
+	// ========================== 관리자페이지 시작 ===================================
+
 	
 	// 계좌 관리 페이지로 이동
 	@GetMapping("MemberAccount")

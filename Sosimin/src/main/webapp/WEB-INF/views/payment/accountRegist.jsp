@@ -22,7 +22,12 @@
 <!-- ========================= 자바스크립트 시작 ========================= -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
-
+$(function() {
+	// 모달 창을 열 때
+	$('#modal-open').click(function() {
+	    $('#pay-password').val(''); // 입력 필드를 초기 값으로 설정
+	});
+});
 </script>
 </head>
 <body>
@@ -66,7 +71,7 @@
 			                        </div>
 			                        <div class="col-lg-4 col-md-4 col-12">
 			                             <div class="button" id="regist-btn">
-			                                <button class="btn" 
+			                                <button class="btn" id="modal-open" 
 			                                	data-bs-toggle="modal" data-bs-target="#password-modal">등록하기</button>
 			                            </div>
 			                        </div>
@@ -87,7 +92,7 @@
 			                        </div>
 			                        <div class="col-lg-4 col-md-4 col-12">
 			                             <div class="button" id="regist-btn">
-			                                <button class="btn" 
+			                                <button class="btn" id="modal-open" 
 			                                	data-bs-toggle="modal" data-bs-target="#password-modal">등록하기</button>
 			                            </div>
 			                        </div>
@@ -115,15 +120,15 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="review-name">비밀번호</label>
-                                <input class="form-control" type="text" id="review-name" required
-                                	placeholder="6자리 숫자를 입력해주세요">
+                                <input class="form-control" type="password" id="pay-password" name="pay_password" required
+                                	placeholder="6자리 숫자를 입력해주세요" maxlength="6">
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="review-email">비밀번호확인</label>
-                                <input class="form-control" type="email" id="review-email" required
-                               		 placeholder="비밀번호를 다시 입력해주세요">
+                                <input class="form-control" type="password" id="pay-password2" required
+                               		 placeholder="비밀번호를 다시 입력해주세요" maxlength="6">
                             </div>
                         </div>
                     </div>
