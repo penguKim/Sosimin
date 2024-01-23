@@ -4,15 +4,67 @@
 <html>
 <head>
 <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Insert title here</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product.css" />
 </head>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
+$(function() {
+	
+	$(".heart").on("click", function () {
+        $(this).toggleClass("is-active");
+    });
+	
+	$("#reportBtn").on("click", function() {
+			
+	});
+	
+	let searchKeyword = ""; 
+	let category = "";
+	let id = "";
+	<%-- 기본적으로 상품목록은 사용자의 지역 구(지역) 기준으로 상품 목록 처리 --%>
+	$.ajax({
+		url: "",
+		data: {
+			<%-- searchKeyword 의 경우 검색 내용으로 글목록 비교 상품목록 출력  --%>
+			
+			<%-- category 의 경우 카테고리 선택 시 상품 카테고리 비교 상품목록 출력 --%>
+			
+		},
+		dataType: "json",
+		success: function(result) {
+			
+			
+		},
+		error: function() {
+			
+		}
+	}); <%-- 상품 목록 ajax 끝 --%>
+	
+	
+	<%-- 찜 하기 처리 --%> 
+	$.ajax({
+		url: "찜목록 조회를 위한 테이블 조회",
+		data: {
+			<%-- 유저아이디 판별 찜목록 조회 --%>	
+		},
+		dataType: "json",
+		success: function(result) {
+			
+			
+		},
+		error: function() {
+			
+		}
+		
+	}); <%-- 찜하기 ajax 끝 --%>
+});	 <%-- 상품목록 조회, 찜하기 처리 끝 --%>
 	
 	
 	function prductLike() {
@@ -54,7 +106,6 @@
                         <div class="single-widget">
 	                        <span class="filter">필터</span>
                         	<span class="filter_reset"><a href="javascript:void(0)" style="text-decoration: underline; color: grey;">초기화</a></span>
-                        	
                             <h3>카테고리</h3>
                             <ul class="list">
                                 <li>
@@ -93,6 +144,7 @@
 			                    <input type="text" placeholder="최대금액을 입력해주세요" size="23">
 			                    <div class="resultSearch">
 				                   	<button class="reset-btn" style="margin-left: 10%;">초기화</button>
+				                   	<button onclick="location.href='report'"> 신고하기</button>
 				                   	<button type="submit" class="resultSearch-btn" style="margin-left: 10%;">적용하기</button>
 			                    </div>
 		                    </form>
@@ -158,24 +210,17 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-grid" role="tabpanel"
                                 aria-labelledby="nav-grid-tab">
                                 <div class="row">
                                 	<!-- 한개의 상품 목록 -->
-                                    <a href="#" class="col-lg-4-1 col-md-6 col-12">
+                                    <div class="col-lg-4-1 col-md-6 col-12" >
                                         <!-- Start Single Product -->
-                                        <div class="single-product">
-                                        	<div class="porduct_like">
-                                        		<input class="product_like_img" type="image" src="${pageContext.request.contextPath}/resources/images/products/indexheart.png"
-                                            		onclick="prductLike()">
-                                            </div>
-                                            <div class="product-image">
-                                                <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
-                                            	
-                                            </div>
+                                        <div class="single-product" >
+                                        	<a href="productDetail" class="product-image">
+                                              	 <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
+                                            </a>
                                             <div class="product-info">
                                                     <h6>블루투스 스피커</h6>
                                                 <ul class="review">
@@ -187,73 +232,17 @@
                                                     <span>14,000원</span>
                                                 </div>
                                                 <div>
+                                                	<!-- 좋아요 -->
+                                                	<div class="porduct_like">
+														<div class="heart position-absolute bottom-0 start-0"></div>
+													</div>
                                                 	<span>Pay</span> 
+                                                	
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- End Single Product -->
-                                    </a>
-                                    <a href="#" class="col-lg-4-1 col-md-6 col-12">
-                                        <!-- Start Single Product -->
-                                        <div class="single-product">
-                                            <div class="porduct_like">
-                                        		<input class="product_like_img" type="image" src="${pageContext.request.contextPath}/resources/images/products/indexheart.png"
-                                            		onclick="prductLike()">
-                                            </div>
-                                            <div class="product-image">
-                                                <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
-                                            </div>
-                                            <div class="product-info">
-                                                <span class="category">Speaker</span>
-                                                    <h6>Bluetooth Speaker</h6>
-                                                <div class="price">
-                                                    <span>$275.00</span> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End Single Product -->
-                                    </a>
-                                   
-                                    <a href="#" class="col-lg-4-1 col-md-6 col-12">
-                                        <!-- Start Single Product -->
-                                        <div class="single-product">
-                                            <div class="porduct_like">
-                                        		<input class="product_like_img" type="image" src="${pageContext.request.contextPath}/resources/images/products/indexheart.png"
-                                            		onclick="alert('찜하기')">
-                                            </div>
-                                            <div class="product-image">
-                                                <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
-                                            </div>
-                                            <div class="product-info">
-                                                <span class="category">Speaker</span>
-                                                    <h6>Bluetooth Speaker</h6>
-                                                <div class="price">
-                                                    <span>$275.00</span> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End Single Product -->
-                                    </a>
-                                    <a href="#" class="col-lg-4-1 col-md-6 col-12">
-                                        <!-- Start Single Product -->
-                                        <div class="single-product">
-                                            <div class="porduct_like">
-                                        		<input class="product_like_img" type="image" src="${pageContext.request.contextPath}/resources/images/products/indexheart.png"
-                                            		onclick="alert('찜하기')">
-                                            </div>
-                                            <div class="product-image">
-                                                <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
-                                            </div>
-                                            <div class="product-info">
-                                                <span class="category">Speaker</span>
-                                                    <h6>Bluetooth Speaker</h6>
-                                                <div class="price">
-                                                    <span>$275.00</span> 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End Single Product -->
-                                    </a>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
@@ -272,163 +261,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            
-                            <div class="tab-pane fade" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-12">
-                                        <!-- Start Single Product -->
-                                        <div class="single-product">
-                                            <div class="row align-items-center">
-                                                <div class="col-lg-4 col-md-4 col-12">
-                                                    <div class="product-image">
-                                                        <img src="assets/images/products/product-1.jpg" alt="#">
-                                                        <div class="button">
-                                                            <a href="product-details.html" class="btn"><i
-                                                                    class="lni lni-cart"></i> Add to
-                                                                Cart</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8 col-md-8 col-12">
-                                                    <div class="product-info">
-                                                        <span class="category">Watches</span>
-                                                        <h4 class="title">
-                                                            <a href="product-grids.html">Xiaomi Mi Band 5</a>
-                                                        </h4>
-                                                        <ul class="review">
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star"></i></li>
-                                                            <li><span>4.0 Review(s)</span></li>
-                                                        </ul>
-                                                        <div class="price">
-                                                            <span>$199.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End Single Product -->
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-12">
-                                        <!-- Start Single Product -->
-                                        <div class="single-product">
-                                            <div class="row align-items-center">
-                                                <div class="col-lg-4 col-md-4 col-12">
-                                                    <div class="product-image">
-                                                        <img src="assets/images/products/product-2.jpg" alt="#">
-                                                        <span class="sale-tag">-25%</span>
-                                                        <div class="button">
-                                                            <a href="product-details.html" class="btn"><i
-                                                                    class="lni lni-cart"></i> Add to
-                                                                Cart</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8 col-md-8 col-12">
-                                                    <div class="product-info">
-                                                        <span class="category">Speaker</span>
-                                                        <h4 class="title">
-                                                            <a href="product-grids.html">Big Power Sound Speaker</a>
-                                                        </h4>
-                                                        <ul class="review">
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><span>5.0 Review(s)</span></li>
-                                                        </ul>
-                                                        <div class="price">
-                                                            <span>$275.00</span>
-                                                            <span class="discount-price">$300.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End Single Product -->
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-12">
-                                        <!-- Start Single Product -->
-                                        <div class="single-product">
-                                            <div class="row align-items-center">
-                                                <div class="col-lg-4 col-md-4 col-12">
-                                                    <div class="product-image">
-                                                        <img src="assets/images/products/product-3.jpg" alt="#">
-                                                        <div class="button">
-                                                            <a href="product-details.html" class="btn"><i
-                                                                    class="lni lni-cart"></i> Add to
-                                                                Cart</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8 col-md-8 col-12">
-                                                    <div class="product-info">
-                                                        <span class="category">Camera</span>
-                                                        <h4 class="title">
-                                                            <a href="product-grids.html">WiFi Security Camera</a>
-                                                        </h4>
-                                                        <ul class="review">
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><span>5.0 Review(s)</span></li>
-                                                        </ul>
-                                                        <div class="price">
-                                                            <span>$399.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End Single Product -->
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-12">
-                                        <!-- Start Single Product -->
-                                        <div class="single-product">
-                                            <div class="row align-items-center">
-                                                <div class="col-lg-4 col-md-4 col-12">
-                                                    <div class="product-image">
-                                                        <img src="assets/images/products/product-4.jpg" alt="#">
-                                                        <span class="new-tag">New</span>
-                                                        <div class="button">
-                                                            <a href="product-details.html" class="btn"><i
-                                                                    class="lni lni-cart"></i> Add to
-                                                                Cart</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-8 col-md-8 col-12">
-                                                    <div class="product-info">
-                                                        <span class="category">Phones</span>
-                                                        <h4 class="title">
-                                                            <a href="product-grids.html">iphone 6x plus</a>
-                                                        </h4>
-                                                        <ul class="review">
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><i class="lni lni-star-filled"></i></li>
-                                                            <li><span>5.0 Review(s)</span></li>
-                                                        </ul>
-                                                        <div class="price">
-                                                            <span>$400.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End Single Product -->
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -442,9 +274,8 @@
     </a>
     <!-- ========================= JS here ========================= -->
     <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
     <script type="text/javascript">
         //========= Hero Slider 
         tns({
