@@ -104,7 +104,7 @@ $(function() {
                     	
                         <!-- Start Single Widget -->
                         <div class="single-widget">
-	                        <span class="filter">필터</span>
+	                        <span class="filter">필터</span><button onclick="location.href='report'">신고하기</button>
                         	<span class="filter_reset"><a href="javascript:void(0)" style="text-decoration: underline; color: grey;">초기화</a></span>
                             <h3>카테고리</h3>
                             <ul class="list">
@@ -144,7 +144,6 @@ $(function() {
 			                    <input type="text" placeholder="최대금액을 입력해주세요" size="23">
 			                    <div class="resultSearch">
 				                   	<button class="reset-btn" style="margin-left: 10%;">초기화</button>
-				                   	<button onclick="location.href='report'"> 신고하기</button>
 				                   	<button type="submit" class="resultSearch-btn" style="margin-left: 10%;">적용하기</button>
 			                    </div>
 		                    </form>

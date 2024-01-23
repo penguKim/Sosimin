@@ -4046,6 +4046,7 @@ ol {
   }
 }
 
+
 .accordion-item:first-of-type .accordion-button {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
@@ -4122,6 +4123,8 @@ ol {
   background-color: #39d274;
   border-radius: 4px 4px 0 0;
 }
+
+
 
 .accordion-button:not(.collapsed) i::before {
   content: "\eb2e";

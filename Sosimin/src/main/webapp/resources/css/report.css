@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+/* 상품설명 텍스트 박스 */
+.reportTextArea {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border-radius: .25rem;
+}
+
+.accordion-subject {
+	color: #fff;
+	background-color: #ea2614;
+	width: 100%;
+	height: 50px;	 
+	padding-top: 15px;
+}
+
+/* 신고 아코디언 배경색 변경 */
+#accordioncolor:not(.collapsed) {
+	 background-color: #fe7366;
+}
+
