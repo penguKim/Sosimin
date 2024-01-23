@@ -70,21 +70,11 @@
 	font-size: 20px;	
 }
 
-.amount-btn-group {
+.btn-group {
 	width: 100%;
 	margin: 0;
 	margin-bottom: 30px;
 	text-align: center;
-}
-
-.amount-btn {
-	border: 1px solid #e0e0e0;
-	padding: 5px;
-	background: #fff;
-}
-
-.amount-btn:hover {
-	background-color: #e0e0e0;
 }
 
 .pay-balance-sub {

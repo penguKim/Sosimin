@@ -83,12 +83,16 @@
                                 <input class="form-control" type="email" id="reg-email" required
                                 	placeholder="충전을 원하시는 금액을 입력해주세요">
                             </div>
-                            <div class="row amount-btn-group">
-                            	<input type="button" value="1만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
-	                            <input type="button" value="3만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
-	                            <input type="button" value="5만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
-	                            <input type="button" value="10만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
-                            </div>
+                            <div class="btn-group">
+						        <input type="checkbox" name="options" class="btn-check" id="btn-check1" value="10000" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-check1">1만원</label>
+						        <input type="checkbox" name="options" class="btn-check" id="btn-check2" value="30000" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-check2">3만원</label>
+						        <input type="checkbox" name="options"class="btn-check" id="btn-check3" value="50000" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-check3">5만원</label>
+						        <input type="checkbox" name="options" class="btn-check" id="btn-check4" value="100000" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-check4">10만원</label>
+							</div>
                             
                             <div class="msg">출금 계좌 확인</div>
                              <!-- 계좌리스트 한 줄 시작 -->
