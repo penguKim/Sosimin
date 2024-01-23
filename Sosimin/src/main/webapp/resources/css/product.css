@@ -8206,10 +8206,10 @@ blockquote span {
   }
 }
 
-/* 상품등록 텍스트 박스 */
+/* 상품명 텍스트 박스 */
 .text-box, #myMap{
     display: block;
-    width: 85%;
+    width: 86%;
     padding: .375rem .75rem;
     font-size: 1rem;
     font-weight: 400;
