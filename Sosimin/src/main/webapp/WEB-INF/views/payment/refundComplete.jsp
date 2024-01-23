@@ -3,21 +3,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Sosimin</title>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<title>Sosimin</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
+<!-- ========================= CSS here ========================= -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
+
+<!-- ========================= 자바스크립트 시작 ========================= -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script>
+	$(function() {
+		<%-- 뒤로가기 방지 --%>
+		if (performance.navigation.type === 2) { <%-- 0 : 처음 로딩/새로고침, 1 : 페이지가 앞/뒤로 이동, 2 : 페이지가 뒤로 이동  --%>
+			alert('비정상적인 접근입니다.\n메인페이지로 이동합니다.');
+			location.href = './'; //다른 페이지로 이동
+		}
+	});
+</script>
 </head>
 <body>
     <div class="preloader">
@@ -46,7 +59,10 @@
                                 <h3 class="user-name">00님</h3> <!-- 사용자프로필/sId -->
                                 <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
                             </div>
-                            <div class="complete-msg">10,000원 환급 완료</div>
+                            <div class="complete">
+                            	<div class="material-icons effect" style="font-size:40px;">check_circle</div>
+                            	<div class="complete-msg">10,000원 환급 완료</div>
+                            </div>
                             <hr>
                             <div class="row">
 	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
