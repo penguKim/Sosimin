@@ -54,7 +54,7 @@
 }
 
 /* The Modal (background) */
-.modal {
+#myModal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -69,15 +69,16 @@
 }
 
 /* Modal Content (Image) */
-.modal-content {
+#myModal .modal-content {
   margin: auto;
   display: block;
   width: 80%;
   max-width: 700px;
+  z-index: 200;
 }
 
 /* Add Animation - Zoom in the Modal */
-.modal-content {
+#myModal .modal-content {
   animation-name: zoom;
   animation-duration: 0.6s;
 }
@@ -107,7 +108,7 @@
 
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px){
-  .modal-content {
+  #myModal .modal-content {
     width: 100%;
   }
 }
