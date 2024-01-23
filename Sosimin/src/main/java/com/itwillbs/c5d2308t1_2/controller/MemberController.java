@@ -88,9 +88,27 @@ public class MemberController {
 	
 	
 	// 마이페이지 예시
-//	@GetMapping("Mypage")
-//	public String Mypage() {
-//		return "member/mypage";
-//	}
+	@GetMapping("MypageEx")
+	public String MypageEx() {
+		return "member/mypage_example";
+	}
+
+	// 마이페이지 상품 관련 탭(판매내역, 구매내역, 관심목록)
+	@GetMapping("Mypage")
+	public String Mypage() {
+		return "member/mypage";
+	}
+
+	// 마이페이지 받은 후기 탭
+	@GetMapping("Mypage2")
+	public String Mypage2() {
+		return "member/mypage2";
+	}
+
+	// 마이페이지 커뮤니티 관련 탭(커뮤니티 작성글, 커뮤니티 작성 댓글)
+	@GetMapping("Mypage3")
+	public String Mypage3() {
+		return "member/mypage3";
+	}
 	
 }

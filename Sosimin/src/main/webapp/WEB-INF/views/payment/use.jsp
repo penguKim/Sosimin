@@ -3,21 +3,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Sosimin</title>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<title>Sosimin</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 
-    <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
+<!-- ========================= CSS here ========================= -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
+
+<!-- ========================= 자바스크립트 시작 ========================= -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script>
+
+</script>
 </head>
 <body>
     <div class="preloader">
@@ -46,7 +52,7 @@
                                 <h3 class="user-name">00님</h3> <!-- 사용자프로필/sId -->
                                 <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
                             </div>
-                           	<div class="msg">거래정보</div>
+                           	<div class="complete-msg-center">거래정보</div>
                            	<div class="complete-msg-left">판매자 : 닉네임</div>
                            	<div class="complete-msg-left">상품명 : 게시글</div>
                            	<div class="complete-msg-left">가격 : 가격</div>
@@ -62,6 +68,7 @@
                 <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
                     <div class="card login-form">
                         <div class="card-body">
+                        	<div class="complete-msg-center">페이정보</div>
                             <div class="row">
 	                           	<div class="pay-info col-lg-6 col-md-6 col-12">
 									페이잔액
@@ -76,11 +83,11 @@
                                 <input class="form-control" type="email" id="reg-email" required
                                 	placeholder="충전을 원하시는 금액을 입력해주세요">
                             </div>
-                            <div class="row amount-btn">
-                            	<input type="button" value="1만원" class="col-lg-3 col-md-3 col-12">
-	                            <input type="button" value="3만원" class="col-lg-3 col-md-3 col-12">
-	                            <input type="button" value="5만원" class="col-lg-3 col-md-3 col-12">
-	                            <input type="button" value="10만원" class="col-lg-3 col-md-3 col-12">
+                            <div class="row amount-btn-group">
+                            	<input type="button" value="1만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
+	                            <input type="button" value="3만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
+	                            <input type="button" value="5만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
+	                            <input type="button" value="10만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
                             </div>
                             
                             <div class="msg">출금 계좌 확인</div>

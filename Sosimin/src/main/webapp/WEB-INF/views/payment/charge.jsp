@@ -3,21 +3,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Sosimin</title>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<title>Sosimin</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 
-    <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
+<!-- ========================= CSS here ========================= -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
+
+<!-- ========================= 자바스크립트 시작 ========================= -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script>
+
+</script>
 </head>
 <body>
     <div class="preloader">
@@ -50,11 +56,11 @@
                                 <input class="form-control" type="email" id="reg-email" required
                                 	placeholder="충전을 원하시는 금액을 입력해주세요">
                             </div>
-                            <div class="row amount-btn">
-                            	<input type="button" value="1만원" class="col-lg-3 col-md-3 col-12">
-	                            <input type="button" value="3만원" class="col-lg-3 col-md-3 col-12">
-	                            <input type="button" value="5만원" class="col-lg-3 col-md-3 col-12">
-	                            <input type="button" value="10만원" class="col-lg-3 col-md-3 col-12">
+                           	<div class="row amount-btn-group">
+                            	<input type="button" value="1만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
+	                            <input type="button" value="3만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
+	                            <input type="button" value="5만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
+	                            <input type="button" value="10만원" class="col-lg-3 col-md-6 col-sm-6 col-12 amount-btn">
                             </div>
                             
                             <div class="msg">출금 계좌 확인</div>

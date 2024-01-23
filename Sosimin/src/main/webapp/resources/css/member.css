@@ -1,0 +1,257 @@
+@charset "UTF-8";
+
+/* 마이페이지 CSS */
+#fullArea {
+	border: 1px solid;
+	width: 1300px;
+	height: 1800px;
+	margin: 0 auto;
+}
+
+#fullArea div {
+	border: 1px solid;
+}
+
+#bold {
+	color: black;
+	font-size: large;
+}
+
+a {
+	all: unset;
+}
+
+/* 프로필 영역 */
+#profileArea {
+	border: 1px solid red;
+	width: 1200px;
+	height: 200px;
+	margin: 0 auto;
+}
+
+#profileLeft {
+	float: left;
+}
+
+#profileLeft img {
+	margin: 20px !important; 
+	width: 150px !important;
+	height: 150px !important;
+}
+
+#profileRight {
+	width: 1000px;
+	height: 180px;
+	float: left;
+	display: inline-block;
+	margin: 10px 1px;
+}
+
+#profileRightUpperLeft {
+	display: inline-block;
+	float: left;
+	
+}
+
+#profileRightUpperRight {
+	display: inline-block;
+	float: right;
+}
+
+#profileRightMiddle {
+	margin-top: 30px !important;
+	text-align: center;
+}
+
+#profileRightMiddle span {
+	padding:1px 20px 5px;
+}
+
+#profileRightBottom {
+	width: 780px;
+	height: 110px;
+	margin: 0 auto;
+}
+
+/* 카테고리 영역 */
+#categoryArea {
+	width: 1200px;
+	margin: 0 auto;
+	padding-bottom: 50px;
+}
+
+#categoryArea li {
+	display: inline-block;
+	padding:1px 60px 5px;
+}
+
+#tabArea {
+	width: 1200px;
+	height: 60px;
+	margin: 0 auto;
+}
+
+#tabArea ul {
+	float: right;
+}
+
+#tabArea li {
+	float: left;
+	margin: 1px 10px;
+}
+
+/* ============================================================================= */
+/* ---------- 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 --------------- */
+#wholeProductArea {
+	width: 1200px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#singleProductArea {
+	width: 290px;
+	height: 400px;
+	display: inline-block;
+	margin-bottom: 10px;
+	margin-left: 2px;
+	margin-right: 2px;
+}
+
+#singleProductArea img {
+	width: 250px;
+	height: 250px;
+	margin: 20px;
+	vertical-align: middle;
+}
+
+#singleProductTitleArea b {
+	color: black;
+	font-size: medium;
+}
+
+#singleProductContactArea {
+	font-size: small;
+}
+
+/* =============================================== */
+/* ---------- 받은 후기 탭 선택 시 --------------- */
+
+
+
+/* ========================================================================= */
+/* ---------- 커뮤니티 작성글, 커뮤니티 작성 댓글 탭 선택 시 --------------- */
+#communityButtonArea {
+	width: 1200px;
+	height: 30px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+	text-align: right;
+}
+
+#wholeCommunityArea {
+	border: 1px solid red;
+	width: 1200px;
+	margin: 0 auto;
+}
+
+#communityCheckboxContainingArea {
+	margin-bottom: 20px;
+}
+
+input[type="checkbox"] {
+	display: inline-block !important;
+	align-items: center;
+}
+
+/* 커뮤니티 작성글 탭 */
+#communitySingleArea {
+	border: 1px solid red;
+	width: 1170px;
+	height: 200px;
+	margin: 0 auto;
+/* 	margin-bottom: 20px; */
+}
+
+
+#communityLeft {
+	width: 970px;
+	height: 180px;
+	float: left;
+	display: inline-block;
+	margin: 10px 1px;
+}
+
+#communityRight {
+	float: left;
+}
+
+#communityRight img {
+	margin: 20px !important; 
+	width: 150px !important;
+	height: 150px !important;
+}
+
+
+#communityLeftUpperLeft {
+	display: inline-block;
+	float: left;
+	width: 970px;
+	height: 50px;
+	
+}
+
+
+#communityMiddleLeft {
+	display: inline-block;
+	float: left;
+}
+
+#communityMiddleRight {
+	display: inline-block;
+	float: right;
+	
+}
+
+#communityLeftBottom {
+	width: 780px;
+	height: 110px;
+	margin: 0 auto;
+	margin-top: 70px;
+}
+
+
+/* 커뮤니티 댓글 탭 */
+#communityReplySingleArea {
+	border: 1px solid;
+	width: 1170px;
+	height: 120px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+}
+
+#communityReplyTitleArea {
+	float: left;
+	border: 1px solid;
+	width: 1170px;
+	height: 50px;
+	margin: 0 auto;
+	
+}
+
+#communityReplyMiddleLeft {
+	display: inline-block;
+	float: left;
+}
+
+#communityReplyMiddleRight {
+	display: inline-block;
+	float: right;
+	
+}
+
+#communityReplyLeftBottom {
+	width: 980px;
+	height: 40px;
+	margin: 0 auto;
+	margin-top: 70px;
+}

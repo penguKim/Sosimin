@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 <style type="text/css">
 	article {
 		text-align: center;
@@ -34,7 +35,21 @@
     padding: 0.25rem 0.375rem;
 }
     
+    #ulLine{
+    	display: inline-block;
+    }
     
+    #divLine{
+   		display: inline-block;
+   		width: 120px;
+    }
+    
+    #divImageLine{
+   		display: inline-block;
+   		width: 120px;
+   		position: relative;
+   		top:3em;
+    }
 /* 태그에 닫기 버튼 */
 .close-button {
     background-position: center center;
@@ -51,11 +66,12 @@
 #textLength{
 	display: inline-block;
 	position: relative;
-	right: 9em;
+	left : 1115px;
+	bottom: 30px;
 }
 /* 업로드한 이미지 크기 조정 */
 .imageSize {
-	width: 201px;
+	width: 180px;
 	height: 201px;
 	margin-left: 1em;
 }	
@@ -114,7 +130,11 @@
 }      
 
 #tradeXText{
+display:inline-block;
 text-decoration : underline;
+position: relative;
+left: 78em;
+bottom: 30px;
 }
 
 #image_container{
@@ -123,8 +143,16 @@ text-decoration : underline;
   p span {
     color: red;
   }
+  
+  #required{
+  	color:red;
+  	font-size: 17px;
+  	margin-left: 120px;
+  	position: relative;
+  	bottom: 29px;
+  }
+  
   p {
-  	font-weight: bold;
   	font-size: 20px;
   	color: black;
   }
@@ -157,8 +185,18 @@ h1 {
 
 #Category{
 	color:red;
+    position: relative;
+    top: 10px;
 }
 
+#categoryName{
+	border: 1px solid #ebebeb;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 500px;
+    position: relative;
+    top: 10px;
+}
 
 #myMapButton {
     height: 3rem;
@@ -175,36 +213,77 @@ h1 {
 }
 
 #divPadding{
-	padding-top: 10px;
+	position: relative;
+}
+
+.categoryPadding{
+	position: relative;
+	bottom: 5px;
+}
+.myMapButtonPadding{
 	padding-bottom: 10px;
 }
+
+#imageCount{
+	position: relative;
+	left: 40px;
+	bottom: 20px;	
+}
+
+#product_name {
+padding-top: 21px;
+}
+
+.tradeAddress{
+	position: absolute;
+	bottom:28px;
+}
+#categoryDiv{
+	padding-bottom: 10px;
+}
+.productStatus, .price{
+	position: relative;
+	bottom:20px;
+}
+
+.explanation{
+	position: relative;
+	bottom:70px;
+}
+#radioChoise , #productStatus1,#productStatus2,#productStatus3 {
+	cursor: pointer;
+	font-size: 15px;
+}
+
+.thumbnail{
+	cursor: pointer;
+}
+
+#priceInput{
+ position: relative;
+ width: 180px;
+}
+
+#explanationLength{
+	position: relative;
+	left: 930px;
+	bottom: 30px;
+}
+#explanationLine{
+	display: inline-block;
+	position: relative;
+	padding-top: 30px;
+}
+
+#priceProposal , #Category{
+	margin-top: 5px;
+}
+
 </style>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 </head>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 $(function() {
-	
-	// 파일 이미지로만 제한
-	$(function() {
-		$(".file").on("change", function() {
-			let fileVal = $(this).val();
-			if (fileVal != "") {
-				let ext = fileVal.split('.').pop().toLowerCase(); // 확장자 분리
-				
-				// 허용되는 확장자 리스트
-				let allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
-				
-				// 허용되지 않는 확장자일 경우 경고 메시지 출력 후 등록 취소
-				if (!allowedExtensions.includes(ext)) {
-					alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
-					$(this).val(""); // 파일 입력 필드 초기화
-					return false;
-				}
-			}
-		});
-	});
-	
-		  
 	navigator.geolocation.getCurrentPosition(function(position) {
 		  var latitude = position.coords.latitude; // 현재 위치의 위도
 		  var longitude = position.coords.longitude; // 현재 위치의 경도
@@ -254,16 +333,19 @@ $(function() {
 
 // XX 자릿수 이상을 입력 못하게 하기위한 코드
 
-function key() {
+function productKey() {
 	
 	var productNameLength = $("#productName").val().length;
 	
 		$("#productNameLength").text(productNameLength) ;
 		
+};
+
+function ProductDescriptionKey() {
 	var ProductDescriptionLength = $("#ProductDescription").val().length;
 	
 		$("#ProductDescriptionLength").text(ProductDescriptionLength) ;
-};
+}
 
 // XX자리 이상 입력후 한글자 더 입력 시 올라가는걸 막기위한 코드 
 function limitInputLength(input, maxLength) {
@@ -271,6 +353,13 @@ function limitInputLength(input, maxLength) {
       input.value = input.value.slice(0, maxLength);
     }
     document.getElementById("productNameLength").textContent = input.value.length;
+  }
+  
+function limitInputLength2(input, maxLength) {
+    if (input.value.length > maxLength) {
+      input.value = input.value.slice(0, maxLength);
+    }
+    document.getElementById("ProductDescriptionLength").textContent = input.value.length;
   }
 
 
@@ -345,37 +434,69 @@ $(document).on("click", ".close-button", function() {
 
 // 썸네일 이미지 작업을 위한 코드
 function setThumbnail(event) {
-  var reader = new FileReader();
-  var imageContainer = document.getElementById("image_container");
+  var fileVal = event.target.value;
+  if (fileVal != "") {
+    var ext = fileVal.split('.').pop().toLowerCase(); // 확장자 분리
 
-  reader.onload = function(event) {
-    var img = document.createElement("img");
-    img.setAttribute("src", event.target.result);
-    img.setAttribute("class", "imageSize");
+    // 허용되는 확장자 리스트
+    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
 
-    var imageText = document.querySelector(".mainImage");
-    imageText.style.display = "inline";
+    // 허용되지 않는 확장자일 경우 경고 메시지 출력 후 등록 취소
+    if (!allowedExtensions.includes(ext)) {
+      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
+      event.target.value = ""; // 파일 입력 필드 초기화
+      return false;
+    }
+  } else {
+    return false;
+  }
 
-    var closeButton = document.createElement("button");
-    closeButton.setAttribute("type", "button");
-    closeButton.setAttribute("class", "imageClose");
-    closeButton.setAttribute("onclick", "removeImage(this)");
+  var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
+  imageLength++;
+  document.getElementById("imageLength").textContent = imageLength;
 
-    var imageItem = document.createElement("span");
-    imageItem.classList.add("imageItem");
-    imageItem.appendChild(img);
-    imageItem.appendChild(closeButton);
+  if (imageLength <= 5) {
+    var reader = new FileReader();
+    var imageContainer = document.getElementById("image_container");
+    reader.onload = function(event) {
+      var img = document.createElement("img");
+      img.setAttribute("src", event.target.result);
+      img.setAttribute("class", "imageSize");
 
-    imageContainer.appendChild(imageItem);
-  };
+      var imageText = document.querySelector(".mainImage");
+      imageText.style.display = "inline";
 
-  reader.readAsDataURL(event.target.files[0]);
+      var closeButton = document.createElement("button");
+      closeButton.setAttribute("type", "button");
+      closeButton.setAttribute("class", "imageClose");
+      closeButton.setAttribute("onclick", "removeImage(this)");
+
+      var imageItem = document.createElement("span");
+      imageItem.classList.add("imageItem");
+      imageItem.appendChild(img);
+      imageItem.appendChild(closeButton);
+
+      imageContainer.appendChild(imageItem);
+    };
+
+    reader.readAsDataURL(event.target.files[0]);
+  } else if (imageLength > 5) {
+	  alert("사진 첨부는 최대 5장까지 가능합니다.");
+	  imageLength = 5;
+	  document.getElementById("imageLength").textContent = imageLength;
+  } 
+  
 }
+
 
 function removeImage(button) {
   var imageItem = button.parentNode;
   var imageContainer = imageItem.parentNode;
   imageContainer.removeChild(imageItem);
+  
+  var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
+  imageLength--;
+  document.getElementById("imageLength").textContent = imageLength;
 
   // 대표 이미지가 없는 경우 숨김 처리
   var imageText = document.querySelector(".mainImage");
@@ -391,7 +512,7 @@ function addFileInput() {
 	  // 파일 선택 input 요소를 클릭합니다.
 	  fileInput.click();
 	}
-
+	
 
 
 </script>
@@ -405,97 +526,145 @@ function addFileInput() {
 	<div class="container content-wrapper">
 		<div class="addBox">
 			<form id="addForm" name="addForm" class="add-form" th:action="@{/admin/product/add}" method="post" enctype="multipart/form-data">
-			<h1>상품 등록</h1>
-			
-				<ul>
-					<li class="th"><p>상품이미지<span>*</span></p></li>
-					<li class="td" id="imageTd"></li>
-				</ul>
-				<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()">
-
-				<input class="form-control form-control-user" type="file" style="display: none;"
-				  name="product_image" id="product_image" onchange="setThumbnail(event);">
-				
-				<div class="form-group">
-				  <div id="image_container">
-				    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span>
-				  </div>
-				</div>
-						
+				<br><br>
+				<h4>기본정보</h4><span id="required">*필수항목</span><br>
+				<hr style="border:0; height:3px; color:black;">
+				<div>
+					<div id="divImageLine">
+						<ul id="ulLine">
+							<li class="th"><p>상품이미지<span>*</span></p></li>
+							<li class="td" id="imageTd"></li>
+						</ul>
+						<span id="imageCount">
+							<span id="imageLength">0</span>
+							<span>/5</span>
+						</span>
+					</div>
+					<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()">
+	
+					<input class="form-control form-control-user" type="file" style="display: none;"
+					  name="product_image" id="product_image" onchange="setThumbnail(event);" accept=".gif, .jpg, .png, .jepg" >
+					
+					<div class="form-group">
+					  <div id="image_container">
+					    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span>
+					  </div>
+					</div>
+				</div>						
 				<hr>
 				<!-- 현재 등록돼 있는 카테고리 목록 호출, 사용자가 추가 가능 -->
-				<ul>
-					<li ><p id="divPadding">상품명<span>*</span></p></li>
-					<li class="td">
-						<div>
-							<input type="text" id="productName" onkeyup="key()" maxlength="40" oninput="limitInputLength(this, 40)"
-							placeholder="상품명을 입력해 주세요." class="text-box">
-							<a href="https://help.bunjang.co.kr/faq/2/220" target="_blank" id="tradeX">
-							 <span id="tradeXText">거래금지 품목 보기</span></a>
-							 <div id="textLength">
-							 <span id="productNameLength">0</span><span>/40</span>
-							 </div>
-						</div>
-					</li>
-				</ul>
+				
+				<div id="product_name">
+					<div id="divLine">
+						<ul>
+							<li><p id="divPadding">상품명<span>*</span></p></li>
+							<li class="td">
+						</ul>
+					</div>
+						<input type="text" id="productName" onkeyup="productKey()" maxlength="40" oninput="limitInputLength(this, 40)"
+						placeholder="상품명을 입력해 주세요." class="text-box">
+						<a href="https://help.bunjang.co.kr/faq/2/220" target="_blank" id="tradeX">
+						 <span id="tradeXText">거래금지 품목 보기</span></a>
+						 <div id="textLength">
+						 <span id="productNameLength">0</span><span>/40</span>
+						 </div>
+				</div>
+				
 				<hr>
-				<ul>
-					<li class="th"><p id="divPadding">카테고리<span>*</span></p></li>
-					<li class="td">
-						<select id="categoryName" name="categoryName" class="dataTable-selector selector" onchange="addACategory();">
-							<option value="default">카테고리를 선택하세요.</option>
-							<option>패션잡화(모자/가방/지갑)</option>
-							<option>아우터</option>
-							<option>상의</option>
-							<option>하의(치마)</option>
-							<option>아동복</option>
-							<option>셋업 세트(원피스)</option>
-							<option>신발</option>
-						</select>
-						<div id="Category">
-						선택한 카테고리 : 
-						<b id="selectCategory"></b>
-						</div>
-					</li>
-				</ul>
+				<div id="categoryDiv">
+					<div id="divLine">
+						<ul>
+							<li class="th"><p id="divPadding" class="categoryPadding">카테고리<span>*</span></p></li>
+						</ul>
+					</div>
+					<ul id="ulLine">
+						<li class="td">
+							<select id="categoryName" name="categoryName" class="dataTable-selector selector" onchange="addACategory();">
+								<option value="default">카테고리를 선택하세요.</option>
+								<option>패션잡화(모자/가방/지갑)</option>
+								<option>아우터</option>
+								<option>상의</option>
+								<option>하의(치마)</option>
+								<option>아동복</option>
+								<option>셋업 세트(원피스)</option>
+								<option>신발</option>
+							</select>
+							<div id="Category">
+							선택한 카테고리 : 
+							<b id="selectCategory"></b>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<hr>
 				
+				<div>
+					<div id="divLine">
+						<ul>
+							<li class="td"><p id="divPadding" class="tradeAddress">거래지역<span>*</span></p></li>
+						</ul>
+					</div>
+						<ul id="ulLine">
+							<li class="td">
+								<input type="hidden" id="map">
+								<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="내 위치"></div>
+								<input type="text" name="myMap" id="myMap" size="64" required disabled placeholder="지역을 설정해 주세요">
+							</li>
+						</ul>
+				</div>
 				
-				<ul>
-					<li class="th"><p id="divPadding">거래지역<span>*</span></p></li>
-					<li class="td">
-						<input type="hidden" id="map">
-						<div id="divPadding"><input type="button" id="myMapButton" value="내 위치"></div>
-						<input type="text" name="myMap" id="myMap" size="25" required disabled placeholder="지역을 설정해 주세요">
-					</li>
-				</ul>
+					<hr>
+				<div>
+					<div id="divLine" class="productStatus">
+						<p>상품 상태<span>*</span></p>
+					</div>
+					<ul id="ulLine">
+						<li class="productsStatusRadio">
+							<label id="radioChoise">
+								<input type="radio" id="productStatus1" name="productStatus"> 보통
+							</label><br>
+							<label id="radioChoise">
+								<input type="radio" id="productStatus2" name="productStatus"> 좋은상태
+							</label><br>
+							<label id="radioChoise">
+								<input type="radio" id="productStatus3" name="productStatus"> 새상품<br>
+							</label>
+						</li>
+					</ul>
+				</div>
 				
-				<ul>
-					<li class="th"><p>상품 상태<span>*</span></p></li>
-					<li class="td">
-						<input type="radio" id="productStatus1" name="productStatus">보통<br>
-						<input type="radio" id="productStatus2" name="productStatus">좋은상태<br>
-						<input type="radio" id="productStatus3" name="productStatus">새상품<br>
-					</li>
-				</ul>
+				<hr>
+				<div>
+					<div id="divLine" class="price">
+						<ul>
+							<li class="th"><p>가격<span>*</span></p></li>
+						</ul>
+					</div>
+						<ul id="ulLine">
+							<li>
+								<input type="text" id="priceInput" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11">원
+								<div id="priceProposal"><input type="checkbox"> 가격제안 받기</div>
+							</li>
+						</ul>
+				</div>
 				
-				<ul>
-					<li class="th"><p>가격<span>*</span></p></li>
-					<li class="td">
-						<input type="text" id="priceInput" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11">원
-						<div><input type="checkbox">가격제안 받기</div>
-					</li>
-				</ul>
+						<hr>
+				<div id="explanationLine">
+					<div id="divLine">
+						<ul>
+							<li class="explanation"><p>설명<span>*</span></p></li>
+						</ul>
+					</div>
+					<div id="ulLine">
+						<textarea rows="6" cols="100" style="resize: none;" id="ProductDescription" maxlength="2000" onkeyup="ProductDescriptionKey()" 
+							oninput="limitInputLength2(this, 2000)" placeholder="구매시기,브랜드/모델명,제품의 상태(사용감,하자 유무) 등을 입력해 주세요"></textarea>
+					</div>
+					<div id="explanationLength">
+						<span id="ProductDescriptionLength">0</span><span>/2000</span>
+					</div>
+				</div>
+				<hr>
 				
-				<ul>
-					<li class="th"><p>설명<span>*</span></p></li>
-					<li class="td">
-						<div>
-							<textarea rows="6" cols="100" style="resize: none;" id="ProductDescription" maxlength="2000" onkeyup="key()" 
-							oninput="limitInputLength(this, 2000)" placeholder="구매시기,브랜드/모델명,제품의 상태(사용감,하자 유무) 등을 입력해 주세요"></textarea>
-							<span id="ProductDescriptionLength">0</span><span>/2000</span>
-						</div>
-					</li>
-				</ul>
 				<!-- ProductTag ENUM 호출 -->
 				<ul>
 					<li class="th"><p>태그</p></li>

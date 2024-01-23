@@ -15,7 +15,7 @@
 }
 
 .msg {
-	font-size: 25px;
+	font-size: 20px;
     font-weight: 600;
     line-height: 35px;
 }
@@ -55,7 +55,7 @@
 }
 
 .product-name, .bank-name {
-    font-size: 25px;	
+    font-size: 20px;	
 }
 
 .pay-info-sub, .fintech-no, .account-no {
@@ -67,13 +67,24 @@
 
 .pay-amount {
 	text-align: right;
-	font-size: 25px;	
+	font-size: 20px;	
 }
 
-.amount-btn {
+.amount-btn-group {
 	width: 100%;
 	margin: 0;
 	margin-bottom: 30px;
+	text-align: center;
+}
+
+.amount-btn {
+	border: 1px solid #e0e0e0;
+	padding: 5px;
+	background: #fff;
+}
+
+.amount-btn:hover {
+	background-color: #e0e0e0;
 }
 
 .pay-balance-sub {
@@ -116,8 +127,24 @@
     line-height: 30px;
 	text-align: center;	
     margin-top: 10px;
+    font-weight: bold;
 }
 
 #hr {
 	margin-top: 20px;
+}
+
+.effect{
+    color: #39d274;
+    animation-name: example;
+    animation-duration: 5s;
+}
+
+@keyframes example {
+    from {color: #f9f9f9;}
+    to {color: #39d274;}
+}
+
+.complete {
+	text-align: center;
 }
