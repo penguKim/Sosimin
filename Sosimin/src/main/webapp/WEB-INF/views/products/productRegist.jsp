@@ -266,7 +266,7 @@ padding-top: 21px;
 
 #explanationLength{
 	position: relative;
-	left: 930px;
+	left: 880px;
 	bottom: 30px;
 }
 #explanationLine{
@@ -279,6 +279,80 @@ padding-top: 21px;
 	margin-top: 5px;
 }
 
+#tagLine{
+	display:inline-block;
+	position:relative; 
+}
+
+#tagLine2{
+	display:inline-block;
+	position:relative;
+	top:20px;
+}
+
+
+.tagNameLine{
+	position: relative;
+	top: 30px;
+}
+
+#tagName{
+	position: relative;
+	top:10px;
+	width: 300px;
+}
+
+#tagContainer{
+	margin-left: 120px;
+	position: relative;
+	top:13px;
+}
+
+#tagCs{
+	margin-left: 120px;
+	position: relative;
+}
+#buttonBox{
+	position:relative;
+    height: 3.5rem;
+    width: 10rem;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 2px;
+    background: rgb(216, 12, 24);
+    display: inline-block;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 50px;
+}
+
+#save2{
+	position:relative;
+    height: 3.5rem;
+    width: 10rem;
+  	color:rgb(102, 102, 102);
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 2px;
+    background: white;
+    display: inline-block;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    border: 1px solid rgb(229, 229, 229);
+    margin-right: 10px;
+}
+
+#save{
+	margin-left: 450px;
+}
 </style>
 </head>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
@@ -643,7 +717,11 @@ function addFileInput() {
 						<ul id="ulLine">
 							<li>
 								<input type="text" id="priceInput" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11">원
-								<div id="priceProposal"><input type="checkbox"> 가격제안 받기</div>
+								<div id="priceProposal">
+									<label>
+										<input type="checkbox"> 가격제안 받기
+									</label>
+								</div>
 							</li>
 						</ul>
 				</div>
@@ -664,23 +742,26 @@ function addFileInput() {
 					</div>
 				</div>
 				<hr>
-				
-				<!-- ProductTag ENUM 호출 -->
-				<ul>
-					<li class="th"><p>태그</p></li>
-					<li class="td">
-						<input type="text" id="tagName" placeholder="태그를 입력해 주세요. (최대 5개 까지 등록)" size="34" maxlength="9" onkeypress="handleKeyPress(event)">
-						<input type="button" value="등록" onclick="handleTagRegistration()"><br>
-						<span id="tagContainer"></span>
-						<div></div>
+				<div>
+					<div id="divLine" class="tagNameLine">
+						<p>태그</p>
+					</div>
+					<div id="tagLine2">
+						<input type="text" id="tagName" placeholder="태그를 입력해 주세요. (최대 5개 까지)" size="34" maxlength="9" onkeypress="handleKeyPress(event)">
+						<input type="button" value="등록" onclick="handleTagRegistration()" id="tagName2"><br><br>
+					</div>
+						<div id="tagContainer"></div><br>
+						<div id="tagCs">
 						- 태그는 띄어쓰기로 구분되며 최대 9자까지 입력할 수 있어요.<br>
 						- 내 상품을 다양한 태그로 표현해 보세요.<br>
 						- 사람들이 내 상품을 더 잘 찾을 수 있어요.<br>
 						- 상품과 관련 없는 태그를 입력할 경우, 판매에 제재를 받을 수 있어요.<br>
-					</li>
-				</ul>
-   				<div class="buttonBox">
-					<button type="button">상품등록</button>
+						</div>
+				</div>
+				<hr>
+   				<div id="save">
+					<button type="button" id="save2">임시저장</button>
+					<button type="button" id="buttonBox">상품등록</button>
 				</div>
 			</form>
 		</div>
@@ -703,6 +784,10 @@ function addFileInput() {
 	  	});
 		</script>
 		
+	<footer class="footer">
+		<jsp:include page="../inc/bottom.jsp"></jsp:include>
+	</footer>
+	
     	<!-- Select2 -->
     	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
