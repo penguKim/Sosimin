@@ -49,12 +49,8 @@
                 <div class="col-lg-3 col-12">
                     <!-- Start Product Sidebar -->
                     <div class="product-sidebar">
-                    	
                         <!-- Start Single Widget -->
                         <div class="single-widget">
-	                        <span class="filter">필터</span>
-                        	<span class="filter_reset"><a href="javascript:void(0)" style="text-decoration: underline; color: grey;">초기화</a></span>
-                        	
                             <h3>카테고리</h3>
                             <ul class="list">
                                 <li>
@@ -82,22 +78,39 @@
                                     <a href="product-grids.html">기타</a><span>(512)</span>
                                 </li>
                             </ul>
-                            
-                            <div style="margin-bottom: 20px;"></div>
-                            <div style="margin-bottom: 20px;"></div>
-		                    <h3>가격</h3>
-		                    <form action="#">
-			               		<p>최소 금액</p>
-		               			<input type="text" placeholder="최소금액을 입력해주세요" size="23">
-			                    <p>최대 금액</p>
-			                    <input type="text" placeholder="최대금액을 입력해주세요" size="23">
-			                    <div class="resultSearch">
-				                   	<button class="reset-btn" style="margin-left: 10%;">초기화</button>
-				                   	<button type="submit" class="resultSearch-btn" style="margin-left: 10%;">적용하기</button>
-			                    </div>
-		                    </form>
-                            
-                            <div style="margin-bottom: 20px;"></div>
+                        </div>
+                        <!-- End Single Widget -->
+                        <!-- Start Single Widget -->
+                        <div class="single-widget condition">
+                            <h3>가격필터</h3>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+                                <label class="form-check-label" for="flexCheckDefault1">
+                                    $50 - $100L (208)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
+                                <label class="form-check-label" for="flexCheckDefault2">
+                                    $100L - $500 (311)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
+                                <label class="form-check-label" for="flexCheckDefault3">
+                                    $500 - $1,000 (485)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4">
+                                <label class="form-check-label" for="flexCheckDefault4">
+                                    $1,000 - $5,000 (213)
+                                </label>
+                            </div>
+                        </div>
+                        <!-- End Single Widget -->
+                        <!-- Start Single Widget -->
+                        <div class="single-widget condition">
                             <h3>상품 상태</h3>
                             <div class="form-check" >
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11">
@@ -117,20 +130,23 @@
                                     새상품
                                 </label>
                             </div>
-                            
-                            <div style="margin-bottom: 20px;"></div>
+                        </div>
+                        <!-- End Single Widget -->
+	                    <!-- End Product Sidebar -->
+	                    <div class="single-widget">
 		                    <h3>결과내 검색</h3>
 		                    <form action="#">
 			               		<p>포함할 단어</p>
-		               			<input type="text" placeholder="포함할 단어를 입력해주세요" size="23">
+		               			<input type="text" placeholder="포함할 단어를 입력해주세요">
 			                    <p>제외할 단어</p>
-			                    <input type="text" placeholder="제외할 단어를 입력해주세요" size="23">
+			                    <input type="text" placeholder="제외할 단어를 입력해주세요">
 			                    <div class="resultSearch">
 				                   	<button class="reset-btn" style="margin-left: 10%;">초기화</button>
 				                   	<button type="submit" class="resultSearch-btn" style="margin-left: 10%;">적용하기</button>
 			                    </div>
 		                    </form>
-                        </div>
+	                	<!-- End Single Widget -->
+	                    </div>
                    </div>
                </div>
                 
@@ -142,8 +158,8 @@
                             <div class="row align-items-center">
                                 <div class="col-lg-7 col-md-8 col-12">
                                     <div class="product-sorting">
-                                        <label for="sorting"></label>
-                                        <h3 class="total-show-product" style="font-size: 20px; font-weight: 600; color: black;">검색결과</h3>
+                                        <label for="sorting">검색결과</label>
+                                        <h3 class="total-show-product"> </h3>
                                     </div>
                                 </div>
                                 <div class="col-lg-5 col-md-4 col-12">

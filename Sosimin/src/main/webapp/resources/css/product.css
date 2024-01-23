@@ -114,7 +114,7 @@ select {
 }
 
 span,
-a {
+a:not(.filter_reset) {
   display: inline-block;
   text-decoration: none;
   transition: all 0.4s ease;
@@ -6094,15 +6094,27 @@ blockquote span {
 .product-sidebar .single-widget:last-child {
   margin-bottom: 0;
 }
+.product-sidebar .single-widget .filter {
+	font-size: 20px;
+  	font-weight: 600;
+  	margin-bottom: 24px;
+  	padding-bottom: 12px;
+  	color: black;
+}
+
+.product-sidebar .single-widget .filter_reset {
+	margin-left: 10em; 	
+}
 
 .product-sidebar .single-widget h3 {
   position: relative;
-  margin-bottom: 24px;
+  margin-bottom: 5px;
   padding-bottom: 12px;
-  border-bottom: 1px solid #e5e5e5;
+  padding-top: 15px;
+  border-top: 1px solid #e5e5e5;
   color: #232323;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .product-sidebar .single-widget .resultSearch {
@@ -6173,6 +6185,7 @@ blockquote span {
 .product-sidebar .single-widget.search form button:hover {
   color: #39d274;
 }
+
 
 .product-sidebar .single-widget.range input {
   color: #081828;
@@ -8204,4 +8217,80 @@ blockquote span {
   .footer .footer-bottom .socila li span {
     display: none;
   }
+}
+
+/* 상품등록 텍스트 박스 */
+.text-box, #myMap{
+    display: block;
+    width: 85%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+/* 가격 텍스트 박스 */
+#priceInput{
+    display: inline-block;
+    text-align:right;
+    width: 15%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+/* 태그 텍스트 박스 */
+#tagName {
+	display: inline-block;
+    width: 26%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+/* 상품설명 텍스트 박스 */
+#ProductDescription {
+	display: inline-block;
+    width: 85%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out
 }

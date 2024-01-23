@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product.css" />
 <style type="text/css">
 	article {
 		text-align: center;
@@ -25,24 +25,53 @@
     padding: 5px;
     background-color: #eaeaea;
     border-radius: 2px;
+    flex-shrink: 0;
+    border-radius: 1rem;
+    background: rgb(246, 246, 246);
+    height: 2rem;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0.25rem 0.375rem;
 }
+    
+    
+/* 태그에 닫기 버튼 */
 .close-button {
-    margin-left: 5px;
-    color: red;
-    cursor: pointer;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIiBmaWxsPSJub25lIj4KICAgIDxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIgogICAgICAgIGQ9Ik0xMy40OTkzIDEyLjIxMzVDMTMuODU0OSAxMi41NjkxIDEzLjg1NDkgMTMuMTQ0OCAxMy40OTkzIDEzLjQ5OTNDMTMuMzIxNSAxMy42NzcxIDEzLjA4OTIgMTMuNzY2IDEyLjg1NTkgMTMuNzY2QzEyLjYyMzYgMTMuNzY2IDEyLjM5MDMgMTMuNjc3MSAxMi4yMTM1IDEzLjQ5OTNMOS45OTg0OSAxMS4yODYzTDcuNzg1NDcgMTMuNDk5M0M3LjYwNzcgMTMuNjc3MSA3LjM3NTM5IDEzLjc2NiA3LjE0MjA2IDEzLjc2NkM2LjkwOTc1IDEzLjc2NiA2LjY3NjQzIDEzLjY3NzEgNi40OTg2NiAxMy40OTkzQzYuMTQ0MTMgMTMuMTQ0OCA2LjE0NDEzIDEyLjU2OTEgNi40OTg2NiAxMi4yMTM1TDguNzEyNjkgMTAuMDAwNUw2LjQ5ODY2IDcuNzg2NDhDNi4xNDQxMyA3LjQzMTk1IDYuMTQ0MTMgNi44NTUyMSA2LjQ5ODY2IDYuNTAwNjhDNi44NTQyIDYuMTQ1MTQgNy40Mjk5MyA2LjE0NTE0IDcuNzg1NDcgNi41MDA2OEw5Ljk5ODQ5IDguNzEzN0wxMi4yMTM1IDYuNTAwNjhDMTIuNTY4MSA2LjE0NTE0IDEzLjE0MzggNi4xNDUxNCAxMy40OTkzIDYuNTAwNjhDMTMuODU0OSA2Ljg1NTIxIDEzLjg1NDkgNy40MzE5NSAxMy40OTkzIDcuNzg2NDhMMTEuMjg1MyAxMC4wMDA1TDEzLjQ5OTMgMTIuMjEzNVpNOS45OTk0OSAwQzQuNDg1NjMgMCAwIDQuNDg2NjQgMCAxMC4wMDA1QzAgMTUuNTE0NCA0LjQ4NTYzIDIwIDkuOTk5NDkgMjBDMTUuNTEzNCAyMCAyMCAxNS41MTQ0IDIwIDEwLjAwMDVDMjAgNC40ODY2NCAxNS41MTM0IDAgOS45OTk0OSAwWiIKICAgICAgICBmaWxsPSIjQ0NDQ0NDIiAvPgo8L3N2Zz4=);
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    border: none;
+	}
+/* 0/40 텍스트 박스 위치 이동*/
+#textLength{
+	display: inline-block;
+	position: relative;
+	right: 9em;
 }
-
+/* 업로드한 이미지 크기 조정 */
 .imageSize {
 	width: 201px;
 	height: 201px;
 	margin-left: 1em;
 }	
-	.jyaWFk {
-    display: flex;
-    width: 856px;
-    flex-wrap: wrap;
-    overflow-x: hidden;
+
+/* form 전체 사이즈 줘서 사이즈 줄였을때 페이지 안뭉개지게 하기 */
+.add-form{
+	width: 1300px;
+	max-width: 1300px;
 }
+
+/* .jyaWFk { */
+/*    display: flex; */
+/*    width: 856px; */
+/*    flex-wrap: wrap; */
+/*    overflow-x: hidden; */
+/* } */
 #imageTd {
 	display: inline-block;
 }
@@ -79,10 +108,14 @@
     opacity: 0.3;
     border-radius: 50%;
     position: absolute;
-    right: 10px;
+    right: 8px;
+    top: 3px;
 /*     top: 0.5rem; */
 }      
 
+#tradeXText{
+text-decoration : underline;
+}
 
 #image_container{
 	position: relative;
@@ -91,16 +124,15 @@
     color: red;
   }
   p {
+  	font-weight: bold;
   	font-size: 20px;
   	color: black;
   }
 
-
+/* 거래금지품목 위치 */
 #tradeX{
 	position:relative;
-	left: 70em;
-	bottom: 29px;
-    right: 1rem;
+    right: 10em;
     font-size: 1rem;
     color: rgb(153, 153, 153);
     font-weight: 400;
@@ -117,6 +149,34 @@
 .imageItem {
 	display: inline-block;
 	position: relative;
+}
+
+h1 {
+	text-align: center;
+}
+
+#Category{
+	color:red;
+}
+
+
+#myMapButton {
+    height: 3rem;
+    width: 6.5rem;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 125%;
+    color: rgb(25, 25, 25);
+    border: 1px solid rgb(204, 204, 204);
+    margin-right: 1rem;
+    border-radius: 2px;
+    background-color: white;
+}
+
+#divPadding{
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 </style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
@@ -263,7 +323,7 @@ function handleKeyPress(e) {
 	    tagElement.classList.add("tag"); // 생성한 <span> 요소에 "tag" 클래스를 추가
 		// X 버튼 클릭 시 삭제 기능 추가한다.
 	    var closeButton = document.createElement("button"); // 버튼 생성
-	    closeButton.innerText = "X"; // X 모양으로 표시했다.
+	    closeButton.innerText = ""; // X 모양으로 표시했다.
 	    closeButton.classList.add("close-button"); // 클래스 추가
 	    tagElement.appendChild(closeButton); //  클릭시 삭제한다
 
@@ -338,6 +398,7 @@ function addFileInput() {
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
 <body>
 	
+	
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
@@ -348,20 +409,8 @@ function addFileInput() {
 			
 				<ul>
 					<li class="th"><p>상품이미지<span>*</span></p></li>
-					<li class="td" id="imageTd">
-					</li>
+					<li class="td" id="imageTd"></li>
 				</ul>
-<%-- 						<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()"> --%>
-
-<!-- 						<div class="form-group"> -->
-<!-- 						  <input class="form-control form-control-user" type="file" style="display: none;" -->
-<!-- 						    name="product_image" id="product_image" onchange="setThumbnail(event);"> -->
-						    
-<!-- 						<span id="image_container"> -->
-<!-- 						    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span> -->
-<!-- 						    <button type="button" class="imageClose" style="display: none;"></button> -->
-<!-- 					    </span> -->
-<!-- 							</div> -->
 				<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()">
 
 				<input class="form-control form-control-user" type="file" style="display: none;"
@@ -376,20 +425,22 @@ function addFileInput() {
 				<hr>
 				<!-- 현재 등록돼 있는 카테고리 목록 호출, 사용자가 추가 가능 -->
 				<ul>
-					<li class="col-md-6"><p>상품명<span>*</span></p></li>
+					<li ><p id="divPadding">상품명<span>*</span></p></li>
 					<li class="td">
 						<div>
 							<input type="text" id="productName" onkeyup="key()" maxlength="40" oninput="limitInputLength(this, 40)"
-							placeholder="상품명을 입력해 주세요." class="form-control">
+							placeholder="상품명을 입력해 주세요." class="text-box">
 							<a href="https://help.bunjang.co.kr/faq/2/220" target="_blank" id="tradeX">
-							 <span>거래금지 품목 보기</span></a>
+							 <span id="tradeXText">거래금지 품목 보기</span></a>
+							 <div id="textLength">
 							 <span id="productNameLength">0</span><span>/40</span>
+							 </div>
 						</div>
 					</li>
 				</ul>
 				<hr>
 				<ul>
-					<li class="th"><p>카테고리<span>*</span></p></li>
+					<li class="th"><p id="divPadding">카테고리<span>*</span></p></li>
 					<li class="td">
 						<select id="categoryName" name="categoryName" class="dataTable-selector selector" onchange="addACategory();">
 							<option value="default">카테고리를 선택하세요.</option>
@@ -401,7 +452,7 @@ function addFileInput() {
 							<option>셋업 세트(원피스)</option>
 							<option>신발</option>
 						</select>
-						<div>
+						<div id="Category">
 						선택한 카테고리 : 
 						<b id="selectCategory"></b>
 						</div>
@@ -410,10 +461,10 @@ function addFileInput() {
 				
 				
 				<ul>
-					<li class="th"><p>거래지역<span>*</span></p></li>
+					<li class="th"><p id="divPadding">거래지역<span>*</span></p></li>
 					<li class="td">
 						<input type="hidden" id="map">
-						<div><input type="button" id="myMapButton" value="내 위치"></div>
+						<div id="divPadding"><input type="button" id="myMapButton" value="내 위치"></div>
 						<input type="text" name="myMap" id="myMap" size="25" required disabled placeholder="지역을 설정해 주세요">
 					</li>
 				</ul>
@@ -430,7 +481,7 @@ function addFileInput() {
 				<ul>
 					<li class="th"><p>가격<span>*</span></p></li>
 					<li class="td">
-						<input type="text" id="priceInput" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11" size="15" style="text-align: right">원
+						<input type="text" id="priceInput" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11">원
 						<div><input type="checkbox">가격제안 받기</div>
 					</li>
 				</ul>
