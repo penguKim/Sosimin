@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+
 <script type="text/javascript">
 $(function(){
 	/* 
@@ -29,21 +30,31 @@ $(function(){
 	
 	
 	function hideHandler() {
-		$("#searchArea").hide();
+		$("#Recent").hide();
+		$("#Popular").hide();
 	}
 	
 });// document.ready function END
 
 function showHandler(){
-	$("#searchArea").show();
+	$("#Recent").show();
 }
 
 function RecentSearchs(){
 	alert("최근검색어");
+	$("#Recent").show();
+	$("#Popular").hide();
+	$("#recentWordColor").css("color","red");
+	$("#popularWordColor").css("color","black");
+	
 }
 
 function PopularSearches(){
 	alert("인기검색어");
+	$("#Recent").hide();
+	$("#Popular").show();
+	$("#recentWordColor").css("color","black");
+	$("#popularWordColor").css("color","red");
 }
 
 function searchKeywordChange(keyWord){
@@ -76,7 +87,8 @@ function searchKeywordChange(keyWord){
                         	<!-- 나라별 언어 선택 -->
                             <div class="select-position">
                                 <select id="select5">
-                                    <option value="0" selected>English</option>
+                                    <option value="ko-kr" selected>한국어</option>
+                                    <option value="0" >English</option>
                                     <option value="1">Español</option>
                                     <option value="2">Filipino</option>
                                     <option value="3">Français</option>
@@ -92,9 +104,9 @@ function searchKeywordChange(keyWord){
             <div class="col-lg-4 col-md-4 col-12">
                 <div class="top-middle">
                     <ul class="useful-links">
-                        <li><a href="./">Home</a></li>
-                        <li><a href="about-us.html">About Us</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
+<!--                         <li><a href="./">Home</a></li> -->
+<!--                         <li><a href="about-us.html">About Us</a></li> -->
+<!--                         <li><a href="contact.html">Contact Us</a></li> -->
                     </ul>
                 </div>
             </div>
@@ -141,7 +153,7 @@ function searchKeywordChange(keyWord){
                             <input type="text" id="searchKeyword" placeholder="상품명, 지역명, @상점명 입력" onkeyup="searchKeywordChange(this)" >
                         </div>
                         <div class="search-btn">
-                            <button onclick="location.href='searchProduct'">
+                            <button onclick="location.href='searchKeyword'">
                             	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 								  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 								</svg>
@@ -151,54 +163,93 @@ function searchKeywordChange(keyWord){
                     <!-- navbar search Ends -->
                 </div>
                 <!-- End Main Menu Search -->
-                        <div id="searchArea">
-                        	<table border="1">
-                        		<tr>
-                        			<td><a onclick="RecentSearchs()">최근검색어</a></td>
-                        			<td><a onclick="PopularSearches()">인기검색어</a></td>
-                        		</tr>
-                        		<tr>
-                        			<td>1</td>
-                        			<td>z</td>
-                        		</tr>
-                        		<tr>
-                        			<td>2</td>
-                        			<td>z</td>
-                        		</tr>
-                        		<tr>
-                        			<td>3</td>
-                        			<td>z</td>
-                        		</tr>
-                        		<tr>
-                        			<td>4</td>
-                        			<td>z</td>
-                        		</tr>
-                        		<tr>
-                        			<td>5</td>
-                        			<td>z</td>
-                        		</tr>
-                        		<tr>
-                        			<td>6</td>
-                        			<td>z</td>
-                        		</tr>
-                        		<tr>
-                        			<td>7</td>
-                        			<td>z</td>
-                        		</tr>
-                        		<tr>
-                        			<td>8</td>
-                        			<td>z</td>
-                        		</tr>
-                        		<tr>
-                        			<td>9</td>
-                        			<td>z</td>
-                        		</tr>
-                        		<tr>
-                        			<td>최근검색어 삭제</td>
-                        			<td><a id="closeSearchBox">닫기</a></td>
-                        		</tr>
-                        	</table>
-                        </div>
+                <div id="Recent">
+                	<table border="1">
+                		<tr>
+                			<td><a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a></td>
+                			<td><a onclick="PopularSearches()" id="popularWordColor">인기검색어</a></td>
+                		</tr>
+                		<tr border="1">
+                			<td colspan="2">1</td>
+                		</tr>
+                		<tr>
+                			<td colspan="2">2</td>
+                		</tr>
+                		<tr>
+                			<td colspan="2">3</td>
+                		</tr>
+                		<tr>
+                			<td colspan="2">4</td>
+                		</tr>
+                		<tr>
+                			<td colspan="2">5</td>
+                		</tr>
+                		<tr>
+                			<td colspan="2">6</td>
+                		</tr>
+                		<tr>
+                			<td colspan="2">7</td>
+                		</tr>
+                		<tr>
+                			<td colspan="2">8</td>
+                		</tr>
+                		<tr>
+                			<td colspan="2">9</td>
+                		</tr>
+                		<tr>
+                			<td>최근검색어 삭제</td>
+                			<td><a id="closeSearchBox">닫기</a></td>
+                		</tr>
+                	</table>
+                </div>
+                <div id="Popular">
+                	<table border="1">
+                		<tr>
+                			<td><a onclick="RecentSearchs()">최근검색어</a></td>
+                			<td><a onclick="PopularSearches()">인기검색어</a></td>
+                		</tr>
+                		<tr>
+                			<td>1</td>
+                			<td>군만두</td>
+                		</tr>
+                		<tr>
+                			<td>2</td>
+                			<td>참치 올린 불닭</td>
+                		</tr>
+                		<tr>
+                			<td>3</td>
+                			<td>고추짬뽕</td>
+                		</tr>
+                		<tr>
+                			<td>4</td>
+                			<td>깐풍기</td>
+                		</tr>
+                		<tr>
+                			<td>5</td>
+                			<td>깐쇼새우</td>
+                		</tr>
+                		<tr>
+                			<td>6</td>
+                			<td>이재모피자</td>
+                		</tr>
+                		<tr>
+                			<td>7</td>
+                			<td>국밥</td>
+                		</tr>
+                		<tr>
+                			<td>8</td>
+                			<td>카라멜팝콘</td>
+                		</tr>
+                		<tr>
+                			<td>9</td>
+                			<td>컨트리맨즈</td>
+                		</tr>
+                		<tr>
+                			<td>최근검색어 삭제</td>
+                			<td><a id="closeSearchBox">닫기</a></td>
+                		</tr>
+                	</table>
+                </div>
             </div>
             <div class="col-lg-4 col-md-2 col-5">
                 <div class="middle-right-area">
@@ -224,7 +275,7 @@ function searchKeywordChange(keyWord){
                     <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                         <ul id="nav" class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <a href="index.html" class="active" aria-label="Toggle navigation">Home</a>
+                                <a href="./" class="active" aria-label="Toggle navigation">Home</a>
                             </li>
                             <li class="nav-item">
 								<a href="./">커뮤니티</a>

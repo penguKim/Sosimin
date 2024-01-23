@@ -2008,7 +2008,7 @@ ol {
 }
 
 /* 이민석 작업 start*/
-#searchArea{
+#Recent,#Popular{
 	position:fixed;
 }
 .fixTopBar{
@@ -2016,7 +2016,7 @@ ol {
 /* top.jsp 고정하려 했으나 실패!*/
 }
 
-#searchArea table td{
+#Recent table td,#Popular table td{
 	width: 187px;
 	background-color: yellow;
 }
