@@ -1,301 +1,308 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Muse-Market</title>
-
-<link rel="stylesheet" type="text/css" href="css/style.css" />
-<link rel="stylesheet" type="text/css" href="css/list.css" />
-
-<link rel="stylesheet" type="text/css" href="css/styles.css" />
-<link rel="stylesheet" type="text/css" href="css/styles1.css" />
-
-<!-- Bootstrap CDN -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<script
-	src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- 헤더 푸터 -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/font-awesome.min.css" rel="stylesheet">
-<link href="css/prettyPhoto.css" rel="stylesheet">
-<link href="css/price-range.css" rel="stylesheet">
-<link href="css/animate.css" rel="stylesheet">
-<link href="css/main.css" rel="stylesheet">
-<link href="css/responsive.css" rel="stylesheet">
-<!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <script src="js/respond.min.js"></script>
-    <![endif]-->
-<link rel="shortcut icon" href="images/ico/favicon.ico">
-<link rel="apple-touch-icon-precomposed" sizes="144x144"
-	href="images/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114"
-	href="images/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72"
-	href="images/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed"
-	href="images/ico/apple-touch-icon-57-precomposed.png">
-
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<style>
-a {
-	text-decoration: none;
-	color: black;
-}
-</style>
-
+<title>소시민:: 소심한 시민들의 거래</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 </head>
+
 <body>
-
-	<!-- 헤더 : header -->
-	<div th:replace="~{common/header :: headerFragment}"></div>
-	<!-- 내비바 -->
-
-
-	<div id="wrapper" style="min-height: 800px;">
-		<div class="container" style="height: auto;">
-
-			<h1>My Muse</h1>
-			<br />
-
-			<!-- 프로필 -->
-			<div id="content"
-				style="width: 200px; padding-top: -100px; float: left; padding-left: 0px;">
-				<div class="card" style="width: 200px">
-					<img class="card-img-top" src="./images/mypage/profile.png"
-						alt="Card image" style="width: 100%">
-					<div class="card-body">
-						<h4 class="card-title">
-							<div>
-								<span th:text="${session.login.getUserName()}"></span> ( <span
-									th:text="${session.login.getUserId()}"></span> )
-							</div>
-						</h4>
-
-						<div>
-							<ul>
-								<li>거래 지역 : <span th:text="${session.login.getUserAddr()}"></span></li>
-								<li>전화번호 : <span th:text="${session.login.getUserTel()}"></span></li>
-								<li>이메일 : <span th:text="${session.login.getUserEmail()}"></span></li>
-							</ul>
-						</div>
-
-						<a th:href="@{mypage_updated.action}" class="btn btn-primary"
-							style="background-color: black; width: 100%; font-size: 11px">
-							내 정보 수정하기</a>
-						<div th:if="${session.login.userId}==Master">
-							<a th:href="@{qa_list.action}" class="btn btn-primary"
-								style="background-color: black; width: 100%; font-size: 11px">
-								1:1 문의 확인하기</a>
-						</div>
-					</div>
-				</div>
+	<!-- Preloader -->
+	<div class="preloader" style="opacity: 0; display: none;">
+		<div class="preloader-inner">
+			<div class="preloader-icon">
+				<span></span> <span></span>
 			</div>
-			<!-- 프로필 끝-->
-
-			<div id="content" style="padding-left: 230px; height: 0px;">
-
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" role="tablist">
-					<li class="nav-item"><a class="nav-link active"
-						data-toggle="tab" href="#home" style="color: black;">판매내역</a></li>
-					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#menu2" style="color: black;">찜한상품</a></li>
-					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#menu3" style="color: black;">나의 댓글</a></li>
-					<li class="nav-item"><a class="nav-link" data-toggle="tab"
-						href="#menu4" style="color: black;">나의 커뮤니티</a></li>
-				</ul>
-
-				<!-- Tab panes -->
-				<div class="tab-content">
-					<div id="home" class="container tab-pane active">
-						<br>
-
-						<!-- 판매 -->
-
-
-
-						<table class="table" style="width: 850px;">
-							<thead class="bg-light">
-								<tr>
-									<th scope="col" style="width: 50px">품번</th>
-									<th scope="col" style="width: 150px">이미지</th>
-									<th scope="col" style="width: 150px">이름</th>
-									<th scope="col" style="width: 250px">제목</th>
-									<th scope="col" style="width: 100px">가격</th>
-									<th scope="col" style="width: 150px">등록일</th>
-								</tr>
-
-							</thead>
-							<tbody>
-								<tr th:each="item : ${saleLists}">
-									<td th:text=" '#'+ ${item.prodNo}" style="line-height: 100px"></td>
-									<td
-										th:with="baseUrl=(${item.prodNo}? 'sale_article.action' : ${item.prodNo})">
-										<a th:href="@{${baseUrl}(prodNo=${item.prodNo})}"> <img
-											th:src="@{/upload/} + ${item.tmImg}" width="100px"
-											height="100px" alt="" />
-									</a>
-									</td>
-									<td th:text="${item.prodName}" style="line-height: 100px"></td>
-									<td th:text="${item.prodSubject}" style="line-height: 100px"></td>
-									<td th:text="${item.prodPrice} + '원'"
-										style="line-height: 100px"></td>
-									<td th:text="${item.prodCreated}" style="line-height: 100px"></td>
-								</tr>
-							</tbody>
-						</table>
-
-
-
-					</div>
-
-					<div id="menu2" class="container tab-pane fade">
-						<br>
-
-
-						<table class="table" style="width: 850px;">
-							<thead class="bg-light">
-								<tr>
-									<th scope="col" style="width: 50px">품번</th>
-									<th scope="col" style="width: 150px">이미지</th>
-									<th scope="col" style="width: 150px">이름</th>
-									<th scope="col" style="width: 250px">제목</th>
-									<th scope="col" style="width: 100px">가격</th>
-									<th scope="col" style="width: 150px">등록일</th>
-								</tr>
-
-							</thead>
-							<tbody>
-								<tr th:each="item : ${heartLists}">
-									<td th:text=" '#'+ ${item.prodNo}" style="line-height: 100px"></td>
-									<td
-										th:with="baseUrl=(${item.prodNo}? 'sale_article.action' : ${item.prodNo})">
-										<a th:href="@{${baseUrl}(prodNo=${item.prodNo})}"> <img
-											th:src="@{/upload/} + ${item.tmImg}" width="100px"
-											height="100px" alt="" />
-									</a>
-									</td>
-									<td th:text="${item.prodName}" style="line-height: 100px"></td>
-									<td th:text="${item.prodSubject}" style="line-height: 100px"></td>
-									<td th:text="${item.prodPrice} + '원'"
-										style="line-height: 100px"></td>
-									<td th:text="${item.prodCreated}" style="line-height: 100px"></td>
-								</tr>
-							</tbody>
-						</table>
-
-
-					</div>
-					<div id="menu3" class="container tab-pane fade">
-						<br>
-
-
-						<table class="table" style="width: 850px;">
-							<thead class="bg-light">
-								<tr style="">
-									<th scope="col" rowspan="2"
-										style="width: 50px; line-height: 20px;">리뷰<br /> 번호
-									</th>
-									<th scope="col" style="width: 500px" colspan="2">상품 종류</th>
-									<th scope="col"
-										style="width: 150px; line-height: 50px; text-align: center;"
-										rowspan="2">작성일</th>
-									<th scope="col"
-										style="width: 100px; line-height: 50px; text-align: center;"
-										rowspan="2">상품 페이지</th>
-								</tr>
-								<tr style="height: 10px;">
-									<th scope="col" style="width: 300px" colspan="2">나의 댓글</th>
-								</tr>
-							</thead>
-
-							<tbody th:each="item : ${reviewLists}">
-								<tr>
-									<td rowspan="2" th:text=" '#'+ ${item.reviewNo}"
-										style="line-height: 50px"></td>
-									<td colspan="2"
-										th:text="'#'+${item.prodNo} + ' ) ' +${item.prodName} + ' : ' + ${item.prodSubject}"></td>
-									<td rowspan="2" th:text="${item.reviewCreated}"
-										style="line-height: 50px; text-align: center;"></td>
-									<td rowspan="2" style="line-height: 50px; text-align: center;"
-										th:with="baseUrl=(${item.prodNo}? 'sale_article.action' : ${item.prodNo})">
-										<a th:href="@{${baseUrl}(prodNo=${item.prodNo})}">More</a>
-									</td>
-								</tr>
-								<tr>
-									<td>ㄴ</td>
-									<td th:text="${item.reviewContent}"></td>
-								</tr>
-							</tbody>
-						</table>
-
-					</div>
-
-					<div id="menu4" class="container tab-pane fade">
-						<br>
-
-						<table class="table" style="width: 850px;">
-							<thead class="bg-light">
-								<tr>
-									<th scope="col" style="width: 50px; line-height: 15px;">커뮤<br />
-										번호
-									</th>
-									<th scope="col" style="width: 500px; line-height: 30px;">제목</th>
-									<th scope="col" style="width: 150px; line-height: 30px;">등록일</th>
-									<th scope="col"
-										style="width: 100px; text-align: center; line-height: 30px;">커뮤니티</th>
-								</tr>
-
-							</thead>
-							<tbody>
-								<tr th:each="item : ${commuLists}">
-									<td th:text=" '#'+ ${item.commuNo}" style="line-height: 50px"></td>
-									<td th:text="${item.commuSubject}" style="line-height: 50px"></td>
-									<td th:text="${item.commuCreated}" style="line-height: 50px"></td>
-									<td style="line-height: 50px; text-align: center;"
-										th:with="baseUrl=(${item.commuNo}? 'list.action' : ${item.commuNo})">
-										<a th:href="@{${baseUrl}(commuNo=${item.commuNo})}">More</a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-
-
-					</div>
-				</div>
-			</div>
-			<!-- Tab panes -->
-
-			<br /> <br />
 		</div>
-
 	</div>
+	<!-- /End Preloader -->
 
-	<!-- 내비바 끝-->
-
-	<br />
-	<br />
-	</div>
-
+	<!-- Start Header Area -->
+	<header class="header navbar-area">
+		<jsp:include page="../inc/top.jsp"></jsp:include>
+	</header>
+	<!-- End Header Area -->
 	
-	<!-- 푸터 : footer -->
-	<div th:replace="~{common/footer :: footer}"></div>
+    <!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">마이페이지</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
+                        <li>마이페이지</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
+    <div id="fullArea">
+		<div id="profileArea">
+			<div id="profileLeft">
+				<img>
+			</div>
+			<div id="profileRight">
+				<div id="profileRightUpperLeft">
+					<b id="bold">닉네임</b>&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="">내 정보 수정</a>
+				</div>
+				<div id="profileRightUpperRight">
+					동네인증 완료&nbsp;&nbsp;&nbsp;&nbsp;본인인증 완료
+				</div>
+				<section id="profileRightMiddle">
+					<span>Lv.3</span>
+					<span>상품 판매 n회</span>
+					<span>커뮤니티 글 n개</span>
+					<span>커뮤니티 댓글 n개</span>
+					<span>받은 공감 n개</span>
+				</section>
+				<div id="profileRightBottom">
+					소개글 영역
+				</div>
+			</div>
+		</div>
+    	<div id="categoryArea">
+    		<ul>
+    			<li><a href="">판매내역</a></li>
+    			<li><a href="">구매내역</a></li>
+    			<li><a href="">관심목록</a></li>
+    			<li><a href="">받은 후기</a></li>
+    			<li><a href="">커뮤니티 작성 글</a></li>
+    			<li><a href="">커뮤니티 작성 댓글</a></li>
+    		</ul>
+    	</div>
+    	
+    	<%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 표시 --%>
+    	<div id="tabArea">
+    		<%-- 카테고리 옵션1 : 판매 내역 탭일 경우 --%>
+    		<ul>
+    			<li><a href="">전체</a></li>
+    			<li><a href="">판매중</a></li>
+    			<li><a href="">거래완료</a></li>
+    			<li><a href="">취소/환불</a></li>
+    		</ul>
 
-	<script src=" js/jquery.js"></script>
-	<script src=" js/bootstrap.min.js"></script>
-	<script src=" js/jquery.scrollUp.min.js"></script>
-	<script src=" js/price-range.js"></script>
-	<script src=" js/jquery.prettyPhoto.js"></script>
-	<script src=" js/main.js"></script>
+    		<%-- 카테고리 옵션2 : 관심목록 탭일 경우 --%>
+<!--     		<ul> -->
+<!--     			<li><a href="">전체</a></li> -->
+<!--     			<li><a href="">판매중</a></li> -->
+<!--     			<li><a href="">거래완료</a></li> -->
+<!--     		</ul> -->
+		</div>
+		<div id="wholeProductArea">
+		
+			<!-- 판매내역 옵션1-1 판매 중(끌올 불가) -->
+			<div id="singleProductArea">
+				<img>
+				<div id="singleProductTitleArea">
+					<b>상품글제목자리</b>
+				</div>
+				<div id="singleProductInfoArea">
+					nnnnn원
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					n시간 전
+				</div>
+				<div id="singleProductContactArea">
+					찜 n개
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					채팅 n회
+				</div>
+				<div id="singleProductButtonArea">
+					<input type="button" value="수정">
+				</div>
+			</div>
 
+			<!-- 판매내역 옵션1-2 판매 중(끌올 가능) -->
+			<div id="singleProductArea">
+				<img>
+				<div id="singleProductTitleArea">
+					<b>상품글제목자리</b>
+				</div>
+				<div id="singleProductInfoArea">
+					nnnnn원
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					n시간 전
+				</div>
+				<div id="singleProductContactArea">
+					찜 n개
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					채팅 n회
+				</div>
+				<div id="singleProductButtonArea">
+					<input type="button" value="수정">
+					<input type="button" value="UP">
+				</div>
+			</div>
+
+			<!-- 판매내역 옵션2 거래중 -->
+			<div id="singleProductArea">
+				<img>
+				<div id="singleProductTitleArea">
+					<b>상품글제목자리</b>
+				</div>
+				<div id="singleProductInfoArea">
+					nnnnn원
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					n시간 전
+				</div>
+				<div id="singleProductContactArea">
+					찜 n개
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					채팅 n회
+				</div>
+				<div id="singleProductButtonArea">
+					<input type="button" value="구매확정요청">
+				</div>
+			</div>
+
+			<!-- 판매내역 옵션3 판매완료(후기미작성) -->
+			<div id="singleProductArea">
+				<img>
+				<div id="singleProductTitleArea">
+					<b>상품글제목자리</b>
+				</div>
+				<div id="singleProductInfoArea">
+					nnnnn원
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					n시간 전
+				</div>
+				<div id="singleProductContactArea">
+					찜 n개
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					채팅 n회
+				</div>
+				<div id="singleProductButtonArea">
+					<input type="button" value="거래후기작성">
+				</div>
+			</div>
+
+			<!-- 판매내역 옵션4 거래완료(후기작성완료) -->
+			<div id="singleProductArea">
+				<img>
+				<div id="singleProductTitleArea">
+					<b>상품글제목자리</b>
+				</div>
+				<div id="singleProductInfoArea">
+					nnnnn원
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					n시간 전
+				</div>
+				<div id="singleProductContactArea">
+					찜 n개
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					채팅 n회
+				</div>
+				<div id="singleProductButtonArea">
+					<input type="button" value="거래후기보기">
+				</div>
+			</div>
+
+			<!-- 구매내역 옵션1 거래중 -->
+			<div id="singleProductArea">
+				<img>
+				<div id="singleProductTitleArea">
+					<b>상품글제목자리</b>
+				</div>
+				<div id="singleProductInfoArea">
+					nnnnn원
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					n시간 전
+				</div>
+				<div id="singleProductContactArea">
+					찜 n개
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					채팅 n회
+				</div>
+				<div id="singleProductButtonArea">
+					<input type="button" value="구매확정하기">
+				</div>
+			</div>
+
+			<!-- 판매내역 옵션2 구매완료(후기미작성) -->
+			<div id="singleProductArea">
+				<img>
+				<div id="singleProductTitleArea">
+					<b>상품글제목자리</b>
+				</div>
+				<div id="singleProductInfoArea">
+					nnnnn원
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					n시간 전
+				</div>
+				<div id="singleProductContactArea">
+					찜 n개
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					채팅 n회
+				</div>
+				<div id="singleProductButtonArea">
+					<input type="button" value="거래후기작성">
+				</div>
+			</div>
+
+			<!-- 판매내역 옵션3 거래완료(후기작성완료) -->
+			<div id="singleProductArea">
+				<img>
+				<div id="singleProductTitleArea">
+					<b>상품글제목자리</b>
+				</div>
+				<div id="singleProductInfoArea">
+					nnnnn원
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					n시간 전
+				</div>
+				<div id="singleProductContactArea">
+					찜 n개
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					채팅 n회
+				</div>
+				<div id="singleProductButtonArea">
+					<input type="button" value="거래후기보기">
+				</div>
+			</div>
+		
+		</div>
+    	<%-- 페이지 옵션1 끝 --%>
+		
+    	<%-- 페이지 옵션2 : 받은 후기 탭 선택 시 표시 --%>
+    	<%-- 페이지 옵션2 끝 --%>
+
+    	<%-- 페이지 옵션3 : 커뮤니티 관련 탭(커뮤니티 작성글, 커뮤니티 작성 댓글) 선택 시 표시 --%>
+    	
+    	
+    	<%-- 페이지 옵션3 끝 --%>
+		
+		
+		
+    </div>
 </body>
+
 </html>
