@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Sosimin</title>
+    <title>FAQ - ShopGrids Bootstrap 5 eCommerce HTML Template.</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
@@ -22,9 +22,28 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/csStyle.css" />
 
 </head>
+
+<style>
+.row {
+  display: flex;
+  justify-content: center; /* 이미지를 가운데 정렬합니다. */
+  align-items: center; /* 이미지를 세로로 정렬합니다. */
+}
+
+.row a {
+  flex-basis: 33.33%; /* 각 이미지가 1/3의 가로 공간을 차지하도록 설정합니다. */
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.row a img {
+  margin-bottom: 10px;
+}
+</style>
+
 
 <body>
     <!--[if lte IE 9]>
@@ -56,14 +75,13 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">공지사항</h1>
+                        <h1 class="page-title">고객센터</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./">Home</a></li>
-                        <li><a href="csMain">고객센터</a></li>
-                        <li>공지사항</li>
+                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li>고객센터</li>
                     </ul>
                 </div>
             </div>
@@ -72,117 +90,33 @@
     <!-- End Breadcrumbs -->
 
     <!-- Start Faq Area -->
-    <section class="faqsection">
+    <section class="faq section">
         <div class="container">
             <div class="row">
                 <div class="col-12">
-	                <!-- Start Main Menu Search -->
-	                <div class="cs-search">
-	                    <!-- navbar search start -->
-	                    <div class="navbar-search search-style-5">
-	                        <div class="search-btn">
-	                            <input type="text" id="searchKeyword" placeholder="Search" >
-	                            <button onclick="location.href='csNotice'">
-	                            	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-									  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-									</svg>
-	                            </button>
-	                        </div>
-	                    </div>
-	                    <!-- navbar search Ends -->
-	                </div>
-                </div>
-            </div>
-	            <hr>
-		            <div>
-						<ul class="useful-links">
-							<li><a href="contact.html" id="menu1">일반</a><a href="contact.html" id="menu2">정책변경</a><a href="contact.html" id="menu3">사기예방</a></li>
-						</ul>
-		            </div>
-	            <hr>
-            <div class="row">
-                <div class="col-lg-10 offset-lg-1 col-md-12 col-12">
-                    <div class="accordion" id="accordionExample">
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="headingOne">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse"
-										data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-									<span class="title">제목</span>
-								</button>
-							</h2>
-							<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-								 data-bs-parent="#accordionExample">
-								<div class="accordion-body">
-									<p>내용</p>
-								</div>
-							</div>
-						</div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    <span class="title">제목2</span>
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <p>내용1</p>
-                                    <p>내용2</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    <span class="title">제목3</span>
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <p>내용1</p>
-                                    <p>내용2</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingfour">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
-                                    <span class="title">제목4</span>
-                                </button>
-                            </h2>
-                            <div id="collapsefour" class="accordion-collapse collapse" aria-labelledby="headingfour"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <p>내용1</p>
-                                    <p>내용2</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="section-title">
+                        <h2>무엇을 도와드릴까요?</h2>
                     </div>
                 </div>
-					<!-- Pagination -->
-					<div class="pagination left">
-						<ul class="pagination-list">
-							<li><a href="javascript:void(0)"><</a></li>
-							<li><a href="javascript:void(0)">1</a></li>
-							<li class="active"><a href="javascript:void(0)">2</a></li>
-							<li><a href="javascript:void(0)">3</a></li>
-							<li><a href="javascript:void(0)">4</a></li>
-							<li><a href="javascript:void(0)">5</a></li>
-							<li><a href="javascript:void(0)">></a></li>
-						</ul>
-					</div>
-				<!--/ End Pagination -->
             </div>
+				<div class="row">
+				    <a href="csNotice">
+				        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
+				        <span id="">공지사항</span>
+				    </a>
+				    <a href="csFaq">
+				        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
+				        <span>자주묻는질문</span>
+				    </a>
+				    <a href="csOneOnOne">
+				        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
+				        <span>1:1채팅문의</span>
+				    </a>
+				</div>
         </div>
     </section>
     <!--/ End Faq Area -->
 
-                                        
     <!-- Start Footer Area -->
     <footer class="footer">
         <!-- Start Footer Top -->
