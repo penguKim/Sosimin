@@ -52,8 +52,15 @@
 	font-weight: 600;
 }
 
+.accordion-item .accordion-body .accordion-body-1 {
+	color: black;
+	font-size: 16px;
+	font-weight: 600;
+}
 
-
+.accordion-item .accordion-body .accordion-body-2 {
+	color: red;	
+}
 
 
 

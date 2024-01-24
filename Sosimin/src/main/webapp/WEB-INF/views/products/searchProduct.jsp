@@ -3,19 +3,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+	
 <title>Insert title here</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product.css" />
 </head>
-<%-- 1. 신고하기 기능 --%>
-<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
+
+<%-- 신고 안되면 다시살려야됨 --%>
+<%-- <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script> --%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <body>
 	<header class="header navbar-area">
@@ -135,11 +138,11 @@
                         </div>
                         <%-- 3. 신고하기 기능 --%>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                        		data-bs-target="#reportModal" id="reportBtn">
+                        		data-bs-target="#reportModal" id="reportBtn" value="1">
 								게시글 신고하기
 						</button>
 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                        		data-bs-target="#memberModal" id="reportBtn" >
+                        		data-bs-target="#memberModal" id="reportBtn" value="2">
 								회원 신고하기
 						</button>
                    </div>
