@@ -12,7 +12,8 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.png" />
-
+<%-- 1. 신고하기 기능 --%>
+<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 
 
 <!--     <meta http-equiv="x-ua-compatible" content="ie=edge" /> -->
@@ -33,8 +34,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
-	<%-- 1. 신고하기 기능 --%>
-	<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
+
 </head>
 <style>
 .product-info{
@@ -50,7 +50,7 @@
 #Like{
 	display: inline-block;
 }
-#police{
+.police{
 	margin-left: 300px;
     color: rgb(204, 204, 204);
     font-size: 16px;
@@ -114,6 +114,7 @@
 }
 #threeButton{
 	position: relative;
+	top: 30px;
 }
 #chatButton{
 	background-color: rgb(255, 164, 37);
@@ -133,10 +134,14 @@
 	bottom:4px;
 	z-index: 2;
 }
+
+#sectionWidth{
+ 	width: 1800px; 
+	max-width: 1800px;
+}
 </style>
 <body>
-	<%-- 2. 신고하기 기능 --%>
-	<jsp:include page="../report/report.jsp"></jsp:include>
+
     <!--[if lte IE 9]>
       <p class="browserupgrade">
         You are using an <strong>outdated</strong> browser. Please
@@ -147,6 +152,8 @@
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
+	<%-- 2. 신고하기 기능 --%>
+	<jsp:include page="../report/report.jsp"></jsp:include>
     <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-inner">
@@ -179,7 +186,7 @@
     <!-- End Breadcrumbs -->
 
     <!-- Start Item Details -->
-    <section class="item-details section">
+    <section class="item-details section" id="sectionWidth">
         <div class="container">
             <div class="top-area">
                 <div class="row align-items-center">
@@ -187,7 +194,7 @@
                         <div class="product-images">
                             <main id="gallery">
                                 <div class="main-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="464px">
+                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="520px">
                                 </div>
                                 <div class="images">
                                     <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" class="img" alt="# " height="100px">
@@ -226,7 +233,7 @@
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/시간.png" width="25" height="25">
 	                        		몇일전
 	                        	</div>
-	                        	<button id="police" onclick="location.href='report'">
+	                        	<button class="police" id="reviewCheckForm" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/product-details/신고하기.png" width="25" height="25">
 	                        		신고하기
 	                        	</button>
