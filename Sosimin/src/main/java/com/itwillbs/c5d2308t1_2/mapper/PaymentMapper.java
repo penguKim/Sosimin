@@ -8,12 +8,18 @@ import org.apache.ibatis.annotations.Mapper;
 public interface PaymentMapper {
 
 	// 토큰 중복 처리를 위한 아이디 조회
-	String selectId(Map<String, Object> map);
+	String selectAccessToken(Map<String, Object> map);
 
 	// 엑세스토큰 저장
 	void insertAccessToken(Map<String, Object> map);
 
 	// 엑세스토큰 업데이트
 	void updateAccessToken(Map<String, Object> map);
+
+	// 페이 가입 중복 처리를 위한 아이디 조회
+	String selectPay(Map<String, Object> map);
+
+	// 페이 가입
+	int insertPay(Map<String, Object> map);
 
 }

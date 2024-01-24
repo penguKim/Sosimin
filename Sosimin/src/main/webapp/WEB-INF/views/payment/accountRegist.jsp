@@ -33,6 +33,13 @@ function openModal(bank_name, account_num_masked, fintech_use_num) {
 };
 
 $(function() {
+	<%-- 뒤로가기 방지 --%>
+	window.addEventListener('pageshow', function(event) { <%-- 페이지가 로드되거나 새로고침 발생 이벤트 --%>
+		if (event.persisted) { <%-- 뒤로가기나 앞으로가기로 이동했을 시 true 리턴 --%>
+		    location.reload(); <%-- 페이지 새로고침 --%>
+		}
+	});
+
 	// 비밀번호를 입력하고 등록버튼을 눌렀을 때 
 	$("form").submit(function() {
 		let regPw = /^\d{6}$/; // 6자리의 숫자를 표현한 정규표현식
@@ -50,10 +57,7 @@ $(function() {
 			return false; // 컨펌창에 취소를 눌러도 계좌가 등록되지 않음	
 		}
 	});
-	
 });
-
-
 </script>
 </head>
 <body>

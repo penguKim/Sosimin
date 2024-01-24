@@ -23,13 +23,14 @@
 <!-- ========================= 자바스크립트 시작 ========================= -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
-	$(function() {
-		<%-- 뒤로가기 방지 --%>
-		if (performance.navigation.type === 2) { <%-- 0 : 처음 로딩/새로고침, 1 : 페이지가 앞/뒤로 이동, 2 : 페이지가 뒤로 이동  --%>
-			alert('비정상적인 접근입니다.\n메인페이지로 이동합니다.');
-			location.href = './'; //다른 페이지로 이동
+$(function() {
+	<%-- 뒤로가기 방지 --%>
+	window.addEventListener('pageshow', function(event) { <%-- 페이지가 로드되거나 새로고침 발생 이벤트 --%>
+		if (event.persisted) { <%-- 뒤로가기나 앞으로가기로 이동했을 시 true 리턴 --%>
+		    location.reload(); <%-- 페이지 새로고침 --%>
 		}
 	});
+});
 </script>
 </head>
 <body>
@@ -78,7 +79,7 @@
                     <div class="card login-form pay-card">
                         <div class="card-body">
                             <div class="title paytitle">
-                                <h3 class="user-name">00님</h3> <!-- 사용자프로필/sId -->
+                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
                                 <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
                             </div>
                             <div class="complete">

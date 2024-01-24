@@ -23,6 +23,13 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 $(function() {
+	<%-- 뒤로가기 방지 --%>
+	window.addEventListener('pageshow', function(event) { <%-- 페이지가 로드되거나 새로고침 발생 이벤트 --%>
+		if (event.persisted) { <%-- 뒤로가기나 앞으로가기로 이동했을 시 true 리턴 --%>
+		    location.reload(); <%-- 페이지 새로고침 --%>
+		}
+	});
+	
     let value = 0;
 	// 가격 버튼을 클릭할 때
 	$('.btn-check').click(function() {
@@ -30,17 +37,30 @@ $(function() {
 		value += parseInt($(this).val());
 
 		let formattedValue = value.toLocaleString();
-        $('#pay-amount').val(formattedValue);
-		
+        $('#pay-amount').val(formattedValue);	
 	});
 	
-
-	// 모달 창을 열 때
-	$('#modal-open').click(function() {
-	    $('#pay-password').val(''); // 입력 필드를 초기 값으로 설정
+	// 비밀번호를 입력하고 등록버튼을 눌렀을 때 
+	$("form").submit(function() {
+		let regPw = /^\d{6}$/; // 6자리의 숫자를 표현한 정규표현식
+		
+		if(confirm("결제하시겠습니까?")) { // 컨펌창을 띄우고
+			if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
+				alert("숫자 6자리를 입력해주세요");
+				return false; // 계좌가 등록되지 않음
+			}
+			return true;
+		} 
 	});
-
 });
+
+// 모달 창을 열 때
+function openModal() {
+	event.preventDefault(); 
+	
+    $('#password-modal').modal('show');
+   	$('#pay-password').val(''); // 입력 필드를 초기 값으로 설정
+} 
 </script>
 </head>
 <body>
@@ -87,7 +107,7 @@ $(function() {
 	                    <div class="card login-form pay-card">
 	                        <div class="card-body">
 	                            <div class="title paytitle">
-	                                <h3 class="user-name">00님</h3> <!-- 사용자프로필/sId -->
+	                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
 	                                <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
 	                            </div>
 	                           	<div class="complete-msg-center">거래정보</div>
@@ -119,7 +139,7 @@ $(function() {
 	                            <div class="form-group input-group">
 	                                <label for="reg-fn">충전금액</label>
 	                                <input class="form-control" type="text" id="pay-amount" name="pay_amount"
-	                                	placeholder="충전을 원하시는 금액을 입력해주세요" required>
+	                                	placeholder="충전을 원하시는 금액을 입력해주세요">
 	                            </div>
 	                            <div class="btn-group">
 							        <input type="button" class="btn-check" id="btn-check1" value="10000" autocomplete="off">
@@ -150,7 +170,7 @@ $(function() {
 	                            </div>
 				                <!-- 계좌리스트 한 줄 끝 -->
 	                            <div class="button">
-	                                <button class="btn" id="modal-open" data-bs-toggle="modal" data-bs-target="#password-modal">결제하기</button>
+	                                <button class="btn" id="modal-open" onclick="openModal()">결제하기</button>
 	                            </div>
 	                        </div>
 	                    </div>
@@ -174,7 +194,7 @@ $(function() {
 	                        <div class="col-sm-12">
 	                            <div class="form-group">
 	                                <label for="pay-password">비밀번호</label>
-	                              	<input class="form-control" type="password" id="pay-password" name="pay_password" required
+	                              	<input class="form-control" type="password" id="pay-password" name="pay_password"
 	                                	placeholder="6자리 숫자를 입력해주세요" maxlength="6">
 	                            </div>
 	                        </div>

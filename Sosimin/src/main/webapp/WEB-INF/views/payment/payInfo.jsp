@@ -22,7 +22,14 @@
 <!-- ========================= 자바스크립트 시작 ========================= -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
-
+$(function() {
+	<%-- 뒤로가기 방지 --%>
+	window.addEventListener('pageshow', function(event) { <%-- 페이지가 로드되거나 새로고침 발생 이벤트 --%>
+		if (event.persisted) { <%-- 뒤로가기나 앞으로가기로 이동했을 시 true 리턴 --%>
+		    location.reload(); <%-- 페이지 새로고침 --%>
+		}
+	});
+});
 </script>
 </head>
 <body>
@@ -68,7 +75,7 @@
                     <div class="card login-form pay-card">
                         <div class="card-body">
                             <div class="title paytitle">
-                                <h3 class="user-name">00님</h3> <!-- 사용자프로필/sId -->
+                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
                                 <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
                             </div>
                             <div class="row">
@@ -89,14 +96,17 @@
                      </div>   
                      <div class="card login-form">   
                         <div class="card-body">
-                           	<div>
-                           		<ul class="collect">
-									<li><input type="button" value="전체" class=""></li>
-									<li><input type="button" value="충전" class=""></li>
-									<li><input type="button" value="환급" class=""></li>
-									<li><input type="button" value="사용" class=""></li>
-									<li><input type="button" value="수익" class=""></li>
-                           		</ul>
+                           	<div class="btn-group col">
+						        <input type="radio" name="options" class="btn-check" id="btn-check1" value="전체" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-check1">전체</label>
+						        <input type="radio" name="options" class="btn-check" id="btn-check2" value="충전" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-check2">충전</label>
+						        <input type="radio" name="options"class="btn-check" id="btn-check3" value="환급" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-check3">환급</label>
+						        <input type="radio" name="options" class="btn-check" id="btn-check4" value="사용" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-check4">사용</label>
+						        <input type="radio" name="options" class="btn-check" id="btn-check5" value="수익" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-check5">수익</label>
 							</div>
 							<!-- 페이내역 리스트 1줄 시작 -->
 			                <div class="cart-single-list">

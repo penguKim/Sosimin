@@ -29,7 +29,7 @@ public class PaymentService {
 	// 엑세스 토큰 저장 요청
 	public void registAccessToken(Map<String, Object> map) {
 		// 해당 아이디로 저장된 토큰이 있는지 확인
-		String id = mapper.selectId(map);
+		String id = mapper.selectAccessToken(map);
 		
 		// 아이디가 존재하지 않을 경우 엑세스토큰 INSERT
 		// 아이디가 존재할 경우 엑세스토큰 UPDATE
@@ -45,6 +45,22 @@ public class PaymentService {
 	public Map<String, Object> requestUserInfo(Map<String, Object> map) {
 		// BankApiClient - requestUserInfo() 메서드 호출
 		return bankApiClient.requestUserInfo(map);
+	}
+
+	// 페이 가입 정보 저장 요청
+	public int registPay(Map<String, Object> map) {
+		int insertCount = 0;
+		
+		// 해당 아이디로 가입된 정보가 있는지 확인
+		String id = mapper.selectPay(map);
+		
+		// 아이디가 존재하지 않을 경우 엑세스토큰 INSERT
+		if(id == null) {
+			insertCount = mapper.insertPay(map);
+		} 
+		
+		return insertCount;
+		
 	}
 
 }

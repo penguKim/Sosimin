@@ -9,6 +9,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -95,7 +96,7 @@ public class PaymentController {
 		
 		// 토큰 관련 정보 저장
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", id); // 세션아이디 저장
+		map.put("member_id", id); // 세션아이디 저장
 		map.put("token", responseToken);
 		
 		service.registAccessToken(map);
@@ -142,16 +143,32 @@ public class PaymentController {
 		return "payment/accountRegist";
 	}
 	
+	// 선택한 계좌를 DB에 등록
 	@PostMapping("AccountRegistPro")
-	public String accountRegistPro(@RequestParam Map<String, Object> map, HttpSession session) {
+	public String accountRegistPro(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
 		map.put("member_id", session.getAttribute("sId")); // map 객체에 아이디 저장
 		
-		log.info("map : " + map);
+//		log.info("map : " + map);
 		
-		// 아이디, 은행명, 계좌번호, 핀테크번호, 페이비밀번호 db에 저장
+		// 아이디, 은행명, 계좌번호, 핀테크번호, 페이비밀번호 db에 저장하기
+		// 페이비밀번호는 암호화하기
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String securePasswd = passwordEncoder.encode(map.get("pay_password").toString());
 		
+		map.put("pay_password", securePasswd);
 		
-		return "";
+//		log.info("map 암호화 : " + map);
+		
+		int insertCount = service.registPay(map);
+		
+		if(insertCount > 0) { // 페이 가입이 되면
+			return "redirect:/PayInfo";
+		} else {
+			model.addAttribute("msg", "계좌 등록을 실패하였습니다");
+			model.addAttribute("targetURL", "AccountRegist"); // 계좌 목록 페이지로 이동
+			return "forward";
+		}
+
 	}
 	
 	
