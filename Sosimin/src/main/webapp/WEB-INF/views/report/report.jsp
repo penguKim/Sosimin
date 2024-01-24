@@ -67,13 +67,13 @@ function reportRegist() {
 					<div class="accordion" id="accordionExample">
 						<div class="accordion-subject">'게시글 제목' 게시글을 신고하는 이유를 선택해주세요 </div>
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="headingOne">
+							<h2 class="accordion-header" id="heading1">
 								<button id="accordioncolor" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-									data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+									data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
 									<span class="title">거래 금지 물품이에요</span>
 								</button>
 							</h2>
-							<div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+							<div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1"
 							   		data-bs-parent="#accordionExample">
 								<div class="accordion-body">
 									<p>어떤 물품을 판매하고 있나요? <br><br> 내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
@@ -84,13 +84,13 @@ function reportRegist() {
 						</div>
 						
 						<div class="accordion-item">
-						<h2 class="accordion-header" id="headingTwo">
+						<h2 class="accordion-header" id="heading2">
 								<button id="accordioncolor" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-									data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
 									<span class="title">광고성 게시글이에요</span>
 								</button>
 							</h2>
-							<div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+							<div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2"
 			    				data-bs-parent="#accordionExample">
 								<div class="accordion-body">
 									<p>어떤 내용의 광고성 게시글인가요? <br><br> 내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
@@ -101,13 +101,13 @@ function reportRegist() {
 						</div>
 					
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="headingThree">
+							<h2 class="accordion-header" id="heading3">
 							<button id="accordioncolor" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-								data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+								data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
 								<span class="title">거래중 분쟁이 발생했어요</span>
 							</button>
 							</h2>
-							<div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+							<div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3"
 					    		data-bs-parent="#accordionExample">
 								<div class="accordion-body">
 									<p>어떤 분쟁이 발생했나요? <br><br> 내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
@@ -118,13 +118,13 @@ function reportRegist() {
 						</div>
 						
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="headingfour">
+							<h2 class="accordion-header" id="heading4">
 							<button id="accordioncolor" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-								data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+								data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
 								<span class="title">사기 인것 같아요</span>
 							</button>
 							</h2>
-							<div id="collapsefour" class="accordion-collapse collapse" aria-labelledby="headingfour"
+							<div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4"
 					    		data-bs-parent="#accordionExample">
 								<div class="accordion-body">
 									<p>어떤 종류의 사기인가요? <br><br> 내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
@@ -135,13 +135,13 @@ function reportRegist() {
 						</div>
 						
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="headingfive">
+							<h2 class="accordion-header" id="heading5">
 							<button id="accordioncolor" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-								data-bs-target="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
+								data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
 								<span class="title">다른 문제가 있어요</span>
 							</button>
 							</h2>
-							<div id="collapsefive" class="accordion-collapse collapse" aria-labelledby="headingfive"
+							<div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5"
 					    		data-bs-parent="#accordionExample">
 								<div class="accordion-body">
 									<p>어떤 문제가 있나요? <br><br> 내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
@@ -176,13 +176,13 @@ function reportRegist() {
 					<div class="accordion" id="accordionExample">
 						<div class="accordion-subject">'사용자이름' 사용자를 신고하는 이유를 선택해주세요 </div>
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="headingOne">
+							<h2 class="accordion-header" id="heading6">
 								<button id="accordioncolor" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-									data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+									data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
 									<span class="title">비매너 사용자에요</span>
 								</button>
 							</h2>
-							<div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+							<div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6"
 							   		data-bs-parent="#accordionExample">
 								<div class="accordion-body">
 									<p>어떤 행위를 했나요? <br><br> 내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
@@ -193,13 +193,13 @@ function reportRegist() {
 						</div>
 						
 						<div class="accordion-item">
-						<h2 class="accordion-header" id="headingTwo">
+						<h2 class="accordion-header" id="heading7">
 								<button id="accordioncolor" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-									data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
 									<span class="title">욕설, 비방, 혐오를 표현을 해요</span>
 								</button>
 							</h2>
-							<div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+							<div id="collapse7" class="accordion-collapse collapse" aria-labelledby="heading7"
 			    				data-bs-parent="#accordionExample">
 								<div class="accordion-body">
 									<p>어떤 표현을 했나요? <br><br> 내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
@@ -210,13 +210,13 @@ function reportRegist() {
 						</div>
 					
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="headingThree">
+							<h2 class="accordion-header" id="heading8">
 							<button id="accordioncolor" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-								data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+								data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
 								<span class="title">거래중 분쟁이 발생했어요</span>
 							</button>
 							</h2>
-							<div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+							<div id="collapse8" class="accordion-collapse collapse" aria-labelledby="heading8"
 					    		data-bs-parent="#accordionExample">
 								<div class="accordion-body">
 									<p>어떤 분쟁이 발생했나요? <br><br> 내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
@@ -227,13 +227,13 @@ function reportRegist() {
 						</div>
 						
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="headingfour">
+							<h2 class="accordion-header" id="heading9">
 							<button id="accordioncolor" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-								data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+								data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
 								<span class="title">전문 판매 업자같아요</span>
 							</button>
 							</h2>
-							<div id="collapsefour" class="accordion-collapse collapse" aria-labelledby="headingfour"
+							<div id="collapse9" class="accordion-collapse collapse" aria-labelledby="heading9"
 					    		data-bs-parent="#accordionExample">
 								<div class="accordion-body">
 									<p>어떤 종류의 물건을 팔고있나요? <br><br> 내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
@@ -243,13 +243,13 @@ function reportRegist() {
 						</div>
 						
 						<div class="accordion-item">
-							<h2 class="accordion-header" id="headingfive">
+							<h2 class="accordion-header" id="heading10">
 							<button id="accordioncolor" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-								data-bs-target="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
+								data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
 								<span class="title">다른 문제가 있어요</span>
 							</button>
 							</h2>
-							<div id="collapsefive" class="accordion-collapse collapse" aria-labelledby="headingfive"
+							<div id="collapse10" class="accordion-collapse collapse" aria-labelledby="heading10"
 					    		data-bs-parent="#accordionExample">
 								<div class="accordion-body">
 									<p>어떤 문제가 있나요? <br><br> 내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
