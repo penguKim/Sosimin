@@ -22,7 +22,6 @@
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
 	<%-- 2. 신고하기 기능 --%>
-	<jsp:include page="../report/test.jsp"></jsp:include>
 	<jsp:include page="../report/report.jsp"></jsp:include>
 	<!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
@@ -56,7 +55,6 @@
                         <!-- Start Single Widget -->
                         <div class="single-widget">
 	                        <span class="filter">필터</span>
-							<%-- 신고하기 기능 --%>
                         	<span class="filter_reset">
                         		<a href="javascript:void(0)" style="text-decoration: underline; color: grey;">초기화</a>
                         	</span>
@@ -136,14 +134,14 @@
 		                    </form>
                         </div>
                         <%-- 3. 신고하기 기능 --%>
-	                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-	                        		data-bs-target="#reportModal" id="reportBtn" >
-									신고하기
-							</button>
-							<button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-	                        		data-bs-target="#memberModal1" id="reportBtn" >
-									신고하기
-							</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                        		data-bs-target="#reportModal" id="reportBtn">
+								게시글 신고하기
+						</button>
+						<button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+                        		data-bs-target="#memberModal" id="reportBtn" >
+								회원 신고하기
+						</button>
                    </div>
                </div>
                 

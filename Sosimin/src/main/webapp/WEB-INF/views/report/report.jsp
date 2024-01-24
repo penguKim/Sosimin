@@ -19,19 +19,15 @@
 <script type="text/javascript">
 $(function() {
 	$("#memberReportModal").on("click", function() {
-		$("#reportModal").modal('hide');
+		$("#modalDismiss").click();
 		
 		$("#memberModal").modal('show');
-	
 	});
 });
-	
 </script>
 <script type="text/javascript">
 <%-- sweetalert confirm --%>
 function reportRegist() {
-	
-	
 	Swal.fire({
 		   title: '정말 신고하시겠습니까?',
 		   text: '내용과 사실이 다를 경우 불이익을 당할 수 있습니다',
@@ -42,16 +38,19 @@ function reportRegist() {
 		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
 		   confirmButtonText: '신고하기', // confirm 버튼 텍스트 지정
 		   cancelButtonText: '취소하기', // cancel 버튼 텍스트 지정
-		   
 		   reverseButtons: true, // 버튼 순서 거꾸로
-		   
 	}).then(result => {
 	    // 만약 Promise리턴을 받으면,
 	    if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
 	    	Swal.fire('신고가 완료되었습니다!', '화끈하시네요~!', 'success');
+	    	
+	    	
+	    	$("#modalDismiss").click();
+	    	$("#memberModal").click();
+	    	
+	    	
 	   }
 	});
-	
 }	
 </script>
 </head>
@@ -62,7 +61,7 @@ function reportRegist() {
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="reportsubject">게시글 신고하기</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modalDismiss"></button>
 				</div>
 				<div class="modal-body">
 					<div class="accordion" id="accordionExample">
