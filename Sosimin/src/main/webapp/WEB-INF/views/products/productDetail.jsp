@@ -39,7 +39,7 @@
 <style>
 .product-info{
 	position: relative;
-	bottom: 46px;
+	top: 6px;
 }
 .price2{
 	display: inline-block;
@@ -114,7 +114,8 @@
 }
 #threeButton{
 	position: relative;
-	top: 30px;
+	top: 15px;
+	padding-bottom: 30px;
 }
 #chatButton{
 	background-color: rgb(255, 164, 37);
@@ -135,11 +136,152 @@
 	z-index: 2;
 }
 
-#sectionWidth{
- 	width: 1800px; 
-	max-width: 1800px;
+#relatedProducts{
+	font-size: 20px;
+}
+#topWidth{
+	width:1300px;
+	max-width: 1300px;
+}
+#productImageName{
+	display: inline-block;
+}
+#productName{
+	text-align: center;
+}
+#productNameContent{
+	width: 900px;
+	border-width: thin thin thin thin;
+	border-style: solid;
+	border-color: white rgb(204, 204, 204) white white;
+}
+#profileImage{
+	height:80px;
+	width: 80px;
+    border-radius: 70%;
+    overflow: hidden;
+    position: relative;
+}
+
+#nickname{
+	display: inline-block;
+	position: relative;
+	bottom: 55px;
+	font-size: 17px;
+	color:black;
+	left:15px;
+}
+#nicknameA , #aTag{
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+#info_body{
+	padding-left: 20px;
+}
+#single_block {
+  padding: 0 30px 0px 30px;
+  margin: 0;
+}
+#relatedProductsBlock{
+	margin-bottom: 30px;
+}
+#myProductDiv{
+	display: inline-block;
+	position: relative;
+	left: 100px;
+	bottom: 50px;
+}
+#myProducts{
+	display: inline-block;
+	position: relative;
+}
+#reviews{
+	display: inline-block;
+	position: relative;
+	left:10px;
+}
+#after{
+    content: "";
+    position: absolute;
+    right: -8px;
+    top: 4px;
+    width: 1px;
+    height: 17px;
+    border-right: 1px solid rgb(204, 204, 204);
+}
+
+#myProductImage{
+	display: inline-block;
+}
+#imgPrice{
+	position:relative;
+    bottom: 35px;
+    left: 0px;
+    width: 100%;
+    height: 34px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    background: rgba(0, 0, 0, 0.25);
+}
+#productCount {
+  font-size: 15px;
+  font-weight: inherit; 
+  color: red;
+  font-style: inherit; !important;
+}
+#productPlus{
+  color: inherit; !important;
+  text-decoration: none; !important;
+  font-size: 15px;
+}
+#tradeImage{
+	position: relative;
+	left:30px;
+}
+#tradeAddress{
+	border-width: thin thin thin thin;
+	border-style: solid;
+	border-color: white rgb(204, 204, 204) white white;
+	height: 120px;
+	display: inline-block;
+	padding-right: 10px;
 }
 </style>
+<script>
+
+// 메인사진 클릭시 전체 사진 다 띄우기 <사용할지 안할지 모름> 
+
+// function openPopup() {
+//     var images = document.querySelectorAll('.images img');
+//     var imageSrcs = [];
+    
+//     images.forEach(function(image) {
+//         imageSrcs.push(image.src);
+//     });
+    
+//     var popupWindow = window.open('', '_blank', 'width=900,height=620');
+    
+//     popupWindow.document.write('<div style="display:flex; flex-direction: row;">');
+    
+//     imageSrcs.forEach(function(src) {
+//         popupWindow.document.write('<img src="' + src + '" style="width: 540px; height: 540px; margin-right: 10px; margin-top : 20px;">');
+//     });
+    
+//     popupWindow.document.write('</div>');
+//     popupWindow.document.close();
+// }
+
+function imagePopup(src) {
+  var newWindow = window.open('', '_blank', 'width=800,height=600');
+  newWindow.document.write('<html><head><title>Image</title></head><body style="background-color: black; margin: 0; display: flex; justify-content: center; align-items: center;"><img src="' + src + '" style="max-width: 100%; max-height: 100%;"></body></html>');
+}
+</script>
 <body>
 
     <!--[if lte IE 9]>
@@ -167,7 +309,7 @@
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
-            <div class="row align-items-center">
+            <div class="row align-items-center" id="maxWidth">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
                         <h1 class="page-title">Single Product</h1>
@@ -187,14 +329,14 @@
 
     <!-- Start Item Details -->
     <section class="item-details section" id="sectionWidth">
-        <div class="container">
-            <div class="top-area">
+        <div class="container" id="containerDiv">
+            <div class="top-area" id="topWidth">
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-images">
                             <main id="gallery">
                                 <div class="main-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="520px">
+                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="520px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
                                 </div>
                                 <div class="images">
                                     <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" class="img" alt="# " height="100px">
@@ -207,7 +349,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12">
-                        <div class="product-info">
+                        <div class="product-info" id="maxWidth">
                         	<div>
                         		<div>
                             		<h2 class="title">이 곳엔 상품제목을 뿌릴것이다.</h2><br>
@@ -286,174 +428,124 @@
                                  </div>
                              </div>
                          </div>
-                        </div>
+                         <hr>
+                         <div id="tradeAddressTag">
+                         	<div id="tradeAddress">
+                         		<img src="${pageContext.request.contextPath}/resources/images/product-details/거래지역.png" width="25" height="25" id="tradeImage">
+                         	</div>
+                         	<div></div>
+                         	<div></div>
+                         </div>
+                         <hr>
+                       </div>
                     </div>
                 </div>
             </div>
             <div class="product-details-info">
-                <div class="single-block">
-                    <div class="row">
-                        <div class="col-lg-6 col-12">
-                            <div class="info-body custom-responsive-margin">
-                                <h4>Details</h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p>
-                                <h4>Features</h4>
-                                <ul class="features">
-                                    <li>Capture 4K30 Video and 12MP Photos</li>
-                                    <li>Game-Style Controller with Touchscreen</li>
-                                    <li>View Live Camera Feed</li>
-                                    <li>Full Control of HERO6 Black</li>
-                                    <li>Use App for Dedicated Camera Operation</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-12">
-                            <div class="info-body">
-                                <h4>Specifications</h4>
-                                <ul class="normal-list">
-                                    <li><span>Weight:</span> 35.5oz (1006g)</li>
-                                    <li><span>Maximum Speed:</span> 35 mph (15 m/s)</li>
-                                    <li><span>Maximum Distance:</span> Up to 9,840ft (3,000m)</li>
-                                    <li><span>Operating Frequency:</span> 2.4GHz</li>
-                                    <li><span>Manufacturer:</span> GoPro, USA</li>
-                                </ul>
-                                <h4>Shipping Options:</h4>
-                                <ul class="normal-list">
-                                    <li><span>Courier:</span> 2 - 4 days, $22.50</li>
-                                    <li><span>Local Shipping:</span> up to one week, $10.00</li>
-                                    <li><span>UPS Ground Shipping:</span> 4 - 6 days, $18.00</li>
-                                    <li><span>Unishop Global Export:</span> 3 - 4 days, $25.00</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-12">
-                        <div class="single-block give-review">
-                            <h4>4.5 (Overall)</h4>
-                            <ul>
-                                <li>
-                                    <span>5 stars - 38</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                </li>
-                                <li>
-                                    <span>4 stars - 10</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                                <li>
-                                    <span>3 stars - 3</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                                <li>
-                                    <span>2 stars - 1</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                                <li>
-                                    <span>1 star - 0</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                            </ul>
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn review-btn" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                Leave a Review
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-12">
-                        <div class="single-block">
-                            <div class="reviews">
-                                <h4 class="title">Latest Reviews</h4>
-                                <!-- Start Single Review -->
-                                <div class="single-review">
-                                    <img src="${pageContext.request.contextPath}/resources/images/blog/comment1.jpg" alt="#">
-                                    <div class="review-info">
-                                        <h4>Awesome quality for the price
-                                            <span>Jacob Hammond
-                                            </span>
-                                        </h4>
-                                        <ul class="stars">
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                        </ul>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor...</p>
-                                    </div>
-                                </div>
-                                <!-- End Single Review -->
-                                <!-- Start Single Review -->
-                                <div class="single-review">
-                                    <img src="${pageContext.request.contextPath}/resources/images/blog/comment2.jpg" alt="#">
-                                    <div class="review-info">
-                                        <h4>My husband love his new...
-                                            <span>Alex Jaza
-                                            </span>
-                                        </h4>
-                                        <ul class="stars">
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star"></i></li>
-                                        </ul>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor...</p>
-                                    </div>
-                                </div>
-                                <!-- End Single Review -->
-                                <!-- Start Single Review -->
-                                <div class="single-review">
-                                    <img src="${pageContext.request.contextPath}/resources/images/blog/comment3.jpg" alt="#">
-                                    <div class="review-info">
-                                        <h4>I love the built quality...
-                                            <span>Jacob Hammond
-                                            </span>
-                                        </h4>
-                                        <ul class="stars">
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                        </ul>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor...</p>
-                                    </div>
-                                </div>
-                                <!-- End Single Review -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            	<div class="single-block" id="relatedProductsBlock">
+            		<span id="relatedProducts"><b>연관상품</b></span>
+	            	<div id="relatedProductsImage">
+	            		<div id="productImageName">
+	            			<a href="">
+		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="250px" width=240px;" >
+		            	 	</a>
+		            	 	<div id="productName">상품 이름 뿌릴곳</div>
+	            	 	</div>
+	            		<div id="productImageName">
+	            			<a href="">
+		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" id="current" alt="#" height="250px" width=240px;">
+		            	 	</a>
+		            	 	<div id="productName">상품 이름 뿌릴곳</div>
+	            	 	</div>
+	            		<div id="productImageName">
+     	 	    			<a href="">
+		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" id="current" alt="#" height="250px" width=240px;">
+		            	 	</a>
+		            	 	<div id="productName">상품 이름 뿌릴곳</div>
+	            	 	</div>
+	            		<div id="productImageName">
+	            			<a href="">
+		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/karina.jpg" id="current" alt="#" height="250px" width=240px;">
+		            	 	</a>
+		            	 	<div id="productName">상품 이름 뿌릴곳</div>
+	            	 	</div>
+	            		<div id="productImageName">
+		            	 	<a href="">
+		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/karina2.jpg" id="current" alt="#" height="250px" width=240px;">
+		            	 	</a>
+		            	 	<div id="productName">상품 이름 뿌릴곳</div>
+	            	 	</div>
+	            	</div>
+            	</div>
             </div>
-        </div>
+            <div class="product-details-info">
+                <div class="single-block" id="single_block">
+                	<div></div>
+                    <div class="row">
+                        <div id="productNameContent">
+                            <div class="info-body custom-responsive-margin">
+                                <b><span style="font-size: 20px; padding-top: 30px;">상품정보</span></b><hr>
+                                <p style="font-size: 15px;">존나좋은 상품 훌륭함</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12" style="width: 350px;">
+                            <div class="info-body" id="info_body">
+                                <b><span style="font-size: 20px; padding-top: 30px;">판매자정보</span></b>
+                                <hr>
+                                <div>
+                                	<a href=""  id="profileImage">
+                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#">
+                                	</a>
+                                	<div id="nickname">
+                                		<a href="" id="nicknameA">닉네임자리</a>
+                                	</div>
+                                </div>
+                                <div id="myProductDiv">
+                                	<div id="myProducts">
+                                		<a href="" id="aTag">
+                                			<span style="font-size: 17px;">상품 30</span>
+                                		</a>
+                                		<span id="after"></span>
+                                	</div>
+                                	<div id="reviews">
+                                		<a href="" id="aTag">
+                                			<span style="font-size: 17px;">후기 13</span>
+                                		</a>
+                                	</div>
+                                </div>
+                                <div style="height: 150px">
+                                	<div id="myProductImage">
+	                                	<a href="" style="height: 150px;">
+	                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" class="img" alt="#" height="150px" width="150px">
+	                                		<div id="imgPrice">
+	                                			<span>40,000</span>원
+	                                		</div>
+	                                	</a>
+                                	</div>
+                                	<div id="myProductImage">
+	                                	<a href="" style="height: 150px;">
+	                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#" height="150px" width="150px">
+                    						<div id="imgPrice">
+	                                			<span>160,000</span>원
+	                                		</div>
+	                                	</a>
+                                	</div>
+                                </div>
+                                <div style="text-align: center; margin-top: 20px;">
+                                	<a href="" id="productPlus">
+                                		<span id="productCount">30개</span>
+	                                	<span style="color: black;">상품 더보기 ></span>
+                                	</a>
+                                </div>
+                                <hr>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <!-- End Single Review -->
+                            </div>
+                        </div>
     </section>
     <!-- End Item Details -->
 
