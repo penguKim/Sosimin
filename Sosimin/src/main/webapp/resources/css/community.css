@@ -1,4 +1,9 @@
 @charset "UTF-8";
+/* 커뮤니티 버튼 색상 변경 */
+.btn:active, .btn:focus {
+outline:none !important;
+box-shadow:none !important;
+}
 
 .btn-group .btn-outline-primary, .modal .btn-outline-primary {
 	border-color: #39d274;
@@ -23,8 +28,20 @@
     border-color: #39d274;
 }
 
+.communityTable .contentList {
+	  padding: 42px;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  background-color: #fff;
+  -webkit-box-shadow: 0px 5px 40px #00000008;
+  box-shadow: 0px 5px 40px #ff000008;
+}
 
-/* 페이징 */
+
+
+
+
+/* ============== 페이징 ============== */
 .pagination {
     display: flex;
 }
@@ -38,8 +55,7 @@
 
 
 
-/* 상세 페이지 */
-
+/* ============== 상세 페이지==============  */
 
 /* 이미지파일 */
 .imgFIle {
@@ -57,8 +73,8 @@
 #myModal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  z-index: 100; /* Sit on top */
+  padding-top: 300px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -72,9 +88,8 @@
 #myModal .modal-content {
   margin: auto;
   display: block;
-  width: 80%;
-  max-width: 700px;
-  z-index: 200;
+  width: 100%;
+  max-width: 1000px;
 }
 
 /* Add Animation - Zoom in the Modal */
@@ -113,7 +128,7 @@
   }
 }
 
-
+/* 좋아요 버튼 */
 .heart {
 	width: 80px;
 	height: 80px;
@@ -130,7 +145,7 @@
 	background-position: -2800px 0;
 }
 
-
+/* 신고 버튼 */
 #reportBtn {
 	cursor: pointer;
 	transition: 0.5s;
@@ -142,7 +157,7 @@
 	transition: 0.5s;
 }
 
-
+/* ============== 댓글 영역 ============== */
 textarea.form-control {
 	resize: none; /* 사이즈 조절 막기 */
 }
