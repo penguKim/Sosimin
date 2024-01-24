@@ -1,15 +1,147 @@
 @charset "UTF-8";
-
-/* 마이페이지 CSS */
-#fullArea {
-	border: 1px solid;
-	width: 1300px;
-	height: 1800px;
-	margin: 0 auto;
+/* =================== 회원가입 =======================  */
+/* ============== */
+/* 회원가입 메인 */
+.social-login a {
+	width: auto !important;
 }
 
-#fullArea div {
-	border: 1px solid;
+#joinWithNaver {
+	border-color: #03C75A !important; 
+	color: #03C75A !important;
+}
+
+#joinWithKakao {
+	border-color: #FEE500 !important;
+	color: #FEE500 !important;
+}
+
+
+/* =================== */
+/* 회원가입 정보입력폼 */
+.register-form {
+	width: 720px !important;
+}
+
+#socialIcons {
+	margin-bottom: 2px !important;
+	margin-right: 2px !important;
+}
+
+.form-group {
+	margin: 0 auto 15px !important;
+	width: 700px !important;
+	height: 50px !important;
+}
+
+.form-group>* {
+	display: inline !important;
+}
+
+.form-group label {
+	margin-left: 20px;
+}
+
+.form-group input[type="button"]:hover {
+    background-color: #081828;
+}
+
+.form-group input[type="button"] {
+	margin-left: 10px !important;
+    text-transform: capitalize;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 10px;
+    background-color: #39d274;
+    color: #fff;
+    border: none;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    border-radius: 3px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.form-control {
+	width: 58% !important;
+}
+
+.resultArea {
+	width: 450px;
+	height: 15px;
+	font-size: 14px;
+	padding-left: 10px;
+	margin: 0 auto 15px;
+	display: block !important;
+}
+
+/* 한글 한글자당 13px 차이 */
+/* 공백 하나 당 4px 차이 */
+
+#mgForTwo {
+	margin-right: 66px;
+}
+
+#mgForThree {
+	margin-right: 53px;
+}
+
+#mgForFour {
+	margin-right: 40px;
+}
+
+#mgForFive {
+	margin-right: 27px;
+}
+
+#mgForSix {
+	margin-right: 10px;
+}
+
+.button {
+	margin: 0 auto;
+	text-align: center;
+}
+
+.btn {
+	width: 20% !important;
+}
+/* =============== */
+/* 가입완료 페이지 */
+.card {
+	width: 720px;
+}
+
+.card-body p {
+	margin: 12px auto 20px !important;
+	width: 700px;
+}
+
+.card-body section {
+	flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x)/ 2);
+    padding-left: calc(var(--bs-gutter-x)/ 2);
+}
+
+.button input[type="button"] {
+	margin-right: 7px !important;
+}
+
+
+/* =============================================================================== */
+/* 마이페이지 CSS */
+#wholeMyPageSection {
+	background-color: #fff;
+    padding: 30px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+	width: 1300px !important;
+	height: 1500px !important;
+	margin: 0 auto !important;
+	margin-top: 50px !important;
 }
 
 #bold {
@@ -86,8 +218,8 @@ a {
 	
 	background-color: #fff;
     padding: 15px;
-    border: 1px solid #eee;
-    border-radius: 4px;
+/*     border: 1px solid #eee; */
+/*     border-radius: 4px; */
 }
 
 #categoryArea li {

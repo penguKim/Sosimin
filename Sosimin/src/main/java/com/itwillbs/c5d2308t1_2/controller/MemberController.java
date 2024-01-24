@@ -22,14 +22,8 @@ public class MemberController {
 		return "member/join";
 	}
 
-	// 회원가입 약관동의 페이지로 이동
-	@GetMapping("MemberJoinAgree")
-	public String MemberJoinAgree() {
-		return "member/joinAgree";
-	}
-
 	// 회원가입 정보입력(가입폼) 페이지로 이동
-	@PostMapping("MemberJoinForm")
+	@GetMapping("MemberJoinForm")
 	public String MemberJoinForm() {
 		return "member/joinForm";
 	}

@@ -3,18 +3,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>소시민:: 소심한 시민들의 거래</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<title>Sosimin</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+
+<!-- ========================= CSS here ========================= -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
+<script type="text/javascript">
+	$(function() { // 결과영역 범위 확인
+		$("#id").on("keypress", function() {
+			let content = $("#id").val();
+			$("#checkIdResult").text(content).css("color", "red");
+		});
+
+		$("#name").on("keypress", function() {
+			let content = $("#name").val();
+			$("#checkNameResult").text(content).css("color", "red");
+		});
+		
+		$("#passwd").on("keypress", function() {
+			let content = $("#passwd").val();
+			$("#checkPasswdResult").text(content).css("color", "red");
+		});
+		
+		$("#passwdConfirm").on("keypress", function() {
+			let content = $("#passwdConfirm").val();
+			$("#checkPasswd2Result").text(content).css("color", "red");
+		});
+		
+		$("#birthdate").on("blur", function() {
+			let content = $("#birthdate").val();
+			$("#checkBirthResult").text(content).css("color", "red");
+		});
+
+		$("#email").on("keypress", function() {
+			let content = $("#email").val();
+			$("#checkEmailResult").text(content).css("color", "red");
+		});
+		
+	});
+</script>
 </head>
 <body>
 
@@ -69,79 +106,82 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
-					<section id="join_top">
-						<span>약관동의</span> <span id="this">정보입력</span> <span>가입완료</span>
-					</section>
 					<div class="register-form">
-						<h6>회원 정보 입력</h6>
+						<h4>회원 정보 입력</h4>
+						<br>
 						<br>
 
 						<form action="MemberJoinComplete" class="row" method="post">
 <!-- 							<div class="col-sm-6"> -->
 								<div class="form-group">
-									<label for="reg-fn">이름</label> 
-									<input class="form-control" placeholder="2~5글자의 한글" type="text" id="reg-fn" required="" style="width: 80% !important">
+									<label for="reg-fn" id="mgForTwo">이름</label> 
+									<input class="form-control" placeholder="2~5글자의 한글" type="text" id="name" required>
+									<div id="checkNameResult" class="resultArea"></div>
 								</div>
 <!-- 							</div> -->
 <!-- 							<div class="col-sm-6"> -->
 								<div class="form-group" >
-									<label for="reg-ln">아이디</label> 
-									<input class="form-control" placeholder="5~20자의 영문 대/소문자, 숫자" type="text" id="reg-ln" required="" style="width: 50% !important">
+									<label for="reg-ln" id="mgForThree">아이디</label> 
+									<input class="form-control" placeholder="5~20자의 영문 대/소문자, 숫자" type="text" id="id" required>
 									<input type="button" value="중복확인">
+									<div id="checkIdResult" class="resultArea"></div>
 								</div>
 <!-- 							</div> -->
 <!-- 							<div class="col-sm-6"> -->
 								<div class="form-group">
-									<label for="reg-ln">닉네임</label> 
-									<input class="form-control" type="text" id="reg-ln" required="">
+									<label for="reg-ln" id="mgForThree">닉네임</label> 
+									<input class="form-control" type="text" id="nickname" required>
 									<input type="button" value="중복확인">
 								</div>
 <!-- 							</div> -->
 
 <!-- 							<div class="col-sm-6"> -->
 								<div class="form-group">
-									<label for="reg-pass">비밀번호</label> 
-									<input class="form-control" placeholder="8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*)" type="password" id="reg-pass" required="">
+									<label for="reg-pass" id="mgForFour">비밀번호</label> 
+									<input class="form-control" placeholder="8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*)" type="password" id="passwd" required>
+									<div id="checkPasswdResult" class="resultArea"></div>
 								</div>
 <!-- 							</div> -->
 <!-- 							<div class="col-sm-6"> -->
 								<div class="form-group">
-									<label for="reg-pass-confirm">비밀번호 확인</label> 
-									<input class="form-control" placeholder="비밀번호를 다시 입력해주세요" type="password" id="reg-pass-confirm" required="">
+									<label for="reg-pass-confirm" id="mgForSix">비밀번호 확인</label> 
+									<input class="form-control" placeholder="비밀번호를 다시 입력해주세요" type="password" id="passwdConfirm" required>
+									<div id="checkPasswd2Result" class="resultArea"></div>
 								</div>
 <!-- 							</div> -->
 <!-- 							<div class="col-sm-6"> -->
 								<div class="form-group">
-									<label for="reg-ln">생년월일</label> 
-									<input class="form-control" placeholder="숫자만 입력해주세요" type="date" id="reg-ln" required="">
+									<label for="reg-ln" id="mgForFour">생년월일</label> 
+									<input class="form-control" placeholder="숫자만 입력해주세요" type="date" id="birthdate" required>
+									<div id="checkBirthResult" class="resultArea"></div>
 								</div>
 <!-- 							</div> -->
 <!-- 							<div class="col-sm-6"> -->
 								<div class="form-group">
-									<label for="reg-ln">주소</label> 
-									<input class="form-control" type="text" id="reg-ln" required="">
+									<label for="reg-ln" id="mgForTwo">주소</label> 
+									<input class="form-control" type="text" id="address" required>
+									<input type="button" value="동네인증">
 								</div>
 <!-- 							</div> -->
 <!-- 							<div class="col-sm-6"> -->
 								<div class="form-group">
-									<label for="reg-email">이메일</label> 
-									<input class="form-control" type="email" id="reg-email" required="">
+									<label for="reg-email" id="mgForThree">이메일</label> 
+									<input class="form-control" type="email" id="email" required>
 									<input type="button" value="중복확인">
+									<div id="checkEmailResult" class="resultArea"></div>
 								</div>
 <!-- 							</div> -->
 <!-- 							<div class="col-sm-6"> -->
 								<div class="form-group">
-									<label for="reg-phone">휴대폰번호</label> 
-									<input class="form-control" placeholder="숫자만 입력해주세요" type="tel" id="reg-phone" required="">
+									<label for="reg-phone" id="mgForFive">휴대폰번호</label> 
+									<input class="form-control" placeholder="숫자만 입력해주세요" type="tel" id="phone" required>
 									<input type="button" value="인증">
 								</div>
 <!-- 							</div> -->
 
 							<div class="button">
-								<button class="btn" type="submit">가입완료</button>
-								<br>
-								<br>
 								<button class="btn" type="button">돌아가기</button>
+								<button class="btn" type="submit">가입완료</button>
 							</div>
 							<p class="outer-link">
 								이미 계정이 있나요? <a href="MemberLogin">로그인 하기</a>
@@ -154,168 +194,21 @@
 	</div>
 	<!-- End Account Register Area -->
 
-	<!-- Start Footer Area -->
+<!-- ============================================ 메인영역 끝 ================================================================= -->	
 	<footer class="footer">
-		<!-- Start Footer Top -->
-		<div class="footer-top">
-			<div class="container">
-				<div class="inner-content">
-					<div class="row">
-						<div class="col-lg-3 col-md-4 col-12">
-							<div class="footer-logo">
-								<a href="index.html"> <img
-									src="assets/images/logo/white-logo.svg" alt="#">
-								</a>
-							</div>
-						</div>
-						<div class="col-lg-9 col-md-8 col-12">
-							<div class="footer-newsletter">
-								<h4 class="title">
-									Subscribe to our Newsletter <span>Get all the latest
-										information, Sales and Offers.</span>
-								</h4>
-								<div class="newsletter-form-head">
-									<form action="#" method="get" target="_blank"
-										class="newsletter-form">
-										<input name="EMAIL" placeholder="Email address here..."
-											type="email">
-										<div class="button">
-											<button class="btn">
-												Subscribe<span class="dir-part"></span>
-											</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Footer Top -->
-		<!-- Start Footer Middle -->
-		<div class="footer-middle">
-			<div class="container">
-				<div class="bottom-inner">
-					<div class="row">
-						<div class="col-lg-3 col-md-6 col-12">
-							<!-- Single Widget -->
-							<div class="single-footer f-contact">
-								<h3>Get In Touch With Us</h3>
-								<p class="phone">Phone: +1 (900) 33 169 7720</p>
-								<ul>
-									<li><span>Monday-Friday: </span> 9.00 am - 8.00 pm</li>
-									<li><span>Saturday: </span> 10.00 am - 6.00 pm</li>
-								</ul>
-								<p class="mail">
-									<a href="mailto:support@shopgrids.com">support@shopgrids.com</a>
-								</p>
-							</div>
-							<!-- End Single Widget -->
-						</div>
-						<div class="col-lg-3 col-md-6 col-12">
-							<!-- Single Widget -->
-							<div class="single-footer our-app">
-								<h3>Our Mobile App</h3>
-								<ul class="app-btn">
-									<li><a href="javascript:void(0)"> <i
-											class="lni lni-apple"></i> <span class="small-title">Download
-												on the</span> <span class="big-title">App Store</span>
-									</a></li>
-									<li><a href="javascript:void(0)"> <i
-											class="lni lni-play-store"></i> <span class="small-title">Download
-												on the</span> <span class="big-title">Google Play</span>
-									</a></li>
-								</ul>
-							</div>
-							<!-- End Single Widget -->
-						</div>
-						<div class="col-lg-3 col-md-6 col-12">
-							<!-- Single Widget -->
-							<div class="single-footer f-link">
-								<h3>Information</h3>
-								<ul>
-									<li><a href="javascript:void(0)">About Us</a></li>
-									<li><a href="javascript:void(0)">Contact Us</a></li>
-									<li><a href="javascript:void(0)">Downloads</a></li>
-									<li><a href="javascript:void(0)">Sitemap</a></li>
-									<li><a href="javascript:void(0)">FAQs Page</a></li>
-								</ul>
-							</div>
-							<!-- End Single Widget -->
-						</div>
-						<div class="col-lg-3 col-md-6 col-12">
-							<!-- Single Widget -->
-							<div class="single-footer f-link">
-								<h3>Shop Departments</h3>
-								<ul>
-									<li><a href="javascript:void(0)">Computers &amp;
-											Accessories</a></li>
-									<li><a href="javascript:void(0)">Smartphones &amp;
-											Tablets</a></li>
-									<li><a href="javascript:void(0)">TV, Video &amp; Audio</a></li>
-									<li><a href="javascript:void(0)">Cameras, Photo &amp;
-											Video</a></li>
-									<li><a href="javascript:void(0)">Headphones</a></li>
-								</ul>
-							</div>
-							<!-- End Single Widget -->
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Footer Middle -->
-		<!-- Start Footer Bottom -->
-		<div class="footer-bottom">
-			<div class="container">
-				<div class="inner-content">
-					<div class="row align-items-center">
-						<div class="col-lg-4 col-12">
-							<div class="payment-gateway">
-								<span>We Accept:</span> <img
-									src="assets/images/footer/credit-cards-footer.png" alt="#">
-							</div>
-						</div>
-						<div class="col-lg-4 col-12">
-							<div class="copyright">
-								<p>
-									Designed and Developed by<a href="https://graygrids.com/"
-										rel="nofollow" target="_blank">GrayGrids</a>
-								</p>
-							</div>
-						</div>
-						<div class="col-lg-4 col-12">
-							<ul class="socila">
-								<li><span>Follow Us On:</span></li>
-								<li><a href="javascript:void(0)"><i
-										class="lni lni-facebook-filled"></i></a></li>
-								<li><a href="javascript:void(0)"><i
-										class="lni lni-twitter-original"></i></a></li>
-								<li><a href="javascript:void(0)"><i
-										class="lni lni-instagram"></i></a></li>
-								<li><a href="javascript:void(0)"><i
-										class="lni lni-google"></i></a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Footer Bottom -->
+		<jsp:include page="../inc/bottom.jsp"></jsp:include>
 	</footer>
-	<!--/ End Footer Area -->
 
-	<!-- ========================= scroll-top ========================= -->
-	<a href="#" class="scroll-top" style="display: flex;"> <i
-		class="lni lni-chevron-up"></i>
-	</a>
+    <!-- ========================= scroll-top ========================= -->
+    <a href="#" class="scroll-top">
+        <i class="lni lni-chevron-up"></i>
+    </a>
 
-	<!-- ========================= JS here ========================= -->
-	<script src="assets/js/bootstrap.min.js"></script>
-	<script src="assets/js/tiny-slider.js"></script>
-	<script src="assets/js/glightbox.min.js"></script>
-	<script src="assets/js/main.js"></script>
-
+    <!-- ========================= JS here ========================= -->
+    <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+	
 </body>
 </html>
