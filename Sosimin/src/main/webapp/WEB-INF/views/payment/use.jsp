@@ -58,6 +58,26 @@ $(function() {
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
 	
+	<!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">결제하기</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li>결제하기</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
+	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
 	<form action="PayUsePro" method="post">	
 		<div class="account-login section">
@@ -153,7 +173,7 @@ $(function() {
 	                    <div class="row">
 	                        <div class="col-sm-12">
 	                            <div class="form-group">
-	                                <label for="review-name">비밀번호</label>
+	                                <label for="pay-password">비밀번호</label>
 	                              	<input class="form-control" type="password" id="pay-password" name="pay_password" required
 	                                	placeholder="6자리 숫자를 입력해주세요" maxlength="6">
 	                            </div>

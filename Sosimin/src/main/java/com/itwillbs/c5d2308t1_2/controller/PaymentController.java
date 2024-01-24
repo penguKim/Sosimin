@@ -31,12 +31,16 @@ public class PaymentController {
 	// 계좌인증 페이지로 이동
 	@GetMapping("AccountVerification")
 	public String accountVerification(HttpSession session, Model model) {
+		// ------------------------------------------------------------------
+		session.setAttribute("sId", "hong11"); // 로그인 구현되고나면 지우기
+		// ------------------------------------------------------------------
+		
 		// 로그인을 하지 않은 사용자는 접근을 제한함
-//		if(session.getAttribute("sId") == null) {
-//			model.addAttribute("msg", "로그인 필수!");
-//			model.addAttribute("targetURL", "MemberLogin");
-//			return "forward";
-//		}
+		if(session.getAttribute("sId") == null) {
+			model.addAttribute("msg", "로그인 필수!");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		}
 		
 		// stste 값에 사용하기 위한 32바이트 난수 생성
 		String rNum = RandomStringUtils.randomNumeric(32);
@@ -55,13 +59,13 @@ public class PaymentController {
 		
 		// 로그인이 되지 않은 사용자가 접근하면 창 닫기
 		String id = (String)session.getAttribute("sId");
-//		if(id == null) {
-//			// "fail_back.jsp" 페이지로 포워딩 시 "isClose" 값을 true 로 설정하여 전달
-//			model.addAttribute("msg", "로그인을 해주세요");
-//			model.addAttribute("isClose", true); // 현재 창(서브 윈도우) 닫도록 명령
-//			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
-//			return "forward";
-//		}
+		if(id == null) {
+			// "fail_back.jsp" 페이지로 포워딩 시 "isClose" 값을 true 로 설정하여 전달
+			model.addAttribute("msg", "로그인을 해주세요");
+			model.addAttribute("isClose", true); // 현재 창(서브 윈도우) 닫도록 명령
+			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			return "forward";
+		}
 		
 //		System.out.println("state 삭제 전 : " + session.getAttribute("state"));
 		// 응답데이터의 state값이 올바른 값인지 검증
@@ -109,10 +113,47 @@ public class PaymentController {
 	
 	
 	// 계좌등록(계좌목록) 페이지로 이동
+	// 2.2.1. 사용자정보조회 API
 	@GetMapping("AccountRegist")
-	public String accountRegist() {
+	public String accountRegist(Model model, HttpSession session) {
+		// 세션아이디가 null 일 경우 로그인 페이지 이동 처리
+		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
+		if(session.getAttribute("sId") == null) {
+			model.addAttribute("msg", "로그인을 해주세요");
+			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			return "forward";
+		} else if(session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("targetURL", "AccountVerification");	
+			return "forward";
+		}
+
+		// Map 객체에 엑세스토큰과 사용자번호 저장
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("access_token", session.getAttribute("access_token"));
+		map.put("user_seq_no", session.getAttribute("user_seq_no"));
+		
+		// 사용자정보조회 API
+		Map<String, Object> userInfo = service.requestUserInfo(map);
+		log.info("userInfo = " + userInfo);
+		
+		model.addAttribute("userInfo", userInfo);
+		
 		return "payment/accountRegist";
 	}
+	
+	@PostMapping("AccountRegistPro")
+	public String accountRegistPro(@RequestParam Map<String, Object> map, HttpSession session) {
+		map.put("member_id", session.getAttribute("sId")); // map 객체에 아이디 저장
+		
+		log.info("map : " + map);
+		
+		// 아이디, 은행명, 계좌번호, 핀테크번호, 페이비밀번호 db에 저장
+		
+		
+		return "";
+	}
+	
 	
 	// 페이정보 페이지로 이동
 	@GetMapping("PayInfo")

@@ -41,4 +41,10 @@ public class PaymentService {
 			
 	}
 
+	// 사용자 정보 조회 요청
+	public Map<String, Object> requestUserInfo(Map<String, Object> map) {
+		// BankApiClient - requestUserInfo() 메서드 호출
+		return bankApiClient.requestUserInfo(map);
+	}
+
 }

@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -62,6 +64,40 @@ public class BankApiClient {
 //		log.info("응답 코드 : " + responseEntity.getStatusCode());
 //		log.info("응답 헤더 : " + responseEntity.getHeaders());
 //		log.info("응답 본문 : " + responseEntity.getBody());
+		
+		return responseEntity.getBody();
+	}
+
+	// 2.2. 사용자/서비스 관리 - 2.2.1. 사용자정보조회 API 요청(GET)
+	public Map<String, Object> requestUserInfo(Map<String, Object> map) {
+//		log.info("map : " + map);
+		
+		// GET 방식 요청에 대한 헤더 정보와 파라미터 설정
+		// 1. 헤더에 정보 추가
+		HttpHeaders headers = new HttpHeaders();
+		// 헤더명 : "Authorization", 헤더값 : "Bearer" 문자열 뒤에 엑세스 토큰 결합
+		headers.add("Authorization", "Bearer " + map.get("access_token"));
+		
+		// 2. 헤더 정보를 갖는 객체 생성
+		HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
+		
+		// 3. URI 정보 생성
+		URI uri = UriComponentsBuilder
+				.fromUriString("https://testapi.openbanking.or.kr/v2.0/user/me") // 주소
+				.queryParam("user_seq_no", map.get("user_seq_no")) // 사용자번호
+				.encode() // 인코딩처리
+				.build() // UriComponents 객체 생성
+				.toUri(); // URI 타입 객체로 변환
+		
+		// 4. RestTemplate 객체 생성
+		RestTemplate restTemplate = new RestTemplate();
+		
+		// 5. RestTemplate 객체의 exchange() 메서드 호출하여 HTTP 요청 수행
+		ResponseEntity<Map<String, Object>> responseEntity
+				= restTemplate.exchange(uri, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<Map<String, Object>>() {});
+		// 응답데이터를 Map 타입으로 처리할 경우
+		// => 응답 처리 클래스 타입을 ParameterizedTypeReference 클래스의 익명 객체 생성 형태로
+		//    제네릭타입을 Map<String, Object> 타입 지정
 		
 		return responseEntity.getBody();
 	}

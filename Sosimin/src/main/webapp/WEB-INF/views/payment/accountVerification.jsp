@@ -58,6 +58,26 @@ function authAccount() {
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
 	
+	<!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">계좌인증</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li>계좌인증</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
+	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
     <div class="account-login section">
         <div class="container">
@@ -66,7 +86,7 @@ function authAccount() {
                     <div class="card login-form">
                         <div class="card-body">
                             <div class="title paytitle">
-                                <h3 class="user-name">00님</h3> <!-- 사용자프로필/sId -->
+                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
                                 <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
                             </div>
                             <c:choose>
@@ -89,6 +109,7 @@ function authAccount() {
             </div>
         </div>
     </div>
+
 
 	
 <!-- ============================================ 메인영역 끝 ================================================================= -->	
