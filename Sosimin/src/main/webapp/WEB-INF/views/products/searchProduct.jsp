@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product.css" />
 </head>
+<%-- 1. 신고하기 기능 --%>
+<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 $(function() {
@@ -94,6 +96,29 @@ $(function() {
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
 	
+	<%-- 2. 신고하기 기능 --%>
+	<jsp:include page="../report/report.jsp"></jsp:include>
+	<!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">상품 목록</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="index.html">Shop</a></li>
+                        <li>Shop List</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
+	
 	<!-- Start Product Grids -->
     <section class="product-grids section">
         <div class="container">
@@ -104,7 +129,12 @@ $(function() {
                     	
                         <!-- Start Single Widget -->
                         <div class="single-widget">
-	                        <span class="filter">필터</span><button onclick="location.href='report'">신고하기</button>
+	                        <span class="filter">필터</span>
+	                        <%-- 3. 신고하기 기능 --%>
+	                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewCheckFrom" >
+									신고하기
+							</button>
+							<%-- 신고하기 기능 --%>
                         	<span class="filter_reset"><a href="javascript:void(0)" style="text-decoration: underline; color: grey;">초기화</a></span>
                             <h3>카테고리</h3>
                             <ul class="list">
@@ -267,14 +297,19 @@ $(function() {
         </div>
     </section>
     <!-- End Product Grids -->
-    <!-- ========================= scroll-top ========================= -->
+    <footer class="footer">
+		<jsp:include page="../inc/bottom.jsp"></jsp:include>
+	</footer>
+	<!-- ========================= scroll-top ========================= -->
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
     </a>
+
     <!-- ========================= JS here ========================= -->
     <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
     <script type="text/javascript">
         //========= Hero Slider 
         tns({
@@ -287,7 +322,7 @@ $(function() {
             items: 1,
             nav: false,
             controls: true,
-            controlsText: ['<i class="lni lni-chevron-left"></i>', '<i class="lni lni-chevron-right"></i>'],
+            controlsText: ['<', '>'],
         });
 
         //======== Brand Slider
@@ -315,8 +350,5 @@ $(function() {
             }
         });
     </script>
-    <footer class="footer">
-		<jsp:include page="../inc/bottom.jsp"></jsp:include>
-	</footer>
 </body>
 </html>

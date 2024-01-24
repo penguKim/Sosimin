@@ -6,67 +6,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
-    <%-- sweetalert --%>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-
+    <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script type="text/javascript">
-<%-- sweetalert confirm --%>
-function reportRegist() {
-	Swal.fire({
-		   title: '정말 신고하시겠습니까?',
-		   text: '내용과 사실이 다를 경우 불이익을 당할 수 있습니다',
-		   icon: 'Report',
-		   
-		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
-		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
-		   confirmButtonText: '신고하기', // confirm 버튼 텍스트 지정
-		   cancelButtonText: '취소하기', // cancel 버튼 텍스트 지정
-		   
-		   reverseButtons: true, // 버튼 순서 거꾸로
-		   
-		}).then(result => {
-			
-		    // 만약 Promise리턴을 받으면,
-		    if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-		   	
-			   $.ajax(function() {
-				   url: "reportRegist",
-				   data: {
-					   reporter_id: "",
-					   : "",
-					   report_num: "숫자 1 ~ 8",
-					   report_content: "report_content",
-					   <%-- 신고 상태는 디폴트 0으로 처리 --%>
-				  	   report_status: "숫자 0 ~ 1"
-				   },
-				   seccess: function(result) {
-					   if(result == 'true') {
-						   Swal.fire('신고가 완료되었습니다!', '화끈하시네요~!', 'success');
-   						<%-- 신고완료후 모달창 닫기 --%>
-						   
-					   } else {
-						   Swal.fire('신고가 실패했습니다!', '다시 신고해주세요', 'fail');
-					   }
-					   
-				   },
-				   error: function() {
-			 		
-		 		   }
-				  
-		  	  }); 
-			   
-		     
-		   }
-		});
-}	
-</script>
 <script type="text/javascript">
 $(function() {
 	$("#reviewCheckFrom").on("click", function() {
@@ -164,37 +111,55 @@ $(function() {
 		);
 		$(".modal-footer").html(
 				'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
-				+ '<button type="submit" class="btn btn-primary" id="reviewBtn" onclick="reportRegist()">'
+				+ '<button type="submit" class="btn btn-primary" id="reviewBtn" onclick="reviewRegist()">'
 				+'신고 하기</button>'	
 		);
 	});
 		
 		
-});	
+	
+		
+		
+});
+	
+function reportBoard() {
+	alert("신고합니다");
+}	
+	
+function reviewRegist() {
+	location.href="https://www.naver.com/";
+}		
+	
 </script>
 </head>
 <body>
+	<h1>신고한다</h1>
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewCheckFrom" onclick="reportBoard()">
+			신고하기
+	</button>
 	<div style="height: 80px;">
 		<div class="position-absolute bottom-0 end-0"><i class="fa fa-warning" id="reportBtn" style="font-size:24px; margin-right: 50em;">신고하기</i></div>
 	</div>
 	
 	<%-- 후기 모달 설정 --%>
-	<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="staticBackdropLabel">신고 하기</h1>
+<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="staticBackdropLabel">신고 하기</h1>
+			</div>
+			<div class="modal-body">
+				<div class="d-flex justify-content-center">
 				</div>
-				<div class="modal-body">
-					<div class="d-flex justify-content-center">
-					</div>
-					<div id="reviewCheck" class="mx-auto my-5 w-75">
-					</div>
+				<div id="reviewCheck" class="mx-auto my-5 w-75">
 				</div>
-				<div class="modal-footer">
-				</div>
+			</div>
+			<div class="modal-footer">
 			</div>
 		</div>
 	</div>
+</div>
+
+
 </body>
 </html>
