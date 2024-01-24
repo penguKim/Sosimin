@@ -6,6 +6,12 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 
 <script type="text/javascript">
+function searchKeyword() {
+	var keyword = $("#searchKeyword").val();
+	var searchKeywordUrl = "searchKeyword?keyword=" + encodeURIComponent(keyword);
+	window.location.href = searchKeywordUrl;
+}
+
 $(function(){
 	/* 
 	@@@ 검색창과 관련된 설정 항목 @@@
@@ -33,6 +39,14 @@ $(function(){
 		$("#Recent").hide();
 		$("#Popular").hide();
 	}
+	
+	//엔터키 누를 경우 텍스트 가지고 주소 이동
+	//(form태그 쓰면 css 다 부서짐 그래서 그냥 이렇게 함)
+	$("#searchKeyword").keyup(function(event) {
+	    if (event.keyCode === 13) {
+	      searchKeyword();
+	    }
+  	});
 	
 });// document.ready function END
 
@@ -153,7 +167,7 @@ function searchKeywordChange(keyWord){
                             <input type="text" id="searchKeyword" placeholder="상품명, 지역명, @상점명 입력" onkeyup="searchKeywordChange(this)" >
                         </div>
                         <div class="search-btn">
-                            <button onclick="location.href='searchKeyword'">
+                            <button onclick="searchKeyword()">
                             	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
 								  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 								</svg>
@@ -163,7 +177,7 @@ function searchKeywordChange(keyWord){
                     <!-- navbar search Ends -->
                 </div>
                 <!-- End Main Menu Search -->
-                <div id="Recent">
+                <div id="Recent" >
                 	<table border="1">
                 		<tr>
                 			<td><a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a></td>

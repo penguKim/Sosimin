@@ -1140,6 +1140,10 @@ progress {
 }
 
 @media (min-width:768px) {
+	#Recent table td,#Popular table td{
+		width: 25.66%;
+		background-color: yellow;
+	}
     .col-md {
         flex: 1 0 0%
     }
@@ -1354,6 +1358,10 @@ progress {
 }
 
 @media (min-width:992px) {
+	#Recent table td,#Popular table td{
+		width: 27%;
+		background-color: yellow;
+	}
     .col-lg {
         flex: 1 0 0%
     }
@@ -1573,6 +1581,10 @@ progress {
 }
 
 @media (min-width:1200px) {
+	#Recent table td,#Popular table td{
+		width: 22.66%;
+		background-color: yellow;
+	}
     .col-xl {
         flex: 1 0 0%
     }
@@ -1787,6 +1799,10 @@ progress {
 }
 
 @media (min-width:1400px) {
+	#Recent table td,#Popular table td{
+		width: 19.3%;
+		background-color: yellow;
+	}
     .col-xxl {
         flex: 1 0 0%
     }

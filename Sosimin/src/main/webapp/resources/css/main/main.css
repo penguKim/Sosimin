@@ -2017,7 +2017,7 @@ ol {
 }
 
 #Recent table td,#Popular table td{
-	width: 187px;
+/* 	width: 187px;  반응형으로 변경*/
 	background-color: yellow;
 }
 
