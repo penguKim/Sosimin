@@ -238,8 +238,7 @@
         </div>
     </div>
    	<!-- End Breadcrumbs -->
-   	
-	<section class="product-grids section">
+	<section class="communityArea section">
 		<div class="container-lg">
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewCheckFrom">
 				후기 작성 모달창
@@ -252,24 +251,36 @@
 			<br>
 			
 			<div class="row mb-5">
-				<div class="btn-group col">
-			        <input type="radio" name="options" class="btn-check" id="btn-check1" value="전체" autocomplete="off">
-				    <label class="btn btn-outline-primary" for="btn-check1">전체</label>
-			        <input type="radio" name="options" class="btn-check" id="btn-check2" value="인기글" autocomplete="off">
-				    <label class="btn btn-outline-primary" for="btn-check2">인기글</label>
-			        <input type="radio" name="options"class="btn-check" id="btn-check3" value="동네소식" autocomplete="off">
-				    <label class="btn btn-outline-primary" for="btn-check3">동네소식</label>
-			        <input type="radio" name="options" class="btn-check" id="btn-check4" value="동네질문" autocomplete="off">
-				    <label class="btn btn-outline-primary" for="btn-check4">동네질문</label>
-			        <input type="radio" name="options" class="btn-check" id="btn-check5" value="일상" autocomplete="off">
-				    <label class="btn btn-outline-primary" for="btn-check5">일상</label>
-				</div>
+			<div class="btn-group col categoryBtn" role="group" aria-label="Basic radio toggle button group">
+  <input type="radio" class="btn-check" name="category" id="allCategory" value="전체" autocomplete="off" checked>
+  <label class="btn btn-outline-primary" for="allCategory">전체</label>
+  <input type="radio" class="btn-check" name="category" id="hotCategory" value="인기글" autocomplete="off">
+  <label class="btn btn-outline-primary" for="hotCategory">인기글</label>
+  <input type="radio" class="btn-check" name="category" id="infoCategory" value="동네소식" autocomplete="off">
+  <label class="btn btn-outline-primary" for="infoCategory">동네소식</label>
+  <input type="radio" class="btn-check" name="category" id="questionCategory" value="동네질문" autocomplete="off">
+  <label class="btn btn-outline-primary" for="questionCategory">동네질문</label>
+  <input type="radio" class="btn-check" name="category" id="dailyCategory" value="일상" autocomplete="off">
+  <label class="btn btn-outline-primary" for="dailyCategory">일상</label>
+</div>
+<!-- 				<div class="btn-group col categoryBtn" role="group" aria-label="Basic radio toggle button group"> -->
+<!-- 			        <input type="radio" name="options" class="btn-check" id="btn-check1" value="전체" autocomplete="off"> -->
+<!-- 				    <label class="btn btn-outline-primary" for="btn-check1">전체</label> -->
+<!-- 			        <input type="radio" name="options" class="btn-check" id="btn-check2" value="인기글" autocomplete="off" checked> -->
+<!-- 				    <label class="btn btn-outline-primary" for="btn-check2">인기글</label> -->
+<!-- 			        <input type="radio" name="options" class="btn-check" id="btn-check3" value="동네소식" autocomplete="off"> -->
+<!-- 				    <label class="btn btn-outline-primary" for="btn-check3">동네소식</label> -->
+<!-- 			        <input type="radio" name="options" class="btn-check" id="btn-check4" value="동네질문" autocomplete="off"> -->
+<!-- 				    <label class="btn btn-outline-primary" for="btn-check4">동네질문</label> -->
+<!-- 			        <input type="radio" name="options" class="btn-check" id="btn-check5" value="일상" autocomplete="off"> -->
+<!-- 				    <label class="btn btn-outline-primary" for="btn-check5">일상</label> -->
+<!-- 				</div> -->
 				<div class="col">
 					<form action="">
 	<!-- 					<div class="form-group row row-cols-1 row-cols-sm-2 row-cols-md-2"> -->
 						<div class="form-group row">
 							<input type="text" name="searchKeyword" class="col-5 col-md-7 form-control w-50">
-							<input type="button" value="검색" class="btn col-3 col-md-2 btn btn-primary mx-2">
+							<input type="button" value="검색" class="btn col-3 col-md-2 btn btn-primary">
 							<div class="col-md-1"></div>
 							<input type="button" value="글쓰기" class="btn col-4 col-md-2 btn btn-primary ml-5" onclick="location.href='CommunityWrite'" />
 						</div>

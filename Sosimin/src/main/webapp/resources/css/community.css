@@ -1,9 +1,16 @@
 @charset "UTF-8";
-/* 커뮤니티 버튼 색상 변경 */
-.btn:active, .btn:focus {
-outline:none !important;
-box-shadow:none !important;
+
+/* ========== 커뮤니티 전체 영역 ========== */
+/* 배경색 지정 */
+.communityArea {
+  background-color: #f9f9f9;
 }
+
+/* 커뮤니티 버튼 색상 변경 */
+/* .btn:active, .btn:focus { */
+/* outline:none !important; */
+/* box-shadow:none !important; */
+/* } */
 
 .btn-group .btn-outline-primary, .modal .btn-outline-primary {
 	border-color: #39d274;
@@ -16,30 +23,34 @@ box-shadow:none !important;
     border-color: #39d274;
 }
 
-.btn-group .btn-outline-primary:hover, .modal .btn:hover:not(#reviewClose) {
+.btn-group .btn-outline-primary:hover, .form-group .btn:hover, .modal .btn:hover:not(#reviewClose), .btn-primary:hover {
     color: #fff;
-    background-color: #43c073;
-    border-color: #43c073;
+    background-color: #43c073 !important;
+    border-color: #43c073 !important;
 }
 
-.btn-check:checked+.btn-outline-primary {
+.btn-check:checked+.btn-outline-primary, .btn-check:focus+.btn-primary, .btn-primary:focus {
     color: #fff;
     background-color: #39d274;
     border-color: #39d274;
 }
 
-.communityTable .contentList {
-	  padding: 42px;
-  border: 1px solid #e6e6e6;
-  border-radius: 4px;
-  background-color: #fff;
-  -webkit-box-shadow: 0px 5px 40px #00000008;
-  box-shadow: 0px 5px 40px #ff000008;
+/* ========== 그림자 효과 ========== */
+.communityTable .contentList, .post, .reply {
+	padding: 42px;
+	border: 1px solid #e6e6e6;
+	border-radius: 4px;
+	background-color: #fff;
+	-webkit-box-shadow: 0px 5px 40px #00000008;
+	box-shadow: 0px 5px 40px #ff000008;
 }
 
 
-
-
+/* ========== 커뮤니티 게시판 ========== */
+.categoryBtn .btn {
+	background-color: #fff;
+	font-weight: 900;	
+}
 
 /* ============== 페이징 ============== */
 .pagination {
@@ -56,6 +67,14 @@ box-shadow:none !important;
 
 
 /* ============== 상세 페이지==============  */
+
+/* 게시글 제목 */
+.post-title {
+	font-size: 24px;
+	font-weight: 900;
+	color: black;
+}
+
 
 /* 이미지파일 */
 .imgFIle {
@@ -160,4 +179,36 @@ box-shadow:none !important;
 /* ============== 댓글 영역 ============== */
 textarea.form-control {
 	resize: none; /* 사이즈 조절 막기 */
+}
+
+
+/* ========= 등록 페이지 ============ */
+
+
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	.communityForm, .communityDetail, .post, .reply, #commandCell {
+		width: 70% !important; 
+	} 
+	
+	.formCategory {
+		width: 200px !important; 
+	}
+	
+}
+
+@media only screen and (max-width: 767px) {
+	
+	.communityForm, .communityDetail, .post, .reply, #commandCell {
+		 width: 100% !important; 
+	}
+   
+	.communityFormSubject {
+		height: 300px !important;
+	}
+
+	#commandCell input {
+		margin-bottom: 5px;
+	}
+
 }
