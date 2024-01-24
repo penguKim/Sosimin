@@ -3,7 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Sosimin</title>
+    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.png" />
 
 <meta charset="UTF-8">
 <title>소시민 상품등록</title>
@@ -13,6 +19,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+    
+    
+    <!-- ========================= JS here ========================= -->
+    <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
 <style type="text/css">
 	article {
 		text-align: center;

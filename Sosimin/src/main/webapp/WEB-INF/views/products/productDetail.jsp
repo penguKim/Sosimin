@@ -5,12 +5,22 @@
 <html>
 
 <head>
+    <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Single Product - ShopGrids Bootstrap 5 eCommerce HTML Template.</title>
-    <meta name="description" content="" />
+    <title>Sosimin</title>
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.png" />
+
+
+
+<!--     <meta http-equiv="x-ua-compatible" content="ie=edge" /> -->
+<!--     <title>Single Product - ShopGrids Bootstrap 5 eCommerce HTML Template.</title> -->
+<!--     <meta name="description" content="" /> -->
+<%--     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script> --%>
+<!--     <meta name="viewport" content="width=device-width, initial-scale=1" /> -->
+<%--     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" /> --%>
 
     <!-- ========================= CSS here ========================= -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
@@ -18,12 +28,17 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+     <!-- ========================= JS here ========================= -->
+    <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
 
 </head>
 <style>
 .product-info{
 	position: relative;
-	bottom: 100px;
+	bottom: 46px;
 }
 .price2{
 	display: inline-block;
@@ -36,6 +51,12 @@
 }
 #police{
 	margin-left: 300px;
+    color: rgb(204, 204, 204);
+    font-size: 16px;
+    -webkit-box-align: center;
+    align-items: center;
+    border: none;
+    background-color: white;
 }
 
 #eyeLikeTime{
@@ -46,6 +67,70 @@
 }
 #time{
 	display: inline-block;
+}
+#productStatus{
+	display: inline-block;
+	position:relative;
+	top:5px;
+	left:5px;
+	font-size: 18px;
+}
+#productStatusData{
+	display: inline-block;
+	position: relative;
+	left: 40px;
+	top: 5px;
+	font-size: 18px;
+}
+#productStatusDiv{
+	display: inline-block;
+	padding-bottom: 15px;
+}
+#priceProposal{
+	position: relative;
+	padding-top: 20px;
+}
+
+
+#likeButton{
+	background-color: rgb(204, 204, 204);
+}
+
+#likeText{
+	font-size: 20px;
+	margin-left: 50px;
+}
+#likeButtonDiv{
+	display: inline-block;
+}
+
+#likeButtonSpan{
+	display: inline-block;
+	position: relative;
+	font-size: 20px;
+	right:23px;
+	bottom:1px;
+}
+#threeButton{
+	position: relative;
+}
+#chatButton{
+	background-color: rgb(255, 164, 37);
+	font-size: 20px;
+	color:white;
+}
+#nowPay{
+	background-color:rgb(247, 0, 0);
+	font-size:20px;
+	color:white;
+}
+
+#likeImage{
+	display:inline-block;
+	position:relative;
+	right:50px;
+	bottom:4px;
+	z-index: 2;
 }
 </style>
 <body>
@@ -99,7 +184,7 @@
                         <div class="product-images">
                             <main id="gallery">
                                 <div class="main-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="500px">
+                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="464px">
                                 </div>
                                 <div class="images">
                                     <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" class="img" alt="# " height="100px">
@@ -123,6 +208,7 @@
 	                            	style="height: 28px;" id="payImage">
 	                            </div>
                             </div>
+                        <hr>
                         <div id="eyeLikeTime">
                         	<div>
 	                        	<div id="Like">
@@ -137,76 +223,59 @@
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/시간.png" width="25" height="25">
 	                        		몇일전
 	                        	</div>
-	                        	<button id="police">신고하기</button>
+	                        	<button id="police" onclick="location.href='report'">
+	                        		<img src="${pageContext.request.contextPath}/resources/images/product-details/신고하기.png" width="25" height="25">
+	                        		신고하기
+	                        	</button>
 	                        </div>
                         </div>
-                            <p class="info-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                tempor incididunt
-                                ut labore et dolore magna aliqua.</p>
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-12">
-                                    <div class="form-group color-option">
-                                        <label class="title-label" for="size">Choose color</label>
-                                        <div class="single-checkbox checkbox-style-1">
-                                            <input type="checkbox" id="checkbox-1" checked>
-                                            <label for="checkbox-1"><span></span></label>
-                                        </div>
-                                        <div class="single-checkbox checkbox-style-2">
-                                            <input type="checkbox" id="checkbox-2">
-                                            <label for="checkbox-2"><span></span></label>
-                                        </div>
-                                        <div class="single-checkbox checkbox-style-3">
-                                            <input type="checkbox" id="checkbox-3">
-                                            <label for="checkbox-3"><span></span></label>
-                                        </div>
-                                        <div class="single-checkbox checkbox-style-4">
-                                            <input type="checkbox" id="checkbox-4">
-                                            <label for="checkbox-4"><span></span></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-12">
-                                    <div class="form-group">
-                                        <label for="color">Battery capacity</label>
-                                        <select class="form-control" id="color">
-                                            <option>5100 mAh</option>
-                                            <option>6200 mAh</option>
-                                            <option>8000 mAh</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-4 col-12">
-                                    <div class="form-group quantity">
-                                        <label for="color">Quantity</label>
-                                        <select class="form-control">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bottom-content">
-                                <div class="row align-items-end">
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <div class="button cart-button">
-                                            <button class="btn" style="width: 100%;">Add to Cart</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <div class="wish-button">
-                                            <button class="btn"><i class="lni lni-reload"></i> Compare</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <div class="wish-button">
-                                            <button class="btn"><i class="lni lni-heart"></i> To Wishlist</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <br><br>
+                        <div>
+                        	<div id="productStatusDiv">
+                        		<span style="font-size: 6px;">●</span>
+                        		<div id="productStatus">상품상태</div>
+                        	 </div>
+                        	 <div id="productStatusData">
+                        	 	찢어지기직전
+                        	 </div>
+                        	 <div>
+                        	 <div id="productStatusDiv">
+                        		<span style="font-size: 6px;">●</span>
+                        		<div id="productStatus">거래지역</div>
+                        	 </div>
+                        	 <div id="productStatusData">
+                        	 	너네집과 우리집중간 어디쯤..
+                        	 </div>
+                        	 </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-12">
+	                         <div class="wish-button" id="priceProposal">
+	                             <button class="btn" style="width:174px; height: 60px; font-size: 20px;">가격제안</button>
+	                         </div>
+                         </div>
+                         <div class="bottom-content" id="threeButton">
+                             <div class="row align-items-end">
+                                 <div class="col-lg-4 col-md-4 col-12">
+                                     <div class="button cart-button" id="likeButtonDiv">
+                                        <button class="btn" style="width: 100%; height: 60px;" id="likeButton">
+                                        <span id="likeText">찜</span>
+                                     	<img src="${pageContext.request.contextPath}/resources/images/product-details/찜하트모양.png" width="25" height="25" id="likeImage">
+                                        <span id="likeButtonSpan">516</span>
+                                        </button>
+                                     </div>
+                                 </div>
+                                 <div class="col-lg-4 col-md-4 col-12">
+                                     <div class="wish-button">
+                                         <button class="btn" style="height: 60px;" id="chatButton"> 1:1채팅</button>
+                                     </div>
+                                 </div>
+                                 <div class="col-lg-4 col-md-4 col-12">
+                                     <div class="wish-button">
+                                         <button class="btn" style="height: 60px;" id="nowPay"> 즉시구매</button>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
                         </div>
                     </div>
                 </div>
