@@ -2021,6 +2021,19 @@ ol {
 	background-color: yellow;
 }
 
+.localStarageDeleteOneTd{
+	text-align: right;
+}
+.localStarageDeleteOne{
+	margin-right: 15px;
+}
+
+.keywordWidth {
+  max-width: 100px; /* 원하는 너비 값으로 변경 가능 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 /* 이민석 작업 end */
 
 .header .main-menu-search .select-position {

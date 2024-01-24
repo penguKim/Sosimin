@@ -6,13 +6,84 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 
 <script type="text/javascript">
+
+
 function searchKeyword() {
 	var keyword = $("#searchKeyword").val();
-	var searchKeywordUrl = "searchKeyword?keyword=" + encodeURIComponent(keyword);
-	window.location.href = searchKeywordUrl;
+	if(keyword != "" && keyword != null){
+		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
+		// 로컬스토리지에 저장할 키의 이름
+		const localStorageKey = 'keywords';
+		// 기존의 키워드 배열 가져오기
+		let keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+		// 새로운 키워드 추가하기
+		keywords.push(keyword);
+		// 최대 갯수를 초과하는 경우 가장 오래된 데이터부터 제거
+		if (keywords.length > 10) {
+		  keywords = keywords.slice(keywords.length - 10);
+		}
+		// 로컬스토리지에 업데이트된 키워드 배열 저장
+		localStorage.setItem(localStorageKey, JSON.stringify(keywords));
+		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
+	
+		var searchKeywordUrl = "searchKeyword?keyword=" + encodeURIComponent(keyword);
+		window.location.href = searchKeywordUrl;
+	}
 }
 
 $(function(){
+// 	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	const localStorageKey = 'keywords';
+	const keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+
+	// 테이블 생성
+	let tableHTML = '<table>';
+	tableHTML += 
+		tableHTML += 
+			'<tr>'
+			+'	<td>'
+			+'		<a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a>'
+			+'	</td>'
+			+'	<td>'
+			+'		<a onclick="PopularSearches()" id="popularWordColor">인기검색어</a>'
+			+'	</td>'
+			+'</tr>';
+		
+	
+
+	// 키워드 배열을 순회하며 테이블 행 추가
+	for (let index = 0; index < keywords.length; index++) {
+		 const keyword = keywords[index];
+		 tableHTML +=
+			 +"<tr>"
+			 +"	<td class='keywordWidth'>"
+			 + 		keyword
+			 +"	</td>"
+			 +"	<td class='localStarageDeleteOneTd' onclick='localStarageDeleteOne("+ keyword +")'>"
+			 +"		<a class='localStarageDeleteOne'>x</a>"
+			 +"	</td>"
+			 +"</tr>";
+			 
+	}
+	tableHTML += 
+		'<tr>'
+		+	'<td>'
+		+	'	<a onclick="localStorageClean()">최근검색어 삭제</a>'
+		+	'</td>'
+		+	'<td>'
+		+	'	<a id="closeSearchBox">'
+		+	'		닫기'
+		+	'	</a>'
+		+	'</td>'
+		+'</tr>' 
+		
+		
+	tableHTML += '</table>';
+
+	// HTML 영역에 테이블 추가
+	$("#Recent").html(tableHTML);
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 	/* 
 	@@@ 검색창과 관련된 설정 항목 @@@
 	1. 검색창은 Id가 searchBox 인 영역을 클릭 했을 경우 나타난다.
@@ -21,6 +92,10 @@ $(function(){
 		2) searchBox 밖의 영역 클릭
 		3) "닫기" 글자 클릭 
 		했을 경우 사라진다.
+	3. 이 검색창은
+	   1) 아무것도 입력하지 않고 엔터키 클릭
+	   2) 돋보기 클릭 시
+	   검색기능이 동작하지 않는다
 	*/
 	hideHandler();
 	$(window).on("scroll", hideHandler);
@@ -86,6 +161,46 @@ function searchKeywordChange(keyWord){
 	    	    +'</table>'			
 		);
 	}
+}
+
+function localStorageClean(){
+	window.localStorage.clear();
+	// 테이블 생성
+	let tableHTML = '<table>';
+	tableHTML += 
+		'<tr>'
+		+'	<td>'
+		+'		<a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a>'
+		+'	</td>'
+		+'	<td>'
+		+'		<a onclick="PopularSearches()" id="popularWordColor">인기검색어</a>'
+		+'	</td>'
+		+'</tr>';
+		
+	tableHTML +=
+		'<tr>'
+		+'<td colspan="2">'
+		+'최근 검색어가 없습니다.'
+		+'</td>'
+		+'</tr>'
+		
+	tableHTML += 
+		'<tr>'
+		+	'<td>'
+		+	'	<a onclick="localStorageClean()">최근검색어 삭제</a>'
+		+	'</td>'
+		+	'<td>'
+		+	'	<a id="closeSearchBox">'
+		+	'		닫기'
+		+	'	</a>'
+		+	'</td>'
+		+'</tr>' 
+		
+		
+	tableHTML += '</table>';
+
+	// HTML 영역에 테이블 추가
+	$("#Recent").html(tableHTML);
 }
 
 </script>
@@ -183,32 +298,9 @@ function searchKeywordChange(keyWord){
                 			<td><a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a></td>
                 			<td><a onclick="PopularSearches()" id="popularWordColor">인기검색어</a></td>
                 		</tr>
-                		<tr border="1">
-                			<td colspan="2">1</td>
-                		</tr>
                 		<tr>
-                			<td colspan="2">2</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">3</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">4</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">5</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">6</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">7</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">8</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">9</td>
+                			<td>내용</td>
+                			<td>x</td>
                 		</tr>
                 		<tr>
                 			<td>최근검색어 삭제</td>
@@ -223,44 +315,37 @@ function searchKeywordChange(keyWord){
                 			<td><a onclick="PopularSearches()">인기검색어</a></td>
                 		</tr>
                 		<tr>
-                			<td>1</td>
-                			<td>군만두</td>
+                			<td colspan="2">1 군만두</td>
                 		</tr>
                 		<tr>
-                			<td>2</td>
-                			<td>참치 올린 불닭</td>
+                			<td colspan="2">2 참치 올린 불닭</td>
                 		</tr>
                 		<tr>
-                			<td>3</td>
-                			<td>고추짬뽕</td>
+                			<td colspan="2">3 고추짬뽕</td>
                 		</tr>
                 		<tr>
-                			<td>4</td>
-                			<td>깐풍기</td>
+                			<td colspan="2">4 깐풍기</td>
                 		</tr>
                 		<tr>
-                			<td>5</td>
-                			<td>깐쇼새우</td>
+                			<td colspan="2">5 깐쇼새우</td>
                 		</tr>
                 		<tr>
-                			<td>6</td>
-                			<td>이재모피자</td>
+                			<td colspan="2">6 이재모피자</td>
                 		</tr>
                 		<tr>
-                			<td>7</td>
-                			<td>국밥</td>
+                			<td colspan="2">7 국밥</td>
                 		</tr>
                 		<tr>
-                			<td>8</td>
-                			<td>카라멜팝콘</td>
+                			<td colspan="2">8 카라멜팝콘</td>
                 		</tr>
                 		<tr>
-                			<td>9</td>
-                			<td>컨트리맨즈</td>
+                			<td colspan="2">9 컨트리맨즈</td>
                 		</tr>
                 		<tr>
-                			<td>최근검색어 삭제</td>
-                			<td><a id="closeSearchBox">닫기</a></td>
+                			<td colspan="2">10 아웃백 스테이크 하우스</td>
+                		</tr>
+                		<tr>
+                			<td>최근검색어 삭제 <a id="closeSearchBox">닫기</a></td>
                 		</tr>
                 	</table>
                 </div>

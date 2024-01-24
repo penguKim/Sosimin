@@ -926,6 +926,11 @@ progress {
 }
 
 @media (min-width:576px) {
+	#Recent table td,#Popular table td{
+		width: 258px;
+		background-color: yellow;
+	}
+	
     .col-sm {
         flex: 1 0 0%
     }
@@ -1140,9 +1145,13 @@ progress {
 }
 
 @media (min-width:768px) {
-	#Recent table td,#Popular table td{
+	#Recent table td{
 		width: 25.66%;
 		background-color: yellow;
+	}
+	#Popular table td{
+		width: 33.66%;
+		background-color: gray;
 	}
     .col-md {
         flex: 1 0 0%
@@ -1358,9 +1367,13 @@ progress {
 }
 
 @media (min-width:992px) {
-	#Recent table td,#Popular table td{
+	#Recent table td{
 		width: 27%;
 		background-color: yellow;
+	}
+	#Popular table td{
+		width: 35.5%;
+		background-color: gray;
 	}
     .col-lg {
         flex: 1 0 0%
@@ -1581,8 +1594,12 @@ progress {
 }
 
 @media (min-width:1200px) {
-	#Recent table td,#Popular table td{
-		width: 22.66%;
+	#Recent table td{
+		width: 225px;
+		background-color: yellow;
+	}
+	#Popular table td{
+		width: 29.4%;
 		background-color: yellow;
 	}
     .col-xl {
@@ -1799,8 +1816,12 @@ progress {
 }
 
 @media (min-width:1400px) {
-	#Recent table td,#Popular table td{
-		width: 19.3%;
+	#Recent table td{
+		width: 19.2%;
+		background-color: yellow;
+	}
+	#Popular table td{
+		width: 25.1%;
 		background-color: yellow;
 	}
     .col-xxl {

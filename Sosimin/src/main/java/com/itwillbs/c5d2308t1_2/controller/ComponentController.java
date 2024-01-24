@@ -16,9 +16,7 @@ public class ComponentController {
 	
 	@GetMapping("searchKeyword")
 	public String searchKeyword(@RequestParam String keyword, Model model,HttpServletRequest request, HttpServletResponse response) {
-		Cookie cookie = new Cookie("searchKeyword", keyword);
-		System.out.println("저장한 쿠키 : " + cookie);
-		response.addCookie(cookie);
+		System.out.println("입력한 단어 : " + keyword);
 		
 		
 		
