@@ -22,41 +22,9 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
 <script type="text/javascript">
 	$(function() {
-		let width = $(window).width();
-		console.log(width);
-		
-		// 10초마다 게시글 임시저장
-		let tempSave = setInterval(tempToast, 10000);
-		
-		
-		
-// 		$("#writeBtn").on("click", function() {
-// 			Swal.fire({
-// 			      title: '정말로 그렇게 하시겠습니까?',
-// 			      text: "다시 되돌릴 수 없습니다. 신중하세요.",
-// 			      icon: 'warning',
-// 			      showCancelButton: true,
-// 			      confirmButtonColor: '#3085d6',
-// 			      cancelButtonColor: '#d33',
-// 			      confirmButtonText: '승인',
-// 			      cancelButtonText: '취소',
-// 			      reverseButtons: true, // 버튼 순서 거꾸로
-			      
-// 			    }).then((result) => {
-// 			      if (result.isConfirmed) {
-// 			        Swal.fire(
-// 			          '승인이 완료되었습니다.',
-// 			          '화끈하시네요~!',
-// 			          'success'
-// 			        )
-// 			      }
-// 			    });
-// 		});
-		
-		// 게시글 등록하기
+		// 게시글 수정하기
 		$('#writeBtn').on('click', function(event) {
-				event.preventDefault();
-				clearInterval(tempSave);
+			event.preventDefault();
 			if (!$(".needs-validation")[0].checkValidity()) {
 				event.stopPropagation();
 				$(".needs-validation").addClass('was-validated');
@@ -67,37 +35,27 @@
 					showConfirmButton: false,
 					timer: 2000,
 					toast: true
-				})
+				});
+				
 				$(".needs-validation").find('.formFocus').each(function() {
-					
 				    if ($(this).is('select')) {
 				        // 셀렉트 박스인 경우
 				        if ($(this).find('option:selected').val() == '') {
 				            // 선택된 옵션의 값이 빈 문자열인 경우
 				            $(this).focus();
 				            $('#writeBtn').blur();
-				            tempSave = setInterval(tempToast, 10000);
 				            return false;
 				        }
 				    } else if ($(this).val() == '') {
 				        // 셀렉트 박스가 아니고, 값이 없는 경우
 				        $(this).focus();
 				        $('#writeBtn').blur();
-				        tempSave = setInterval(tempToast, 10000);
 				        return false;
 				    }
-					
-// 		            if ($(this).val() == '') {
-// 		                $(this).focus();
-// 		                $('#writeBtn').blur();
-// 		                tempSave = setInterval(tempToast, 10000);
-// 		                return false;
-// 		            }
 		        });
 			} else {
-// 				event.preventDefault();
 				Swal.fire({
-			        title: '게시글을 등록하시겠습니까?',
+			        title: '게시글을 수정하시겠습니까?',
 			        text: "등록 후 커뮤니티 게시판으로 이동합니다.",
 			        icon: 'question',
 			        showCancelButton: true,
@@ -110,42 +68,12 @@
 			        if (result.isConfirmed) {
 			            $(".needs-validation").submit();
 			        } else {
-			        	$("#writeBtn").blur();
-			        	tempSave = setInterval(tempToast, 10000);
+			        	$(this).blur();
 			        }
 			    });
 			}
 		});
-		
-		// 게시글 임시저장
-		$('#tempBtn').on('click', function(event) {
-			clearInterval(tempSave);
-			
-			Swal.fire({
-				position: 'center',
-				icon: 'success',
-				title: '작성글이 임시저장되었습니다.',
-				showConfirmButton: false,
-				timer: 2000,
-				toast: true
-			})
-			$(this).blur();
-			tempSave = setInterval(tempToast, 10000);
-		});
-		
 	});
-	
-	function tempToast() {
-		Swal.fire({
-			position: 'bottom',
-			icon: 'success',
-			title: '작성글이 임시저장되었습니다.',
-			showConfirmButton: false,
-			timer: 2000,
-			toast: true
-		})
-	}
-	
 </script>
 </head>
 <body>
@@ -186,7 +114,7 @@
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
                         <li><a href="Community">커뮤니티</a></li>
-                        <li>게시글 작성</li>
+                        <li>게시글 수정</li>
                     </ul>
                 </div>
             </div>
@@ -195,7 +123,7 @@
    	<!-- End Breadcrumbs -->
    	<section class="communityArea section">
 		<div class="container">
-			<h1>게시글 작성</h1>
+			<h1>게시글 수정</h1>
 			<form action="" name="writeForm" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
 				<div class="communityForm post p-4 w-50 mx-auto">
 				    <div class="post-header border-bottom">
@@ -215,9 +143,6 @@
 									<input type="text" class="form-control form-control-lg formFocus" id="title" placeholder="제목을 입력하세요" required>
 									<label for="title">제목</label>
 								</div>
-<!-- 								<div class="input-group"> -->
-<!-- 									<input type="text" name="name" class="form-control form-control-lg" placeholder="제목을 입력하세요"> -->
-<!-- 								</div> -->
 								<div class="form-text" id="basic-addon4">
 									무언가를 표시할때 사용할거야
 								</div>
@@ -225,9 +150,6 @@
 						</div>
 				   	</div>
 				    <div class="post-content mt-3">
-<!-- 				    <div class="post-content position-relative mt-3"> -->
-<!-- 				    	<div class="row"> -->
-<!-- 				    	</div> -->
 					<div class="form-floating">
 						<textarea class="form-control communityFormSubject formFocus" placeholder="Leave a comment here" id="floatingTextarea" style="height: 500px;" required></textarea>
 						<label for="floatingTextarea">내용</label>
@@ -235,11 +157,8 @@
 				    </div>
 				</div>
 				<div class="mx-auto w-50 mt-2 row d-flex justify-content-between" id="commandCell">
-<!-- 				<div> -->
 					<input type="button" class="btn btn-secondary col-xl-2 col-md-3 col-12 me-2" value="돌아가기" onclick="history.back()">
-					<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 me-auto" id="tempBtn" value="임시저장" formaction="tempWritePro">
-<!-- 				</div> -->
-					<input type="submit" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" id="writeBtn" value="등록하기" formaction="CommunityWritePro">
+					<input type="submit" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" id="writeBtn" value="수정하기" formaction="CommunityModifyPro">
 				</div>
 		    </form>
 <!-- 					<tr> -->

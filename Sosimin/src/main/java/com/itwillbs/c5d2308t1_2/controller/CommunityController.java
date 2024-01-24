@@ -27,6 +27,10 @@ public class CommunityController {
 		return "community/communityDetail";
 	}
 	
+	@GetMapping("CommunityModify")
+	public String communityModify() {
+		return "community/communityModify";
+	}
 	
 	
 	

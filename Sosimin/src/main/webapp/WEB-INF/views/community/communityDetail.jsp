@@ -11,34 +11,15 @@
 	<meta name="description" content="" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.png" />
-	
 	<!-- ========================= CSS here ========================= -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
-<style type="text/css">
-/* 	.post, #replyArea { */
-/* 	    width: 40%; */
-/* 	    margin: auto; */
-/* 	    padding: 20px; */
-/* 	    border: 1px solid #ccc; */
-/* 	    border-radius: 10px; */
-/* 	} */
-/* 	.post-header, .post-category { */
-/* 	    border-bottom: 1px solid #ccc; */
-/* 	    padding-bottom: 10px; */
-/* 	    margin-bottom: 20px; */
-/* 	} */
-/* 	.post-content { */
-/* 	    text-align: justify; */
-/* 	    color: #000; */
-/* 	    height: 500px; */
-/* 	} */
-
-</style>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 	$(function() {
@@ -55,18 +36,74 @@
 			}
 		});
 		
+		// 좋아요 버튼 클릭 이벤트
         $(".heart").on("click", function () {
             $(this).toggleClass("is-active");
         });
         
+		// 신고 버튼 클릭 이벤트
         $("#reportBtn").on("click", function() {
 			if(confirm("신고하시겠습니까?")) {
 				alert("신고했습니다.");
 			}
 		});
         
+        // 댓글 숨기기/보이기 버튼 클릭 이벤트
+        $("#replyBtn").on("click", function() {
+			$(this).toggleClass("replyHide");
+			if($(this).hasClass("replyHide")) {
+				console.log("댓글창 닫김");
+// 				$("#replyArea").hide();
+				$("#replyArea").slideUp();
+			} else {
+				console.log("댓글창 열렸어요!!!");
+// 				$("#replyArea").show();
+				$("#replyArea").slideDown();
+			}
+		});
+        
+        // 게시글 수정
+        $("#modifyBtn").on("click", function() {
+    		Swal.fire({
+    	        title: '게시글을 수정하시겠습니까?',
+    	        icon: 'question',
+    	        showCancelButton: true,
+    	        confirmButtonColor: '#39d274',
+    	        cancelButtonColor: '#d33',
+    	        confirmButtonText: '수정',
+    	        cancelButtonText: '취소',
+    	        reverseButtons: true,
+    	    }).then((result) => {
+    	        if (result.isConfirmed) {
+    	        	location.href="CommunityModify?board_num=${board.board_num}&pageNum=${param.pageNum }";
+    	        } else {
+    	    		$(this).blur();
+    	    	}
+    	    });
+		});
+        
         
 	});
+	
+	function confirmDelete() {
+		Swal.fire({
+	        title: '게시글을 삭제하시겠습니까?',
+	        text: "삭제한 게시글은 복구할 수 없습니다.",
+	        icon: 'error',
+	        showCancelButton: true,
+	        confirmButtonColor: '#d33',
+	        cancelButtonColor: '#6c757d',
+	        confirmButtonText: '삭제',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	        	location.href="CommunityDelete?board_num=${board.board_num}&pageNum=${param.pageNum }";
+	        } else {
+	    		$(this).blur();
+	    	}
+	    });
+	}
 	
 	function imageModal(image) {
 		console.log($(image).attr("src"));
@@ -122,30 +159,25 @@
    	<!-- End Breadcrumbs -->
 
 	<!-- 게시판 상세내용 보기 -->
-	<section class="product-grids section">
-		<div class="container mx-auto mt-50" style="width: 30%;">
-			<div class="post border border-1 rounded-3 p-4">
-	<!-- 		    <div class="post-header border-bottom"> -->
-	<!-- 		    	카테고리명 -->
-	<!-- 		        <h2 class="post-title">게시글 제목</h2> -->
-	<!-- 		        <i class="fa fa-github-alt" style="font-size:24px"></i> -->
-	<!-- 		        <p class="post-meta">홍길동 &nbsp;&nbsp;&nbsp;LV.1</p> -->
-	<!-- 		        <p class="post-meta">1분전 &nbsp;&nbsp;조회수 0</p> -->
-	<!-- 		    </div> -->
+	<section class="communityArea section">
+		<div class="container">
+			<div class="communityDetail post p-4 w-50 mx-auto rounded-3 p-4">
 			    <div class="post-header border-bottom">
-			    	<div>카테고리명</div>
-			        <h2 class="post-title mb-2">게시글 제목</h2>
+			    	<div class="row"><p>카테고리명</p></div>
+			    	<div class="row">
+			        	<p class="post-title mb-2">게시글 제목</p>
+		        	</div>
 			        <div class="row mb-2">
-			        	<div class="col-1">
+			        	<div class="col-xl-1 col-2 me-1">
 				        	<i class="fa fa-github-alt" style="font-size:48px"></i>
 				        </div>
 				        <div class="col">
 				        	<div class="row">
-						        <p class="col-2">홍길동</p>
+						        <p class="col-xl-2 col-3">홍길동</p>
 						        <p class="col">LV.1</p>
 				        	</div>
 				        	<div class="row">
-						        <p class="col-2">1분전</p>
+						        <p class="col-xl-2 col-3">1분전</p>
 						        <p class="col">조회수 0</p>
 				        	</div>
 				        </div>
@@ -157,23 +189,17 @@
 					<p>모든 국민은 법 앞에 평등하다. 누구든지 성별·종교 또는 사회적 신분에 의하여 정치적·경제적·사회적·문화적 생활의 모든 영역에 있어서 차별을 받지 아니한다.</p>
 					<img src="${pageContext.request.contextPath}/resources/images/banner/banner-1-bg.jpg" class="imgFIle" onclick="imageModal(this)">
 					</div>
-					<div style="height: 80px;">
-						<div class="heart position-absolute bottom-0 start-0"></div>
-						<div class="position-absolute bottom-0 end-0"><i class="fa fa-warning" id="reportBtn" style="font-size:24px"></i></div>
+					<div class="d-flex justify-content-between" style="height: 80px;">
+						<div class="heart"></div>
+<!-- 						<div class="heart position-absolute bottom-0 start-0"></div> -->
+						<div class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn">댓글 숨기기</div>
+						<div class="align-self-end" style="width: 80px;"><i class="fa fa-warning d-flex justify-content-end" id="reportBtn" style="font-size:24px"></i></div>
+<!-- 						<div class="position-absolute bottom-0 end-0"><i class="fa fa-warning" id="reportBtn" style="font-size:24px"></i></div> -->
 					</div>
 			    </div>
 			</div>
-			<div id="commandCell" class="mt-1 mb-3">
-		<%-- 		<c:if test="${not empty sessionScope.sId and (sessionScope.sId eq board.board_name or sessionScope.sId eq 'admin') }"> --%>
-					<input type="button" class="btn btn-secondary" value="수정" onclick="location.href='BoardModifyForm?board_num=${board.board_num}&pageNum=${param.pageNum }'">
-					<input type="button" class="btn btn-danger" value="삭제" onclick="confirmDelete()">
-		<%-- 		</c:if> --%>
-				
-				<%-- 목록은 BoardList 서블릿 요청(파라미터 : 페이지번호) --%>
-				<input type="button" class="btn btn-secondary float-end" value="목록" onclick="location.href='BoardList?pageNum=${param.pageNum}'">
-			</div>
-			<section id="replyArea" class="border border-1 rounded-3 p-4">
-				<form action="BoardTinyReplyWrite" method="post" class="d-flex justify-content-center">
+			<section id="replyArea" class="reply rounded-3 p-4 w-50 mx-auto">
+				<form action="CommunityReplyWrite" method="post" class="d-flex justify-content-center">
 					<input type="hidden" name="board_num" value="${board.board_num }">
 					<input type="hidden" name="pageNum" value="${param.pageNum }">
 					<%-- 만약, 아이디를 전송해야할 경우 reply_namem 파라미터 포함 --%>
@@ -182,16 +208,16 @@
 					<input type="hidden" name="reply_name" value="${sessionScope.sId }">
 					<%-- 세션 아이디가 없을 경우(미로그인 시) 댓글 작성 차단 --%>
 					<%-- textarea 및 버튼 disabled 처리 --%>
-					<c:choose>
-						<c:when test="${empty sessionScope.sId }"> <%-- 세션 아이디 없음 --%>
-							<textarea class="form-control" id="replyTextarea" name="reply_content" placeholder="로그인 한 사용자만 작성 가능합니다" disabled></textarea>
-							<input type="submit" class="btn btn-primary disabled" value="댓글쓰기" id="replySubmit" disabled>
-						</c:when>
-						<c:otherwise>
-							<textarea id="replyTextarea" name="reply_content" required></textarea>
-							<input type="submit" value="댓글쓰기" id="replySubmit">
-						</c:otherwise>
-					</c:choose>
+<%-- 					<c:choose> --%>
+<%-- 						<c:when test="${empty sessionScope.sId }"> 세션 아이디 없음 --%>
+<!-- 							<textarea class="form-control" id="replyTextarea" name="reply_content" placeholder="로그인 한 사용자만 작성 가능합니다" disabled></textarea> -->
+<!-- 							<input type="submit" class="btn btn-primary disabled" value="댓글쓰기" id="replySubmit" disabled> -->
+<%-- 						</c:when> --%>
+<%-- 						<c:otherwise> --%>
+							<textarea class="form-control" id="replyTextarea" name="reply_content" required></textarea>
+							<input type="submit" class="btn btn-primary" value="댓글쓰기" id="replySubmit">
+<%-- 						</c:otherwise> --%>
+<%-- 					</c:choose> --%>
 				</form>
 				<div id="replyListArea">
 					<table>
@@ -254,6 +280,13 @@
 					</table>
 				</div>
 			</section>
+			<div class="mx-auto w-50 mt-1 mb-3 row d-flex justify-content-between" id="commandCell">
+		<%-- 		<c:if test="${not empty sessionScope.sId and (sessionScope.sId eq board.board_name or sessionScope.sId eq 'admin') }"> --%>
+					<input type="button" class="btn btn-secondary col-xl-2 col-md-3 col-12 me-2" id="modifyBtn" value="수정">
+					<input type="button" class="btn btn-danger col-xl-2 col-md-3 col-12 me-auto" value="삭제" onclick="confirmDelete()">
+		<%-- 		</c:if> --%>
+				<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="목록" onclick="location.href='Community?pageNum=${param.pageNum}'">
+			</div>
 		</div>
 	</section>
 	<!-- The Modal -->
@@ -277,5 +310,6 @@
 	<script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </body>
 </html>
