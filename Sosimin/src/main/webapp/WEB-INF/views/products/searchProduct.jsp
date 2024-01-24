@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Insert title here</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
@@ -16,87 +17,12 @@
 <%-- 1. 신고하기 기능 --%>
 <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-<script type="text/javascript">
-$(function() {
-	
-	$(".heart").on("click", function () {
-        $(this).toggleClass("is-active");
-    });
-	
-	$("#reportBtn").on("click", function() {
-			
-	});
-	
-	let searchKeyword = ""; 
-	let category = "";
-	let id = "";
-	<%-- 기본적으로 상품목록은 사용자의 지역 구(지역) 기준으로 상품 목록 처리 --%>
-	$.ajax({
-		url: "",
-		data: {
-			<%-- searchKeyword 의 경우 검색 내용으로 글목록 비교 상품목록 출력  --%>
-			
-			<%-- category 의 경우 카테고리 선택 시 상품 카테고리 비교 상품목록 출력 --%>
-			
-		},
-		dataType: "json",
-		success: function(result) {
-			
-			
-		},
-		error: function() {
-			
-		}
-	}); <%-- 상품 목록 ajax 끝 --%>
-	
-	
-	<%-- 찜 하기 처리 --%> 
-	$.ajax({
-		url: "찜목록 조회를 위한 테이블 조회",
-		data: {
-			<%-- 유저아이디 판별 찜목록 조회 --%>	
-		},
-		dataType: "json",
-		success: function(result) {
-			
-			
-		},
-		error: function() {
-			
-		}
-		
-	}); <%-- 찜하기 ajax 끝 --%>
-});	 <%-- 상품목록 조회, 찜하기 처리 끝 --%>
-	
-	
-	function prductLike() {
-		
-		$.ajax({
-			type: "POST",
-			url: "",
-			data: {
-				
-			},
-			dataType: "json",
-			success: function(result) {
-				
-				
-				
-				
-			},
-			error: function() {
-				
-			}
-		}); // ajax 끝
-	}
-
-</script>
 <body>
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
-	
 	<%-- 2. 신고하기 기능 --%>
+	<jsp:include page="../report/test.jsp"></jsp:include>
 	<jsp:include page="../report/report.jsp"></jsp:include>
 	<!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
@@ -130,12 +56,10 @@ $(function() {
                         <!-- Start Single Widget -->
                         <div class="single-widget">
 	                        <span class="filter">필터</span>
-	                        <%-- 3. 신고하기 기능 --%>
-	                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewCheckFrom" >
-									신고하기
-							</button>
 							<%-- 신고하기 기능 --%>
-                        	<span class="filter_reset"><a href="javascript:void(0)" style="text-decoration: underline; color: grey;">초기화</a></span>
+                        	<span class="filter_reset">
+                        		<a href="javascript:void(0)" style="text-decoration: underline; color: grey;">초기화</a>
+                        	</span>
                             <h3>카테고리</h3>
                             <ul class="list">
                                 <li>
@@ -164,7 +88,6 @@ $(function() {
                                 </li>
                             </ul>
                             
-                            <div style="margin-bottom: 20px;"></div>
                             <div style="margin-bottom: 20px;"></div>
 		                    <h3>가격</h3>
 		                    <form action="#">
@@ -212,6 +135,15 @@ $(function() {
 			                    </div>
 		                    </form>
                         </div>
+                        <%-- 3. 신고하기 기능 --%>
+	                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+	                        		data-bs-target="#reportModal" id="reportBtn" >
+									신고하기
+							</button>
+							<button type="button" class="btn btn-primary" data-bs-toggle="modal" 
+	                        		data-bs-target="#memberModal1" id="reportBtn" >
+									신고하기
+							</button>
                    </div>
                </div>
                 
