@@ -79,7 +79,7 @@
                                 	지금 바로 회원가입하여 다양한 물품들을 거래하고 구매해 보세요. <br>
                                 </p>
                             </div>
-                            <div class="social-login">
+                            <div class="social-login" id="socialJoinArea">
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4 col-12">
                                     	<a class="btn facebook-btn" id="joinWithNaver" href="javascript:void(0)">

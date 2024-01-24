@@ -1,11 +1,7 @@
 @charset "UTF-8";
-/* =================== 회원가입 =======================  */
+/* =================== 회원가입 & 로그인 =======================  */
 /* ============== */
 /* 회원가입 메인 */
-.social-login a {
-	width: auto !important;
-}
-
 #joinWithNaver {
 	border-color: #03C75A !important; 
 	color: #03C75A !important;
@@ -16,6 +12,15 @@
 	color: #FEE500 !important;
 }
 
+#socialJoinArea > div {
+	margin: 0 auto;
+	text-align: center;
+	width: 650px;
+}
+
+#socialJoinArea a {
+	width: auto !important;
+}
 
 /* =================== */
 /* 회원가입 정보입력폼 */
@@ -84,19 +89,19 @@
 }
 
 #mgForThree {
-	margin-right: 53px;
+	margin-right: 52px;
 }
 
 #mgForFour {
-	margin-right: 40px;
+	margin-right: 38px;
 }
 
 #mgForFive {
-	margin-right: 27px;
+	margin-right: 24px;
 }
 
 #mgForSix {
-	margin-right: 10px;
+	margin-right: 7px;
 }
 
 .button {
@@ -130,7 +135,82 @@
 	margin-right: 7px !important;
 }
 
+/* =========== */
+/* 로그인 메인 */
+#socialLoginArea > div {
+	margin: 0 auto 0 16%;
+	text-align: center;
+	width: 650px;
+}
 
+#socialLoginArea a {
+	width: auto !important;
+}
+
+#joinSuggestion {
+	margin-top: 30px !important;
+	width: auto !important;
+}
+
+#findArea {
+	margin-right: 90px;
+/* 	margin-top: 30px; */
+}
+
+#findArea a {
+	margin-right: 20px;
+}
+
+#rememberIdArea {
+	margin-left: 120px;
+}
+
+/* ==================== */
+/* 아이디/비밀번호 찾기 */
+#findButtonArea, #resetButtonArea {
+	flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x)/ 2);
+    padding-left: calc(var(--bs-gutter-x)/ 2);
+	
+}
+
+#findButtonArea button, #resetButtonArea button {
+	width: 25% !important;
+}
+/*
+#findCategoryArea {
+	width: 720px !important;
+	margin: 0 auto !important;
+	text-align: center;
+}
+
+#findCategoryArea li {
+	display: inline-block;
+	padding:1px 60px 5px;
+}
+*/
+#singleFindArea {
+	text-align: right;	
+}
+
+#singleFindArea a {
+	margin-right: 110px;
+}
+
+#mgForThreeReset {
+	margin-right: 75px;
+}
+
+#mgForFiveOneReset {
+	margin-right: 44px;
+}
+
+#mgForSevenTwoReset {
+	margin-right: 13px;
+	
+}
 /* =============================================================================== */
 /* 마이페이지 CSS */
 #wholeMyPageSection {
