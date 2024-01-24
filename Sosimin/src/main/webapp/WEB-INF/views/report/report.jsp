@@ -32,37 +32,9 @@ function reportRegist() {
 		   reverseButtons: true, // 버튼 순서 거꾸로
 		   
 		}).then(result => {
-			
 		    // 만약 Promise리턴을 받으면,
 		    if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-		   	
-			   $.ajax(function() {
-				   url: "reportRegist",
-				   data: {
-					   reporter_id: "",
-					   : "",
-					   report_num: "숫자 1 ~ 8",
-					   report_content: "report_content",
-					   <%-- 신고 상태는 디폴트 0으로 처리 --%>
-				  	   report_status: "숫자 0 ~ 1"
-				   },
-				   seccess: function(result) {
-					   if(result == 'true') {
-						   Swal.fire('신고가 완료되었습니다!', '화끈하시네요~!', 'success');
-   						<%-- 신고완료후 모달창 닫기 --%>
-						   
-					   } else {
-						   Swal.fire('신고가 실패했습니다!', '다시 신고해주세요', 'fail');
-					   }
-					   
-				   },
-				   error: function() {
-			 		
-		 		   }
-				  
-		  	  }); 
-			   
-		     
+		    	Swal.fire('신고가 실패했습니다!', '다시 신고해주세요', 'fail');
 		   }
 		});
 }	
@@ -174,10 +146,6 @@ $(function() {
 </script>
 </head>
 <body>
-	<div style="height: 80px;">
-		<div class="position-absolute bottom-0 end-0"><i class="fa fa-warning" id="reportBtn" style="font-size:24px; margin-right: 50em;">신고하기</i></div>
-	</div>
-	
 	<%-- 후기 모달 설정 --%>
 	<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">

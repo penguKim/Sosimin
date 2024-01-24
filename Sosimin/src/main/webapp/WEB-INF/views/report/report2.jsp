@@ -15,6 +15,31 @@
     <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
+$.ajax(function() {
+	   url: "reportRegist",
+	   data: {
+		   reporter_id: "",
+		   : "",
+		   report_num: "숫자 1 ~ 8",
+		   report_content: "report_content",
+		   <%-- 신고 상태는 디폴트 0으로 처리 --%>
+	  	   report_status: "숫자 0 ~ 1"
+	   },
+	   seccess: function(result) {
+		   if(result == 'true') {
+			   Swal.fire('신고가 완료되었습니다!', '화끈하시네요~!', 'success');
+			<%-- 신고완료후 모달창 닫기 --%>
+			   
+		   } else {
+			   Swal.fire('신고가 실패했습니다!', '다시 신고해주세요', 'fail');
+		   }
+		   
+	   },
+	   error: function() {
+		
+	   }
+
+
 $(function() {
 	$("#reviewCheckFrom").on("click", function() {
 		$("#staticBackdropLabel").text("게시글 신고하기");

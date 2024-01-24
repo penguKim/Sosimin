@@ -33,7 +33,8 @@
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
-
+	<%-- 1. 신고하기 기능 --%>
+	<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 </head>
 <style>
 .product-info{
@@ -134,6 +135,8 @@
 }
 </style>
 <body>
+	<%-- 2. 신고하기 기능 --%>
+	<jsp:include page="../report/report.jsp"></jsp:include>
     <!--[if lte IE 9]>
       <p class="browserupgrade">
         You are using an <strong>outdated</strong> browser. Please
