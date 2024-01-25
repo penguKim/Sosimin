@@ -366,6 +366,14 @@ padding-top: 21px;
 #save{
 	margin-left: 450px;
 }
+
+/* #background{ */
+/* 	background-color: #f9f9f9; */
+/* } */
+
+/* #addForm{ */
+/* 	background-color: white; */
+/* } */
 </style>
 </head>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
@@ -506,7 +514,7 @@ function handleKeyPress(e) {
 	    var tagContainer = document.getElementById("tagContainer");
 	    tagContainer.appendChild(tagElement);
 		 // 최대 5개까지 태그를 허용하고, 5개 이상이면 입력 필드를 비활성화 시킴
-	    if (tagContainer.querySelectorAll(".tag").length >= 5) {
+	    if (tagContainer.querySelectorAll(".tag").length >= 4) {
 	      document.getElementById("tagName").disabled = true;
 	    }
 
@@ -599,7 +607,7 @@ function addFileInput() {
 	  // 파일 선택 input 요소를 클릭합니다.
 	  fileInput.click();
 	}
-	
+
 
 
 </script>
@@ -610,6 +618,8 @@ function addFileInput() {
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
+<!-- <section class="item-details section" id="sectionWidth"> -->
+<div id="background">
 	<div class="container content-wrapper">
 		<div class="addBox">
 			<form id="addForm" name="addForm" class="add-form" th:action="@{/admin/product/add}" method="post" enctype="multipart/form-data">
@@ -760,7 +770,7 @@ function addFileInput() {
 						<p>태그</p>
 					</div>
 					<div id="tagLine2">
-						<input type="text" id="tagName" placeholder="태그를 입력해 주세요. (최대 5개 까지)" size="34" maxlength="9" onkeypress="handleKeyPress(event)">
+						<input type="text" id="tagName" placeholder="태그를 입력해 주세요. (최대 4개 까지)" size="34" maxlength="9" onkeypress="handleKeyPress(event)">
 						<input type="button" value="등록" onclick="handleTagRegistration()" id="tagName2"><br><br>
 					</div>
 						<div id="tagContainer"></div><br>
@@ -779,6 +789,8 @@ function addFileInput() {
 			</form>
 		</div>
 	</div>
+</div>	
+<!-- </section> -->
 	<!-- JS -->
     <th:block layout:fragment="script">
     	<script th:src="@{/js/selector.js}" type="text/javascript"></script>
