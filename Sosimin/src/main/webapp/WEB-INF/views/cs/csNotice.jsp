@@ -38,9 +38,12 @@
 //----------------------------------------------------------------------------------------
 
 
-
 </script>
 </head>
+<style>
+
+
+</style>
 <body>
     <!-- Preloader -->
     <div class="preloader">
@@ -79,8 +82,8 @@
     <!-- End Breadcrumbs -->
 
 			    <!-- Start Faq Area -->
-    <section class="faqsection">
-        <div class="container">
+    <section class="faqsection" id="sectionWidth">
+        <div class="container" id="containerWidth">
             <div class="row">
                 <div class="col-12">
 	                <!-- Start Main Menu Search -->
@@ -103,21 +106,21 @@
 	            <hr>
 		            <div>
 						<ul class="useful-links">
-							<li><a href="contact.html" id="menu1">일반</a><a href="contact.html" id="menu2">정책변경</a><a href="contact.html" id="menu3">사기예방</a></li>
+							<li><input type="button" id="menu1" value="일반"><input type="button" id="menu1" value="정책변경"><input type="button" id="menu1" value="사기예방"></li>
 						</ul>
 		            </div>
-	            <hr>
+		        <hr>
             <div class="row">
                 <div class="col-lg-10 offset-lg-1 col-md-12 col-12">
                     <div class="accordion" id="accordionExample">
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="headingOne">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse"
-										data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-									<span class="title">1</span>
-									<span class="title">공지제목란입니다</span>
-									<span class="title">일반</span>
-									<span class="title">2024.01.24</span>
+										data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="buttonWidth">
+									<span id="num">1</span>
+									<span id="noticeSubject"><b>공지제목란입니다</b></span>
+									<span id="type"><b>일반유형</b></span>
+									<span id="noticeDate"><b>2024.01.24</b></span>
 								</button>
 							</h2>
 							<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
@@ -131,10 +134,10 @@
                             <h2 class="accordion-header" id="headingTwo">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-									<span class="title">1</span>
-									<span class="title">공지임</span>
-									<span class="title">유형123</span>
-									<span class="title">2024</span>
+									<span id="num">1</span>
+									<span id="noticeSubject"><b>공지제목란입니다</b></span>
+									<span id="type"><b>일반유형</b></span>
+									<span id="noticeDate"><b>2024.01.24</b></span>
                                 </button>
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
@@ -149,10 +152,10 @@
                             <h2 class="accordion-header" id="headingThree">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-									<span class="title">글번호</span>
-									<span class="title">제목</span>
-									<span class="title">유형</span>
-									<span class="title">날짜</span>
+									<span id="num">1</span>
+									<span id="noticeSubject"><b>공지제목란입니다</b></span>
+									<span id="type"><b>일반유형</b></span>
+									<span id="noticeDate"><b>2024.01.24</b></span>
                                 </button>
                             </h2>
                             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
@@ -167,10 +170,10 @@
                             <h2 class="accordion-header" id="headingfour">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
-									<span class="title">글번호</span>
-									<span class="title">제목</span>
-									<span class="title">유형</span>
-									<span class="title">날짜</span>
+									<span id="num">1</span>
+									<span id="noticeSubject"><b>공지제목란입니다</b></span>
+									<span id="type"><b>일반유형</b></span>
+									<span id="noticeDate"><b>2024.01.24</b></span>
                                 </button>
                             </h2>
                             <div id="collapsefour" class="accordion-collapse collapse" aria-labelledby="headingfour"

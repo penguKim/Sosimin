@@ -104,7 +104,10 @@
 							<h2 class="accordion-header" id="headingOne">
 								<button class="accordion-button" type="button" data-bs-toggle="collapse"
 										data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-									<span class="title">제목</span>
+									<span id="num">1</span>
+									<span id="noticeSubject"><b>공지제목란입니다</b></span>
+									<span id="type"><b>일반유형</b></span>
+									<span id="noticeDate"><b>2024.01.24</b></span>
 								</button>
 							</h2>
 							<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
@@ -118,7 +121,10 @@
                             <h2 class="accordion-header" id="headingTwo">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    <span class="title">제목2</span>
+									<span id="num">1</span>
+									<span id="noticeSubject"><b>공지제목란입니다</b></span>
+									<span id="type"><b>일반유형</b></span>
+									<span id="noticeDate"><b>2024.01.24</b></span>
                                 </button>
                             </h2>
                             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
@@ -133,7 +139,10 @@
                             <h2 class="accordion-header" id="headingThree">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    <span class="title">제목3</span>
+									<span id="num">1</span>
+									<span id="noticeSubject"><b>공지제목란입니다</b></span>
+									<span id="type"><b>일반유형</b></span>
+									<span id="noticeDate"><b>2024.01.24</b></span>
                                 </button>
                             </h2>
                             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
@@ -148,7 +157,10 @@
                             <h2 class="accordion-header" id="headingfour">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
-                                    <span class="title">제목4</span>
+									<span id="num">1</span>
+									<span id="noticeSubject"><b>공지제목란입니다</b></span>
+									<span id="type"><b>일반유형</b></span>
+									<span id="noticeDate"><b>2024.01.24</b></span>
                                 </button>
                             </h2>
                             <div id="collapsefour" class="accordion-collapse collapse" aria-labelledby="headingfour"

@@ -25,31 +25,41 @@
 </head>
 
 <style>
-.row {
-  display: flex;
-  justify-content: center; /* 이미지를 가운데 정렬합니다. */
-  align-items: center; /* 이미지를 세로로 정렬합니다. */
-}
+/* .row { */
+/*   display: flex; */
+/*   justify-content: center; /* 이미지를 가운데 정렬합니다. */ 
+/*   align-items: center; /* 이미지를 세로로 정렬합니다. */ 
+/* } */
 
-.row a {
-  flex-basis: 33.33%; /* 각 이미지가 1/3의 가로 공간을 차지하도록 설정합니다. */
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
+/* .row a { */
+/*   flex-basis: 33.33%; /* 각 이미지가 1/3의 가로 공간을 차지하도록 설정합니다. */ 
+/*   display: flex; */
+/*   align-items: center; */
+/*   text-decoration: none; */
+/* } */
 
-.row a img {
-  margin-bottom: 10px;
-}
+/* .row a img { */
+/*   margin-bottom: 10px; */
+/* } */
 </style>
 
 
 <body>
 
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- /End Preloader -->
+
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
-
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
