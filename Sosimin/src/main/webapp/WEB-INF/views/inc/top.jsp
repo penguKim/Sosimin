@@ -253,7 +253,16 @@ function localStarageDeleteOne(keyword) {
 }
 
 
-
+$(function() {
+	$("#submenu-1-3>li").on("click", function() {
+		let length =  $("#submenu-1-3>li").length;
+		let	category = $(this).text();
+		
+		location.href="SearchProduct?category=" + category;
+	});
+	
+	
+});
 
 
 
