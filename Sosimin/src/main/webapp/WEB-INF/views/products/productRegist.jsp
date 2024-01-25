@@ -50,6 +50,7 @@
     
     #ulLine{
     	display: inline-block;
+    	position: relative;
     }
     
     #divLine{
@@ -91,8 +92,8 @@
 
 /* form 전체 사이즈 줘서 사이즈 줄였을때 페이지 안뭉개지게 하기 */
 .add-form{
-	width: 1300px;
-	max-width: 1300px;
+	width: 1400px;
+	max-width: 1400px;
 }
 
 /* .jyaWFk { */
@@ -278,9 +279,10 @@ padding-top: 21px;
 }
 
 #explanationLength{
+	display:inline-block;
 	position: relative;
-	left: 880px;
-	bottom: 30px;
+	bottom:4px;
+	right:120px;
 }
 #explanationLine{
 	display: inline-block;
@@ -367,13 +369,16 @@ padding-top: 21px;
 	margin-left: 450px;
 }
 
-/* #background{ */
-/* 	background-color: #f9f9f9; */
-/* } */
+#background{ 
+	background-color: #f9f9f9;
+ } 
 
-/* #addForm{ */
-/* 	background-color: white; */
-/* } */
+#addForm{ 
+ 	background-color: white; 
+ 	padding-left: 30px;
+ 	padding-right: 30px;
+ 	width:1360px;
+ } 
 </style>
 </head>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
@@ -618,7 +623,26 @@ function addFileInput() {
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
-<!-- <section class="item-details section" id="sectionWidth"> -->
+	
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center" id="maxWidth">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title" style="text-align: left;">상품등록</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="index.html">Shop</a></li>
+                        <li>Single Product</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+ <section class="item-details section" id="sectionWidth">
 <div id="background">
 	<div class="container content-wrapper">
 		<div class="addBox">
@@ -770,7 +794,7 @@ function addFileInput() {
 						<p>태그</p>
 					</div>
 					<div id="tagLine2">
-						<input type="text" id="tagName" placeholder="태그를 입력해 주세요. (최대 4개 까지)" size="34" maxlength="9" onkeypress="handleKeyPress(event)">
+						<input type="text" id="tagName" placeholder="태그를 입력해 주세요. (최대 5개 까지)" size="34" maxlength="9" onkeypress="handleKeyPress(event)">
 						<input type="button" value="등록" onclick="handleTagRegistration()" id="tagName2"><br><br>
 					</div>
 						<div id="tagContainer"></div><br>
@@ -790,7 +814,7 @@ function addFileInput() {
 		</div>
 	</div>
 </div>	
-<!-- </section> -->
+</section>
 	<!-- JS -->
     <th:block layout:fragment="script">
     	<script th:src="@{/js/selector.js}" type="text/javascript"></script>

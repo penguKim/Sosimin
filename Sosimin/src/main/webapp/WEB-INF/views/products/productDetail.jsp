@@ -364,7 +364,7 @@ function imagePopup(src) {
             <div class="row align-items-center" id="maxWidth">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">Single Product</h1>
+                        <h1 class="page-title">상품상세</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
