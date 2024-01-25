@@ -88,8 +88,13 @@ var clickCount = 0;
 	$(".popularWordColor").css("color","black");
 });// document.ready function END
 
-function searchKeyword() {
-	var keyword = $("#searchKeyword").val();
+function searchKeyword(pkeyword) {
+	let keyword = "";
+	if(pkeyword == null){
+		keyword = $("#searchKeyword").val();
+	}else{
+		keyword = pkeyword;
+	}
 	if(keyword != "" && keyword != null){
 		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
 		// 로컬스토리지에 저장할 키의 이름
@@ -111,10 +116,13 @@ function searchKeyword() {
 	}
 }
 
-function sendKeyword(keyword){
+function sendKeyword(element) {
+	var keyword = $(element).text(); // 클릭된 요소의 텍스트 값을 가져옵니다.
 	var searchKeywordUrl = "searchKeyword?keyword=" + encodeURIComponent(keyword);
 	window.location.href = searchKeywordUrl;
+	searchKeyword(keyword);
 }
+
 function showHandler(){
 	$("#Recent").show();
 }
@@ -219,7 +227,7 @@ function updateTable() {
 		    tableHTML +=
 		    	"<tr class=" + keyword + ">"
 		    	+ "  <td class='keywordWidth'>"
-		    	+ "    <a onclick='sendKeyword(\"" + keyword + "\")'>"+keyword+"</a>"
+		    	+ "    <a onclick='sendKeyword(this)'>"+keyword+"</a>"
 		    	+ "  </td>"
 		    	+ "  <td class='localStarageDeleteOneTd'>"
 		    	+ "    <a class='localStarageDeleteOne' onclick='localStarageDeleteOne(\"" + keyword + "\")'>x</a>"
@@ -363,42 +371,54 @@ $(function() {
                 </div>
                 <div id="Popular">
                 	<table border="1">
-                		<tr>
+                		<tr class="PopularCenter">
                 			<td><a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a></td>
                 			<td><a onclick="PopularSearches()" class="popularWordColor">인기검색어</a></td>
                 		</tr>
-                		<tr>
-                			<td colspan="2">1 군만두</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">2 참치 올린 불닭</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">3 고추짬뽕</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">4 깐풍기</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">5 깐쇼새우</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">6 이재모피자</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">7 국밥</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">8 카라멜팝콘</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">9 컨트리맨즈</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2">10 아웃백 스테이크 하우스</td>
-                		</tr>
-                		<tr>
-                			<td colspan="2"><a id="closeSearchBox">닫기</a></td>
+						<tr>
+						    <td><a class="popularWordColor">1</a> <a onclick="sendKeyword(this)">Zara</a></td>
+						    <td><a class="popularWordColor">11</a> <a onclick="sendKeyword(this)">H&M</a></td>
+						</tr>
+						<tr>
+						    <td><a class="popularWordColor">2</a> <a onclick="sendKeyword(this)">Gucci</a></td>
+						    <td><a class="popularWordColor">12</a> <a onclick="sendKeyword(this)">Nike</a></td>
+						</tr>
+						<tr>
+						    <td><a class="popularWordColor">3</a> <a onclick="sendKeyword(this)">Adidas</a></td>
+						    <td><a class="popularWordColor">13</a> <a onclick="sendKeyword(this)">Louis Vuitton</a></td>
+						</tr>
+						<tr>
+						    <td><a class="popularWordColor">4</a> <a onclick="sendKeyword(this)">Chanel</a></td>
+						    <td><a class="popularWordColor">14</a> <a onclick="sendKeyword(this)">Burberry</a></td>
+						</tr>
+						<tr>
+						    <td><a class="popularWordColor">5</a> <a onclick="sendKeyword(this)">Prada</a></td>
+						    <td><a class="popularWordColor">15</a> <a onclick="sendKeyword(this)">Versace</a></td>
+						</tr>
+						<tr>
+						    <td><a class="popularWordColor">6</a> <a onclick="sendKeyword(this)">Tommy Hilfiger</a></td>
+						    <td><a class="popularWordColor">16</a> <a onclick="sendKeyword(this)">Calvin Klein</a></td>
+						</tr>
+						<tr>
+						    <td><a class="popularWordColor">7</a> <a onclick="sendKeyword(this)">Ralph Lauren</a></td>
+						    <td><a class="popularWordColor">17</a> <a onclick="sendKeyword(this)">Armani</a></td>
+						</tr>
+						<tr>
+						    <td><a class="popularWordColor">8</a> <a onclick="sendKeyword(this)">Givenchy</a></td>
+						    <td><a class="popularWordColor">18</a> <a onclick="sendKeyword(this)">Fendi</a></td>
+						</tr>
+						<tr>
+						    <td><a class="popularWordColor">9</a> <a onclick="sendKeyword(this)">Balenciaga</a></td>
+						    <td><a class="popularWordColor">19</a> <a onclick="sendKeyword(this)">Alexander McQueen</a></td>
+						</tr>
+						<tr>
+						    <td><a class="popularWordColor">10</a> <a onclick="sendKeyword(this)">Dior</a></td>
+						    <td><a class="popularWordColor">20</a> <a onclick="sendKeyword(this)">Prabal Gurung</a></td>
+						</tr>
+
+                		<tr class="PopularCenter">
+                			<td><a id="closeSearchBox"></a></td>
+                			<td><a id="closeSearchBox">닫기</a></td>
                 		</tr>
                 	</table>
                 </div>

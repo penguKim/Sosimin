@@ -2017,15 +2017,17 @@ ol {
 }
 
 #Recent table td,#Popular table td{
-/* 	width: 187px;  반응형으로 변경*/
 	background-color: white;
+}
+#Recent table td,.PopularCenter td{
+	text-align: center;
 }
 
 .localStarageDeleteOneTd{
-	text-align: right;
+	text-align: right!important;
 }
 .localStarageDeleteOne{
-	margin-right: 15px;
+	margin-right: 15px!important;
 }
 
 .keywordWidth {
@@ -2034,6 +2036,11 @@ ol {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.recentWordColor,.popularWordColor{
+/* 	border-bottom: 1px solid black; */
+}
+
 /* 이민석 작업 end */
 
 .header .main-menu-search .select-position {

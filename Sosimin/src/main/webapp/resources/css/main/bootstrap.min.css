@@ -1144,12 +1144,10 @@ progress {
 }
 
 @media (min-width:768px) {
-	#Recent table td{
+	#Recent table td,#Popular table td{
 		width: 198px;
 	}
-	#Popular table td{
-		width: 20.66%;
-	}
+	
     .col-md {
         flex: 1 0 0%
     }
