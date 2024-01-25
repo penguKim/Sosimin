@@ -169,3 +169,28 @@ input:hover#menu1 {
     z-index: 1;
     overflow: hidden;
 }
+
+.useful-links input[type="button"]:active,
+.useful-links input[type="button"]:focus {
+	display: inline-block;
+	text-transform: capitalize;
+	font-size: 14px;
+	font-weight: 600;
+	padding: 13px 30px;
+	background-color: #39d274;
+	color: #fff;
+	border: none;
+	-webkit-transition: 0.2s;
+	transition: 0.2s;
+	border-radius: 3px;
+	position: relative;
+	z-index: 1;
+	overflow: hidden;
+	border: none;
+}
+
+.useful-links input[type="button"] {
+	background-color: white;
+	padding: 10px 20px;
+	border: none;
+}

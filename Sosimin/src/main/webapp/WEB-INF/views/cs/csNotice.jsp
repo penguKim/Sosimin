@@ -90,7 +90,7 @@
 	                <div class="cs-search">
 	                    <!-- navbar search start -->
 	                    <div class="navbar-search search-style-5">
-	                        <div class="search-btn">
+	                        <div class="search-btn" style="margin-top: 20px;">
 	                            <input type="text" id="searchKeyword" placeholder="Search" >
 	                            <button onclick="location.href='CsNotice'">
 	                            	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
