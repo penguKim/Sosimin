@@ -5,7 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
@@ -21,6 +20,7 @@
 $(function() {
 	$("#testBtn").on("click", function() {
 		let test = $("#testBtn").val();
+		
 		Swal.fire({
 			title: '테스트',         // Alert 제목
 			text: test,  // Alert 내용
@@ -53,14 +53,17 @@ $(function() {
 
 <%-- sweetalert confirm --%>
 function reportRegist(index) {
+	alert("왜안돼지");
+	
+	
 	<%-- 신고 분류 0: 게시물 신고, 1: 사용자 신고--%>
-	let report_content = $("#reportTextArea").val();
+// 	let report_content = $("#reportTextArea").val();
 	let report_type = index;
 	
-	if(report_content == null) {
-		alert("신고내용을 입력해주세요");
+// 	if(report_content == null) {
+// 		alert("신고내용을 입력해주세요");
 		
-	} else if(report_content != null) {
+// 	} else if(report_content != null) {
 		Swal.fire({
 			   title: '정말 신고하시겠습니까?',
 			   text: '내용과 사실이 다를 경우 불이익을 당할 수 있습니다',
@@ -75,13 +78,10 @@ function reportRegist(index) {
 		}).then(result => {
 		    // 만약 Promise리턴을 받으면,
 		    if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-		    	
-		    		
-			    	$("#modalDismiss").click();
-			    	$("#memberDismiss").click();
-		    		
-			    	$.ajax(function() {
-						url: "reportRegist",
+		    	$("#modalDismiss").click();
+				$("#memberDismiss").click();
+		    	$.ajax({
+						url: "ReportRegist",
 						data: {
 							report_type: report_type, // 신고 종류
 							reporter_id: "너굴맨", // 신고자 아이디
@@ -91,17 +91,15 @@ function reportRegist(index) {
 						},
 						success: function() {
 							Swal.fire('신고가 접수되었습니다!', '빠른시일내에 확인할게요!!', 'success');
+							
 						},
 						error: function() {
 							Swal.fire('신고 실패!', '죄송하지만 다시 부탁해요~!', 'error');
 						}
-					}); // 신고 등록 ajax 끝
-		    	
-		   }
+				}); // 신고 등록 ajax 끝
+		   	}
 		});
 	}
-	
-}	
 </script>
 </head>
 <body>
