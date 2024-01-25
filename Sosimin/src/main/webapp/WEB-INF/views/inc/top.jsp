@@ -110,12 +110,16 @@ function searchKeyword() {
 		window.location.href = searchKeywordUrl;
 	}
 }
+
+function sendKeyword(keyword){
+	var searchKeywordUrl = "searchKeyword?keyword=" + encodeURIComponent(keyword);
+	window.location.href = searchKeywordUrl;
+}
 function showHandler(){
 	$("#Recent").show();
 }
 
 function RecentSearchs(){
-	alert("최근검색어");
 	$("#Recent").show();
 	$("#Popular").hide();
 	$(".recentWordColor").css("color","red");
@@ -124,7 +128,6 @@ function RecentSearchs(){
 }
 
 function PopularSearches(){
-	alert("인기검색어");
 	$("#Recent").hide();
 	$("#Popular").show();
 	$(".recentWordColor").css("color","black");
@@ -216,7 +219,7 @@ function updateTable() {
 		    tableHTML +=
 		    	"<tr class=" + keyword + ">"
 		    	+ "  <td class='keywordWidth'>"
-		    	+   keyword
+		    	+ "    <a onclick='sendKeyword(\"" + keyword + "\")'>"+keyword+"</a>"
 		    	+ "  </td>"
 		    	+ "  <td class='localStarageDeleteOneTd'>"
 		    	+ "    <a class='localStarageDeleteOne' onclick='localStarageDeleteOne(\"" + keyword + "\")'>x</a>"
@@ -342,7 +345,7 @@ $(function() {
                     <!-- navbar search start -->
                     <div class="navbar-search search-style-5">
                         <div class="search-input">
-                            <input type="text" id="searchKeyword" placeholder="상품명, 지역명, @상점명 입력" onkeyup="searchKeywordChange(this)" >
+                            <input type="text" id="searchKeyword" placeholder="상품명, 지역명, @상점명 입력" onkeyup="searchKeywordChange(this)" value="${param.keyword}">
                         </div>
                         <div class="search-btn">
                             <button onclick="searchKeyword()">
