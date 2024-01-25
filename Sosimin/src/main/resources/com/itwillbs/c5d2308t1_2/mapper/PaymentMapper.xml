@@ -49,11 +49,41 @@
 			, #{fintech_use_num}
 			, #{bank_name}
 			, #{account_num_masked}
+			, 0
 			, now()
 			, 1
 			, null
 			, #{pay_password}
 		)
 	</insert>
+	
+	<select id="selectPayInfo" resultType="map">
+		SELECT *
+		FROM Pay
+		WHERE member_id = #{member_id}
+			AND pay_status = 1
+	</select>
+	
+	<!-- 페이 내역 불러오기 -->
+	<select id="selectPayHistory" resultType="map">
+		SELECT *
+		FROM PayHistory
+		WHERE pay_id = #{pay_id}
+		<if test="pay_history_type != ''">
+			AND pay_history_type = #{pay_history_type}
+		</if>
+		ORDER BY pay_history_date DESC
+		LIMIT #{startRow}, #{listLimit}
+	</select>
+	
+	<!-- 페이 내역 개수 세기(페이징) -->
+	<select id="selectPayHistoryCount">
+		SELECT COUNT(*)
+		FROM PayHistory
+		WHERE pay_id = #{pay_id}
+		<if test="pay_history_type != ''">
+			AND pay_history_type = #{pay_history_type}
+		</if>
+	</select>
 	
 </mapper>

@@ -1,5 +1,6 @@
 package com.itwillbs.c5d2308t1_2.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,15 +53,33 @@ public class PaymentService {
 		int insertCount = 0;
 		
 		// 해당 아이디로 가입된 정보가 있는지 확인
-		String id = mapper.selectPay(map);
+		int idCount = mapper.selectPay(map);
 		
 		// 아이디가 존재하지 않을 경우 엑세스토큰 INSERT
-		if(id == null) {
+		if(idCount == 0) {
 			insertCount = mapper.insertPay(map);
 		} 
 		
 		return insertCount;
 		
+	}
+
+	// 사용자 페이 가입 정보 불러오기
+	public Map<String, Object> getPayInfo(String member_id) {
+		
+		return mapper.selectPayInfo(member_id);
+	}
+
+	// 페이 이용 내역 불러오기
+	public List<Map<String, Object>> getPayHistory(Map<String, Object> map) {
+		
+		return mapper.selectPayHistory(map);
+	}
+
+	// 페이 내역 개수 세기(페이징)
+	public int getPayHistoryCount(Map<String, Object> map) {
+		
+		return mapper.selectPayHistoryCount(map);
 	}
 
 }

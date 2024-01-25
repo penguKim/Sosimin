@@ -120,7 +120,7 @@ function openModal() {
 										페이잔액
 									</div>
 		                           	<div class="pay-balance col-lg-6 col-md-6 col-12">
-										10,000원
+										${payInfo.pay_balance} 원
 									</div>
 	                            </div>
 	                            <br>
@@ -148,9 +148,9 @@ function openModal() {
 				                           은행마크
 				                        </div>
 				                        <div class="col-lg-9 col-md-9 col-12">
-					                        <h5 class="bank-name">은행명</h5>
+					                        <h5 class="bank-name">${payInfo.bank_name}</h5>
 					                        <p class="account-no">
-					                                계좌번호
+					                                ${payInfo.account_num_masked}
 					                         </p>
 					                         <input type="hidden" name="fintech_use_num" value="">
 				                   		</div>

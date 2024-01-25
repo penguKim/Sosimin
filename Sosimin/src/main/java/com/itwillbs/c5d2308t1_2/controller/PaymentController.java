@@ -1,11 +1,13 @@
 package com.itwillbs.c5d2308t1_2.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.c5d2308t1_2.service.PaymentService;
 import com.itwillbs.c5d2308t1_2.vo.ResponseTokenVO;
@@ -33,7 +36,7 @@ public class PaymentController {
 	@GetMapping("AccountVerification")
 	public String accountVerification(HttpSession session, Model model) {
 		// ------------------------------------------------------------------
-		session.setAttribute("sId", "hong11"); // 로그인 구현되고나면 지우기
+		session.setAttribute("sId", "leess"); // 로그인 구현되고나면 지우기
 		// ------------------------------------------------------------------
 		
 		// 로그인을 하지 않은 사용자는 접근을 제한함
@@ -146,8 +149,19 @@ public class PaymentController {
 	// 선택한 계좌를 DB에 등록
 	@PostMapping("AccountRegistPro")
 	public String accountRegistPro(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
-		map.put("member_id", session.getAttribute("sId")); // map 객체에 아이디 저장
+		// 세션아이디가 null 일 경우 로그인 페이지 이동 처리
+		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
+		if(session.getAttribute("sId") == null) {
+			model.addAttribute("msg", "로그인을 해주세요");
+			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			return "forward";
+		} else if(session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("targetURL", "AccountVerification");	
+			return "forward";
+		}
 		
+		map.put("member_id", session.getAttribute("sId")); // map 객체에 아이디 저장
 //		log.info("map : " + map);
 		
 		// 아이디, 은행명, 계좌번호, 핀테크번호, 페이비밀번호 db에 저장하기
@@ -174,19 +188,105 @@ public class PaymentController {
 	
 	// 페이정보 페이지로 이동
 	@GetMapping("PayInfo")
-	public String payInfo() {
+	public String payInfo(HttpSession session, Model model) {
+		// 세션아이디가 null 일 경우 로그인 페이지 이동 처리
+		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
+		String member_id = (String)session.getAttribute("sId");
+		
+		if(member_id == null) {
+			model.addAttribute("msg", "로그인을 해주세요");
+			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			return "forward";
+		}
+		
+
+		// DB에서 페이 가입 여부 조회하고 정보 가져오기
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		
+		if(payInfo == null) {
+			model.addAttribute("msg", "계좌 등록이 필요합니다");
+			model.addAttribute("targetURL", "AccountRegist"); // 로그인 페이지로 이동
+			return "forward";
+		} 
+		
+		model.addAttribute("payInfo", payInfo);
+		
 		return "payment/payInfo";
 	}
+	
+	@ResponseBody
+	@GetMapping("PayHistoryJson")
+	public String historyJson(Model model, Map<String, Object> map) {
+
+		// --------------------------------------------------
+		// 페이징
+		// 한 페이지에서 표시할 글 목록 갯수 지정 (테스트)
+		int listLimit = 10;
+		
+		int pageNum = Integer.parseInt(map.get("pageNum").toString());
+		
+		// 조회 시작 행번호
+		int startRow = (pageNum - 1) * listLimit;
+		
+		map.put("listLimit", listLimit);
+		map.put("startRow", startRow);
+		
+		log.info("map객체는 >>>>" + map);
+		
+		// CsService - getFaqList() 메서드 호출하여 자주 묻는 질문 출력
+		// => 파라미터 : 시작행번호, 목록갯수   리턴타입 : List<CsVO>(noticeList)
+		List<Map<String, Object>> payHistoryList = service.getPayHistory(map);
+		
+		// ======================================================
+		int listCount = service.getPayHistoryCount(map);
+		int maxPage = listCount / listLimit + ((listCount % listLimit) > 0 ? 1 : 0);
+		
+		// 게시물 목 조회 결과 Map 객체에 추가
+		Map<String, Object> historyMap = new HashMap<String, Object>();
+		historyMap.put("payHistoryList", payHistoryList);
+//		System.out.println(map);
+		
+		// 마지막 페이지 번호 Map 객체에 추가
+		historyMap.put("maxPage", maxPage);
+		
+		JSONObject jsonObject = new JSONObject(historyMap);
+		System.out.println("jsonObject = " + jsonObject);
+			
+		return jsonObject.toString();
+	}
+	
 	
 	
 	// ----------- 페이충전 ---------------
 	// 페이 충전 페이지로 이동
 	@GetMapping("PayCharge")
-	public String payCharge() {
+	public String payCharge(HttpSession session, Model model) {
+		// 세션아이디가 null 일 경우 로그인 페이지 이동 처리
+		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
+		String member_id = (String)session.getAttribute("sId");
+		
+		if(member_id == null) {
+			model.addAttribute("msg", "로그인을 해주세요");
+			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			return "forward";
+		}
+		
+		// DB에서 페이 가입 여부 조회하고 정보 가져오기
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		
+		if(payInfo == null) {
+			model.addAttribute("msg", "계좌 등록이 필요합니다");
+			model.addAttribute("targetURL", "AccountRegist"); // 로그인 페이지로 이동
+			return "forward";
+		}
+		
+		model.addAttribute("payInfo", payInfo);
+		
 		return "payment/charge";
 	}
 
 	// 페이 충전 처리
+	// 2.3.1. 잔액조회 API
 	@PostMapping("PayChargePro")
 	public String payChargePro(@RequestParam Map<String, String> map) {
 		log.info(map.toString());
@@ -205,11 +305,34 @@ public class PaymentController {
 	// ----------- 페이환급 ---------------	
 	// 페이 환급 페이지로 이동
 	@GetMapping("PayRefund")
-	public String payRefund() {
+	public String payRefund(HttpSession session, Model model) {
+		// 세션아이디가 null 일 경우 로그인 페이지 이동 처리
+		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
+		String member_id = (String)session.getAttribute("sId");
+		
+		if(member_id == null) {
+			model.addAttribute("msg", "로그인을 해주세요");
+			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			return "forward";
+		}
+		
+		// DB에서 페이 가입 여부 조회하고 정보 가져오기
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		
+		if(payInfo == null) {
+			model.addAttribute("msg", "계좌 등록이 필요합니다");
+			model.addAttribute("targetURL", "AccountRegist"); // 로그인 페이지로 이동
+			return "forward";
+		}
+		
+		model.addAttribute("payInfo", payInfo);
+	
+		
 		return "payment/refund";
 	}
 	
 	// 페이 환급 처리
+	// 2.3.1. 잔액조회 API
 	@PostMapping("PayRefundPro")
 	public String payRefundPro(@RequestParam Map<String, String> map) {
 		log.info(map.toString());
