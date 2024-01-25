@@ -200,14 +200,14 @@
 				<div class="communityForm post p-4 w-50 mx-auto">
 				    <div class="post-header border-bottom">
 				    	<div class="row">
-				    	<div class="col-xl-4 col-md-6 col-sm-6 col-6">
-							<select class="formCategory form-select mb-3 formFocus" required>
-									<option selected disabled value="">카테고리</option>
-									<option>동네소식</option>
-									<option>동네질문</option>
-									<option>일상</option>
-							</select>
-				    	</div>
+					    	<div class="col-xl-4 col-md-6 col-sm-6 col-6">
+								<select class="formCategory form-select mb-3 formFocus" required>
+										<option selected disabled value="">카테고리</option>
+										<option>동네소식</option>
+										<option>동네질문</option>
+										<option>일상</option>
+								</select>
+					    	</div>
 				    	</div>
 				    	<div class="row">
 							<div class="col-12">

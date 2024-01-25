@@ -53,12 +53,12 @@
 			$(this).toggleClass("replyHide");
 			if($(this).hasClass("replyHide")) {
 				console.log("댓글창 닫김");
-// 				$("#replyArea").hide();
-				$("#replyArea").slideUp();
+				$("#replyArea").hide();
+// 				$("#replyArea").slideUp();
 			} else {
 				console.log("댓글창 열렸어요!!!");
-// 				$("#replyArea").show();
-				$("#replyArea").slideDown();
+				$("#replyArea").show();
+// 				$("#replyArea").slideDown();
 			}
 		});
         
@@ -193,12 +193,14 @@
 						<div class="heart"></div>
 <!-- 						<div class="heart position-absolute bottom-0 start-0"></div> -->
 						<div class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn">댓글 숨기기</div>
+<!-- 						  <button class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn" type="button" data-bs-toggle="collapse" data-bs-target="#replyArea" aria-expanded="false" aria-controls="collapseExample">댓글 숨기기</button> -->
 						<div class="align-self-end" style="width: 80px;"><i class="fa fa-warning d-flex justify-content-end" id="reportBtn" style="font-size:24px"></i></div>
 <!-- 						<div class="position-absolute bottom-0 end-0"><i class="fa fa-warning" id="reportBtn" style="font-size:24px"></i></div> -->
 					</div>
 			    </div>
 			</div>
 			<section id="replyArea" class="reply rounded-3 p-4 w-50 mx-auto">
+<!-- 			<section id="replyArea" class="reply collapse rounded-3 p-4 w-50 mx-auto"> -->
 				<form action="CommunityReplyWrite" method="post" class="d-flex justify-content-center">
 					<input type="hidden" name="board_num" value="${board.board_num }">
 					<input type="hidden" name="pageNum" value="${param.pageNum }">
