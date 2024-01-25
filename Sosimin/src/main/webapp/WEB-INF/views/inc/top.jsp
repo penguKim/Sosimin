@@ -355,7 +355,7 @@ function localStorageClean(){
                 	<a href="ProductRegist">판매하기  </a>
 
                 	<a href="./">관심  </a>
-                	<a href="./">채팅톡</a>
+                	<a href="Chat">채팅톡</a>
 
                 </div>
             </div>
@@ -380,7 +380,7 @@ function localStorageClean(){
 								<a href="./">커뮤니티</a>
                                 <ul class="sub-menu collapse" id="submenu-1-2">
                                     <li class="nav-item"><a href="about-us.html">About Us</a></li>
-                                    <li class="nav-item"><a href="csMain">고객센터</a></li>
+                                    <li class="nav-item"><a href="CsMain">고객센터</a></li>
 
 
                                     <li class="nav-item"><a href="login.html">Login</a></li>

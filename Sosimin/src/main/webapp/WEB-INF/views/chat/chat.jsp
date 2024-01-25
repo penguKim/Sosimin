@@ -36,14 +36,13 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">1:1채팅문의</h1>
+                        <h1 class="page-title">1:1채팅</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="./">Home</a></li>
-                        <li><a href="CsMain">고객센터</a></li>
-                        <li>1:1 채팅문의</li>
+                        <li>1:1 채팅</li>
                     </ul>
                 </div>
             </div>

@@ -7,27 +7,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CsController {
 	
 	
-	@GetMapping("csMain")
+	@GetMapping("CsMain")
 	public String csMain() {
 		
 		return "cs/csMain";
 	}
 	
-	@GetMapping("csNotice")
+	@GetMapping("CsNotice")
 	public String csNotice() {
 		
 		return "cs/csNotice";
 	}
-	@GetMapping("csFaq")
+	@GetMapping("CsFaq")
 	public String csFaq() {
 		
 		return "cs/csFaq";
 	}
-	@GetMapping("csOneOnOne")
+	@GetMapping("CsOneOnOne")
 	public String csOneOnOne() {
 		
 		return "cs/csOneOnOne";
 	}
 	
+	@GetMapping("Chat")
+	public String chat() {
+		return "chat/chat";
+	}
 	
 }
