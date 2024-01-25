@@ -7,19 +7,29 @@
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />  
 	
 <title>Sosimin</title>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product.css" />
+	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 </head>
 
 <%-- 신고 안되면 다시살려야됨 --%>
 <%-- <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script> --%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script type="text/javascript">
+$(function() {
+	//좋아요 버튼 클릭 이벤트
+	$(".heart").on("click", function () {
+	    $(this).toggleClass("is-active");
+	});
+});
+</script>
 <body>
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
@@ -195,6 +205,8 @@
                                             </a>
                                             <div class="product-info">
                                                     <h6>블루투스 스피커</h6>
+                                                    <!-- 좋아요 -->
+													<div class="heart position-absolute bottom-0 start-0"></div>
                                                 <ul class="review">
                                                     <li><span>전포동</span></li>
                                                     <li><span>|</span></li>
@@ -204,12 +216,8 @@
                                                     <span>14,000원</span>
                                                 </div>
                                                 <div>
-                                                	<!-- 좋아요 -->
-                                                	<div class="porduct_like">
-														<div class="heart position-absolute bottom-0 start-0"></div>
-													</div>
-                                                	<span>Pay</span> 
                                                 	
+                                                	<span>Pay</span> 
                                                 </div>
                                             </div>
                                         </div>
