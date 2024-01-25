@@ -108,7 +108,7 @@
 			        reverseButtons: true,
 			    }).then((result) => {
 			        if (result.isConfirmed) {
-			            $(".needs-validation").submit();
+			            $(".needs-validation")[0].submit();
 			        } else {
 			        	$("#writeBtn").blur();
 			        	tempSave = setInterval(tempToast, 10000);
@@ -196,23 +196,23 @@
    	<section class="communityArea section">
 		<div class="container">
 			<h1>게시글 작성</h1>
-			<form action="" name="writeForm" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
+			<form action="CommunityWritePro" name="writeForm" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
 				<div class="communityForm post p-4 w-50 mx-auto">
 				    <div class="post-header border-bottom">
 				    	<div class="row">
 					    	<div class="col-xl-4 col-md-6 col-sm-6 col-6">
-								<select class="formCategory form-select mb-3 formFocus" required>
+								<select class="formCategory form-select mb-3 formFocus" name="community_category" required>
 										<option selected disabled value="">카테고리</option>
-										<option>동네소식</option>
-										<option>동네질문</option>
-										<option>일상</option>
+										<option value="1">동네소식</option>
+										<option value="2">동네질문</option>
+										<option value="3">일상</option>
 								</select>
 					    	</div>
 				    	</div>
 				    	<div class="row">
 							<div class="col-12">
 								<div class="form-floating mb-1">
-									<input type="text" class="form-control form-control-lg formFocus" id="title" placeholder="제목을 입력하세요" required>
+									<input type="text" class="form-control form-control-lg formFocus" id="title" name="community_subject" required>
 									<label for="title">제목</label>
 								</div>
 <!-- 								<div class="input-group"> -->
@@ -225,21 +225,24 @@
 						</div>
 				   	</div>
 				    <div class="post-content mt-3">
-<!-- 				    <div class="post-content position-relative mt-3"> -->
-<!-- 				    	<div class="row"> -->
-<!-- 				    	</div> -->
-					<div class="form-floating">
-						<textarea class="form-control communityFormSubject formFocus" placeholder="Leave a comment here" id="floatingTextarea" style="height: 500px;" required></textarea>
-						<label for="floatingTextarea">내용</label>
-					</div>
+						<div class="form-floating">
+							<textarea class="form-control communityFormSubject formFocus" name="community_content" id="floatingTextarea" style="height: 500px;" required></textarea>
+							<label for="floatingTextarea">내용</label>
+						</div>
+				    </div>
+				    <div class="post-file mt-3">
+				    	<input type="file" name="file1">
+				    	<input type="file" name="file2">
+				    	<input type="file" name="file3">
+				    	<input type="file" name="file4">
+				    	<input type="file" name="file5">
 				    </div>
 				</div>
 				<div class="mx-auto w-50 mt-2 row d-flex justify-content-between" id="commandCell">
-<!-- 				<div> -->
 					<input type="button" class="btn btn-secondary col-xl-2 col-md-3 col-12 me-2" value="돌아가기" onclick="history.back()">
-					<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 me-auto" id="tempBtn" value="임시저장" formaction="tempWritePro">
-<!-- 				</div> -->
-					<input type="submit" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" id="writeBtn" value="등록하기" formaction="CommunityWritePro">
+<!-- 					<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 me-auto" id="tempBtn" value="임시저장" formaction="tempWritePro"> -->
+					<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 me-auto" id="tempBtn" value="임시저장">
+					<input type="submit" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" id="writeBtn" value="등록하기">
 				</div>
 		    </form>
 <!-- 					<tr> -->

@@ -195,6 +195,14 @@ textarea.form-control {
 		width: 200px !important; 
 	}
 	
+/* 	.categoryBtn { */
+/* 		margin-bottom: 10px; */
+/* 	} */
+	
+/* 	.searchBtn .writeBtn { */
+/* 		margin-top: 10px; */
+/* 	} */
+	
 }
 
 @media only screen and (max-width: 767px) {
@@ -210,5 +218,10 @@ textarea.form-control {
 	#commandCell input {
 		margin-bottom: 5px;
 	}
+	
+	.searchKeyword, .searchBtn {
+		padding-right: 0 !important;
+	}
+	
 
 }

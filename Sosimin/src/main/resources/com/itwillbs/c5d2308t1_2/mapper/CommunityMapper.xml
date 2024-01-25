@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.c5d2308t1_2.mapper.CommunityMapper">
+
+	<!-- 게시글 등록 -->
+	<insert id="insertCommunity">
+		INSERT INTO Community
+		VALUES(
+			null
+			, #{community_category}
+			, #{community_writer}
+			, #{community_subject}
+			, #{community_content}
+			, #{community_image1}
+			, #{community_image2}
+			, #{community_image3}
+			, #{community_image4}
+			, #{community_image5}
+			, #{community_readcount}
+			, now()
+		)
+	</insert>
+	
+	<!-- 페이징 처리를 위한 게시물 개수 조회 작업 -->
+	<select id="selectCommunityListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM Community
+		<if test="!searchKeyword.equals('')">
+			WHERE
+			<choose>
+				<when test="searchType.equals('subject')">
+					community_subject LIKE '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('content')">
+					community_content LIKE '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('writer')">
+					community_writer LIKE #{searchKeyword}
+				</when>
+				<otherwise>
+					1=1 
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+	<!-- 한 페이지에 표시할 게시글 목록 조회 작업 요청 -->
+	<select id="selectCommunityList" resultType="community">
+		SELECT *
+		FROM Community
+		<if test="!searchKeyword.equals('')">
+			WHERE
+			<choose>
+				<when test="searchType.equals('subject')">
+					community_subject LIKE '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('content')">
+					community_content LIKE '%${searchKeyword}%'
+				</when>
+				<when test="searchType.equals('writer')">
+					community_writer LIKE #{searchKeyword}
+				</when>
+				<otherwise>
+					1=1 
+				</otherwise>
+			</choose>
+		</if>
+		ORDER BY community_id DESC
+		LIMIT #{page.startRow}, #{page.listLimit}
+	</select>
+	
+	<!-- 게시글 조회 -->
+	<select id="selectCommunity" resultType="community">
+		SELECT *
+		FROM Community
+		WHERE community_id = #{community_id}
+	</select>
+	
+	<!-- 게시글 조회수 증가 작업 -->
+	<update id="updateReadcount">
+		<selectKey keyProperty="community_readcount" resultType="int" order="AFTER">
+			SELECT community_readcount
+			FROM Community
+			WHERE community_id = #{community_id}
+		</selectKey>
+		UPDATE Community
+		SET community_readcount = community_readcount + 1
+		WHERE community_id = #{community_id}
+	</update>
+	
+	<!-- 게시글 삭제 작업 -->
+	<delete id="deleteCommunity">
+		DELETE FROM Community
+		WHERE community_id = #{community_id}
+	</delete>
+</mapper>

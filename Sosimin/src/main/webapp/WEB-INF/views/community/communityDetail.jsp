@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,6 +24,10 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 	$(function() {
+		
+		// 게시시간 변환 함수 호출
+		timeAgo();
+		
 		
 		// 모달 닫기 버튼 클릭 이벤트
 		$(".close").on("click", function() {
@@ -84,6 +89,21 @@
         
         
 	});
+	
+	// 게시시간 변환
+	function timeAgo() {
+		let timeStamp = new Date("${com.community_datetime}".replace(" ", "T")).getTime(); // 비교 대상 시간
+	    let now = new Date();
+        secondsPast = (now.getTime() - timeStamp) / 1000;
+	    
+	    if(secondsPast < 60){
+	    	 $("#comDate").text("방금전");
+	    } else if(secondsPast < 60 * 60){
+	    	 $("#comDate").text(parseInt(secondsPast/60) + '분전');
+	    } else if(secondsPast <= 60 * 60 * 24){
+	    	 $("#comDate").text(parseInt(secondsPast/60 * 60) + '시간전');
+	    }
+	}
 	
 	function confirmDelete() {
 		Swal.fire({
@@ -163,9 +183,17 @@
 		<div class="container">
 			<div class="communityDetail post p-4 w-50 mx-auto rounded-3 p-4">
 			    <div class="post-header border-bottom">
-			    	<div class="row"><p>카테고리명</p></div>
 			    	<div class="row">
-			        	<p class="post-title mb-2">게시글 제목</p>
+			    		<p>
+			    			<c:choose>
+			    				<c:when test="${com.community_category eq '1' }">동네소식</c:when>
+			    				<c:when test="${com.community_category eq '2' }">동네질문</c:when>
+			    				<c:when test="${com.community_category eq '3' }">일상</c:when>
+			    			</c:choose>
+			    		</p>
+			    	</div>
+			    	<div class="row">
+			        	<p class="post-title mb-2">${com.community_subject }</p>
 		        	</div>
 			        <div class="row mb-2">
 			        	<div class="col-xl-1 col-2 me-1">
@@ -173,29 +201,37 @@
 				        </div>
 				        <div class="col">
 				        	<div class="row">
-						        <p class="col-xl-2 col-3">홍길동</p>
-						        <p class="col">LV.1</p>
+						        <p class="col-xl-2 col-3">${com.community_writer }</p>
+						        <p class="col">LV.1 가져와야함</p>
 				        	</div>
 				        	<div class="row">
-						        <p class="col-xl-2 col-3">1분전</p>
-						        <p class="col">조회수 0</p>
+						        <p class="col-xl-2 col-3" id="comDate">${com.community_datetime }</p>
+						        <p class="col">조회수 ${com.community_readcount }</p>
 				        	</div>
 				        </div>
 			        </div>
 			    </div>
 			    <div class="post-content position-relative mt-3">
 			    	<div class="h-auto">
-			        <p>근로조건의 기준은 인간의 존엄성을 보장하도록 법률로 정한다. 국무총리는 국회의 동의를 얻어 대통령이 임명한다. 감사원은 원장을 포함한 5인 이상 11인 이하의 감사위원으로 구성한다.</p>
-					<p>모든 국민은 법 앞에 평등하다. 누구든지 성별·종교 또는 사회적 신분에 의하여 정치적·경제적·사회적·문화적 생활의 모든 영역에 있어서 차별을 받지 아니한다.</p>
-					<img src="${pageContext.request.contextPath}/resources/images/banner/banner-1-bg.jpg" class="imgFIle" onclick="imageModal(this)">
+			    	${com.community_content }
+			    	
+					<c:if test="${not empty com.community_image1}">
+						<div class="file">
+							<c:set var="original_file_name1" value="${fn:substringAfter(com.community_image1, '_')}"/>
+							<img src="${pageContext.request.contextPath }/resources/upload/${com.community_image1}" class="imgFIle" onclick="imageModal(this)">
+						</div>
+					</c:if>
+<%-- 					<img src="${pageContext.request.contextPath}/resources/images/banner/banner-1-bg.jpg" class="imgFIle" onclick="imageModal(this)"> --%>
 					</div>
 					<div class="d-flex justify-content-between" style="height: 80px;">
-						<div class="heart"></div>
-<!-- 						<div class="heart position-absolute bottom-0 start-0"></div> -->
+						<c:if test="${com.community_writer ne 'leess'}">
+							<div class="heart"></div>
+						</c:if>
 						<div class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn">댓글 숨기기</div>
 <!-- 						  <button class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn" type="button" data-bs-toggle="collapse" data-bs-target="#replyArea" aria-expanded="false" aria-controls="collapseExample">댓글 숨기기</button> -->
-						<div class="align-self-end" style="width: 80px;"><i class="fa fa-warning d-flex justify-content-end" id="reportBtn" style="font-size:24px"></i></div>
-<!-- 						<div class="position-absolute bottom-0 end-0"><i class="fa fa-warning" id="reportBtn" style="font-size:24px"></i></div> -->
+						<c:if test="${com.community_writer ne 'leess'}">
+							<div class="align-self-end" style="width: 80px;"><i class="fa fa-warning d-flex justify-content-end" id="reportBtn" style="font-size:24px"></i></div>
+						</c:if>
 					</div>
 			    </div>
 			</div>
@@ -284,8 +320,10 @@
 			</section>
 			<div class="mx-auto w-50 mt-1 mb-3 row d-flex justify-content-between" id="commandCell">
 		<%-- 		<c:if test="${not empty sessionScope.sId and (sessionScope.sId eq board.board_name or sessionScope.sId eq 'admin') }"> --%>
+				<c:if test="${com.community_writer ne 'leess'}">
 					<input type="button" class="btn btn-secondary col-xl-2 col-md-3 col-12 me-2" id="modifyBtn" value="수정">
 					<input type="button" class="btn btn-danger col-xl-2 col-md-3 col-12 me-auto" value="삭제" onclick="confirmDelete()">
+				</c:if>
 		<%-- 		</c:if> --%>
 				<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="목록" onclick="location.href='Community?pageNum=${param.pageNum}'">
 			</div>

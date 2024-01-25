@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +28,17 @@
 		
 		let width = $(window).width();
 		console.log(width);
+		
+		// 게시시간 변환 함수 호출
+		timeAgo();
+		
+		// 페이징 처리
+		if(${pageInfo.page.pageNum <= 1 }) {
+			$("#prevPage").addClass("disabled");
+		}
+		if(${pageInfo.page.pageNum >= pageInfo.maxPage }) {
+			$("#nextPage").addClass("disabled");
+		}
 		
 		<%-- 후기 코드 --%>
 		$("#reviewCheckFrom").on("click", function() {
@@ -164,6 +177,21 @@
 		
 	});
 	
+	// 게시시간 변환
+	function timeAgo() {
+		let timeStamp = new Date("${com.community_datetime}".replace(" ", "T")).getTime(); // 비교 대상 시간
+	    let now = new Date();
+        secondsPast = (now.getTime() - timeStamp) / 1000;
+	    
+	    if(secondsPast < 60){
+	    	 $("#comDate").text("방금전");
+	    } else if(secondsPast < 60 * 60){
+	    	 $("#comDate").text(parseInt(secondsPast/60) + '분전');
+	    } else if(secondsPast <= 60 * 60 * 24){
+	    	 $("#comDate").text(parseInt(secondsPast/60 * 60) + '시간전');
+	    }
+	}
+	
 	function reviewRegist() {
 		if($(".modal-body input[type='checkbox']:checked").length == 0) {
 			alert("후기를 선택해주세요");
@@ -201,6 +229,11 @@
 </script>
 </head>
 <body>
+	<%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1 로 저장) --%>
+	<c:set var="pageNum" value="1" />
+	<c:if test="${not empty param.pageNum }">
+		<c:set var="pageNum" value="${param.pageNum }" />
+	</c:if>
 	<!--[if lte IE 9]>
       <p class="browserupgrade">
         You are using an <strong>outdated</strong> browser. Please
@@ -256,7 +289,7 @@
 			<br>
 			<br>
 			<div class="row mb-5 mx-auto">
-				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12" role="group" aria-label="Basic radio toggle button group">
+				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
 					<input type="radio" class="btn-check" name="category" id="allCategory" value="전체" autocomplete="off" checked>
 					<label class="btn btn-outline-primary" for="allCategory">전체</label>
 					<input type="radio" class="btn-check" name="category" id="hotCategory" value="인기글" autocomplete="off">
@@ -271,18 +304,25 @@
 				<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
 					<form action="">
 	<!-- 					<div class="form-group row row-cols-1 row-cols-sm-2 row-cols-md-2"> -->
-						<div class="form-group row">
-							<div class="col-xl-3 px-0">
-								<select class="form-select w-75">
-									<option selected>전체</option>
-									<option>작성자</option>
-									<option>제목</option>
-									<option>내용</option>
+						<div class="form-group row d-flex justify-content-end">
+							<div class="col-xl-2 col-md-2 col-sm-3 col-3 px-0 mb-2">
+<!-- 								<select class="form-select col-xl-1 col-md-3 col-sm-3 col-3" style="width: 20%;"> -->
+								<select class="form-select" name="searchType">
+									<option selected value="">전체</option>
+									<option value="writer">작성자</option>
+									<option value="subject">제목</option>
+									<option value="content">내용</option>
 								</select>
 							</div>
-							<input type="text" name="searchKeyword" class="form-control col-xl-4 w-50">
-							<input type="button" value="검색" class="btn btn-primary col-xl-2">
-							<input type="button" value="글쓰기" class="btn btn-primary col-xl-2" onclick="location.href='CommunityWrite'" />
+							<div class="searchKeyword col-xl-5 col-md-6 col-sm-9 col-9 px-1 mb-2">
+								<input type="text" name="searchKeyword" class="form-control">
+							</div>
+							<div class="searchBtn col-xl-2 col-md-2 d-grid ps-0 pe-2 mb-2">
+								<input type="button" value="검색" class="btn btn-primary">
+							</div>
+							<div class="col-xl-2 col-md-2 d-grid px-0 mb-2">
+								<input type="button" value="글쓰기" class="writeBtn btn btn-primary" onclick="location.href='CommunityWrite'" />
+							</div>
 						</div>
 					</form>
 				</div>
@@ -291,41 +331,53 @@
 				<table class="table table-hover contentList text-center">
 					<thead>
 						<tr class="table-light">
-							<th width=5%>번호</th>
-							<th>제목</th>
-							<th width=15%>작성자</th>
-							<th width=20%>날짜</th>
-							<th width=8%>조회수</th>
+							<th width=5%><span class="d-none d-md-inline">번호</span><span class="d-sm-block d-md-none">나는바보</span></th>
+							<th class="d-none d-md-table-cell">제목</th>
+							<th class="d-none d-md-table-cell" width=15%>작성자</th>
+							<th class="d-none d-md-table-cell" width=20%>게시시간</th>
+							<th class="d-none d-md-table-cell" width=8%>조회수</th>
 						</tr>
 					</thead>
-					<c:forEach var="board" begin="0" end="15" varStatus="status">
+					<c:forEach var="com" items="${communityList }" varStatus="status">
 						<tr>
-							<td>${status.index }</td>
-							<td id="subject" class="text-start">
-								<a href="CommunityDetail?community_id=1&pageNum=1">
-									제목입니다.
+							<td>
+								${com.community_id }
+								<div class="d-sm-block d-md-none">
+									바보바보
+								</div>
+							</td>
+							<td id="subject" class="text-start d-none d-md-table-cell">
+								<a href="CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}">
+									${com.community_subject }
 									</a>
 							</td>
-							<td>작성자</td>
-							<td>
-		<%-- 						<fmt:formatDate value="${board.board_date }" pattern="yy-MM-dd HH:mm"/> --%>
-								2024-01-19
+							<td class="d-none d-md-table-cell">${com.community_writer }</td>
+							<td class="d-none d-md-table-cell">
+								<span id="comDate">${com.community_datetime }</span>
+<%-- 								<fmt:formatDate value="${com.community_datetime }" pattern="yy-MM-dd HH:mm"/> --%>
 							</td>
-							<td>0</td>
+							<td class="d-none d-md-table-cell">${com.community_readcount }</td>
 						</tr>
 					</c:forEach>
 				</table>
 			</div>
 			<nav aria-label="Page navigation">
 				<ul class="pagination justify-content-center">
-					<li class="page-item disabled">
-						<a class="page-link">&laquo;</a>
+					<li class="page-item" id="prevPage">
+						<a href="Community?pageNum=${pageNum + 1}" class="page-link">&laquo;</a>
 					</li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item">
-						<a class="page-link" href="#">&raquo;</a>
+					<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }">
+					<c:choose>
+						<c:when test="${pageNum eq i }">
+						<li class="page-item active"><span class="page-link">${i }</span></li>
+						</c:when>
+						<c:otherwise>
+						<li class="page-item"><a href="Community?pageNum=${i }" class="page-link" >${i }</a></li>
+						</c:otherwise>
+					</c:choose>
+					</c:forEach>
+					<li class="page-item" id="nextPage">
+						<a href="Community?pageNum=${pageNum + 1}" class="page-link">&raquo;</a>
 					</li>
 				</ul>
 			</nav>
