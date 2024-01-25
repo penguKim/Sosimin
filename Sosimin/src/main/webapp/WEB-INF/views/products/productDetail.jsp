@@ -11,7 +11,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 <%-- 1. 신고하기 기능 --%>
 <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 
@@ -29,6 +29,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+    
      <!-- ========================= JS here ========================= -->
     <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>

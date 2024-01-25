@@ -9,7 +9,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 
 <meta charset="UTF-8">
 <title>소시민 상품등록</title>
@@ -19,7 +19,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/product.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
     
     <!-- ========================= JS here ========================= -->
     <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
