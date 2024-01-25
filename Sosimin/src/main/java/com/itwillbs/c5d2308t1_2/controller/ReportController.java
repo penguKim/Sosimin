@@ -21,6 +21,7 @@ public class ReportController {
 	public String reportRegist(@RequestParam Map<String, String> map) {
 		System.out.println(map);
 		
+		
 		return "true";
 	}
 }

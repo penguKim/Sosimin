@@ -251,6 +251,12 @@ function localStarageDeleteOne(keyword) {
 	localStorage.setItem("keywords", JSON.stringify(updatedKeywords));
 	updateTable();
 }
+
+
+
+
+
+
 </script>
 
 <!-- Start Topbar -->
@@ -428,14 +434,14 @@ function localStarageDeleteOne(keyword) {
                             <li class="nav-item">
                                 <a href="./">카테고리</a>
                                 <ul class="sub-menu collapse" id="submenu-1-3">
-                                    <li><a href="product-grids.html">상의</a></li>
-	                                <li><a href="product-grids.html">하의</a></li>
-	                                <li><a href="product-grids.html">아우터</a></li>
-	                                <li><a href="product-grids.html">아동복</a></li>
-	                                <li><a href="product-grids.html">셋업/세트</a></li>
-	                                <li><a href="product-grids.html">패션/잡화</a></li>
-	                                <li><a href="product-grids.html">신발</a></li>
-	                                <li><a href="product-grids.html">기타</a></li>
+                                    <li><a href="javascript:void(0)" >상의</a></li>
+	                                <li><a href="javascript:void(0)" >하의</a></li>
+	                                <li><a href="javascript:void(0)" >아우터</a></li>
+	                                <li><a href="javascript:void(0)" >아동복</a></li>
+	                                <li><a href="javascript:void(0)" >셋업/세트</a></li>
+	                                <li><a href="javascript:void(0)" >패션/잡화</a></li>
+	                                <li><a href="javascript:void(0)" >신발</a></li>
+	                                <li><a href="javascript:void(0)" >기타</a></li>
 <!--                                     <li class="nav-item"><a href="product-grids.html">Shop Grid</a></li> -->
 <!--                                     <li class="nav-item"><a href="product-list.html">Shop List</a></li> -->
 <!--                                     <li class="nav-item"><a href="product-details.html">shop Single</a></li> -->

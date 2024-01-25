@@ -19,7 +19,7 @@
 }
 
 /* 신고 아코디언 배경색 변경 */
-#accordioncolor:not(.collapsed) {
+.accordioncolor:not(.collapsed) {
 	 background-color: #fe7366;
 }
 

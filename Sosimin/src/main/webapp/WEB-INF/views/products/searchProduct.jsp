@@ -24,7 +24,7 @@
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
-	<%-- 2. 신고하기 기능 --%>
+	<%-- 1. 신고하기 기능 --%>
 	<jsp:include page="../report/report.jsp"></jsp:include>
 	<!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
@@ -52,43 +52,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-12">
+                <%-- 필터링 옵션 사이드바 --%>
                     <!-- Start Product Sidebar -->
                     <div class="product-sidebar">
-                    	
                         <!-- Start Single Widget -->
                         <div class="single-widget">
-	                        <span class="filter">필터</span>
-                        	<span class="filter_reset">
-                        		<a href="javascript:void(0)" style="text-decoration: underline; color: grey;">초기화</a>
-                        	</span>
-                            <h3>카테고리</h3>
-                            <ul class="list">
-                                <li>
-                                    <a href="product-grids.html">상의 </a><span>(1138)</span>
-                                </li>
-                                <li>
-                                    <a href="product-grids.html">하의</a><span>(2356)</span>
-                                </li>
-                                <li>
-                                    <a href="product-grids.html">아우터</a><span>(420)</span>
-                                </li>
-                                <li>
-                                    <a href="product-grids.html">아동복</a><span>(874)</span>
-                                </li>
-                                <li>
-                                    <a href="product-grids.html">셋업/세트</a><span>(1239)</span>
-                                </li>
-                                <li>
-                                    <a href="product-grids.html">패션/잡화</a><span>(340)</span>
-                                </li>
-                                <li>
-                                    <a href="product-grids.html">신발</a><span>(512)</span>
-                                </li>
-                                <li>
-                                    <a href="product-grids.html">기타</a><span>(512)</span>
-                                </li>
-                            </ul>
-                            
+                        	<div class="filter">
+		                        <span class="filter_title">필터</span>
+	                        	<span class="filter_reset">
+	                        		<a href="javascript:void(0)" style="text-decoration: underline; color: grey;">초기화</a>
+	                        	</span>
+                        	</div>
                             <div style="margin-bottom: 20px;"></div>
 		                    <h3>가격</h3>
 		                    <form action="#">
@@ -135,19 +109,55 @@
 				                   	<button type="submit" class="resultSearch-btn" style="margin-left: 10%;">적용하기</button>
 			                    </div>
 		                    </form>
-                        </div>
-                        <%-- 3. 신고하기 기능 --%>
+		                    <div style="margin-bottom: 20px;"></div>
+		                    
+		                    <h3>카테고리</h3>
+                            <ul class="list">
+                                <li>
+                                    <a href="product-grids.html">상의 </a>
+                                </li>
+                                <li>
+                                    <a href="product-grids.html">하의</a>
+                                </li>
+                                <li>
+                                    <a href="product-grids.html">아우터</a>
+                                </li>
+                                <li>
+                                    <a href="product-grids.html">아동복</a>
+                                </li>
+                                <li>
+                                    <a href="product-grids.html">셋업/세트</a>
+                                </li>
+                                <li>
+                                    <a href="product-grids.html">패션/잡화</a>
+                                </li>
+                                <li>
+                                    <a href="product-grids.html">신발</a>
+                                </li>
+                                <li>
+                                    <a href="product-grids.html">기타</a>
+                                </li>
+                            </ul>
+                        <%-- 3. 신고하기 기능 버튼 --%>
+                        <button type="button" class="btn btn-primary" id="testBtn" value="테스트중입니다">
+								테스트버튼
+						</button>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                        		data-bs-target="#reportModal" id="reportBtn" value="1">
+                        		data-bs-target="#reportModal" id="reportBtn">
 								게시글 신고하기
 						</button>
 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                        		data-bs-target="#memberModal" id="reportBtn" value="2">
+                        		data-bs-target="#memberModal" id="reportBtn">
 								회원 신고하기
 						</button>
+                        </div>
                    </div>
                </div>
+                <script type="text/javascript">
+                	
                 
+                
+                </script>
                 <!-- 상품 목록 -->
                 <div class="col-lg-9 col-12">
                 	<!-- 상품 검색 조건 -->
@@ -163,9 +173,9 @@
                                 <div class="col-lg-5 col-md-4 col-12">
                                     <nav>
                                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        	<a href="javascript:void(0)">추천순</a> | 
-                                        	<a href="javascript:void(0)">최신순</a> | 
-                                        	<a href="javascript:void(0)">낮은 가격순</a> | 
+                                        	<a href="javascript:void(0)" >추천순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span>  
+                                        	<a href="javascript:void(0)">최신순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span> 
+                                        	<a href="javascript:void(0)">낮은 가격순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span> 
                                         	<a href="javascript:void(0)">높은 가격순</a>
                                         </div>
                                     </nav>
