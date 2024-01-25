@@ -29,5 +29,10 @@ public class ProductController {
 		
 		return "products/productRegist";
 	}
+	@GetMapping("Proposal")
+	public String Proposal() {
+		
+		return"products/Proposal";
+	}
 	
 }

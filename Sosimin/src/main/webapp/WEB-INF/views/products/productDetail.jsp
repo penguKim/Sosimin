@@ -334,6 +334,16 @@ function imagePopup(src) {
   newWindow.document.write('<html><head><title>Image</title></head><body style="background-color: black; margin: 0; display: flex; justify-content: center; align-items: center;"><img src="' + src + '" style="max-width: 100%; max-height: 100%;"></body></html>');
 }
 
+function Proposal() {
+		var width = 700; // 팝업 창의 가로 크기
+	    var height = 500; // 팝업 창의 세로 크기
+	    var left = Math.ceil((window.screen.width - width) / 2); // 화면가로중앙에 위치
+	    var top =  Math.ceil((window.screen.height - height) / 2); // 화면세로중앙에 위치
+
+	    var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top;
+
+        window.open("Proposal", "예매상세정보", options);
+	}
 	
 </script>
 <body>
@@ -384,7 +394,7 @@ function imagePopup(src) {
     <!-- Start Item Details -->
  
     <section class="item-details section" id="sectionWidth">
-      <form>
+<!--       <form> -->
         <div class="container" id="containerDiv">
             <div class="top-area" id="topWidth">
                 <div class="row align-items-center">
@@ -630,7 +640,7 @@ function imagePopup(src) {
                 </div>
               </div>
              </div>
-         </form>
+<!--          </form> -->
    </section>
 <!--   </form> -->
     <!-- End Item Details -->
