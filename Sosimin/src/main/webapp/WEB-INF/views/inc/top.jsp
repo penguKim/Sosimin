@@ -370,7 +370,7 @@ $(function() {
                 	<!-- 최근검색어 테이블이 표시될 영역 -->
                 </div>
                 <div id="Popular">
-                	<table border="1">
+                	<table id="PopularTableBoarder">
                 		<tr class="PopularCenter">
                 			<td><a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a></td>
                 			<td><a onclick="PopularSearches()" class="popularWordColor">인기검색어</a></td>
@@ -450,20 +450,6 @@ $(function() {
                                 <a href="./" class="active" aria-label="Toggle navigation">Home</a>
                             </li>
                             <li class="nav-item">
-								<a href="./">커뮤니티</a>
-                                <ul class="sub-menu collapse" id="submenu-1-2">
-                                    <li class="nav-item"><a href="about-us.html">About Us</a></li>
-                                    <li class="nav-item"><a href="CsMain">고객센터</a></li>
-
-
-                                    <li class="nav-item"><a href="login.html">Login</a></li>
-                                    <li class="nav-item"><a href="register.html">Register</a></li>
-                                    <li class="nav-item"><a href="mail-success.html">Mail Success</a></li>
-                                    <li class="nav-item"><a href="404.html">404 Error</a></li>
-                                </ul>
-                                
-                            </li>
-                            <li class="nav-item">
                                 <a href="./">카테고리</a>
                                 <ul class="sub-menu collapse" id="submenu-1-3">
                                     <li><a href="javascript:void(0)" >상의</a></li>
@@ -480,6 +466,18 @@ $(function() {
 <!--                                     <li class="nav-item"><a href="cart.html">Cart</a></li> -->
 <!--                                     <li class="nav-item"><a href="checkout.html">Checkout</a></li> -->
                                 </ul>
+                            </li>
+                            <li class="nav-item">
+								<a href="./">커뮤니티</a>
+                                <ul class="sub-menu collapse" id="submenu-1-2">
+                                    <li class="nav-item"><a href="about-us.html">About Us</a></li>
+                                    <li class="nav-item"><a href="CsMain">고객센터</a></li>
+                                    <li class="nav-item"><a href="SosimLocker">소심함 위치 안내</a></li>
+                                    <li class="nav-item"><a href="register.html">Register</a></li>
+                                    <li class="nav-item"><a href="mail-success.html">Mail Success</a></li>
+                                    <li class="nav-item"><a href="404.html">404 Error</a></li>
+                                </ul>
+                                
                             </li>
                         </ul>
                     </div> <!-- navbar collapse -->
