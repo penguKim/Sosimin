@@ -642,7 +642,7 @@ function addFileInput() {
             </div>
         </div>
     </div>
- <section class="item-details section" id="sectionWidth">
+<section class="item-details section" id="sectionWidth">
 <div id="background">
 	<div class="container content-wrapper">
 		<div class="addBox">
@@ -728,7 +728,7 @@ function addFileInput() {
 						<ul id="ulLine">
 							<li class="td">
 								<input type="hidden" id="map">
-								<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="내 위치"></div>
+									<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="내 위치"></div>
 								<input type="text" name="myMap" id="myMap" size="64" required disabled placeholder="지역을 설정해 주세요">
 							</li>
 						</ul>
@@ -794,7 +794,7 @@ function addFileInput() {
 						<p>태그</p>
 					</div>
 					<div id="tagLine2">
-						<input type="text" id="tagName" placeholder="태그를 입력해 주세요. (최대 5개 까지)" size="34" maxlength="9" onkeypress="handleKeyPress(event)">
+						<input type="text" id="tagName" placeholder="태그를 입력해 주세요. (최대 4개 까지)" size="34" maxlength="9" onkeypress="handleKeyPress(event)">
 						<input type="button" value="등록" onclick="handleTagRegistration()" id="tagName2"><br><br>
 					</div>
 						<div id="tagContainer"></div><br>
@@ -808,7 +808,7 @@ function addFileInput() {
 				<hr>
    				<div id="save">
 					<button type="button" id="save2">임시저장</button>
-					<button type="button" id="buttonBox">상품등록</button>
+					<input type="submit" id="buttonBox" value="상품등록">
 				</div>
 			</form>
 		</div>
