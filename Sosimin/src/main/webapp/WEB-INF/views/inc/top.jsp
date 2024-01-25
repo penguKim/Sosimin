@@ -8,28 +8,6 @@
 <script type="text/javascript">
 
 
-function searchKeyword() {
-	var keyword = $("#searchKeyword").val();
-	if(keyword != "" && keyword != null){
-		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
-		// 로컬스토리지에 저장할 키의 이름
-		const localStorageKey = 'keywords';
-		// 기존의 키워드 배열 가져오기
-		let keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
-		// 새로운 키워드 추가하기
-		keywords.push(keyword);
-		// 최대 갯수를 초과하는 경우 가장 오래된 데이터부터 제거
-		if (keywords.length > 10) {
-		  keywords = keywords.slice(keywords.length - 10);
-		}
-		// 로컬스토리지에 업데이트된 키워드 배열 저장
-		localStorage.setItem(localStorageKey, JSON.stringify(keywords));
-		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
-	
-		var searchKeywordUrl = "searchKeyword?keyword=" + encodeURIComponent(keyword);
-		window.location.href = searchKeywordUrl;
-	}
-}
 
 $(function(){
 // ######################테스트 데이터 설정######################
@@ -43,6 +21,8 @@ var clickCount = 0;
       localStorage.setItem("keywords", JSON.stringify(keywords));
 
       alert("keywords 배열이 로컬 스토리지에 저장되었습니다.");
+      updateTable();
+      clickCount = 0;
     }
   });
 // ######################테스트 데이터 설정######################
@@ -50,56 +30,17 @@ var clickCount = 0;
 	
 	
 // 	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	const localStorageKey = 'keywords';
-	const keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
-
-	// 테이블 생성
-	let tableHTML = '<table>';
-	tableHTML += 
-		tableHTML += 
-			'<tr>'
-			+'	<td>'
-			+'		<a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a>'
-			+'	</td>'
-			+'	<td>'
-			+'		<a onclick="PopularSearches()" id="popularWordColor">인기검색어</a>'
-			+'	</td>'
-			+'</tr>';
-		
+	// 로컬 스토리지 값이 변경될 때 실행할 함수
 	
-
-	// 키워드 배열을 순회하며 테이블 행 추가
-	for (let index = 0; index < keywords.length; index++) {
-		const keyword = keywords[index];
-		tableHTML +=
-			"<tr class=" + keyword + ">" 
-			+"  <td class='keywordWidth'>" 
-			+		keyword 
-			+"  </td>" 
-			+"  <td class='localStarageDeleteOneTd'>" 
-			+"    <a class='localStarageDeleteOne' onclick='localStarageDeleteOne(\"" + keyword + "\")'>x</a>" 
-			+"  </td>" 
-			+"</tr>";
-	}
-
-
-	tableHTML += 
-		'<tr>'
-		+	'<td>'
-		+	'	<a onclick="localStorageClean()">최근검색어 삭제</a>'
-		+	'</td>'
-		+	'<td>'
-		+	'	<a id="closeSearchBox">'
-		+	'		닫기'
-		+	'	</a>'
-		+	'</td>'
-		+'</tr>' 
-		
-		
-	tableHTML += '</table>';
-
-	// HTML 영역에 테이블 추가
-	$("#Recent").html(tableHTML);
+	updateTable();
+	
+	// 로컬 스토리지 값이 변경될 때 updateTable 함수 실행
+	window.addEventListener('storage', function(event) {
+	  if (event.key === 'keywords') {
+	    updateTable();
+	  }
+	});
+	
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	
 	/* 
@@ -123,7 +64,9 @@ var clickCount = 0;
 	    // 클릭된 요소가 특정 영역 내에 속하는지 확인합니다
 	    if (!$(event.target).closest('#searchBox').length || $(event.target).is('#closeSearchBox')) {
 	        // 클릭된 요소가 특정 영역 외부에 있을 경우 경고창을 띄웁니다
-	    	hideHandler();
+	        if(!$(event.target).is('.localStarageDeleteOne') && !$(event.target).is('#localStorageClean') ){
+		    	hideHandler();
+		    }
 	    }
 	});
 	
@@ -140,9 +83,33 @@ var clickCount = 0;
 	      searchKeyword();
 	    }
   	});
-	
+
+	$(".recentWordColor").css("color","red");
+	$(".popularWordColor").css("color","black");
 });// document.ready function END
 
+function searchKeyword() {
+	var keyword = $("#searchKeyword").val();
+	if(keyword != "" && keyword != null){
+		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
+		// 로컬스토리지에 저장할 키의 이름
+		const localStorageKey = 'keywords';
+		// 기존의 키워드 배열 가져오기
+		let keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+		// 새로운 키워드 추가하기
+		keywords.push(keyword);
+		// 최대 갯수를 초과하는 경우 가장 오래된 데이터부터 제거
+		if (keywords.length > 10) {
+		  keywords = keywords.slice(keywords.length - 10);
+		}
+		// 로컬스토리지에 업데이트된 키워드 배열 저장
+		localStorage.setItem(localStorageKey, JSON.stringify(keywords));
+		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
+	
+		var searchKeywordUrl = "searchKeyword?keyword=" + encodeURIComponent(keyword);
+		window.location.href = searchKeywordUrl;
+	}
+}
 function showHandler(){
 	$("#Recent").show();
 }
@@ -151,8 +118,8 @@ function RecentSearchs(){
 	alert("최근검색어");
 	$("#Recent").show();
 	$("#Popular").hide();
-	$("#recentWordColor").css("color","red");
-	$("#popularWordColor").css("color","black");
+	$(".recentWordColor").css("color","red");
+	$(".popularWordColor").css("color","black");
 	
 }
 
@@ -160,8 +127,8 @@ function PopularSearches(){
 	alert("인기검색어");
 	$("#Recent").hide();
 	$("#Popular").show();
-	$("#recentWordColor").css("color","black");
-	$("#popularWordColor").css("color","red");
+	$(".recentWordColor").css("color","black");
+	$(".popularWordColor").css("color","red");
 }
 
 function searchKeywordChange(keyWord){
@@ -188,10 +155,10 @@ function localStorageClean(){
 	tableHTML += 
 		'<tr>'
 		+'	<td>'
-		+'		<a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a>'
+		+'		<a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
 		+'	</td>'
 		+'	<td>'
-		+'		<a onclick="PopularSearches()" id="popularWordColor">인기검색어</a>'
+		+'		<a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
 		+'	</td>'
 		+'</tr>';
 		
@@ -205,7 +172,7 @@ function localStorageClean(){
 	tableHTML += 
 		'<tr>'
 		+	'<td>'
-		+	'	<a onclick="localStorageClean()">최근검색어 삭제</a>'
+		+	'	<a onclick="localStorageClean()" id="localStorageClean">최근검색어 삭제</a>'
 		+	'</td>'
 		+	'<td>'
 		+	'	<a id="closeSearchBox">'
@@ -221,6 +188,60 @@ function localStorageClean(){
 	$("#Recent").html(tableHTML);
 }
 
+function updateTable() {
+	const localStorageKey = 'keywords';
+	const keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+	// 테이블 생성
+	let tableHTML = '<table>';
+	tableHTML +=
+		'<tr>'
+		+ '  <td>'
+	    + '    <a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
+	    + '  </td>'
+	    + '  <td>'
+	    + '    <a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
+	    + '  </td>'
+	    + '</tr>';
+	// 키워드 배열을 순회하며 테이블 행 추가
+	if(keywords.length == 0){
+		tableHTML +=
+			"<tr>"
+			+"	<td colspan='2'>"
+			+"		최근 검색어가 없습니다."
+			+"	</td>"
+			+"</tr>"
+	}else{
+		for (let index = keywords.length - 1; index >= 0; index--) {
+			const keyword = keywords[index];
+		    tableHTML +=
+		    	"<tr class=" + keyword + ">"
+		    	+ "  <td class='keywordWidth'>"
+		    	+   keyword
+		    	+ "  </td>"
+		    	+ "  <td class='localStarageDeleteOneTd'>"
+		    	+ "    <a class='localStarageDeleteOne' onclick='localStarageDeleteOne(\"" + keyword + "\")'>x</a>"
+		    	+ "  </td>"
+		    	+ "</tr>";
+		}
+	}
+
+	  tableHTML +=
+		  '<tr>'
+		  + '<td>'
+		  + '  <a onclick="localStorageClean()" id="localStorageClean">최근검색어 삭제</a>'
+		  + '</td>'
+		  + '<td>'
+		  + '  <a id="closeSearchBox">'
+		  + '    닫기'
+		  + '  </a>'
+		  + '</td>'
+		  + '</tr>' 
+
+	  tableHTML += '</table>';
+	  // HTML 영역에 테이블 추가
+	  $("#Recent").html(tableHTML);
+}
+
 function localStarageDeleteOne(keyword) {
 	// 로컬 스토리지에서 keywords 배열 가져오기
 	const storedKeywords = JSON.parse(localStorage.getItem("keywords")) || [];
@@ -228,9 +249,8 @@ function localStarageDeleteOne(keyword) {
 	const updatedKeywords = storedKeywords.filter((storedKeyword) => storedKeyword !== keyword);
 	// 수정된 keywords 배열 다시 로컬 스토리지에 저장
 	localStorage.setItem("keywords", JSON.stringify(updatedKeywords));
-	
+	updateTable();
 }
-
 </script>
 
 <!-- Start Topbar -->
@@ -321,26 +341,13 @@ function localStarageDeleteOne(keyword) {
                 </div>
                 <!-- End Main Menu Search -->
                 <div id="Recent" >
-                	<table border="1">
-                		<tr>
-                			<td><a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a></td>
-                			<td><a onclick="PopularSearches()" id="popularWordColor">인기검색어</a></td>
-                		</tr>
-                		<tr>
-                			<td>내용</td>
-                			<td>x</td>
-                		</tr>
-                		<tr>
-                			<td>최근검색어 삭제</td>
-                			<td><a id="closeSearchBox">닫기</a></td>
-                		</tr>
-                	</table>
+                	<!-- 최근검색어 테이블이 표시될 영역 -->
                 </div>
                 <div id="Popular">
                 	<table border="1">
                 		<tr>
-                			<td><a onclick="RecentSearchs()">최근검색어</a></td>
-                			<td><a onclick="PopularSearches()">인기검색어</a></td>
+                			<td><a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a></td>
+                			<td><a onclick="PopularSearches()" class="popularWordColor">인기검색어</a></td>
                 		</tr>
                 		<tr>
                 			<td colspan="2">1 군만두</td>
@@ -373,7 +380,7 @@ function localStarageDeleteOne(keyword) {
                 			<td colspan="2">10 아웃백 스테이크 하우스</td>
                 		</tr>
                 		<tr>
-                			<td>최근검색어 삭제 <a id="closeSearchBox">닫기</a></td>
+                			<td colspan="2"><a id="closeSearchBox">닫기</a></td>
                 		</tr>
                 	</table>
                 </div>
