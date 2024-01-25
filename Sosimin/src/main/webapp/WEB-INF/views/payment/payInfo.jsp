@@ -23,6 +23,7 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 
 <!-- ========================= 자바스크립트 시작 ========================= -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
@@ -40,15 +41,16 @@ $(function() {
 		}
 	});	
 	
-	<%-- 무한스크롤 적용 --%>
-	load_list(pay_history_type);
+	<%-- 게시물 목록 불러오기 --%>
+	load_list();
 	
+		
 	$(window).scroll(function() {
 		let scrollTop = $(window).scrollTop(); // 스크롤바 현재 위치
 		let windowHeight = $(window).height(); // 브라우저 창 높이
 		let documentHeight = $(document).height(); // 문서 높이
-		console.log("scrollTop : " + scrollTop + ", windowHeight : " + windowHeight + ", documentHeight : "+ documentHeight);
-		
+// 		console.log("scrollTop : " + scrollTop + ", windowHeight : " + windowHeight + ", documentHeight : "+ documentHeight);
+			
 		if(scrollTop + windowHeight + 1 >= documentHeight) {
 			pageNum++; // 페이지번호 1 층가
 			
@@ -57,23 +59,33 @@ $(function() {
 				load_list();
 			}
 		}
+		
 	});
 	
+	<%-- 모아보기 버튼을 클릭하면 파라미터를 넘기며 주소를 새로 요청함 --%>
 	$(".btn-check").change(function() {
-		pay_history_type = $(this).val();
-		load_list(pay_history_type);
-		
-		
+		let pay_history_type = $(this).val();
+		location.href="PayInfo?pay_history_type="+pay_history_type;
 	});
+
 	
 });
 
 <%-- 게시물 목록을 AJAX와 JSON으로 처리하는 함수 --%>
-function load_list(pay_history_type) {
-	<%-- 타입별 모아보기 버튼을 위해 변수에 값 저장 --%>
+function load_list() {
 	<%-- 가입자의 이용내역을 불러오기 위해 pay_id 저장 --%>
 	let pay_id = $("#pay_id").val();
-	console.log("pay_history_type = " + pay_history_type + ", pay_id = " + pay_id);
+	<%-- 타입별 모아보기 버튼을 위해 변수에 파라미터 값 저장 --%>
+	pay_history_type = "${param.pay_history_type}"
+	console.log("pay_history_type = " + pay_history_type + ", pay_id = " + pay_id + ", pageNum = " + pageNum);
+	
+	<%-- 파라미터값과 일치하는 체크박스 체크 --%>
+	$(".btn-check").each(function() {
+		if ($(this).val() === pay_history_type) {
+			$(this).prop("checked", true);
+			return false; // 반복문 종료
+		}
+	});
 	
 	<%-- 서블릿 요청 --%>
 	$.ajax({
@@ -87,16 +99,66 @@ function load_list(pay_history_type) {
 		dataType: "json",
 		success:  function(data) {
 			console.log(data);
+			
+			for(let history of data.payHistoryList) {
+				
+				// pay_history_date 값을 분리하여 날짜와 시간을 추출
+				var date = history.pay_history_date.split("T")[0].split("-").slice(1).join("-");
+				var time = history.pay_history_date.split("T")[1].substring(0, 5);
+			
+				// pay_history_type 값에 따라 다른 결과 출력
+			    let pay_history_type = "";
+			    if(history.pay_history_type == "1") {
+			    	pay_history_type = "충전";
+			    } else if(history.pay_history_type == "2") {
+			    	pay_history_type = "환급";
+			    } else if(history.pay_history_type == "3") {
+			    	pay_history_type = "사용";
+			    } else if(history.pay_history_type == "4") {
+			    	pay_history_type = "수익";
+			    }
+
+				let result = 
+					'<div class="cart-single-list">'
+			        +    '<div class="row align-items-center">'
+			        +        '<div class="col-lg-2 col-md-2 col-12">'
+			        +        	'<p class="pay-info-sub">'
+			        +        		date
+			        +        	'</p>'
+			        +        '</div>'
+			        +      '<div class="col-lg-6 col-md-6 col-12">'
+			        +            '<h5 class="product-name">' + history.order_id + '</h5>'
+			        +            '<p class="pay-info-sub">'
+			        +        		time + ' | '
+			        +               pay_history_type
+			        +            '</p>'
+			        +        '</div>'
+			        +        '<div class="col-lg-4 col-md-4 col-12">'
+			        +            '<h5 class="pay-amount">' + history.pay_amount + '</h5>'
+			        +            '<p class="pay-balance-sub">'
+			        +                '잔액'
+			        +            '</p>'
+			        +        '</div>'
+			        +    '</div>'
+			        +'</div>'
+			     
+			    $("#payHistoryList").append(result);
+				
+				// 끝페이지 번호(maxPage) 값을 변수에 저장
+				maxPage = data.maxPage;    
+			}
+			
+			
 		},
 		error: function(request, status, error) {
 	      // 요청이 실패한 경우 처리할 로직
-	      console.log("AJAX 요청 실패:", error); // 예시: 에러 메시지 출력
+	      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
 		}
 	});
 	
-	
-	
 }
+
+
 
 
 
@@ -147,7 +209,10 @@ function load_list(pay_history_type) {
                         <div class="card-body">
                             <div class="title paytitle">
                                 <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
-                                <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
+                                <h3 class="pay-name">
+                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
+                                	소심페이
+                                </h3>
                             </div>
                             <div class="row">
 	                           	<div class="pay-info col-lg-6 col-md-6 col-12">
@@ -181,39 +246,9 @@ function load_list(pay_history_type) {
 							    <label class="btn btn-outline-primary" for="btn-check5">수익</label>
 							</div>
 							
-							<c:forEach var="history" items="${payHistory}">
-	                        	<fmt:parseDate var="parsedReplyDate" value="${history.pay_history_date}" pattern="yyyy-MM-dd'T'HH:mm" type="both" />
-								<!-- 페이내역 리스트 1줄 시작 -->
-				                <div class="cart-single-list">
-				                    <div class="row align-items-center">
-				                        <div class="col-lg-2 col-md-2 col-12">
-				                        	<p class="pay-info-sub">
-				                        		<fmt:formatDate value="${parsedReplyDate}"  pattern="MM-dd"/>
-				                        	</p>
-				                        </div>
-				                        <div class="col-lg-6 col-md-6 col-12">
-				                            <h5 class="product-name">${history.order_id}</h5>
-				                            <p class="pay-info-sub">
-				                        		<fmt:formatDate value="${parsedReplyDate}"  pattern="HH:mm"/> |
-				                                <c:choose>
-				                                	<c:when test="${history.pay_history_type eq 1}">충전</c:when>
-				                                	<c:when test="${history.pay_history_type eq 2}">환급</c:when>
-				                                	<c:when test="${history.pay_history_type eq 3}">사용</c:when>
-				                                	<c:when test="${history.pay_history_type eq 4}">수익</c:when>
-				                                </c:choose>
-				                            </p>
-				                        </div>
-				                        <div class="col-lg-4 col-md-4 col-12">
-				                            <h5 class="pay-amount">${history.pay_amount}</h5>
-				                            <p class="pay-balance-sub">
-				                                잔액
-				                            </p>
-				                        </div>
-				                    </div>
-				                </div>
-								<!-- 페이내역 리스트 1줄 끝 -->
-							</c:forEach>
-							
+							<div id="payHistoryList">
+								<%-- 페이사용 내역이 출력되는 영역 --%>
+							</div>
                         </div>
                     </div>
                 </div>
@@ -239,5 +274,6 @@ function load_list(pay_history_type) {
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </body>
 </html>

@@ -69,7 +69,7 @@
 		SELECT *
 		FROM PayHistory
 		WHERE pay_id = #{pay_id}
-		<if test="pay_history_type != ''">
+		<if test="pay_history_type != null and !pay_history_type.equals('')">
 			AND pay_history_type = #{pay_history_type}
 		</if>
 		ORDER BY pay_history_date DESC
@@ -81,7 +81,7 @@
 		SELECT COUNT(*)
 		FROM PayHistory
 		WHERE pay_id = #{pay_id}
-		<if test="pay_history_type != ''">
+		<if test="pay_history_type != null and !pay_history_type.equals('')">
 			AND pay_history_type = #{pay_history_type}
 		</if>
 	</select>

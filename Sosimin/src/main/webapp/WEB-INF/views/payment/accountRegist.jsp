@@ -20,6 +20,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+
 <!-- ========================= 자바스크립트 시작 ========================= -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
@@ -27,6 +31,7 @@
 function openModal(bank_name, account_num_masked, fintech_use_num) {
 	$('#password-modal').modal('show'); // 모달창을 띄움
     $('#pay-password').val(''); // 비밀번호 입력창을 초기 값으로 설정
+    $('#pay-password2').val(''); // 비밀번호 입력창을 초기 값으로 설정
     $('#bank_name').val(bank_name); // hidden 속성에 fintech_use_num를 넘김
     $('#account_num_masked').val(account_num_masked); // hidden 속성에 fintech_use_num를 넘김
     $('#fintech_use_num').val(fintech_use_num); // hidden 속성에 fintech_use_num를 넘김
@@ -41,21 +46,49 @@ $(function() {
 	});
 
 	// 비밀번호를 입력하고 등록버튼을 눌렀을 때 
-	$("form").submit(function() {
+	$("#passwd-btn").click(function() {
 		let regPw = /^\d{6}$/; // 6자리의 숫자를 표현한 정규표현식
 		
-		if(confirm("계좌를 등록하시겠습니까?")) { // 컨펌창을 띄우고
-			if($('#pay-password').val() != $('#pay-password2').val()) { // 비밀번호와 비밀번호 확인이 불일치하면
-				alert("비밀번호가 일치하지 않습니다");
-				return false; // 계좌가 등록되지 않음
-			} else if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
-				alert("숫자 6자리를 입력해주세요");
-				return false; // 계좌가 등록되지 않음
-			}
-			return true;
-		} else {
-			return false; // 컨펌창에 취소를 눌러도 계좌가 등록되지 않음	
-		}
+		event.preventDefault();
+		Swal.fire({
+	        title: '소심페이에 가입하시겠습니까?',
+	        text: "등록된 계좌는 소심페이 충전과 환급에 사용됩니다.",
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '가입',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	        	if($('#pay-password').val() != $('#pay-password2').val()) { // 비밀번호와 비밀번호 확인이 불일치하면
+	        		event.preventDefault();
+	        		Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: '비밀번호가 일치하지 않습니다.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+				} else if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
+					event.preventDefault();
+					Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: '숫자 6자리를 입력해주세요.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+				} else {
+					$(".account-regist").submit();
+				}
+	        } else {
+	        	$('#password-modal').modal('hide'); // 모달창 닫기
+	        }
+	    });
 	});
 });
 </script>
@@ -104,9 +137,12 @@ $(function() {
                         <div class="card-body">
                             <div class="title paytitle">
                                 <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
-                                <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
+                                <h3 class="pay-name">
+                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
+                                	소심페이
+                                </h3>
                             </div>
-                           	<div class="msg">페이에 등록할 계좌를 선택해주세요</div>
+                           	<div class="msg">소심페이에 등록할 계좌를 선택해주세요</div>
                            
                            	<c:forEach var="account" items="${userInfo.res_list}">
 	                            <!-- 계좌리스트 한 줄 시작 -->
@@ -142,7 +178,7 @@ $(function() {
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-               	<form action="AccountRegistPro" method="post">
+               	<form action="AccountRegistPro" method="post" class="account-regist">
 	                <div class="modal-header">
 	                    <h5 class="modal-title" id="exampleModalLabel">결제 비밀번호를 설정해주세요</h5>
 	                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -166,7 +202,7 @@ $(function() {
 	                    </div>
 	                </div>
 	                <div class="modal-footer button">
-		                    <button type="submit" class="btn">등록하기</button>
+		                    <button type="submit" class="btn" id="passwd-btn">등록하기</button>
 		                    <input type="hidden" id="bank_name" name="bank_name" value="">
 		                    <input type="hidden" id="account_num_masked" name="account_num_masked" value="">
 		                    <input type="hidden" id="fintech_use_num" name="fintech_use_num" value="">
@@ -195,5 +231,6 @@ $(function() {
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </body>
 </html>

@@ -19,6 +19,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+
 <!-- ========================= 자바스크립트 시작 ========================= -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
@@ -78,7 +82,10 @@ $(function() {
                         <div class="card-body">
                             <div class="title paytitle">
                                 <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
-                                <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
+                                <h3 class="pay-name">
+                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
+                                	소심페이
+                                </h3>
                             </div>
                             <div class="complete">
 	                            <div class="material-icons effect" style="font-size:40px;">check_circle</div>
@@ -132,5 +139,6 @@ $(function() {
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </body>
 </html>

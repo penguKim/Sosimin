@@ -19,6 +19,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+
 <!-- ========================= 자바스크립트 시작 ========================= -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
@@ -39,19 +43,74 @@ $(function() {
 		let formattedValue = value.toLocaleString();
         $('#pay-amount').val(formattedValue);	
 	});
+
 	
 	// 비밀번호를 입력하고 등록버튼을 눌렀을 때 
-	$("form").submit(function() {
+	$("#passwd-btn").click(function() {
+		// 비밀번호 일치 여부 확인
+		let input_passwd = $('#pay-password').val();
+		let is_correct_passwd = true;
+		
+		$.ajax({
+			type: "GET",
+			url: "PasswdCheck",
+			data: {
+				"input_passwd": input_passwd
+			},
+			success:  function(data) {
+				console.log(data);
+			},
+			error: function(request, status, error) {
+		      // 요청이 실패한 경우 처리할 로직
+		      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+			}
+		});
+		
 		let regPw = /^\d{6}$/; // 6자리의 숫자를 표현한 정규표현식
 		
-		if(confirm("페이머니를 충전하시겠습니까?")) { // 컨펌창을 띄우고
-			if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
-				alert("숫자 6자리를 입력해주세요");
-				return false; // 계좌가 등록되지 않음
-			}
-			return true;
-		} 
+// 		event.preventDefault();
+// 		Swal.fire({
+// 	        title: '페이머니를 충전하시겠습니까?',
+// 	        text: "등록된 계좌에서 출금이 진행됩니다.",
+// 	        icon: 'question',
+// 	        showCancelButton: true,
+// 	        confirmButtonColor: '#39d274',
+// 	        cancelButtonColor: '#d33',
+// 	        confirmButtonText: '충전',
+// 	        cancelButtonText: '취소',
+// 	        reverseButtons: true,
+// 	    }).then((result) => {
+// 	        if (result.isConfirmed) {
+// 	        	if(!is_correct_passwd) { // 비밀번호가 일치하지 않으면
+// 	        		event.preventDefault();
+// 	        		Swal.fire({
+// 						position: 'center',
+// 						icon: 'error',
+// 						title: '비밀번호가 일치하지 않습니다.',
+// 						showConfirmButton: false,
+// 						timer: 2000,
+// 						toast: true
+// 					});
+// 				} else if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
+// 					event.preventDefault();
+// 					Swal.fire({
+// 						position: 'center',
+// 						icon: 'error',
+// 						title: '숫자 6자리를 입력해주세요.',
+// 						showConfirmButton: false,
+// 						timer: 2000,
+// 						toast: true
+// 					});
+// 				} else {
+// 					$(".account-regist").submit();
+// 				}
+// 	        } else {
+// 	        	$('#password-modal').modal('hide'); // 모달창 닫기
+// 	        }
+// 	    });
 	});
+
+	
 });
 
 // 모달 창을 열 때
@@ -112,8 +171,10 @@ function openModal() {
 	                        <div class="card-body">
 	                            <div class="title paytitle">
 	                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
-	                                <h3 class="pay-name">00페이</h3> <!-- 페이아이콘/페이 이름 결정되면 변경 -->
-	                            </div>
+	                                <h3 class="pay-name">
+	                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
+	                                	소심페이
+		                            </div>
 	                           	 <div class="form-group input-group">
 	                                <label for="reg-fn">충전금액</label>
 	                                <input class="form-control" type="text" id="pay-amount" name="pay_amount"
@@ -141,7 +202,7 @@ function openModal() {
 					                        <p class="account-no">
 					                                ${payInfo.account_num_masked}
 					                         </p>
-					                         <input type="hidden" name="fintech_use_num" value="">
+					                         <input type="hidden" name="pay_id" value="${payInfo.pay_id}">
 				                   		</div>
 				                   	</div>
 	                            </div>
@@ -178,7 +239,7 @@ function openModal() {
 	                    </div>
 	                </div>
 	                <div class="modal-footer button">
-	                    <button type="submit" class="btn">충전하기</button>
+	                    <button type="submit" class="btn" id="passwd-btn">충전하기</button>
 	                </div>
 	            </div>
 	        </div>
@@ -202,5 +263,6 @@ function openModal() {
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </body>
 </html>

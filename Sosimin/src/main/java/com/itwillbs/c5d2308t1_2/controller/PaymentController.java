@@ -91,7 +91,7 @@ public class PaymentController {
 		// ResponseTokenVO 객체가 null 이거나 엑세스토큰 값이 null일 경우
 		// state값 갱신을 위해 "AccountVerification" 페이지로 이동
 		if(responseToken == null || responseToken.getAccess_token() == null) {
-			model.addAttribute("msg", "토큰 발급 실패! 다시 인증하세요!");
+			model.addAttribute("msg", "토큰 발급을 실패했습니다! 다시 인증하세요!");
 			model.addAttribute("isClose", true); // 현재 창(서브 윈도우) 닫도록 명령		
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
@@ -109,7 +109,7 @@ public class PaymentController {
 		session.setAttribute("user_seq_no", responseToken.getUser_seq_no());
 		
 		// 인증창을 닫고 계좌 등록 페이지로 이동
-		model.addAttribute("msg", "계좌 인증 완료!");
+		model.addAttribute("msg", "계좌 인증이 완료되었습니다!");
 		model.addAttribute("isClose", true); // 현재 창(서브 윈도우) 닫도록 명령
 		model.addAttribute("targetURL", "AccountRegist"); 
 		return "forward";
@@ -189,6 +189,10 @@ public class PaymentController {
 	// 페이정보 페이지로 이동
 	@GetMapping("PayInfo")
 	public String payInfo(HttpSession session, Model model) {
+		// ------------------------------------------------------------------
+		session.setAttribute("sId", "leess"); // 로그인 구현되고나면 지우기
+		// ------------------------------------------------------------------
+		
 		// 세션아이디가 null 일 경우 로그인 페이지 이동 처리
 		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
 		String member_id = (String)session.getAttribute("sId");
@@ -216,7 +220,7 @@ public class PaymentController {
 	
 	@ResponseBody
 	@GetMapping("PayHistoryJson")
-	public String historyJson(Model model, Map<String, Object> map) {
+	public String historyJson(Model model, @RequestParam Map<String, Object> map) {
 
 		// --------------------------------------------------
 		// 페이징
@@ -225,6 +229,7 @@ public class PaymentController {
 		
 		int pageNum = Integer.parseInt(map.get("pageNum").toString());
 		
+		System.out.println("pageNum = " + pageNum);
 		// 조회 시작 행번호
 		int startRow = (pageNum - 1) * listLimit;
 		
@@ -369,7 +374,23 @@ public class PaymentController {
 	}
 	
 	
-	
+	// ---------- 페이 비밀번호 체크 ---------------
+	@ResponseBody
+	@GetMapping("PasswdCheck")
+	public String passwdCheck(@RequestParam String input_passwd, HttpSession session) {
+		// 페이 정보 가져오기(재사용)
+		String member_id = (String)session.getAttribute("sId");
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		
+		if(payInfo == null || !passwordEncoder.matches(input_passwd, payInfo.get("input_passwd").toString())) {
+			return "false";
+		} else {
+			return "true";			
+		}
+		
+	}
 	
 	
 	
