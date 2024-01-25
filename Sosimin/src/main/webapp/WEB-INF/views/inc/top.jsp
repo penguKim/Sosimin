@@ -8,6 +8,86 @@
 <script type="text/javascript">
 
 
+
+$(function(){
+// ######################테스트 데이터 설정######################
+var clickCount = 0;
+
+  $('.nav-inner').click(function() {
+    clickCount++;
+
+    if (clickCount === 3) {
+      var keywords = ["테스트1", "테스트2", "테스트3", "테스트4", "테스트5", "테스트6", "테스트7", "테스트8", "테스트9", "테스트10"];
+      localStorage.setItem("keywords", JSON.stringify(keywords));
+
+      alert("keywords 배열이 로컬 스토리지에 저장되었습니다.");
+      updateTable();
+      clickCount = 0;
+    }
+  });
+// ######################테스트 데이터 설정######################
+
+	
+	
+// 	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	// 로컬 스토리지 값이 변경될 때 실행할 함수
+	
+	updateTable();
+	
+	// 로컬 스토리지 값이 변경될 때 updateTable 함수 실행
+	window.addEventListener('storage', function(event) {
+	  if (event.key === 'keywords') {
+	    updateTable();
+	  }
+	});
+	
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	
+	/* 
+	@@@ 검색창과 관련된 설정 항목 @@@
+	1. 검색창은 Id가 searchBox 인 영역을 클릭 했을 경우 나타난다.
+	2. 이 검색창은 
+		1) 마우스 스크롤
+		2) searchBox 밖의 영역 클릭
+		3) "닫기" 글자 클릭 
+		했을 경우 사라진다.
+	3. 이 검색창은
+	   1) 아무것도 입력하지 않고 엔터키 클릭
+	   2) 돋보기 클릭 시
+	   검색기능이 동작하지 않는다
+	*/
+	hideHandler();
+	$(window).on("scroll", hideHandler);
+	
+	// 특정 영역 외의 클릭 이벤트를 감지하는 코드입니다
+	$(document).on('click', function(event) {
+	    // 클릭된 요소가 특정 영역 내에 속하는지 확인합니다
+	    if (!$(event.target).closest('#searchBox').length || $(event.target).is('#closeSearchBox')) {
+	        // 클릭된 요소가 특정 영역 외부에 있을 경우 경고창을 띄웁니다
+	        if(!$(event.target).is('.localStarageDeleteOne') && !$(event.target).is('#localStorageClean') ){
+		    	hideHandler();
+		    }
+	    }
+	});
+	
+	
+	function hideHandler() {
+		$("#Recent").hide();
+		$("#Popular").hide();
+	}
+	
+	//엔터키 누를 경우 텍스트 가지고 주소 이동
+	//(form태그 쓰면 css 다 부서짐 그래서 그냥 이렇게 함)
+	$("#searchKeyword").keyup(function(event) {
+	    if (event.keyCode === 13) {
+	      searchKeyword();
+	    }
+  	});
+
+	$(".recentWordColor").css("color","red");
+	$(".popularWordColor").css("color","black");
+});// document.ready function END
+
 function searchKeyword() {
 	var keyword = $("#searchKeyword").val();
 	if(keyword != "" && keyword != null){
@@ -30,101 +110,6 @@ function searchKeyword() {
 		window.location.href = searchKeywordUrl;
 	}
 }
-
-$(function(){
-// 	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	const localStorageKey = 'keywords';
-	const keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
-
-	// 테이블 생성
-	let tableHTML = '<table>';
-	tableHTML += 
-		tableHTML += 
-			'<tr>'
-			+'	<td>'
-			+'		<a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a>'
-			+'	</td>'
-			+'	<td>'
-			+'		<a onclick="PopularSearches()" id="popularWordColor">인기검색어</a>'
-			+'	</td>'
-			+'</tr>';
-		
-	
-
-	// 키워드 배열을 순회하며 테이블 행 추가
-	for (let index = 0; index < keywords.length; index++) {
-		 const keyword = keywords[index];
-		 tableHTML +=
-			 +"<tr>"
-			 +"	<td class='keywordWidth'>"
-			 + 		keyword
-			 +"	</td>"
-			 +"	<td class='localStarageDeleteOneTd' onclick='localStarageDeleteOne("+ keyword +")'>"
-			 +"		<a class='localStarageDeleteOne'>x</a>"
-			 +"	</td>"
-			 +"</tr>";
-			 
-	}
-	tableHTML += 
-		'<tr>'
-		+	'<td>'
-		+	'	<a onclick="localStorageClean()">최근검색어 삭제</a>'
-		+	'</td>'
-		+	'<td>'
-		+	'	<a id="closeSearchBox">'
-		+	'		닫기'
-		+	'	</a>'
-		+	'</td>'
-		+'</tr>' 
-		
-		
-	tableHTML += '</table>';
-
-	// HTML 영역에 테이블 추가
-	$("#Recent").html(tableHTML);
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-	/* 
-	@@@ 검색창과 관련된 설정 항목 @@@
-	1. 검색창은 Id가 searchBox 인 영역을 클릭 했을 경우 나타난다.
-	2. 이 검색창은 
-		1) 마우스 스크롤
-		2) searchBox 밖의 영역 클릭
-		3) "닫기" 글자 클릭 
-		했을 경우 사라진다.
-	3. 이 검색창은
-	   1) 아무것도 입력하지 않고 엔터키 클릭
-	   2) 돋보기 클릭 시
-	   검색기능이 동작하지 않는다
-	*/
-	hideHandler();
-	$(window).on("scroll", hideHandler);
-	
-	// 특정 영역 외의 클릭 이벤트를 감지하는 코드입니다
-	$(document).on('click', function(event) {
-	    // 클릭된 요소가 특정 영역 내에 속하는지 확인합니다
-	    if (!$(event.target).closest('#searchBox').length || $(event.target).is('#closeSearchBox')) {
-	        // 클릭된 요소가 특정 영역 외부에 있을 경우 경고창을 띄웁니다
-	    	hideHandler();
-	    }
-	});
-	
-	
-	function hideHandler() {
-		$("#Recent").hide();
-		$("#Popular").hide();
-	}
-	
-	//엔터키 누를 경우 텍스트 가지고 주소 이동
-	//(form태그 쓰면 css 다 부서짐 그래서 그냥 이렇게 함)
-	$("#searchKeyword").keyup(function(event) {
-	    if (event.keyCode === 13) {
-	      searchKeyword();
-	    }
-  	});
-	
-});// document.ready function END
-
 function showHandler(){
 	$("#Recent").show();
 }
@@ -133,8 +118,8 @@ function RecentSearchs(){
 	alert("최근검색어");
 	$("#Recent").show();
 	$("#Popular").hide();
-	$("#recentWordColor").css("color","red");
-	$("#popularWordColor").css("color","black");
+	$(".recentWordColor").css("color","red");
+	$(".popularWordColor").css("color","black");
 	
 }
 
@@ -142,8 +127,8 @@ function PopularSearches(){
 	alert("인기검색어");
 	$("#Recent").hide();
 	$("#Popular").show();
-	$("#recentWordColor").css("color","black");
-	$("#popularWordColor").css("color","red");
+	$(".recentWordColor").css("color","black");
+	$(".popularWordColor").css("color","red");
 }
 
 function searchKeywordChange(keyWord){
@@ -170,10 +155,10 @@ function localStorageClean(){
 	tableHTML += 
 		'<tr>'
 		+'	<td>'
-		+'		<a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a>'
+		+'		<a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
 		+'	</td>'
 		+'	<td>'
-		+'		<a onclick="PopularSearches()" id="popularWordColor">인기검색어</a>'
+		+'		<a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
 		+'	</td>'
 		+'</tr>';
 		
@@ -187,7 +172,7 @@ function localStorageClean(){
 	tableHTML += 
 		'<tr>'
 		+	'<td>'
-		+	'	<a onclick="localStorageClean()">최근검색어 삭제</a>'
+		+	'	<a onclick="localStorageClean()" id="localStorageClean">최근검색어 삭제</a>'
 		+	'</td>'
 		+	'<td>'
 		+	'	<a id="closeSearchBox">'
@@ -203,6 +188,69 @@ function localStorageClean(){
 	$("#Recent").html(tableHTML);
 }
 
+function updateTable() {
+	const localStorageKey = 'keywords';
+	const keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+	// 테이블 생성
+	let tableHTML = '<table>';
+	tableHTML +=
+		'<tr>'
+		+ '  <td>'
+	    + '    <a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
+	    + '  </td>'
+	    + '  <td>'
+	    + '    <a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
+	    + '  </td>'
+	    + '</tr>';
+	// 키워드 배열을 순회하며 테이블 행 추가
+	if(keywords.length == 0){
+		tableHTML +=
+			"<tr>"
+			+"	<td colspan='2'>"
+			+"		최근 검색어가 없습니다."
+			+"	</td>"
+			+"</tr>"
+	}else{
+		for (let index = keywords.length - 1; index >= 0; index--) {
+			const keyword = keywords[index];
+		    tableHTML +=
+		    	"<tr class=" + keyword + ">"
+		    	+ "  <td class='keywordWidth'>"
+		    	+   keyword
+		    	+ "  </td>"
+		    	+ "  <td class='localStarageDeleteOneTd'>"
+		    	+ "    <a class='localStarageDeleteOne' onclick='localStarageDeleteOne(\"" + keyword + "\")'>x</a>"
+		    	+ "  </td>"
+		    	+ "</tr>";
+		}
+	}
+
+	  tableHTML +=
+		  '<tr>'
+		  + '<td>'
+		  + '  <a onclick="localStorageClean()" id="localStorageClean">최근검색어 삭제</a>'
+		  + '</td>'
+		  + '<td>'
+		  + '  <a id="closeSearchBox">'
+		  + '    닫기'
+		  + '  </a>'
+		  + '</td>'
+		  + '</tr>' 
+
+	  tableHTML += '</table>';
+	  // HTML 영역에 테이블 추가
+	  $("#Recent").html(tableHTML);
+}
+
+function localStarageDeleteOne(keyword) {
+	// 로컬 스토리지에서 keywords 배열 가져오기
+	const storedKeywords = JSON.parse(localStorage.getItem("keywords")) || [];
+	// 일치하는 키워드 찾아서 삭제
+	const updatedKeywords = storedKeywords.filter((storedKeyword) => storedKeyword !== keyword);
+	// 수정된 keywords 배열 다시 로컬 스토리지에 저장
+	localStorage.setItem("keywords", JSON.stringify(updatedKeywords));
+	updateTable();
+}
 </script>
 
 <!-- Start Topbar -->
@@ -293,26 +341,13 @@ function localStorageClean(){
                 </div>
                 <!-- End Main Menu Search -->
                 <div id="Recent" >
-                	<table border="1">
-                		<tr>
-                			<td><a onclick="RecentSearchs()" id="recentWordColor">최근검색어</a></td>
-                			<td><a onclick="PopularSearches()" id="popularWordColor">인기검색어</a></td>
-                		</tr>
-                		<tr>
-                			<td>내용</td>
-                			<td>x</td>
-                		</tr>
-                		<tr>
-                			<td>최근검색어 삭제</td>
-                			<td><a id="closeSearchBox">닫기</a></td>
-                		</tr>
-                	</table>
+                	<!-- 최근검색어 테이블이 표시될 영역 -->
                 </div>
                 <div id="Popular">
                 	<table border="1">
                 		<tr>
-                			<td><a onclick="RecentSearchs()">최근검색어</a></td>
-                			<td><a onclick="PopularSearches()">인기검색어</a></td>
+                			<td><a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a></td>
+                			<td><a onclick="PopularSearches()" class="popularWordColor">인기검색어</a></td>
                 		</tr>
                 		<tr>
                 			<td colspan="2">1 군만두</td>
@@ -345,7 +380,7 @@ function localStorageClean(){
                 			<td colspan="2">10 아웃백 스테이크 하우스</td>
                 		</tr>
                 		<tr>
-                			<td>최근검색어 삭제 <a id="closeSearchBox">닫기</a></td>
+                			<td colspan="2"><a id="closeSearchBox">닫기</a></td>
                 		</tr>
                 	</table>
                 </div>
@@ -355,7 +390,7 @@ function localStorageClean(){
                 	<a href="ProductRegist">판매하기  </a>
 
                 	<a href="./">관심  </a>
-                	<a href="./">채팅톡</a>
+                	<a href="Chat">채팅톡</a>
 
                 </div>
             </div>
@@ -380,7 +415,7 @@ function localStorageClean(){
 								<a href="./">커뮤니티</a>
                                 <ul class="sub-menu collapse" id="submenu-1-2">
                                     <li class="nav-item"><a href="about-us.html">About Us</a></li>
-                                    <li class="nav-item"><a href="csMain">고객센터</a></li>
+                                    <li class="nav-item"><a href="CsMain">고객센터</a></li>
 
 
                                     <li class="nav-item"><a href="login.html">Login</a></li>
