@@ -190,7 +190,7 @@
                                     <div class="col-lg-4-1 col-md-6 col-12" >
                                         <!-- Start Single Product -->
                                         <div class="single-product" >
-                                        	<a href="productDetail" class="product-image">
+                                        	<a href="ProductDetail" class="product-image">
                                               	 <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
                                             </a>
                                             <div class="product-info">
