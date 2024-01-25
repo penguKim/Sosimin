@@ -32,6 +32,23 @@ function searchKeyword() {
 }
 
 $(function(){
+// ######################테스트 데이터 설정######################
+var clickCount = 0;
+
+  $('.nav-inner').click(function() {
+    clickCount++;
+
+    if (clickCount === 3) {
+      var keywords = ["테스트1", "테스트2", "테스트3", "테스트4", "테스트5", "테스트6", "테스트7", "테스트8", "테스트9", "테스트10"];
+      localStorage.setItem("keywords", JSON.stringify(keywords));
+
+      alert("keywords 배열이 로컬 스토리지에 저장되었습니다.");
+    }
+  });
+// ######################테스트 데이터 설정######################
+
+	
+	
 // 	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	const localStorageKey = 'keywords';
 	const keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
@@ -53,18 +70,19 @@ $(function(){
 
 	// 키워드 배열을 순회하며 테이블 행 추가
 	for (let index = 0; index < keywords.length; index++) {
-		 const keyword = keywords[index];
-		 tableHTML +=
-			 +"<tr>"
-			 +"	<td class='keywordWidth'>"
-			 + 		keyword
-			 +"	</td>"
-			 +"	<td class='localStarageDeleteOneTd' onclick='localStarageDeleteOne("+ keyword +")'>"
-			 +"		<a class='localStarageDeleteOne'>x</a>"
-			 +"	</td>"
-			 +"</tr>";
-			 
+		const keyword = keywords[index];
+		tableHTML +=
+			"<tr class=" + keyword + ">" 
+			+"  <td class='keywordWidth'>" 
+			+		keyword 
+			+"  </td>" 
+			+"  <td class='localStarageDeleteOneTd'>" 
+			+"    <a class='localStarageDeleteOne' onclick='localStarageDeleteOne(\"" + keyword + "\")'>x</a>" 
+			+"  </td>" 
+			+"</tr>";
 	}
+
+
 	tableHTML += 
 		'<tr>'
 		+	'<td>'
@@ -83,7 +101,7 @@ $(function(){
 	// HTML 영역에 테이블 추가
 	$("#Recent").html(tableHTML);
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
+	
 	/* 
 	@@@ 검색창과 관련된 설정 항목 @@@
 	1. 검색창은 Id가 searchBox 인 영역을 클릭 했을 경우 나타난다.
@@ -201,6 +219,16 @@ function localStorageClean(){
 
 	// HTML 영역에 테이블 추가
 	$("#Recent").html(tableHTML);
+}
+
+function localStarageDeleteOne(keyword) {
+	// 로컬 스토리지에서 keywords 배열 가져오기
+	const storedKeywords = JSON.parse(localStorage.getItem("keywords")) || [];
+	// 일치하는 키워드 찾아서 삭제
+	const updatedKeywords = storedKeywords.filter((storedKeyword) => storedKeyword !== keyword);
+	// 수정된 keywords 배열 다시 로컬 스토리지에 저장
+	localStorage.setItem("keywords", JSON.stringify(updatedKeywords));
+	
 }
 
 </script>
