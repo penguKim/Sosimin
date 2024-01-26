@@ -468,7 +468,7 @@ $(function() {
                                 </ul>
                             </li>
                             <li class="nav-item">
-								<a href="./">커뮤니티</a>
+								<a href="Community">커뮤니티</a>
                                 <ul class="sub-menu collapse" id="submenu-1-2">
                                     <li class="nav-item"><a href="about-us.html">About Us</a></li>
                                     <li class="nav-item"><a href="CsMain">고객센터</a></li>

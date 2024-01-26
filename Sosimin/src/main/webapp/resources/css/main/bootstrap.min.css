@@ -4578,7 +4578,7 @@ fieldset:disabled .btn {
     }
 
     .navbar-expand-sm .navbar-toggler {
-        display: none
+/*         display: none */
     }
 }
 
@@ -4612,6 +4612,7 @@ fieldset:disabled .btn {
 
     .navbar-expand-md .navbar-toggler {
         display: none
+       
     }
 }
 
@@ -4643,8 +4644,9 @@ fieldset:disabled .btn {
         flex-basis: auto
     }
 
+
     .navbar-expand-lg .navbar-toggler {
-        display: none
+/*         display: none */
     }
 }
 
