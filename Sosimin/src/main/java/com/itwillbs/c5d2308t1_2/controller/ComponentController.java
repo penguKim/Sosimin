@@ -25,11 +25,6 @@ public class ComponentController {
 	@Autowired
 	ComponentService Comservice;
 	
-	@GetMapping("searchKeyword")
-	public String searchKeyword(@RequestParam String keyword, Model model,HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("입력한 단어 : " + keyword);
-		return "products/searchProduct";
-	}
 	@GetMapping("SosimLocker")
 	public String SosimLocker(Model model) {
 		List<Map<String,Object>> LockerList = Comservice.getLocationLocker();

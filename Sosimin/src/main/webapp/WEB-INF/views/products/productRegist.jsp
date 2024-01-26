@@ -510,10 +510,11 @@ function handleKeyPress(e) {
 	    handleTagRegistration(); // onclick 함수 호출
 	  }
 	}
-
+	
+	 /* 태그 생성 함수 */
 	function handleTagRegistration() {
 	  var tagName = document.getElementById("tagName").value;
-
+		
 	  if (tagName !== "") { // 입력폼에 널스트링이 아닐 시 
 		// <span> 요소를 생성하고 생성한 <span> 요소 텍스트 내용을 #태그이름 으로 설정한다.
 	    var tagElement = document.createElement("span");
@@ -656,6 +657,8 @@ function addFileInput() {
 	<div class="container content-wrapper">
 		<div class="addBox">
 			<form id="addForm" name="addForm" class="add-form" action="ProductRegistSuccess" method="post" enctype="multipart/form-data">
+				<span data-name="123" data-value="123">1234</span>
+				<input type="text" name="tag" value="#tag" >
 				<br><br>
 				<h4>기본정보</h4><span id="required">*필수항목</span><br>
 				<hr style="border:0; height:3px; color:black;">
@@ -819,7 +822,7 @@ function addFileInput() {
 						<input type="text" id="tagName" placeholder="태그를 입력해 주세요. (최대 4개 까지)" size="34" maxlength="9" onkeypress="handleKeyPress(event)">
 						<input type="button" value="등록" onclick="handleTagRegistration()" id="tagName2"><br><br>
 					</div>
-						<div id="tagContainer" name="tag_name"></div><br>
+						<div id="tagContainer" ></div><br>
 						<div id="tagCs">
 						- 태그는 띄어쓰기로 구분되며 최대 9자까지 입력할 수 있어요.<br>
 						- 내 상품을 다양한 태그로 표현해 보세요.<br>

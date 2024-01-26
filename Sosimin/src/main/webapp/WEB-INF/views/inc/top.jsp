@@ -111,14 +111,15 @@ function searchKeyword(pkeyword) {
 		localStorage.setItem(localStorageKey, JSON.stringify(keywords));
 		//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
 	
-		var searchKeywordUrl = "searchKeyword?keyword=" + encodeURIComponent(keyword);
+		var searchKeywordUrl = "SearchProduct?keyword=" + encodeURIComponent(keyword);
 		window.location.href = searchKeywordUrl;
 	}
 }
 
+
 function sendKeyword(element) {
 	var keyword = $(element).text(); // 클릭된 요소의 텍스트 값을 가져옵니다.
-	var searchKeywordUrl = "searchKeyword?keyword=" + encodeURIComponent(keyword);
+	var searchKeywordUrl = "SearchProduct?keyword=" + encodeURIComponent(keyword);
 	window.location.href = searchKeywordUrl;
 	searchKeyword(keyword);
 }
@@ -264,12 +265,13 @@ function localStarageDeleteOne(keyword) {
 }
 
 
+/* 카테고리 선택시 이동 */
 $(function() {
 	$("#submenu-1-3>li").on("click", function() {
 		let length =  $("#submenu-1-3>li").length;
 		let	category = $(this).text();
 		
-		location.href="SearchProduct?category=" + category;
+		location.href="SearchProduct?product_category=" + category;
 	});
 	
 	

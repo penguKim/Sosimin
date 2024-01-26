@@ -29,7 +29,43 @@ $(function() {
 	$(".heart").on("click", function () {
 	    $(this).toggleClass("is-active");
 	});
+	
 });
+
+	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
+	let category = "${param.category}";
+	let keyword = "${param.keyword}";
+	
+	
+	
+	
+	
+function filtering() {
+	var price = $("input[name='priceRadio']:checked").val();
+	
+	alert(price);
+// 	$.ajax({
+// 		url: "SearchProduct",
+// 		data: {
+// 			keyword:keyword,
+// 			product_category:category,
+// 			product_price: price
+			
+			
+			
+			
+// 		},
+// 		success: function() {
+			
+// 		},
+// 		error: function() {
+// 			alert("실패");
+// 		}
+		
+// 	});
+	
+}
+
 </script>
 <body>
 	<header class="header navbar-area">
@@ -76,21 +112,42 @@ $(function() {
                         	</div>
                             <div style="margin-bottom: 20px;"></div>
 		                    <h3>가격</h3>
-		                    <form action="#">
-			               		<p>최소 금액</p>
-		               			<input type="text" placeholder="최소금액을 입력해주세요" size="23">
-			                    <p>최대 금액</p>
-			                    <input type="text" placeholder="최대금액을 입력해주세요" size="23">
-			                    <div class="resultSearch">
-				                   	<button class="reset-btn" style="margin-left: 10%;">초기화</button>
-				                   	<button type="submit" class="resultSearch-btn" style="margin-left: 10%;">적용하기</button>
-			                    </div>
-		                    </form>
+		                    <!-- Start Single Widget -->
+		                    <div class="form-check">
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="" id="priceCheck" onclick="filtering()">
+                                <label class="form-check-label" for="priceCheck" >
+                                    전체
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="0~100000" id="priceCheck" onclick="filtering()">
+                                <label class="form-check-label" for="priceCheck" >
+                                    10만원 이하
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="100000~300000" id="priceCheck" >
+                                <label class="form-check-label" for="priceCheck">
+                                   	10만원 이상 - 30만원 이하
+                                </label>
+                            </div>
+                            <div class="form-check"> 
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="300000~500000"  id="priceCheck" >
+                                <label class="form-check-label" for="priceCheck">
+                                    30만원 이상 - 50만원 이하 
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="500000" id="priceCheck" >
+                                <label class="form-check-label" for="priceCheck">
+                                    50만원 이상
+                                </label>
+                            </div>
                             
                             <div style="margin-bottom: 20px;"></div>
                             <h3>상품 상태</h3>
                             <div class="form-check" >
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault11">
+                                <input class="form-check-input clickfunc" type="checkbox" value="" id="flexCheckDefault11" >
                                 <label class="form-check-label" for="flexCheckDefault11">
                                     보통
                                 </label>

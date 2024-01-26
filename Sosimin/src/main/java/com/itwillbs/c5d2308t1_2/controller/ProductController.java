@@ -24,7 +24,10 @@ public class ProductController {
 	// 메인 상품 목록 페이지
 	// ajax 처리 
 	@GetMapping("SearchProduct")
-	public String searchProduct(@RequestParam(defaultValue = "") String category, Model model ) {
+	public String searchProduct(@RequestParam(defaultValue = "") Map<String, String> map, Model model ) {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 전" + map);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
+		
 		
 		// 회원 조회 후 지역이 있다면 지역 값 넘기기 없으면 검색 및 카테고리 값만 넘기기 
 		
@@ -57,12 +60,12 @@ public class ProductController {
 		System.out.println("가격 변경 : " + map.get("product_price"));
 		
 		
-		int successInsert = service.productRegist(map);
-		if(successInsert > 0 ) {
-			System.out.println("성공");
-		} 
+//		int successInsert = service.productRegist(map);
+//		if(successInsert > 0 ) {
+//			System.out.println("성공");
+//		} 
 		
-		return "ProductDetail";
+		return "products/productDetail";
 	}
 	
 	// 상품 상세페이지
