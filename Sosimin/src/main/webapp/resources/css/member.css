@@ -248,7 +248,7 @@ a {
 }
 
 #profileLeft img {
-	margin: 20px !important; 
+	margin: 24px !important; 
 	width: 150px !important;
 	height: 150px !important;
 }
@@ -266,17 +266,29 @@ a {
 	display: inline-block;
 	float: left;
 	margin-top: 10px;
-	
+}
+
+#profileRightUpperLeft a {
+	font-size: small;
 }
 
 #profileRightUpperRight {
 	display: inline-block;
 	float: right;
-	margin-top: 10px;
+	margin-top: 15px;
+	margin-right: 15px;
+	font-size: smaller;
+}
+
+#profileRightUpperRight img {
+	width: 12px;
+    height: 12px;
+    margin-left: 2px;
+    margin-bottom: 2px;
 }
 
 #profileRightMiddle {
-	margin-top: 40px !important;
+	margin-top: 55px !important;
 	text-align: center;
 }
 
@@ -289,23 +301,38 @@ a {
 	height: 110px;
 	margin: 0 auto;
 }
+#profileRightBottom p {
+	margin-top: 18px;
+}
 
-/* 카테고리 영역 */
+
+
+/* 카테고리 영역(라디오버튼) */
 #categoryArea {
-	width: 1200px !important;
-	margin: 0 auto !important;
-/* 	padding-bottom: 50px; */
-	
-	background-color: #fff;
-    padding: 15px;
-/*     border: 1px solid #eee; */
-/*     border-radius: 4px; */
+	width: 1198px;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x)/ 2);
+    padding-left: calc(var(--bs-gutter-x)/ 2);
+    margin-left: 354px;
+    margin-top: 20px;
 }
 
-#categoryArea li {
-	display: inline-block;
-	padding:1px 60px 5px;
-}
+/* 카테고리 영역(ul) */
+/* #categoryArea { */
+/* 	width: 1200px !important; */
+/* 	margin: 0 auto !important; */
+/* /* 	padding-bottom: 50px; */ */
+	
+/* 	background-color: #fff; */
+/*     padding: 15px; */
+/* /*     border: 1px solid #eee; */ */
+/* /*     border-radius: 4px; */ */
+/* } */
+
+/* #categoryArea li { */
+/* 	display: inline-block; */
+/* 	padding:1px 60px 5px; */
+/* } */
 
 #tabArea {
 	width: 1200px;
@@ -342,8 +369,72 @@ a {
 	margin-right: 2px !important;
 	box-sizing: content-box !important;
 	padding: 0 !important;
-	
-	
+	position: relative;
+}
+
+/* 가상영역 opacity 처리 */
+/* #singleProductArea::before { */
+/*     content: ""; */
+/*         top: 0px; */
+/*         left: 0px; */
+/*         right: 0px; */
+/*         bottom: 0px; */
+/* 	position: absolute; */
+/* 	opacity: 0.3; */
+/* 	transform: scale(1.0); */
+/* 	display: inline-block; */
+/* 	margin-bottom: 10px !important; */
+/* 	margin-left: 2px !important; */
+/* 	margin-right: 2px !important; */
+/* 	box-sizing: content-box !important; */
+/* 	padding: 0 !important; */
+/* } */
+
+/* 거래완료인 상품 opacity */
+#singleProductAreaDealComplete {
+	border: none;
+	width: 290px;
+	height: 400px;
+	display: inline-block;
+	margin-right: 2px !important;
+	margin-top: 0px;
+	box-sizing: content-box !important;
+	padding: 0 !important;
+	position: relative;
+/* 	background-color: rgba(0, 0, 0, 0.5); */
+	opacity: 0.4;
+}
+
+
+#dealComplete {
+	position: absolute;
+	z-index: 1;
+	width: 130px;
+	height: 130px;
+    margin-left: -210px;
+    margin-top: 80px;
+/*     display: none; */
+}
+
+/* #singleProductArea:hover > #dealComplete { */
+/* 	position: absolute; */
+/* 	z-index: 1; */
+/* 	width: 130px; */
+/* 	height: 130px; */
+/*     margin-left: -210px; */
+/*     margin-top: 75px; */
+/*     display: inline; */
+/*     opacity: 1; */
+/* } */
+
+#dealComplete b {
+	color: #27B24A;
+}
+
+#dealComplete img {
+	display: inline-block;
+	width: 80px !important;
+	height: 80px !important;
 }
 
 #singleProductArea img {
@@ -373,22 +464,99 @@ a {
 
 #singleProductButtonArea input[type="button"] {
 	margin-top: 0px;
+/* 	margin-left: 10px !important; */
+    text-transform: capitalize;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 10px;
+    background-color: #39d274;
+    color: #fff;
+    border: none;
+    transition: 0.2s;
+    border-radius: 3px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+#singleProductButtonArea input[type="button"]:hover {
+	background-color: #081828;
 }
 
+#dealInProcess {
+	background: transparent;
+    font-size: 14px;
+    color: #fecb00;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    padding: 5px 10px;
+    left: 0;
+    z-index: 22;
+    display: inline-block;
+    text-decoration: none;
+    -webkit-transition: all 0.4s ease;
+    margin: 25px;
+    box-sizing: border-box;
+}
 
+/* 좋아요 버튼 */
+.heart {
+	width: 80px;
+	height: 80px;
+	background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
+	background-position: 0 0;
+	cursor: pointer;
+	transition: background-position 1s steps(28);
+	transition-duration: 0s;
+	transform:translate(-40px, 15px);
+    position: absolute;
+    top: 0;
+    padding: 5px 10px;
+    left: 0;
+    z-index: 22;
+    display: inline-block;
+    margin: 25px;
+    box-sizing: border-box;
+	margin-left: 235px;
+    margin-bottom: 500px;
+    margin-top: -20px;
+}
+
+.heart.is-active {
+	transition-duration: 1s;
+	background-position: -2800px 0;
+}
 
 /* ========================================================================= */
 /* ---------- 커뮤니티 작성글, 커뮤니티 작성 댓글 탭 선택 시 --------------- */
 #communityButtonArea {
 	width: 1200px;
-	height: 30px;
-	margin: 0 auto;
-	margin-bottom: 20px;
-	text-align: right;
+    height: 30px;
+    margin-bottom: -20px;
+    margin-top: 15px;
+    margin-left: 342px;
+    text-align: right;
 }
 
 #communityButtonArea input[type="button"] {
 	margin-top: 10px;
+    /* margin-left: 10px !important; */
+    text-transform: capitalize;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 10px;
+    background-color: #39d274;
+    color: #fff;
+    border: none;
+    transition: 0.2s;
+    border-radius: 3px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+#communityButtonArea input[type="button"]:hover {
+	background-color: #081828;
 }
 
 #wholeCommunityArea {
@@ -400,17 +568,18 @@ a {
 
 #communityCheckboxContainingArea {
 	margin-bottom: 20px;
+	display: flex;
+    align-items: center;
 }
 
 #communityCheckboxContainingArea input[type="checkbox"] {
 	display: inline-block !important;
-	align-items: center;
-/* 	margin-top: 50% !important; */
+	margin-right: 8px;
 }
 
 /* 커뮤니티 작성글 탭 */
 #singleCommunityArea {
-	width: 1170px;
+	width: 1178px;
 	height: 200px;
 	display: inline-block;
 	margin-bottom: 10px !important;
@@ -434,30 +603,50 @@ a {
 }
 
 #communityRight img {
-	margin: 20px !important; 
+	margin: 25px 28px !important; 
 	width: 150px !important;
 	height: 150px !important;
 }
 
+#communityCheckboxContainingArea img {
+	margin: 25px !important; 
+	width: 150px !important;
+	height: 150px !important;
+}
 
 #communityLeftUpperLeft {
 	display: inline-block;
 	float: left;
 	width: 970px;
 	height: 50px;
-	
+	text-align: left;
+    margin-left: 24px;
 }
 
+#communityLeftUpperLeft p {
+	margin: 6px 0 2px;
+    padding: 0;
+    font-size: small;
+    line-height: 18px;
+}
+
+/* #communityMiddleArea { */
+/* 	height: 20px; */
+/* } */
 
 #communityMiddleLeft {
 	display: inline-block;
 	float: left;
+	margin-left: 40px;
+    margin-top: 5px;
+    font-size: smaller;
 }
 
 #communityMiddleRight {
 	display: inline-block;
 	float: right;
-	
+    font-size: smaller;
+    margin-top: 5px;
 }
 
 #communityLeftBottom {
@@ -467,10 +656,14 @@ a {
 	margin-top: 70px;
 }
 
+#communityLeftBottom p {
+	margin-top: 90px;
+}
+
 
 /* 커뮤니티 댓글 탭 */
 #singleCommunityReplyArea {
-	width: 1170px;
+	width: 1178px;
 	height: 120px;
 	display: inline-block;
 	margin-bottom: 10px !important;
@@ -481,25 +674,34 @@ a {
 }
 
 #communityReplyTitleArea {
+	text-align: left;
 	float: left;
-/* 	border: 1px solid; */
 	width: 1170px;
 	height: 50px;
-/* 	margin: 0 auto; */
-	
-	
-	
+	margin-left: 24px;	
+}
+
+#communityReplyTitleArea p {
+	margin: 6px 0 2px;
+    padding: 0;
+    font-size: small;
+    line-height: 18px;
 }
 
 #communityReplyMiddleLeft {
 	display: inline-block;
 	float: left;
+	margin-left: 40px;
+    margin-top: 5px;
+    font-size: smaller;
 }
 
 #communityReplyMiddleRight {
 	display: inline-block;
 	float: right;
-	
+	font-size: smaller;
+	margin-right: 30px;
+	margin-top: 5px;
 }
 
 #communityReplyLeftBottom {
@@ -507,4 +709,9 @@ a {
 	height: 40px;
 	margin: 0 auto;
 	margin-top: 70px;
+}
+
+#communityReplyLeftBottom p {
+	margin-top: 80px;
+    margin-left: -100px;
 }

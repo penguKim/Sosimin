@@ -18,6 +18,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 <script type="text/javascript">
 	$(function() { // 결과영역 범위 확인
 		$("#passwd").on("keypress", function() {
