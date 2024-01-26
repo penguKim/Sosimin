@@ -133,8 +133,12 @@ public class ProductController {
 	
 	// 제안 상품 가격 채팅으로 전달
 	
+	// 지도로 찾기
+	@GetMapping("AddressMap")
+	public String AddressMap() {
 	
-	
+		return"products/AddressMap";
+	}
 	
 	// =============================== 관리자 페이지
 	// 등록 상품 목록

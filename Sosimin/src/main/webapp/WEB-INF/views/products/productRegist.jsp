@@ -225,10 +225,12 @@ h1 {
     margin-right: 1rem;
     border-radius: 2px;
     background-color: white;
+    display: inline-block;
 }
 
 #divPadding{
 	position: relative;
+	display: inline-block;
 }
 
 .categoryPadding{
@@ -651,16 +653,22 @@ function removeImage(button) {
   }
 }
 
+// 지도로 찾기 팝업
+function AddressMap() {
+  var width = 517; // 팝업 창의 가로 크기
+  var height = 485; // 팝업 창의 세로 크기
+  var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
+  var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
 
+  var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
 
-//체크된 라디오 버튼 요소 선택
-var radioButton = document.querySelector('input[name="trade_method"]:checked');
+  window.open("AddressMap", "지도로 찾기", options);
+}
 
-// 체크된 값 가져오기
-var checkedValue = radioButton.value;
-
-
-
+// 팝업창에서 가져온 값을 뿌려준다.
+function setAddress(address) {
+	  document.getElementById('myMap').value = address;
+	}
 
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
@@ -774,6 +782,7 @@ var checkedValue = radioButton.value;
 							<li class="td">
 								<input type="hidden" id="map">
 									<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="내 위치"></div>
+									<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="지도로 찾기" onclick="AddressMap()"></div>
 								<input type="text" id="myMap" name="trade_place"  size="64" required readonly placeholder="지역을 설정해 주세요">
 							</li>
 						</ul>
