@@ -1,10 +1,12 @@
 package com.itwillbs.c5d2308t1_2.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
 
@@ -21,12 +23,36 @@ public interface CommunityMapper {
 	List<CommunityVO> selectCommunityList(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("page") PageDTO page);
 
 	// 게시글 조회
-	CommunityVO selectCommunity(CommunityVO com);
+	Map<String, Object> selectCommunity(CommunityVO com);
 
 	// 게시글 조회수 증가 작업
 	void updateReadcount(CommunityVO com);
 
 	// 게시글 삭제 작업
 	int deleteCommunity(CommunityVO com);
+
+	// 게시글 수정 - 파일 삭제 작업
+	int updateCommunityFile(CommunityVO com);
+
+	// 게시글 수정 작업
+	int updateCommunity(CommunityVO com);
+	
+	// 댓글 등록 작업
+	int insertReplyCommunity(CommunityReplyVO reply);
+
+	// 댓글 목록 조회
+	List<CommunityReplyVO> getReplyList(CommunityVO com);
+
+	// 댓글 작성자 조회
+	CommunityReplyVO selectReplyWriter(CommunityReplyVO reply);
+
+	// 댓글 삭제 작업
+	int deleteReply(CommunityReplyVO reply);
+
+	// 대댓글 작성 시 기존 대댓글 순서 조정
+	void updateReplySeq(CommunityReplyVO reply);
+
+	// 대댓글 작성 요청
+	int insertReReply(CommunityReplyVO reply);
 	
 }

@@ -9,6 +9,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
 import com.itwillbs.c5d2308t1_2.service.CommunityService;
+import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.PageInfo;
 
@@ -227,14 +230,60 @@ public class CommunityController {
 		
 		// 게시글 상세정보 조회
 		// 조회수 증가 여부 true
-		com = communityService.getCommunity(com, true);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = communityService.getCommunity(com, true);
 		
 		if(com == null) {
 			model.addAttribute("msg", "존재하지 않는 게시물입니다.");
 			return "fail_back";
 		}
 		
-		model.addAttribute("com", com);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+    	LocalDateTime comDateTime = LocalDateTime.parse(map.get("community_datetime").toString(), formatter);
+    	
+        long minutes = Duration.between(comDateTime, now).toMinutes();
+        long hours = minutes / 60;
+        minutes %= 60;
+
+        String timeAgo = "";
+        if (hours > 0) {
+            timeAgo = hours + "시간 전";
+        } else if (minutes > 0) {
+            timeAgo = minutes + "분 전";
+        } else {
+            timeAgo = "방금 전";
+        }
+
+        map.put("community_datetime", timeAgo);
+        
+        // 댓글 불러오기
+        List<CommunityReplyVO> replyList = communityService.getreplyList(com);
+        
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        
+        for(CommunityReplyVO datetime : replyList) {
+        	LocalDateTime reDateTime = LocalDateTime.parse(datetime.getReply_datetime().toString(), formatter);
+        	
+            minutes = Duration.between(reDateTime, now).toMinutes();
+            hours = minutes / 60;
+            minutes %= 60;
+
+            timeAgo = "";
+            if (hours > 0) {
+                timeAgo = hours + "시간 전";
+            } else if (minutes > 0) {
+                timeAgo = minutes + "분 전";
+            } else {
+                timeAgo = "방금 전";
+            }
+
+            datetime.setReply_datetime(timeAgo);
+            
+        }
+		
+		model.addAttribute("com", map);
+		model.addAttribute("replyList", replyList);
 		
 		// >>>>>>>>>>>>>>>>>>> 댓글 처리
 		
@@ -250,7 +299,8 @@ public class CommunityController {
 		
 		// 게시글 상세정보 조회
 		// 조회수 증가 여부 false
-		com = communityService.getCommunity(com, false);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = communityService.getCommunity(com, false);
 		
 		// 게시글이 없거나 작성자와 관리자가 아닐 경우 fail_back
 //		if(com == null || !sId.equals(com.getCommunity_writer()) && !sId.equals("admin")) {
@@ -269,10 +319,9 @@ public class CommunityController {
 				String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
 				String saveDir = session.getServletContext().getRealPath(uploadDir);
 				// -----------------------------------------------------------
-				// 파일 삭제에 사용된 중복 코드 제거를 위해 배열 + 반복문 활용
-				// 배열 arrFileNames 에 파일명 3개 저장
-				String[] arrFileNames = {com.getCommunity_image1(), com.getCommunity_image2(), 
-						com.getCommunity_image3(), com.getCommunity_image4(), com.getCommunity_image5()}; 
+				
+				String[] arrFileNames = {map.get("community_image1").toString(), map.get("community_image2").toString(), 
+						map.get("community_image3").toString(), map.get("community_image4").toString(), map.get("community_image5").toString()}; 
 				// for 문을 활용하여 배열 반복
 				for(String fileName : arrFileNames) {
 					if(!fileName.equals("")) {
@@ -297,14 +346,224 @@ public class CommunityController {
 	
 	// 커뮤니티 글수정으로 이동
 	@GetMapping("CommunityModify")
-	public String communityModify() {
+	public String communityModify(CommunityVO com, HttpSession session, Model model) {
+		
+		// >>>>>>>>>>>>>>>>> 로그인 처리
+		
+		// 게시글 상세정보 조회
+		// 조회수 증가 여부 false
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = communityService.getCommunity(com, false);
+		
+		// 게시글이 없거나 작성자와 관리자가 아닐 경우 fail_back
+//		if(com == null || !sId.equals(com.getCommunity_writer()) && !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다.");
+//			return "fail_back";
+//		}
+		
+		model.addAttribute("com", map);
+		
 		return "community/communityModify";
 	}
 	
+	// 글수정에서 사진 삭제 AJAX
+	@ResponseBody
+	@PostMapping("CommunityDeleteFile")
+	public String communityDeleteFile(CommunityVO com, HttpSession session) {
+		
+		System.out.println(com);
+		
+		// 파일 삭제 작업
+		int removeCount = communityService.removeBoardFile(com);
+		
+		try {
+			if(removeCount > 0) {
+				String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+				String saveDir = session.getServletContext().getRealPath(uploadDir);
+				
+				// 파일명이 널스트링이 아닐 경우에만 삭제 작업 수행
+				if(!com.getCommunity_image1().equals("")) {
+					Path path = Paths.get(saveDir + "/" + com.getCommunity_image1());
+					Files.deleteIfExists(path);
+					
+					return "true";
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "false";
+		
+	}
 	
+	@PostMapping("CommunityModifyPro")
+	public String communityModifyPro(CommunityVO com, HttpSession session, Model model, 
+									 @RequestParam(defaultValue = "1") String pageNum) {
+		
+		
+		// >>>>>>>>>>>>>>> 로그인 처리
+		
+		
+		String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+		String saveDir = session.getServletContext().getRealPath(uploadDir);
+		// 서브디렉토리 만들기
+		String subDir = "";
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		subDir = now.format(dtf);
+		
+		saveDir += File.separator + subDir; // File.separator 대신 / 또는 \ 지정도 가능
+
+		try {
+			Path path = Paths.get(saveDir); // 파라미터로 업로드 경로 전달
+			Files.createDirectories(path); // 파라미터로 Path 객체 전달
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// input 타입이 아닌 경우(기존 업로드된 파일)는 null 값이 들어감
+		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
+		mFiles.add(com.getFile1());
+		mFiles.add(com.getFile2());
+		mFiles.add(com.getFile3());
+		mFiles.add(com.getFile4());
+		mFiles.add(com.getFile5());
+		
+		// 파일명 컬럼에 들어갈 List
+		List<String> fileNames = new ArrayList<String>();
+		fileNames.add("");
+		fileNames.add("");
+		fileNames.add("");
+		fileNames.add("");
+		fileNames.add("");
+		
+		
+		// 파일이 존재할 경우 파일명 변경
+		for(int i = 0; i < 5; i++) {
+			MultipartFile mFile = mFiles.get(i);
+			if(mFile != null && !mFile.getOriginalFilename().equals("")) {
+				String fileName = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile.getOriginalFilename();
+				fileNames.set(i, subDir + "/" + fileName);
+			}
+		}
+		
+		System.out.println("파일 수정후 파일명 : " + fileNames);
+		
+		// 파일명넣기
+		com.setCommunity_image1(fileNames.get(0));
+		com.setCommunity_image2(fileNames.get(1));
+		com.setCommunity_image3(fileNames.get(2));
+		com.setCommunity_image4(fileNames.get(3));
+		com.setCommunity_image5(fileNames.get(4));
+		
+		int updateCount = communityService.modifyCommunity(com);
+		
+		// DB 작업 요청 처리 결과 판별
+		if(updateCount > 0) {
+			try {
+				// 파일명이 존재하는 파일만 이동 처리 작업 수행
+				for(int i = 0; i < 5; i++) {
+					MultipartFile mFile = mFiles.get(i);
+					String fileName = fileNames.get(i);
+					if(!fileName.equals("")) {
+						// 년월일 다음의 '/'를 인덱스로 지정 
+						fileName = fileName.substring(fileName.indexOf("/", 9));
+						mFile.transferTo(new File(saveDir, fileName));
+					}
+					
+				}
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			// 글 상세정보 조회 페이지 리다이렉트(파라미터 : 글번호, 페이지번호)
+			return "redirect:/CommunityDetail?community_id=" + com.getCommunity_id() + "&pageNum" + pageNum;
+		} else {
+			// "글 수정 실패!" 처리
+			model.addAttribute("msg", "글 수정 실패!");
+			return "fail_back";
+		}
+		
+	}
 	
+	// 게시글 댓글 쓰기
+	@PostMapping("CommunityReplyWrite")
+	public String communityReplyWrite(CommunityReplyVO reply , HttpSession session, Model model,
+									  @RequestParam(defaultValue = "1") String pageNum) {
+		
+		// >>>>>>>>>>>>>>>>> 로그인 처리
+		
+		reply.setReply_writer("leess");
+		
+		// 댓글 등록작업
+		int insertCount = communityService.registReplyCommunity(reply);
+		
+		// 댓글 등록 요청 결과 판별
+		if(insertCount > 0) {
+			return "redirect:/CommunityDetail?community_id="
+					+ reply.getCommunity_id() + "&pageNum=" + pageNum;
+		} else 	{
+			model.addAttribute("msg", "댓글 작성 실패!");
+			return "fail_back";
+		}
+		
+	}
 	
+	// 댓글 삭제 AJAX
+	@ResponseBody
+	@GetMapping("CommunityReplyDelete")
+	public String communityReplyDelete(CommunityReplyVO reply, HttpSession session) {
+		
+		// >>>>>>>>>>>>>>>> 로그인 처리
+//		String sId = (String)session.getAttribute("sId");
+//		if(sId == null) {
+//			return "invalidSession";
+//		}
+		
+		String sId = "leess";
+		
+		// 댓글 작성자 조회
+		reply = communityService.getReplyWriter(reply);
+		
+		if(sId.equals(reply.getReply_writer()) || sId.equals("admin")) {
+			// 댓글 삭제 요청
+			int deleteCount = communityService.removeReply(reply);
+			
+			if(deleteCount > 0) {
+				return "true";
+			} else {
+				return "false";
+			}
+		} else {
+			return "invalidSession";
+		}	
+	}
 	
+	// 대댓글 작성 AJAX
+	@ResponseBody
+	@PostMapping("CommunityReReplyWrite")
+	public String communityRereplyWrite(CommunityReplyVO reply, HttpSession session) {
+		
+		System.out.println("대댓글 작성 시 넘어온 값은 : " + reply);
+		
+		// >>>>>>>>>>>>>>>> 로그인 처리
+//		String sId = (String)session.getAttribute("sId");
+//		if(sId == null) {
+//			return "invalidSession";
+//		}
+		
+		reply.setReply_writer("leess");
+		
+		int insertCount = communityService.registReReply(reply);
+		
+		if(insertCount > 0) {
+			return "true";
+		} else {
+			return "false";
+		}
+		
+	}
 	
 	
 	@ResponseBody

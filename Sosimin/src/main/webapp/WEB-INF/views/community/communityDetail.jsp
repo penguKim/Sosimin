@@ -11,23 +11,21 @@
 	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 	<meta name="description" content="" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.png" />
+	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+	
 	<!-- ========================= CSS here ========================= -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
 <script type="text/javascript">
 	$(function() {
-		
-		// 게시시간 변환 함수 호출
-		timeAgo();
-		
 		
 		// 모달 닫기 버튼 클릭 이벤트
 		$(".close").on("click", function() {
@@ -80,7 +78,7 @@
     	        reverseButtons: true,
     	    }).then((result) => {
     	        if (result.isConfirmed) {
-    	        	location.href="CommunityModify?board_num=${board.board_num}&pageNum=${param.pageNum }";
+    	        	location.href="CommunityModify?community_id=${com.community_id}&pageNum=${param.pageNum }";
     	        } else {
     	    		$(this).blur();
     	    	}
@@ -90,21 +88,7 @@
         
 	});
 	
-	// 게시시간 변환
-	function timeAgo() {
-		let timeStamp = new Date("${com.community_datetime}".replace(" ", "T")).getTime(); // 비교 대상 시간
-	    let now = new Date();
-        secondsPast = (now.getTime() - timeStamp) / 1000;
-	    
-	    if(secondsPast < 60){
-	    	 $("#comDate").text("방금전");
-	    } else if(secondsPast < 60 * 60){
-	    	 $("#comDate").text(parseInt(secondsPast/60) + '분전');
-	    } else if(secondsPast <= 60 * 60 * 24){
-	    	 $("#comDate").text(parseInt(secondsPast/60 * 60) + '시간전');
-	    }
-	}
-	
+	// 게시글 삭제
 	function confirmDelete() {
 		Swal.fire({
 	        title: '게시글을 삭제하시겠습니까?',
@@ -118,18 +102,128 @@
 	        reverseButtons: true,
 	    }).then((result) => {
 	        if (result.isConfirmed) {
-	        	location.href="CommunityDelete?board_num=${board.board_num}&pageNum=${param.pageNum }";
+	        	location.href="CommunityDelete?community_id=${com.community_id}&pageNum=${param.pageNum }";
 	        } else {
 	    		$(this).blur();
 	    	}
 	    });
 	}
 	
+	// 이미지 모달
 	function imageModal(image) {
 		console.log($(image).attr("src"));
 		let modal = $("#myModal");
 		$(".modal-content").attr("src", $(image).attr("src"));
 		modal.show();
+	}
+	
+	// 댓글 삭제
+	function confirmReplyDelete(reply_id) {
+		Swal.fire({
+	        title: '댓글을 삭제하시겠습니까?',
+	        icon: 'warning',
+	        showCancelButton: true,
+	        confirmButtonColor: '#d33',
+	        cancelButtonColor: '#d6C757D',
+	        confirmButtonText: '삭제',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	    		$.ajax({
+	    			type: "GET",
+	    			url: "CommunityReplyDelete",
+	    			data: {
+	    				"reply_id":reply_id
+	    			},
+	    			dataType: "text",
+	    			success: function(result) {
+	    				// 댓글 삭제 요청 결과 판별("true"/"false")
+	    				if(result == "true") {
+	    					// 댓글 삭제 성공 시 해당 댓글의 tr 태그 자체 삭제
+	    					// => replyTr_ 문자열과 댓글번호를 조합하여 id 선택자 지정
+	    					$("#replyTr_" + reply_id).remove();
+	    				} else if(result == "false") {
+	    					alert("댓글 삭제 실패");
+	    				} else if(result == "invalidSession") { // 세션아이디 없을 경우
+	    					alert("권한이 없습니다!");
+	    					return;
+	    				}
+	    			},
+	    			error: function() {
+	    				alert("요청 실패!");
+	    			}
+	    		});
+	        } else {
+	    		$(this).blur();
+	    	}
+	    });
+	}
+	
+	// 대댓글 입력
+	function reReplyWriteForm(reply_id, reply_re_ref, reply_re_lev, reply_re_seq) {
+		console.log(reply_id, reply_re_ref, reply_re_lev, reply_re_seq);
+		// 대댓글 말풍선 제거
+		$("#reReplyBtn").remove();
+		// 기존 대댓글 제거
+		$("#reReplyTr").remove();
+		
+		$("#replyTr_" + reply_id + " .replyContent").append(
+				'<div class="row" id="reReplyTr">'
+				+ '<div class="col">'
+				+ '<form action="CommunityReReplyWrite" method="post" class="needs-validation reReplyForm d-flex justify-content-center">'
+				+ '<input type="hidden" name="community_id" value="${com.community_id }">'
+				+ '<input type="hidden" name="reply_writer" value="${sessionScope.sid }">'
+				+ '<input type="hidden" name="reply_id" value="' + reply_id + '">'
+				+ '<input type="hidden" name="reply_re_ref" value="' + reply_re_ref + '">'
+				+ '<input type="hidden" name="reply_re_lev" value="' + reply_re_lev + '">'
+				+ '<input type="hidden" name="reply_re_seq" value="' + reply_re_seq + '">'
+				+ '<textarea class="form-control" id="reReplyTextarea" name="reply_content" required></textarea>'
+				+ '<input type="submit" class="btn btn-primary" value="댓글쓰기" id="reReplySubmit" onclick="reReplyWrite()">'
+				+ '</form>'
+				+ '</div>'
+				+ '</div>'
+		);
+	}
+	
+	// 대댓글 작성
+	function reReplyWrite() {
+		event.preventDefault();
+		if (!$(".needs-validation")[1].checkValidity()) {
+			event.stopPropagation();
+			$(".reReplyForm").addClass('was-validated');
+			Swal.fire({
+				position: 'center',
+				icon: 'error',
+				title: '항목을 입력해주세요.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			})
+			$("#reReplyTextarea").focus();
+			return;
+		}
+		
+		$.ajax({
+			type: "POST",
+			url: "CommunityReReplyWrite",
+			data: $(".reReplyForm").serialize(),
+			dataType: "text",
+			success: function(result) {
+				if(result == "true") {
+					location.reload(); // 페이지 갱신(POST 방식일 시 전달받은 데이터 유지,브라우저 갱신 이력 남지 않음)
+// 					location.href = location.href; // 현재페이지를 다시 할당해준다.
+// 					location.replace(location.href);
+				} else {
+					alert("댓글 삭제 실패!");
+				}
+			},
+			error: function() {
+				alert("요청 실패!");
+			}
+			
+		});
+		
 	}
 </script>
 </head>
@@ -202,7 +296,7 @@
 				        <div class="col">
 				        	<div class="row">
 						        <p class="col-xl-2 col-3">${com.community_writer }</p>
-						        <p class="col">LV.1 가져와야함</p>
+						        <p class="col">LV. ${com.member_level }</p>
 				        	</div>
 				        	<div class="row">
 						        <p class="col-xl-2 col-3" id="comDate">${com.community_datetime }</p>
@@ -212,38 +306,36 @@
 			        </div>
 			    </div>
 			    <div class="post-content position-relative mt-3">
-			    	<div class="h-auto">
+			    	<div class="contentText h-auto" style="min-height: 100px;">
 			    	${com.community_content }
-			    	
-					<c:if test="${not empty com.community_image1}">
-						<div class="file">
-							<c:set var="original_file_name1" value="${fn:substringAfter(com.community_image1, '_')}"/>
-							<img src="${pageContext.request.contextPath }/resources/upload/${com.community_image1}" class="imgFIle" onclick="imageModal(this)">
-						</div>
-					</c:if>
-<%-- 					<img src="${pageContext.request.contextPath}/resources/images/banner/banner-1-bg.jpg" class="imgFIle" onclick="imageModal(this)"> --%>
+					<c:set var="imageName">${com.community_image1},${com.community_image2},${com.community_image3},${com.community_image4},${com.community_image5}</c:set>
+					<c:set var="imageArr" value="${fn:split(imageName, ',') }"></c:set>			    	
+			    	<c:forEach var="image" items="${imageArr }">
+			    		<c:if test="${not empty image }">
+	 						<div class="file my-1">
+								<img src="${pageContext.request.contextPath }/resources/upload/${image}" class="imgFIle" onclick="imageModal(this)">
+							</div>
+			    		</c:if>
+			    	</c:forEach>
 					</div>
 					<div class="d-flex justify-content-between" style="height: 80px;">
-						<c:if test="${com.community_writer ne 'leess'}">
+<%-- 						<c:if test="${com.community_writer ne 'leess'}"> --%>
 							<div class="heart"></div>
-						</c:if>
+<%-- 						</c:if> --%>
 						<div class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn">댓글 숨기기</div>
 <!-- 						  <button class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn" type="button" data-bs-toggle="collapse" data-bs-target="#replyArea" aria-expanded="false" aria-controls="collapseExample">댓글 숨기기</button> -->
-						<c:if test="${com.community_writer ne 'leess'}">
+<%-- 						<c:if test="${com.community_writer ne 'leess'}"> --%>
 							<div class="align-self-end" style="width: 80px;"><i class="fa fa-warning d-flex justify-content-end" id="reportBtn" style="font-size:24px"></i></div>
-						</c:if>
+<%-- 						</c:if> --%>
 					</div>
 			    </div>
 			</div>
 			<section id="replyArea" class="reply rounded-3 p-4 w-50 mx-auto">
 <!-- 			<section id="replyArea" class="reply collapse rounded-3 p-4 w-50 mx-auto"> -->
-				<form action="CommunityReplyWrite" method="post" class="d-flex justify-content-center">
-					<input type="hidden" name="board_num" value="${board.board_num }">
+				<form action="CommunityReplyWrite" method="post" class="needs-validation d-flex justify-content-center">
+					<input type="hidden" name="community_id" value="${com.community_id }">
 					<input type="hidden" name="pageNum" value="${param.pageNum }">
-					<%-- 만약, 아이디를 전송해야할 경우 reply_namem 파라미터 포함 --%>
-					<%-- 단, 현재는 별도의 닉네임들을 사용하지 않으므로 임시로 세션아이디 전달 --%>
-					<%-- (실제로 세션 아이디 사용시에는 컨트롤러에서 HttpSession 객체를 통해 접근) --%>
-					<input type="hidden" name="reply_name" value="${sessionScope.sId }">
+<%-- 					<input type="hidden" name="reply_writer" value="${sessionScope.sId }"> --%>
 					<%-- 세션 아이디가 없을 경우(미로그인 시) 댓글 작성 차단 --%>
 					<%-- textarea 및 버튼 disabled 처리 --%>
 <%-- 					<c:choose> --%>
@@ -258,61 +350,66 @@
 <%-- 					</c:choose> --%>
 				</form>
 				<div id="replyListArea">
-					<table>
-					<tr>
-						<td class="replyContent">
-						</td>
-					</tr>
-					<%-- 댓글 내용(reply_content), 작성자(reply_name), 작성일시(reply_date) 표시 --%>
-					<%-- 반복문을 통해 List 객체로부터 Map 객체 꺼내서 출력 --%>
-					<c:forEach var="tinyReplyBoard" items="${tinyReplyBoardList }">
-							<%-- 댓글 1개에 대한 제어(대댓글 작성 폼 표시, 댓글 제거)를 위한 id 값 지정 --%>
-							<%-- 각 댓글(tr 태그)별 고유 id 생성하기 위해 댓글 번호를 id 에 조합 --%>
-						<tr id="replyTr_${tinyReplyBoard.reply_num }">
+					<table class="table">
+<!-- 					<tr> -->
+<!-- 						<td class="replyContent"> -->
+<!-- 						</td> -->
+<!-- 					</tr> -->
+					<c:forEach var="reply" items="${replyList }">
+						<tr id="replyTr_${reply.reply_id }">
 							<td class="replyContent">
-								<%-- 대댓글 구분을 위해 reply_re_lev 값이 0 보다 크면 들여쓰기(공백2칸) --%>
-								<c:forEach var="i" begin="1" end="${tinyReplyBoard.reply_re_lev }">&nbsp;&nbsp;</c:forEach>
-								${tinyReplyBoard.reply_content }
-								<%-- 세션 아이지 존재할 경우 대댓글 작성 이미지(reply-icon.png) 추가 --%>
-								<c:if test="${not empty sessionScope.sId }">
-									<%-- 대댓글 작성 아이콘 클릭 시 자바스크립트 함수 reReplyWriteForm() 호출 --%>
-									<%-- 파라미터 : 댓글 번호, 댓글 참조글번호, 댓글 들여쓰기레벨, 댓글 순서번호 --%>
-									<a href="javascript:reReplyWriteForm(${tinyReplyBoard.reply_num }, ${tinyReplyBoard.reply_re_ref }, ${tinyReplyBoard.reply_re_lev }, ${tinyReplyBoard.reply_re_seq })"> <%-- 하이퍼링크의 기본 기능으로 이동 --%>
-										<img src="${pageContext.request.contextPath }/resources/images/reply-icon.png">
-									</a>
-									<%-- 또한, 세션 아이디가 댓글 작성자와 동일하거나 관리자일 경우 --%>
-									<%-- 댓글 삭제이미지(delete-icon.png) 추가 --%>
-									<c:if test="${sessionScope.sId eq tinyReplyBoard.reply_name or sessionScope.sId eq 'admin' }">
-										<%-- 대댓글 작성 아이콘 클릭 시 자바스크립트 함수 confirmReplyDelete() 호출 --%>
-										<%-- 파라미터 : 댓글 번호 --%>
-									<a href="javascript:void(0)" onclick="confirmReplyDelete(${tinyReplyBoard.reply_num })"> <%-- void(0)으로 하이퍼링크를 막고 onclick 이벤트로 이동 --%>
-										<img src="${pageContext.request.contextPath }/resources/images/delete-icon.png">
-									</a>
-									</c:if>
-								</c:if>
+								<div class="row">
+									<c:forEach var="i" begin="1" end="${reply.reply_re_lev }">
+	<!-- 									&nbsp;&nbsp; -->
+										<div class="col-1"></div>
+									</c:forEach>
+									<div class="col">
+										<div class="row">
+											<div class="col">
+												<span class="me-2 mb-2">${reply.reply_writer }</span>
+												<c:if test="${reply.reply_writer eq 'leess' }">
+													<span class="writerInfo border rounded-3 me-3 align-middle">작성자</span>
+												</c:if>
+												<span class="float-end">${reply.reply_datetime }</span>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col">
+												<span class="align-middle">${reply.reply_content }</span>
+												<span class="reDelBtn ms-3 align-middle float-end">
+													<a href="javascript:confirmReplyDelete(${reply.reply_id })">
+														<i class="fa fa-times-circle align-middle" style="font-size:18px"></i>
+													</a>
+												</span>
+											</div>
+										</div>
+										<div class="row" id="reReplyBtn">
+											<div class="col">
+												<a href="javascript:reReplyWriteForm(${reply.reply_id }, ${reply.reply_re_ref }, ${reply.reply_re_lev }, ${reply.reply_re_seq })">
+													<i class="fa fa-comment-o"></i>
+												</a>
+											</div>
+										</div>
+									</div>
+<%-- 								${reply.reply_content } --%>
+<%-- 								<c:if test="${not empty sessionScope.sId }"> --%>
+<%-- 									<a href="javascript:reReplyWriteForm(${reply.reply_id }, ${reply.reply_re_ref }, ${reply.reply_re_lev }, ${reply.reply_re_seq })"> 하이퍼링크의 기본 기능으로 이동 --%>
+<!-- 										<i class="fa fa-comment-o"></i> -->
+<%-- 										<img src="${pageContext.request.contextPath }/resources/images/reply-icon.png"> --%>
+<!-- 									</a> -->
+<%-- 									<c:if test="${sessionScope.sId eq reply.reply_writer or sessionScope.sId eq 'admin' }"> --%>
+<%-- 									<a href="javascript:void(0)" onclick="confirmReplyDelete(${reply.reply_id })"> void(0)으로 하이퍼링크를 막고 onclick 이벤트로 이동 --%>
+<!-- 										<i class="fa fa-times-circle"></i> -->
+<%-- 										<img src="${pageContext.request.contextPath }/resources/images/delete-icon.png"> --%>
+<!-- 									</a> -->
+<%-- 									</c:if> --%>
+<%-- 								</c:if> --%>
+								</div>
 							</td>
-							<td class="replyWriter">${tinyReplyBoard.reply_name }</td>
-							<td class="replyDate">
-		<%-- 						${tinyReplyBoard.reply_date } --%>
-								<%-- 파싱은 문자열을 객체로 변환하는것이고 포맷은 객체를 문자열로 변환하는 것이다. --%>
-								<%--
-								만약, 테이블 조회 결과를 Map 타입으로 저장 시 날짜 및 시각 데이터가
-								JAVA 8 부터 지원하는 LocalXXX 타입으로 관리된다! (ex. LocalDate, LocalTime, LocalDateTime)
-								=> 일반 Date 타입에서 사용하는 형태로 파싱 후 다시 포맷 변경하는 작업 필요 
-								=> JSTL fmt 라이브러리의 <fmt:parseDate> 태그 활용하여 파싱 후
-								   <fmt:formatDate> 태그 활용하여 포맷팅 수행
-								=> 1) <fmt:parseDate>
-								      var : 파싱 후 해당 날짜를 다룰 객체명
-								      value : 파싱될 대상 날짜 데이터
-								      pattern : 파싱 대상 날짜 데이터의 형식(이 때, 시각을 표시하는 문자 T 는 단순 문자로 취급하기 위해 'T' 로 표기)
-								      type : 대상 날짜 파싱 타입(time : 시각, date : 날짜, both : 둘 다)
-								   2) <fmt:formatDate>
-								      value : 출력(포맷팅)할 날짜 데이터
-								      pattern : 포맷팅 할 날짜 형식
-								--%>
-	<%-- 							<fmt:parseDate var="parsedReplyDate" value="${tinyReplyBoard.reply_date }" pattern="yyyy-MM-dd'T'HH:mm" type="both" />						  --%>
-	<%-- 							<fmt:formatDate value="${parsedReplyDate }" pattern="MM-dd HH:mm"/> --%>
-							</td>
+<%-- 							<td class="replyWriter">${reply.reply_writer }</td> --%>
+<!-- 							<td class="replyDate"> -->
+<%-- 								${reply.reply_datetime } --%>
+<!-- 							</td> -->
 						</tr>
 					</c:forEach>
 					</table>
@@ -320,10 +417,10 @@
 			</section>
 			<div class="mx-auto w-50 mt-1 mb-3 row d-flex justify-content-between" id="commandCell">
 		<%-- 		<c:if test="${not empty sessionScope.sId and (sessionScope.sId eq board.board_name or sessionScope.sId eq 'admin') }"> --%>
-				<c:if test="${com.community_writer ne 'leess'}">
+<%-- 				<c:if test="${com.community_writer ne 'leess'}"> --%>
 					<input type="button" class="btn btn-secondary col-xl-2 col-md-3 col-12 me-2" id="modifyBtn" value="수정">
 					<input type="button" class="btn btn-danger col-xl-2 col-md-3 col-12 me-auto" value="삭제" onclick="confirmDelete()">
-				</c:if>
+<%-- 				</c:if> --%>
 		<%-- 		</c:if> --%>
 				<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="목록" onclick="location.href='Community?pageNum=${param.pageNum}'">
 			</div>

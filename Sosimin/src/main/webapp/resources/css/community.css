@@ -75,6 +75,10 @@
 	color: black;
 }
 
+/* 게시글 내용 */
+.contentText {
+	color: black;
+}
 
 /* 이미지파일 */
 .imgFIle {
@@ -93,7 +97,7 @@
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 100; /* Sit on top */
-  padding-top: 300px; /* Location of the box */
+  padding-top: 200px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -107,8 +111,8 @@
 #myModal .modal-content {
   margin: auto;
   display: block;
-  width: 100%;
-  max-width: 1000px;
+  width: 70%;
+  max-width: 800px;
 }
 
 /* Add Animation - Zoom in the Modal */
@@ -181,7 +185,19 @@ textarea.form-control {
 	resize: none; /* 사이즈 조절 막기 */
 }
 
+/* 작성자 표시 */
+.writerInfo {
+	font-size: 12px;
+	padding-left: 0.1rem;
+	padding-right: 0.1rem;
+	background-color: #eee;
+	color: #000;
+}
 
+/* 삭제 버튼 */
+.reDelBtn a:hover {
+	color: #f00;
+}
 /* ========= 등록 페이지 ============ */
 
 
