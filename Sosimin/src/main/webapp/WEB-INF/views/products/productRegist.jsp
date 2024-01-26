@@ -508,10 +508,13 @@ priceInput.on("blur", function() {
     } else {
         $("#priceProposal").empty();
     }
-});
-
-	  
+});	
 	  var value = input.value.replace(/[^0-9]/g, '');
+	  
+		if (value.length > 9) {
+		    value = value.substring(0, 9);
+		}
+	  
 	  
 	  var formattedValue = Number(value).toLocaleString();
 	  
@@ -745,7 +748,7 @@ function checkInput() {
     	$("#ProductDescription").focus();
     	return false;
     }
-    return true; // 제출 진행
+    return true;
   }
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
