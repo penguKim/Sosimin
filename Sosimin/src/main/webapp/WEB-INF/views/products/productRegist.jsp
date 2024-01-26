@@ -292,6 +292,11 @@ padding-top: 21px;
 	position: relative;
 	padding-top: 30px;
 }
+#priceProposal{
+	display: inline-block;
+	margin-left: 10px;
+	color:red;
+}
 
 #priceProposal , #Category{
 	margin-top: 5px;
@@ -395,7 +400,6 @@ padding-top: 21px;
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 $(function() {
-	
 	navigator.geolocation.getCurrentPosition(function(position) {
 		  var latitude = position.coords.latitude; // 현재 위치의 위도
 		  var longitude = position.coords.longitude; // 현재 위치의 경도
@@ -492,6 +496,20 @@ function addACategory() {
 function price(input) {
 	  // 숫자 이외의 값을 입력 못하게한다.
 // 	  input.value = input.value.replace(/[^0-9]/g, '');
+	  
+var priceInput = $("#priceInput");
+
+	
+priceInput.on("blur", function() {
+    var inputValue = $(this).val();
+    
+    if(inputValue < 1000) {
+        $("#priceProposal").html('최소 판매금액은 1,000원 입니다.');
+    } else {
+        $("#priceProposal").empty();
+    }
+});
+
 	  
 	  var value = input.value.replace(/[^0-9]/g, '');
 	  
@@ -670,6 +688,65 @@ function setAddress(address) {
 	  document.getElementById('myMap').value = address;
 	}
 
+
+
+
+function checkInput() {
+    var fileInput = document.getElementById('product_image');
+    if (fileInput.files.length === 0) {
+      alert('이미지파일 1개 이상 등록하셔야 됩니다.');
+      	$("#product_image").focus();
+      	$("html, body").animate({ // 페이지를 이동시켜준다.
+      	  scrollTop: $("#required").offset().top
+      	}, 500); // 스크롤 애니메이션의 속도를 나타낸다.
+      return false; // 제출 중단
+    }else if($("#productName").val() === "") {
+    	alert("상품명 등록 필수!");
+    	$("#productName").focus();
+    	$("html, body").animate({
+   		  scrollTop: $("#productName").offset().top
+   		}, 500);
+    	return false;
+    }else if($("#categoryName").val() === "default") {
+    	alert("카테고리 선택 필수!");
+    	$("#categoryName").focus();
+    	$("html, body").animate({
+   		  scrollTop: $("#divPadding").offset().top
+   		}, 500);
+    	return false;
+    }else if($("#myMap").val() === "") {
+    	alert("거래지역 등록 필수!");
+    	$("#myMap").focus();
+    	$("html, body").animate({
+   		  scrollTop: $("#hr1").offset().top
+   		}, 500);
+    	return false;
+    }else if(!$("input[name='product_status']:checked").val()) {
+    	alert("상품상태 선택 필수!");
+    	$("#productStatus1").focus();
+    	$("html, body").animate({
+   		  scrollTop: $("#hr2").offset().top
+   		}, 500);
+    	return false;
+    }else if(!$("input[name='trade_method']:checked").val()) {
+    	alert("거래방법 선택 필수!");
+    	$("#productStatus1").focus();
+    	return false;
+    }else if($("#priceInput").val() === "") {
+    	alert("가격 입력 필수!");
+    	$("#priceInput").focus();
+    	return false;
+    }else if($("#priceInput").val() < 1000) {
+    	alert("최소 판매금액은 1,000원 입니다.");
+    	$("#priceInput").focus();
+    	return false;
+    }else if($("#ProductDescription").val() === "") {
+    	alert("설명 입력 필수!");
+    	$("#ProductDescription").focus();
+    	return false;
+    }
+    return true; // 제출 진행
+  }
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
 <body>
@@ -701,7 +778,7 @@ function setAddress(address) {
 <div id="background">
 	<div class="container content-wrapper">
 		<div class="addBox">
-			<form id="addForm" name="addForm" class="add-form" action="ProductRegistSuccess" method="post" enctype="multipart/form-data">
+			<form id="addForm" name="addForm" class="add-form" action="ProductRegistSuccess" method="post" enctype="multipart/form-data" onsubmit="return checkInput();">
 				<br><br>
 				<h4>기본정보</h4><span id="required">*필수항목</span><br>
 				<hr style="border:0; height:3px; color:black;">
@@ -732,7 +809,6 @@ function setAddress(address) {
 					<div id="divLine">
 						<ul>
 							<li><p id="divPadding">상품명<span>*</span></p></li>
-							<li class="td">
 						</ul>
 					</div>
 						<input type="text" id="productName" name="product_name" onkeyup="productKey()" maxlength="40" oninput="limitInputLength(this, 40)"
@@ -770,7 +846,7 @@ function setAddress(address) {
 						</li>
 					</ul>
 				</div>
-				<hr>
+				<hr id="hr1">
 				
 				<div>
 					<div id="divLine">
@@ -788,7 +864,7 @@ function setAddress(address) {
 						</ul>
 				</div>
 				
-					<hr>
+					<hr id="hr2">
 				<div>
 					<div id="divLine" class="productStatus">
 						<p>상품 상태<span>*</span></p>
@@ -807,7 +883,7 @@ function setAddress(address) {
 						</li>
 					</ul>
 				</div>
-				<hr>
+				<hr id="hr3">
 				<div>
 					<div id="divLine" class="trade_methodDiv">
 						<p>거래방법<span>*</span></p>
@@ -836,6 +912,8 @@ function setAddress(address) {
 								<input type="text" id="priceInput" name="product_price" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11">원
 								<div id="priceProposal">
 								</div>
+							</li>
+							<li>
 							</li>
 						</ul>
 				</div>
