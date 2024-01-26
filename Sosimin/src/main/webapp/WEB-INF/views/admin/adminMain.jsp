@@ -22,7 +22,7 @@
 
   <!-- Vendor CSS Files -->
   <link href="${pageContext.request.contextPath}/resources/css/admin/bootstrap.min.css" rel="stylesheet">
-  <link href="a${pageContext.request.contextPath}/resources/css/admin/bootstrap-icons.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/resources/css/admin/bootstrap-icons.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/css/admin/boxicons.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/css/admin/quill.snow.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/css/admin/quill.bubble.css" rel="stylesheet">

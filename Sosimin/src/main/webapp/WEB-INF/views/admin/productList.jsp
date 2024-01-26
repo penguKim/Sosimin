@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	<h1>등록된 상품 목록</h1>
 </body>
 </html>
