@@ -171,7 +171,7 @@ function openModal() {
 					                        <p class="account-no">
 					                                계좌번호
 					                         </p>
-					                         <input type="hidden" name="pay_id" value="${payInfo.pay_id}">
+					                         <input type="hidden" name="fintech_use_num" value="${payInfo.fintech_use_num}">
 				                   		</div>
 				                   	</div>
 	                            </div>

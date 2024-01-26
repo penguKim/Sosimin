@@ -11,7 +11,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 <!-- ========================= CSS here ========================= -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
@@ -35,17 +34,17 @@ $(function() {
 		}
 	});
 });
-</script>
+</script> 
 <style type="text/css">
-.effect{
-    color: #39d274;
+.effect2{
+    color: #ff0000;
     animation-name: example;
     animation-duration: 5s;
 }
 
 @keyframes example {
     from {color: #f9f9f9;}
-    to {color: #39d274;}
+    to {color: #ff0000;}
 }
 </style>
 </head>
@@ -70,14 +69,14 @@ $(function() {
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">환급하기</h1>
+                        <h1 class="page-title">충전하기</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="PayRefund">환급하기</a></li>
-                        <li>환급완료</li>
+                        <li><a href="PayCharge">충전하기</a></li>
+                        <li>충전완료</li>
                     </ul>
                 </div>
             </div>
@@ -101,8 +100,8 @@ $(function() {
                                 </h3>
                             </div>
                             <div class="complete">
-                            	<div class="material-icons effect" style="font-size:40px;">check_circle</div>
-                            	<div class="complete-msg">10,000원 환급 완료</div>
+	                            <div class="material-icons effect2" style="font-size:40px;">check_circle</div>
+    	                        <div class="complete-msg">10,000원 충전 실패</div>
                             </div>
                             <hr>
                             <div class="row">
@@ -113,7 +112,7 @@ $(function() {
 									10,000원
 								</div>
 	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
-									입금계좌
+									출금계좌
 								</div>
 	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
 									은행명 계좌번호
@@ -121,7 +120,7 @@ $(function() {
 								<hr id="hr">
 								<p class="info-msg">- 페이머니는 환급하기 페이지에서 무료로 즉시 인출 가능합니다</p>
 	                            <div class="button col-lg-6 col-md-6 col-12">
-	                                <button class="btn" onclick="location.href='PayRefund'">추가 환급하기</button>
+	                                <button class="btn" onclick="location.href='PayCharge'">다시 충전하기</button>
 	                            </div>
 	                            <div class="button col-lg-6 col-md-6 col-12">
 	                                <button class="btn" onclick="location.href='PayInfo'">내역보기</button>

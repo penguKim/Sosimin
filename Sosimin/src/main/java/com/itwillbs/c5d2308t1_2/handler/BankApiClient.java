@@ -3,23 +3,28 @@ package com.itwillbs.c5d2308t1_2.handler;
 import java.net.URI;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.itwillbs.c5d2308t1_2.controller.PaymentController;
 import com.itwillbs.c5d2308t1_2.vo.ResponseTokenVO;
 
 @Component
 public class BankApiClient {
+	
+	@Autowired
+	BankValueGenerator bankValueGenerator;
 	
 	// 로그 출력을 위한 변수 선언
 	private static final Logger log = LoggerFactory.getLogger(BankApiClient.class);
@@ -99,6 +104,104 @@ public class BankApiClient {
 		// => 응답 처리 클래스 타입을 ParameterizedTypeReference 클래스의 익명 객체 생성 형태로
 		//    제네릭타입을 Map<String, Object> 타입 지정
 		
+		return responseEntity.getBody();
+	}
+
+	// 2.3.1. 잔액조회 API 요청(GET)
+	// https://testapi.openbanking.or.kr/v2.0/account/balance/fin_num
+	public Map<String, Object> reqestAccountDetail(Map<String, Object> map) {
+		// 파라미터로 사용할 난수 생성하여 리턴받기
+		String bank_tran_id = bankValueGenerator.getBankTranId();
+//		log.info("은행거래고유번호 : " + bank_tran_id);
+				
+		String tran_dtime = bankValueGenerator.getTranDTime(); 
+//		log.info("요청일시 : " + tran_dtime);
+
+		// GET 방식 요청에 대한 헤더 정보(엑세스 토큰)와 파라미터 설정
+		// 1.  org.springframework.http.HttpHeaders 객체 생성 후 
+		//     add() 메서드를 통해 헤더에 정보 추가
+		HttpHeaders headers = new HttpHeaders();
+		// "Bearer" 문자열 뒤에 엑세스 토큰 결합(공백으로 구분)
+		headers.add("Authorization", "Bearer " + map.get("access_token"));
+		
+		// 2. 헤더 정보를 갖는 HttpEntity 객체 생성
+		HttpEntity<String> httpEntity = new HttpEntity<String>(headers);
+		
+		// 3. 요청에 필요한 URI 정보 생성
+		URI uri = UriComponentsBuilder
+				.fromUriString("https://testapi.openbanking.or.kr/v2.0/account/balance/fin_num")
+				.queryParam("bank_tran_id", bank_tran_id) // 거래고유번호
+				.queryParam("fintech_use_num", map.get("fintech_use_num")) // 사용자번호
+				.queryParam("tran_dtime", tran_dtime) // 요청일시
+				.encode() // 인코딩처리
+				.build() // UriComponents 객체 생성
+				.toUri(); // URI 타입 객체로 변환
+				
+		// 4. RestTemplate 객체 생성
+		RestTemplate restTemplate = new RestTemplate();
+		
+		// 5. RestTemplate 객체의 exchange() 메서드 호출하여 HTTP 요청 수행(GET 방식)
+		ResponseEntity<Map<String, Object>> responseEntity
+			= restTemplate.exchange(uri, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<Map<String, Object>>() {});
+		
+		// ResponseEntity 객체의 getBody() 메서드 호출하여 응답 데이터 리턴
+		return responseEntity.getBody();
+	}
+
+	// 2.5. 계좌이체 서비스 - 2.5.1. 출금이체 API
+	public Map<String, Object> requestWithdraw(Map<String, Object> map) {
+		// 1. 헤더에 엑세스토큰 값 담아서 전송
+		HttpHeaders headers = new HttpHeaders();
+		headers.setBearerAuth((String) map.get("access_token"));
+		// 컨텐츠타입 JSON으로 변경
+		headers.setContentType(MediaType.APPLICATION_PROBLEM_JSON);
+		
+		// 2. URL 생성
+		String url = "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num";
+		
+		// 3. 요청 파라미터를 JSON 형식 데이터로 생성
+		// 출금정보 저장
+		JSONObject jo = new JSONObject();
+		// 요청 파라미터 저장
+		jo.put("bank_tran_id", bankValueGenerator.getBankTranId()); // 거래고유번호(자동생성)
+		
+		// ----------------- 핀테크 이용기관 정보 ------------------
+		jo.put("cntr_account_type", "N"); // 약정 계좌/계정 구분("N" : 계좌, "C" : 계정 => N 고정)
+		jo.put("cntr_account_num", "23082100001"); // 약정 계좌/계정 번호(핀테크 서비스 기관의 계좌번호)
+		jo.put("dps_print_content", map.get("member_id")); // 입금계좌인자내역(결제 요청 사용자 아이디 활용) = 우리 계좌에 찍힐 이름
+		
+		// ----------------- 요청 고객(출금 대상) 정보 ------------------
+		jo.put("fintech_use_num", map.get("fintech_use_num")); // 출금계좌 핀테크이용번호
+		jo.put("wd_print_content", "소시민"); // 출금계좌인자내역 = 사용자 통장에 찍힐 이름
+		jo.put("tran_amt", map.get("tran_amt")); // 거래금액 
+		jo.put("tran_dtime", bankValueGenerator.getTranDTime()); // 요청일시(자동생성)
+		jo.put("req_client_name", map.get("user_name")); // 요청고객 성명(출금계좌 예금주명)
+		jo.put("req_client_fintech_use_num", map.get("fintech_use_num")); // 요청고객 핀테크이용번호(출금계좌)
+		// => 주의! 은행기관코드&계좌번호 또는 핀테크이용번호 둘 중 하나만 설정
+		jo.put("req_client_num", map.get("member_id").toString().toUpperCase()); // 요청고객회원번호(아이디 활용) = AN이니까 영어랑 숫자로 된 아이디 사용하면 됨
+		// => 단, 영문자는 모두 대문자로 변환
+		jo.put("transfer_purpose", "ST"); // 이체용도(송금(TR), 결제(ST), 충전(RC) 등) 
+		
+		// --------------- 수취 고객(실제 최종 입금 대상) 정보 ------------
+		// 최종적으로 이 돈을 수신하는 계좌에 대한 정보
+		// 이 정보(3개)는 피싱 등의 사고가 발생 시 지금 정지를 위한 정보(현재 검증 수행은 X)
+		// => 일단 값 비워놓음
+		jo.put("recv_client_name", "이연태");
+		jo.put("recv_client_bank_code", "004");
+		jo.put("recv_client_account_num", "23062003999");
+		
+		log.info("출금 이체 요청 json 데이터 : " + jo.toString());
+		
+		// 4. HttpEntity 객체 생성
+		HttpEntity<String> httpEntity = new HttpEntity<String>(jo.toString(), headers);
+		
+		// 5. RestTemplate 객체 생성
+		RestTemplate restTemplate = new RestTemplate();
+		
+		ResponseEntity<Map<String, Object>> responseEntity
+				= restTemplate.exchange(url, HttpMethod.POST, httpEntity, new ParameterizedTypeReference<Map<String, Object>>() {});
+		
+		// ResponseEntity 객체의 getBody() 메서드 호출하여 응답 데이터 리턴
 		return responseEntity.getBody();
 	}
 	

@@ -37,15 +37,15 @@ $(function() {
 });
 </script>
 <style type="text/css">
-.effect{
-    color: #39d274;
+.effect2{
+    color: #ff0000;
     animation-name: example;
     animation-duration: 5s;
 }
 
 @keyframes example {
     from {color: #f9f9f9;}
-    to {color: #39d274;}
+    to {color: #ff0000;}
 }
 </style>
 </head>
@@ -101,8 +101,8 @@ $(function() {
                                 </h3>
                             </div>
                             <div class="complete">
-                            	<div class="material-icons effect" style="font-size:40px;">check_circle</div>
-                            	<div class="complete-msg">10,000원 환급 완료</div>
+                            	<div class="material-icons effect2" style="font-size:40px;">check_circle</div>
+                            	<div class="complete-msg">10,000원 환급 실패</div>
                             </div>
                             <hr>
                             <div class="row">
@@ -121,7 +121,7 @@ $(function() {
 								<hr id="hr">
 								<p class="info-msg">- 페이머니는 환급하기 페이지에서 무료로 즉시 인출 가능합니다</p>
 	                            <div class="button col-lg-6 col-md-6 col-12">
-	                                <button class="btn" onclick="location.href='PayRefund'">추가 환급하기</button>
+	                                <button class="btn" onclick="location.href='PayRefund'">다시 환급하기</button>
 	                            </div>
 	                            <div class="button col-lg-6 col-md-6 col-12">
 	                                <button class="btn" onclick="location.href='PayInfo'">내역보기</button>

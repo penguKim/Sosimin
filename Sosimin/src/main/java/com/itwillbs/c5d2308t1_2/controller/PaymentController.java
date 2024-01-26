@@ -48,7 +48,7 @@ public class PaymentController {
 		
 		// stste 값에 사용하기 위한 32바이트 난수 생성
 		String rNum = RandomStringUtils.randomNumeric(32);
-//		log.info("난수 : " + rNum);
+		log.info("난수 : " + rNum);
 		
 		// 세션에 난수 저장
 		session.setAttribute("state", rNum);
@@ -86,7 +86,7 @@ public class PaymentController {
 		
 		ResponseTokenVO responseToken = service.requestAccessToken(authResponse);
 		
-		log.info("엑세스토큰 : " + responseToken);
+//		log.info("엑세스토큰 : " + responseToken);
 		
 		// ResponseTokenVO 객체가 null 이거나 엑세스토큰 값이 null일 경우
 		// state값 갱신을 위해 "AccountVerification" 페이지로 이동
@@ -203,15 +203,19 @@ public class PaymentController {
 			return "forward";
 		}
 		
-
 		// DB에서 페이 가입 여부 조회하고 정보 가져오기
 		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		log.info("payInfo = " + payInfo);
 		
-		if(payInfo == null) {
-			model.addAttribute("msg", "계좌 등록이 필요합니다");
-			model.addAttribute("targetURL", "AccountRegist"); // 로그인 페이지로 이동
+		if(session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
-		} 
+		} else if(payInfo == null) {
+			model.addAttribute("msg", "계좌 등록이 필요합니다");
+			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
+			return "forward";
+		}
 		
 		model.addAttribute("payInfo", payInfo);
 		
@@ -246,7 +250,7 @@ public class PaymentController {
 		int listCount = service.getPayHistoryCount(map);
 		int maxPage = listCount / listLimit + ((listCount % listLimit) > 0 ? 1 : 0);
 		
-		// 게시물 목 조회 결과 Map 객체에 추가
+		// 게시물 목록 조회 결과 Map 객체에 추가
 		Map<String, Object> historyMap = new HashMap<String, Object>();
 		historyMap.put("payHistoryList", payHistoryList);
 //		System.out.println(map);
@@ -270,18 +274,19 @@ public class PaymentController {
 		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
 		String member_id = (String)session.getAttribute("sId");
 		
+		// DB에서 페이 가입 여부 조회하고 정보 가져오기
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
 		if(member_id == null) {
 			model.addAttribute("msg", "로그인을 해주세요");
 			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
 			return "forward";
-		}
-		
-		// DB에서 페이 가입 여부 조회하고 정보 가져오기
-		Map<String, Object> payInfo = service.getPayInfo(member_id);
-		
-		if(payInfo == null) {
+		} else if(session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("targetURL", "AccountVerification");	
+			return "forward";
+		} else if(payInfo == null) {
 			model.addAttribute("msg", "계좌 등록이 필요합니다");
-			model.addAttribute("targetURL", "AccountRegist"); // 로그인 페이지로 이동
+			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
 			return "forward";
 		}
 		
@@ -292,19 +297,104 @@ public class PaymentController {
 
 	// 페이 충전 처리
 	// 2.3.1. 잔액조회 API
+	// 2.5. 계좌이체 서비스 - 2.5.1. 출금이체 API
 	@PostMapping("PayChargePro")
-	public String payChargePro(@RequestParam Map<String, String> map) {
-		log.info(map.toString());
+	public String payChargePro(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
+		String member_id = (String)session.getAttribute("sId");
 		
+		if(member_id == null) {
+			model.addAttribute("msg", "로그인을 해주세요");
+			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			return "forward";
+		} else if(session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("targetURL", "AccountVerification");	
+			return "forward";
+		}
 		
+//		log.info(map.toString());
+
+		// 잔액을 조회 -> 입력금액과 잔액 비교 -> 잔액이 입력금액보다 많으면 충전, 아니면 거부
+		// 충전 = 잔액 인출 후 성공 뷰페이지, 거절 = 거절페이지
+		map.put("access_token", (String)session.getAttribute("access_token"));
+		map.put("member_id", (String)session.getAttribute("sId"));
 		
-		return "redirect:/PayChargeComplete";
+//		log.info("페이잔액 파라미터 : " + map.toString());
+		
+		// Service - requestAccountDetail() 메서드 호출하여 계좌 상세정보 조회 요청
+		// => 파라미터 : Map 객체    리턴타입 : Map<String, Object>(accountDetail)
+		Map<String, Object> accountDetail = service.requestAccountDetail(map);
+		log.info("accountDetail 잔액조회 = " + accountDetail);
+		
+		// 파라미터로 입력받은 값을 숫자로 변환
+		String pay_amountString = (String) map.get("pay_amount");
+		pay_amountString = pay_amountString.replace(",", "");
+		int pay_amount = Integer.parseInt(pay_amountString);
+		
+		// 계좌 출금가능금액을 숫자로 변환
+		String available_amtString = (String) accountDetail.get("available_amt");
+		int available_amt = Integer.parseInt(available_amtString);
+
+//		System.out.println("pay_amount + " + pay_amount);
+//		System.out.println("available_amt + " + available_amt);
+		
+		// 입력 금액과 잔액을 비교
+		if((available_amt - pay_amount) < 0) { // 출금 가능금액에서 입력값을 뺀 값이 마이너스일 때
+			System.out.println("출금불가");
+			return "redirect:/PayChargeRefused"; // 출금 실패 페이지로 이동
+		} else { // 출금 가능금액에서 입력값을 뺀 값이 0이상일 때
+			System.out.println("출금가능");
+			map.put("tran_amt", pay_amount);
+			session.setAttribute("pay_amount", pay_amount);
+			
+			// 2.5. 계좌이체 서비스 - 2.5.1. 출금이체 API
+			Map<String, Object> withdrawResult = service.requestWithdraw(map);
+//			log.info(">>>>>>>>>>>>>>>>>withdrawResult : " + withdrawResult);
+//			log.info(">>>>>>>>>>>>>>>>>출금?? : " + withdrawResult.get("rsp_code"));
+			
+			// 요청 결과를 Model 객체에 저장
+			model.addAttribute("withdrawResult", withdrawResult);
+			
+			if(withdrawResult.get("rsp_code").equals("A0000")) {
+				log.info("이거임 >>>>>>>>>>>>>>>" + map.toString());
+//				System.out.println("출금됨");
+				// 페이 잔액을 업데이트
+				int updateCount = service.chargePay(map);
+				
+				if(updateCount > 0) {
+					return "redirect:/PayChargeComplete";					
+				} else {
+					return "redirect:/PayChargeRefused"; // 출금 실패 페이지로 이동				
+				}
+
+			} else {
+//				System.out.println("출금안됨!!!!!!!!!!!!!!!!!!");				
+				return "redirect:/PayChargeRefused"; // 출금 실패 페이지로 이동
+			}
+			
+		}
+		
 	}
 	
 	// 페이 충전 완료 페이지로 이동
 	@GetMapping("PayChargeComplete")
-	public String payChargeComplete() {
+	public String payChargeComplete(HttpSession session, Model model) {
+		String member_id = (String)session.getAttribute("sId");
+		
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		log.info("payInfo = " + payInfo);
+		
+		payInfo.put("pay_amount", session.getAttribute("pay_amount"));
+		
+		model.addAttribute("payInfo", payInfo);
+		
 		return "payment/chargeComplete";
+	}
+	
+	// 페이 충전 실패 페이지로 이동
+	@GetMapping("PayChargeRefused")
+	public String payChargeRefused() {
+		return "payment/chargeRefused";
 	}
 	
 	// ----------- 페이환급 ---------------	
@@ -384,7 +474,7 @@ public class PaymentController {
 		
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
-		if(payInfo == null || !passwordEncoder.matches(input_passwd, payInfo.get("input_passwd").toString())) {
+		if(payInfo == null || !passwordEncoder.matches(input_passwd, payInfo.get("pay_password").toString())) {
 			return "false";
 		} else {
 			return "true";			

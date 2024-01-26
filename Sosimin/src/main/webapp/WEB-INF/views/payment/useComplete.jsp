@@ -36,6 +36,18 @@ $(function() {
 	});
 });
 </script>
+<style type="text/css">
+.effect{
+    color: #39d274;
+    animation-name: example;
+    animation-duration: 5s;
+}
+
+@keyframes example {
+    from {color: #f9f9f9;}
+    to {color: #39d274;}
+}
+</style>
 </head>
 <body>
     <div class="preloader">

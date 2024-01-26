@@ -124,17 +124,6 @@
 	margin-top: 20px;
 }
 
-.effect{
-    color: #39d274;
-    animation-name: example;
-    animation-duration: 5s;
-}
-
-@keyframes example {
-    from {color: #f9f9f9;}
-    to {color: #39d274;}
-}
-
 .complete {
 	text-align: center;
 }

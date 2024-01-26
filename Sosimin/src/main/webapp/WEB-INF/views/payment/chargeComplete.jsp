@@ -35,6 +35,18 @@ $(function() {
 	});
 });
 </script> 
+<style type="text/css">
+.effect{
+    color: #39d274;
+    animation-name: example;
+    animation-duration: 5s;
+}
+
+@keyframes example {
+    from {color: #f9f9f9;}
+    to {color: #39d274;}
+}
+</style>
 </head>
 <body>
     <div class="preloader">
@@ -89,7 +101,7 @@ $(function() {
                             </div>
                             <div class="complete">
 	                            <div class="material-icons effect" style="font-size:40px;">check_circle</div>
-    	                        <div class="complete-msg">10,000원 충전 완료</div>
+    	                        <div class="complete-msg">${payInfo.pay_amount} 원 충전 완료</div>
                             </div>
                             <hr>
                             <div class="row">
@@ -97,13 +109,13 @@ $(function() {
 									페이잔액
 								</div>
 	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
-									10,000원
+									${payInfo.pay_balance} 원
 								</div>
 	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
 									출금계좌
 								</div>
 	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
-									은행명 계좌번호
+									${payInfo.bank_name} ${payInfo.account_num_masked}
 								</div>
 								<hr id="hr">
 								<p class="info-msg">- 페이머니는 환급하기 페이지에서 무료로 즉시 인출 가능합니다</p>

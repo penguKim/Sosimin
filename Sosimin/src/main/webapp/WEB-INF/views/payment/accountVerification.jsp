@@ -104,20 +104,20 @@ $(function() {
                                 	소심페이
                                 </h3>
                             </div>
-                            <c:choose>
-                            	<c:when test="${empty sessionScope.access_token}">
+<%--                             <c:choose> --%>
+<%--                             	<c:when test="${empty sessionScope.access_token}"> --%>
 		                           	<div class="msg">계좌를 인증해주세요</div>
 		                            <div class="button">
 		                                <button class="btn" onclick="authAccount()">계좌인증하기</button>
 		                            </div>
-                            	</c:when>
-                            	<c:otherwise>
-		                           	<div class="msg">계좌를 등록해주세요</div>
-		                            <div class="button">
-		                                <button class="btn" onclick="location.href='AccountRegist'">계좌등록하기</button>
-		                            </div>                            	
-                            	</c:otherwise>
-                            </c:choose>
+<%--                             	</c:when> --%>
+<%--                             	<c:otherwise> --%>
+<!-- 		                           	<div class="msg">계좌를 등록해주세요</div> -->
+<!-- 		                            <div class="button"> -->
+<!-- 		                                <button class="btn" onclick="location.href='AccountRegist'">계좌등록하기</button> -->
+<!-- 		                            </div>                            	 -->
+<%--                             	</c:otherwise> --%>
+<%--                             </c:choose> --%>
                         </div>
                     </div>
                 </div>

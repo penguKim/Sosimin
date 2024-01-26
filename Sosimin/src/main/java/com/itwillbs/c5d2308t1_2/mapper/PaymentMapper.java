@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface PaymentMapper {
 
 	// 토큰 중복 처리를 위한 아이디 조회
-	String selectAccessToken(Map<String, Object> map);
+	Map<String, Object> selectAccessToken(Map<String, Object> map);
 
 	// 엑세스토큰 저장
 	void insertAccessToken(Map<String, Object> map);
@@ -31,5 +31,11 @@ public interface PaymentMapper {
 
 	// 페이 내역 개수 세기(페이징)
 	int selectPayHistoryCount(Map<String, Object> map);
+
+	// 페이 충전 요청
+	int updatePay(Map<String, Object> map);
+
+	// 페이 충전 내역 저장 요청
+	void insertPayHistory(Map<String, Object> map);
 
 }

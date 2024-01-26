@@ -5,8 +5,8 @@
 
 <mapper namespace="com.itwillbs.c5d2308t1_2.mapper.PaymentMapper">
 	<!-- 토큰 아이디조회 -->
-	<select id="selectAccessToken" resultType="String">
-		SELECT member_id
+	<select id="selectAccessToken" resultType="map">
+		SELECT *
 		FROM Token
 		WHERE member_id = #{member_id}
 	</select>
@@ -15,7 +15,8 @@
 	<insert id="insertAccessToken">
 		INSERT INTO Token
 		VALUES (
-			#{member_id}
+			null
+			, #{member_id}
 			, #{token.access_token} 
 			, #{token.refresh_token} 
 			, #{token.user_seq_no} 
@@ -46,6 +47,7 @@
 		VALUES (
 			null
 			, #{member_id}
+			, #{user_name}
 			, #{fintech_use_num}
 			, #{bank_name}
 			, #{account_num_masked}
@@ -86,4 +88,30 @@
 		</if>
 	</select>
 	
+	<!-- 페이 잔액 충전 -->
+	<update id="updatePay">
+		UPDATE Pay
+		SET pay_balance = pay_balance + CAST(#{tran_amt} AS SIGNED)
+		WHERE fintech_use_num = #{fintech_use_num}	
+	</update>
+	
+	<insert id="insertPayHistory">
+		<selectKey keyProperty="pay_history_balance" resultType="INT" order="BEFORE">
+			SELECT pay_balance
+			FROM Pay
+			WHERE pay_id = #{pay_id}
+		</selectKey>
+		INSERT INTO PayHistory
+		VALUE (
+			null
+			, #{pay_id}
+			, #{tran_amt}
+			, #{pay_history_balance} + CAST(#{tran_amt} AS SIGNED)
+			, 1 -- 충전
+			, null -- 상품관련아님
+			, now()
+			, 1 -- 완료
+			, null
+		);
+	</insert>
 </mapper>

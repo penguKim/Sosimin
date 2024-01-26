@@ -108,16 +108,22 @@ function load_list() {
 			
 				// pay_history_type 값에 따라 다른 결과 출력
 			    let pay_history_type = "";
+				let subject = "";
 			    if(history.pay_history_type == "1") {
 			    	pay_history_type = "충전";
+			    	subject = "페이충전";
 			    } else if(history.pay_history_type == "2") {
 			    	pay_history_type = "환급";
+			    	subject = "페이환급";
 			    } else if(history.pay_history_type == "3") {
 			    	pay_history_type = "사용";
+			    	subject = history.order_id;
 			    } else if(history.pay_history_type == "4") {
 			    	pay_history_type = "수익";
+			    	subject = history.order_id;
 			    }
-
+			    
+			    
 				let result = 
 					'<div class="cart-single-list">'
 			        +    '<div class="row align-items-center">'
@@ -127,7 +133,7 @@ function load_list() {
 			        +        	'</p>'
 			        +        '</div>'
 			        +      '<div class="col-lg-6 col-md-6 col-12">'
-			        +            '<h5 class="product-name">' + history.order_id + '</h5>'
+			        +            '<h5 class="product-name">' + subject + '</h5>'
 			        +            '<p class="pay-info-sub">'
 			        +        		time + ' | '
 			        +               pay_history_type
@@ -136,7 +142,7 @@ function load_list() {
 			        +        '<div class="col-lg-4 col-md-4 col-12">'
 			        +            '<h5 class="pay-amount">' + history.pay_amount + '</h5>'
 			        +            '<p class="pay-balance-sub">'
-			        +                '잔액'
+			        +					history.pay_history_balance
 			        +            '</p>'
 			        +        '</div>'
 			        +    '</div>'

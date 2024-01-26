@@ -34,14 +34,19 @@ $(function() {
 		}
 	});
 	
-    let value = 0;
+	let input_amount = 0; // 인풋텍스트에 입력한 값을 담을 변수
+    let total_amount = 0; // 총 금액을 담을 변수
 	// 가격 버튼을 클릭할 때
 	$('.btn-check').click(function() {
+		if(!$('#pay-amount').val() == "") {
+			input_amount = parseInt($('#pay-amount').val().replace(/,/g, '')); // 인풋텍스트에 있는 값 숫자로 변환하여 대입			
+		}
+// 		console.log(input_amount);
 		// 클릭한 버튼의 값을 더하기
-		value += parseInt($(this).val());
+		total_amount = input_amount + parseInt($(this).val());
 
-		let formattedValue = value.toLocaleString();
-        $('#pay-amount').val(formattedValue);	
+		let formattedValue = total_amount.toLocaleString(); // 1000단위마다 ,
+        $('#pay-amount').val(formattedValue);
 	});
 
 	
@@ -49,7 +54,9 @@ $(function() {
 	$("#passwd-btn").click(function() {
 		// 비밀번호 일치 여부 확인
 		let input_passwd = $('#pay-password').val();
-		let is_correct_passwd = true;
+		let is_correct_passwd = false;
+		
+		console.log("input_passwd = " + input_passwd + ", is_correct_passwd = " + is_correct_passwd)
 		
 		$.ajax({
 			type: "GET",
@@ -58,7 +65,9 @@ $(function() {
 				"input_passwd": input_passwd
 			},
 			success:  function(data) {
-				console.log(data);
+				if(data == "true") {
+					is_correct_passwd = true;
+				}
 			},
 			error: function(request, status, error) {
 		      // 요청이 실패한 경우 처리할 로직
@@ -68,56 +77,64 @@ $(function() {
 		
 		let regPw = /^\d{6}$/; // 6자리의 숫자를 표현한 정규표현식
 		
-// 		event.preventDefault();
-// 		Swal.fire({
-// 	        title: '페이머니를 충전하시겠습니까?',
-// 	        text: "등록된 계좌에서 출금이 진행됩니다.",
-// 	        icon: 'question',
-// 	        showCancelButton: true,
-// 	        confirmButtonColor: '#39d274',
-// 	        cancelButtonColor: '#d33',
-// 	        confirmButtonText: '충전',
-// 	        cancelButtonText: '취소',
-// 	        reverseButtons: true,
-// 	    }).then((result) => {
-// 	        if (result.isConfirmed) {
-// 	        	if(!is_correct_passwd) { // 비밀번호가 일치하지 않으면
-// 	        		event.preventDefault();
-// 	        		Swal.fire({
-// 						position: 'center',
-// 						icon: 'error',
-// 						title: '비밀번호가 일치하지 않습니다.',
-// 						showConfirmButton: false,
-// 						timer: 2000,
-// 						toast: true
-// 					});
-// 				} else if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
-// 					event.preventDefault();
-// 					Swal.fire({
-// 						position: 'center',
-// 						icon: 'error',
-// 						title: '숫자 6자리를 입력해주세요.',
-// 						showConfirmButton: false,
-// 						timer: 2000,
-// 						toast: true
-// 					});
-// 				} else {
-// 					$(".account-regist").submit();
-// 				}
-// 	        } else {
-// 	        	$('#password-modal').modal('hide'); // 모달창 닫기
-// 	        }
-// 	    });
+		event.preventDefault();
+		Swal.fire({
+	        title: '페이머니를 충전하시겠습니까?',
+	        text: "등록된 계좌에서 출금이 진행됩니다.",
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '충전',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	        	if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
+					event.preventDefault();
+					$('#pay-password').val('');
+					Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: '숫자 6자리를 입력해주세요.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+				} else if(!is_correct_passwd) { // 비밀번호가 일치하지 않으면
+	        		event.preventDefault();
+	        		$('#pay-password').val('');
+	        		Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: '비밀번호가 일치하지 않습니다.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+				} else {
+					$("#pay-charge").submit();
+				}
+	        } else {
+	        	$('#password-modal').modal('hide'); // 모달창 닫기
+	        }
+	    });
 	});
 
-	
 });
 
 // 모달 창을 열 때
 function openModal() {
 	event.preventDefault(); 
 	if($('#pay-amount').val() == null || $('#pay-amount').val() == 0) {
-		alert("값을 입력해주세요");
+		Swal.fire({
+			position: 'center',
+			icon: 'error',
+			title: '충전 금액을 입력해주세요.',
+			showConfirmButton: false,
+			timer: 2000,
+			toast: true
+		});
 		$('#pay-amount').focus();
 	} else {
 	    $('#password-modal').modal('show');
@@ -162,7 +179,7 @@ function openModal() {
     <!-- End Breadcrumbs -->
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
-	<form action="PayChargePro" method="post">
+	<form action="PayChargePro" method="post" id="pay-charge">
 		<div class="account-login section">
 	        <div class="container">
 	            <div class="row">
@@ -203,6 +220,8 @@ function openModal() {
 					                                ${payInfo.account_num_masked}
 					                         </p>
 					                         <input type="hidden" name="pay_id" value="${payInfo.pay_id}">
+					                         <input type="hidden" name="user_name" value="${payInfo.user_name}">
+					                         <input type="hidden" name="fintech_use_num" value="${payInfo.fintech_use_num}">
 				                   		</div>
 				                   	</div>
 	                            </div>
