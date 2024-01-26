@@ -342,15 +342,15 @@ function imagePopup(src) {
 }
 
 function Proposal() {
-		var width = 700; // 팝업 창의 가로 크기
-	    var height = 500; // 팝업 창의 세로 크기
-	    var left = Math.ceil((window.screen.width - width) / 2); // 화면가로중앙에 위치
-	    var top =  Math.ceil((window.screen.height - height) / 2); // 화면세로중앙에 위치
+	var width = 700; // 팝업 창의 가로 크기
+	var height = 500; // 팝업 창의 세로 크기
+	var left = Math.ceil((window.screen.width - width) / 2); // 화면 가로 중앙에 위치
+	var top = Math.ceil((window.screen.height - height) / 2); // 화면 세로 중앙에 위치
 
-	    var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top;
+	var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
 
-        window.open("Proposal", "예매상세정보", options);
-	}
+	window.open("Proposal", "예매상세정보", options);
+}
 	
 </script>
 <body>
