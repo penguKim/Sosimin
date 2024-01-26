@@ -549,87 +549,90 @@ $(document).on("click", ".close-button", function() {
   $("#tagName").prop("disabled", false);
 });
 
-  var imageCounter = 1;
-  
-  
-// 썸네일 이미지 작업을 위한 코드
-
+var imageCounter = 1;
+// 썸네일 작업
 function setThumbnail(event) {
-	
-	  var files = event.target.files; // 등록된 모든 파일 가져오기
+  var files = event.target.files;
 
-	  if (files.length >= 5) { // 파일을 5개 초과하여 선택한 경우
-	    alert("사진 첨부는 최대 5장까지 가능합니다.");
-	    event.target.value = ""; 
-	    return false;
-	  }
-	  
-	  for (var i = 0; i < files.length; i++) { // 각 파일에 대해 처리
-		    var file = files[i];
-		    var ext = file.name.split('.').pop().toLowerCase(); // 파일 확장자 분리
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    var ext = file.name.split('.').pop().toLowerCase();
 
-		    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
 
-		    if (!allowedExtensions.includes(ext)) {
-		      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
-		      event.target.value = ""; 
-		      return false;
-		    }
-	  }
-	  
-	  
-  
-  var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
-  imageLength++;
-  document.getElementById("imageLength").textContent = imageLength;
+    if (!allowedExtensions.includes(ext)) {
+      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
+      event.target.value = "";
+      return false;
+    }
 
-  if (imageLength <= 5) {
+	 var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
+	 imageLength++;
+	 document.getElementById("imageLength").textContent = imageLength;
+   if (imageLength <= 5) {
     var reader = new FileReader();
-    var imageContainer = document.getElementById("image_container");
-    reader.onload = function(event) {
-      var img = document.createElement("img");
-      img.setAttribute("src", event.target.result);
-      img.setAttribute("class", "imageSize");
+    reader.onload = (function(file) {
+      return function(e) {
+        var img = document.createElement("img");
+        img.setAttribute("src", e.target.result);
+        img.setAttribute("class", "imageSize");
+	
+        var closeButton = document.createElement("button");
+        closeButton.setAttribute("type", "button");
+        closeButton.setAttribute("class", "imageClose");
+        closeButton.setAttribute("onclick", "removeImage(this)");
+        
+        var imageItem = document.createElement("span");
+        imageItem.classList.add("imageItem");
 
-      var imageText = document.querySelector(".mainImage");
-      imageText.style.display = "inline";
+        var imageNameInput = document.createElement("input");
+        imageNameInput.type = "hidden";
+        imageNameInput.name = "product_image" + imageCounter; // name 속성 수정
+        imageNameInput.value = file.name; // input 값으로 파일 이름 설정
+        imageItem.appendChild(imageNameInput);
 
-      var closeButton = document.createElement("button");
-      closeButton.setAttribute("type", "button");
-      closeButton.setAttribute("class", "imageClose");
-      closeButton.setAttribute("onclick", "removeImage(this)");
+        imageItem.appendChild(img);
+        imageItem.appendChild(closeButton);
+        document.getElementById("image_container").appendChild(imageItem);
+	
+        // 첫번째 이미지인 경우 대표이미지로 설정
+        if(imageCounter == 1) {
+          var mainImageText = document.querySelector(".mainImage");
+          mainImageText.style.display = "inline";
+        }
+        imageCounter++;
+      };
+    })(file);
 
-      var imageItem = document.createElement("span");
-      imageItem.classList.add("imageItem");
-      
-      var imageNameInput = document.createElement("input");
-      imageNameInput.type = "hidden";
-      imageNameInput.name = "product_image" + imageCounter++;
-      imageItem.appendChild(imageNameInput);
-      
-      // Name 값을 가져와서 'name' 속성으로 설정합니다.
-      var name = "itemName"; // 여기에 Name 값 설정
-      imageItem.setAttribute("name", name);
+    reader.readAsDataURL(file);
+  }else if (imageLength > 5) {
+	  alert("사진 첨부는 최대 5장까지 가능합니다.");
+	  imageLength = 5;
+	  document.getElementById("imageLength").textContent = imageLength;
+		}
+	} 
+}
 
-      imageItem.appendChild(img);
-      imageItem.appendChild(closeButton);
-
-      imageContainer.appendChild(imageItem);
-    };
-
-    reader.readAsDataURL(event.target.files[0]);
-  } else if (imageLength > 5) {
-    alert("사진 첨부는 최대 5장까지 가능합니다.");
-    imageLength = 5;
-    document.getElementById("imageLength").textContent = imageLength;
-  } 
+//파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
+function addFileInput() {
+document.getElementById("product_image").click();
 }
 
 // 이미지 삭제
 
+// 이미지 삭제
 function removeImage(button) {
-  var imageItem = button.parentNode;
-  var imageContainer = imageItem.parentNode;
+  var imageItem = button.parentNode; // 이미지 항목
+  var imageContainer = imageItem.parentNode; // 이미지 컨테이너
+
+  // 이미지 항목에서 input 요소(이미지 이름 값) 찾기
+  var imageNameInput = imageItem.querySelector('input[name^="image_name"]');
+  if (imageNameInput) {
+    // 이미지 이름 값 삭제
+    imageNameInput.parentNode.removeChild(imageNameInput);
+  }
+  
+  // 이미지 항목 삭제
   imageContainer.removeChild(imageItem);
   
   var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
@@ -641,15 +644,12 @@ function removeImage(button) {
   if (imageContainer.children.length === 1) {
     imageText.style.display = "none";
   }
+  
+  // imageCounter 감소
+  if (imageCounter > 0) {
+    imageCounter--;
+  }
 }
-
-function addFileInput() {
-	  // 파일 선택 input 요소를 선택합니다.
-	  var fileInput = document.getElementById('product_image');
-
-	  // 파일 선택 input 요소를 클릭합니다.
-	  fileInput.click();
-	}
 
 
 
@@ -711,8 +711,6 @@ var checkedValue = radioButton.value;
 					<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()">
 						<input class="form-control form-control-user" type="file" style="display: none;" multiple
   						name="product_image" id="product_image" onchange="setThumbnail(event);" accept=".gif, .jpg, .png, .jpeg" >
-						<input class="form-control form-control-user" type="file" style="display: none;"
-						  name="product_image" id="product_image" onchange="setThumbnail(event);" accept=".gif, .jpg, .png, .jepg" >
 					<div class="form-group">
 					  <div id="image_container">
 					    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span>
@@ -789,13 +787,13 @@ var checkedValue = radioButton.value;
 					<ul id="ulLine">
 						<li class="productsStatusRadio">
 							<label id="radioChoise">
-								<input type="radio" id="productStatus1" name="productStatus" value="보통"> 보통
+								<input type="radio" id="productStatus1" name="product_status" value="0"> 보통
 							</label><br>
 							<label id="radioChoise">
-								<input type="radio" id="productStatus2" name="productStatus" value="좋은상태"> 좋은상태
+								<input type="radio" id="productStatus2" name="product_status" value="1"> 좋은상태
 							</label><br>
 							<label id="radioChoise">
-								<input type="radio" id="productStatus3" name="productStatus" value="새상품"> 새상품<br>
+								<input type="radio" id="productStatus3" name="product_status" value="2"> 새상품<br>
 							</label>
 						</li>
 					</ul>
@@ -808,10 +806,10 @@ var checkedValue = radioButton.value;
 					<ul id="ulLine">
 						<li class="trade_methodRadio">
 							<label id="radioChoise">
-								<input type="radio" id="trade_method" name="trade_method" value="대면거래"> 대면거래
+								<input type="radio" id="trade_method" name="trade_method" value="0"> 대면거래
 							</label><br>
 							<label id="radioChoise">
-								<input type="radio" id="trade_method" name="trade_method" value=""> 소심거래
+								<input type="radio" id="trade_method" name="trade_method" value="1"> 소심거래
 							</label><br>
 						</li>
 					</ul>

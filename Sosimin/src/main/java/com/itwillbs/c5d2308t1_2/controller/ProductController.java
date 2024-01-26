@@ -73,33 +73,45 @@ public class ProductController {
 
 	
 	@PostMapping("ProductRegistSuccess")
-	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, @RequestParam("product_image") MultipartFile[] productImages, @RequestParam(value = "product_image_name", required = false) List<String> imageNames) {
-	    System.out.println(map);
-//	    if (productImages != null) {
-//	        for (MultipartFile productImage : productImages) {
-//	            System.out.println("파일 이름: " + productImage.getOriginalFilename());
-//	        }
-//	    }
-	    if (imageNames != null) {
-	        for (String name : imageNames) {
-	            System.out.println("파일 이름: " + name);
+	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model) {
+	    System.out.println("여기엔 뭐가 들었을까?" + map);
+	    
+//	    String money =  map.put("product_price", map.get("product_price").replace(",", ""));
+	    String product_price =  map.get("product_price").replace(",", ""); // 받아온 money값 ,때기
+	    
+	    StringBuilder tagNameBuilder = new StringBuilder(); // 태그 이름을 저장할 StringBuilder 객체 생성
+	    for (int i = 1; i <= 4; i++) {
+	        String tagNameKey = "tag_name" + i; // 태그 이름을 가져올 맵의 키 생성 (예: "tag_name1")
+	        String tagNameValue = map.get(tagNameKey); // 맵에서 태그 이름 값 가져오기
+
+	        if (tagNameValue != null) {
+	            tagNameBuilder.append("#" + tagNameValue + " "); // 태그 이름이 null이 아닐때 추가 (문자열 결합사용)
 	        }
 	    }
-	    return "ProductDetail";
+	    String tag_name = tagNameBuilder.toString(); // null이 아닐시 받아온 태그값 tag_name에 저장
+	    
+	    String address = map.get("trade_place"); // 가져온 주소값 
+	    String[] addressSplit = address.split(" "); // 공백으로 나눈다
+	    String gu = addressSplit[1]; // 구 가져오기
+	    String dong = addressSplit[2]; // 동 가져오기
+	    
+	    map.put("tag_name", tag_name); 
+		map.put("product_price" , product_price);
+		map.put("gu", gu);
+		map.put("dong", dong);
+		
+		System.out.println("뭐가 나올까요 : " + gu + "여기는?" + dong);
+//		System.out.println("태그네임결합 : " + tag_name);
+		
+		
+		int successInsert = service.productRegist(map);
+		if(successInsert > 0 ) {
+			System.out.println("성공");
+		} 
+	
+	    return "products/productDetail";
 	}
 		
-//	    map.put("product_price", map.get("product_price").replace(",", ""));
-//		String tag_name =  map.get("tag_name1") + map.get("tag_name2") + map.get("tag_name3")+ map.get("tag_name4");
-//		System.out.println(tag_name);
-//		map.put("tag_name", tag_name);
-//		System.out.println("가격 변경 : " + map.get("product_price"));
-		
-		
-//		int successInsert = service.productRegist(map);
-//		if(successInsert > 0 ) {
-//			System.out.println("성공");
-//		} 
-//	}
 	
 	// 상품 상세페이지
 	@GetMapping("ProductDetail")

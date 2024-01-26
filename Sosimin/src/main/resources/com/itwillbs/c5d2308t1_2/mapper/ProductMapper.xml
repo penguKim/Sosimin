@@ -15,26 +15,20 @@
 			, #{product_price}
 			, #{product_txt}
 			, #{product_category}
-			, '태그네임'
-			, '상품이미지1' 
-			, null  
-			, '상품이미지3' -- 주석  
-			, '상품이미지4'  
-			, '상품이미지5'  
+			, #{tag_name}
+			, #{product_image1} 
+			, #{product_image2}  
+			, #{product_image3}  
+			, #{product_image4}  
+			, #{product_image5}  
 			, now()
-			, 0
-			, '전포동'
+			, #{trade_method}
+			, #{product_status}
+			, #{gu}
+			, #{dong}
 			, 0
 		)
 	</insert>	
 	
-	<!-- 상품 게시글 등록 - INSERT -->
-	<insert id="productBoardInsert">
-		INSERT INTO Product_board
-		VALUES (
-			null
-			, 
-		)
-	</insert>
 
 </mapper>
