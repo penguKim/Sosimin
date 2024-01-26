@@ -229,9 +229,9 @@
 	font-size: large;
 }
 
-a {
-	all: unset;
-}
+/* a { */
+/* 	all: unset; */
+/* } */
 
 /* 프로필 영역 */
 #profileArea {
@@ -268,16 +268,31 @@ a {
 	margin-top: 10px;
 }
 
-#profileRightUpperLeft a {
-	font-size: small;
-}
-
 #profileRightUpperRight {
 	display: inline-block;
 	float: right;
 	margin-top: 15px;
 	margin-right: 15px;
 	font-size: smaller;
+}
+
+#profileRightUpperRight a {
+	font-size: small;
+	color: #888;
+}
+
+#startChat {
+	font-size: small;
+	color: #fecb00 !important;
+}
+
+#reportBtn {
+	font-size: small;
+	color: red !important;
+}
+
+#profileRightUpperRight a:hover {
+	color: #39d274 !important;
 }
 
 #profileRightUpperRight img {
@@ -334,18 +349,18 @@ a {
 /* 	padding:1px 60px 5px; */
 /* } */
 
-#tabArea {
+#filterArea {
 	width: 1200px;
 	height: 25px;
 	margin: 0 auto;
 	margin-top: 60px;
 }
 
-#tabArea ul {
+#filterArea ul {
 	float: right;
 }
 
-#tabArea li {
+#filterArea li {
 	float: left;
 	margin: 1px 10px;
 }
@@ -354,7 +369,7 @@ a {
 /* ---------- 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 --------------- */
 #wholeProductArea {
 	width: 1200px;
-	margin: 0 auto;
+	margin: 0 auto 30px;
 	text-align: center;
 	padding: 0 !important;
 	
@@ -561,7 +576,7 @@ a {
 
 #wholeCommunityArea {
 	width: 1200px;
-	margin: 0 auto;
+	margin: 0 auto 30px;
 	text-align: center;
 	padding: 0 !important;
 }
@@ -714,4 +729,18 @@ a {
 #communityReplyLeftBottom p {
 	margin-top: 80px;
     margin-left: -100px;
+}
+
+
+/* 판매자 페이지 CSS */
+#sellerAuthArea {
+	font-size: smaller;
+	display: inline-block;
+}
+
+#sellerAuthArea img {
+	width: 12px;
+    height: 12px;
+    margin-left: 2px;
+    margin-bottom: 2px;
 }

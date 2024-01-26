@@ -83,7 +83,7 @@
 				</div>
 				<div class="col-lg-6 col-md-6 col-12">
 					<ul class="breadcrumb-nav">
-						<li><a href="index.html"><i class="lni lni-home"></i>
+						<li><a href="./"><i class="lni lni-home"></i>
 								Home</a></li>
 						<li>회원가입</li>
 					</ul>

@@ -86,19 +86,23 @@
 	</header>
 	<!-- End Header Area -->
 	
+	<%-- 신고하기 기능 --%>
+	<jsp:include page="../report/report.jsp"></jsp:include>
+	
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">내 상점</h1>
+                        <h1 class="page-title">판매자 정보</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
-                        <li>내 상점</li>
+                        <li>상품 정보</li>
+                        <li>판매자 정보</li>
                     </ul>
                 </div>
             </div>
@@ -116,25 +120,34 @@
 					<div id="profileRightUpperLeft">
 						<b id="bold">닉네임</b>&nbsp;&nbsp;&nbsp;&nbsp;
 							<!-- 인증 완료된 경우 예시 -->
-							<p id="sellerAuthArea">
-							동네인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
-							&nbsp;&nbsp;&nbsp;&nbsp;본인인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
-							</p>
-							<!-- 인증 완료되지않은 경우 예시 -->
 <!-- 							<p id="sellerAuthArea"> -->
-<%-- 							동네인증<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> --%>
-<%-- 							&nbsp;&nbsp;&nbsp;&nbsp;본인인증<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> --%>
+<%-- 							동네인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"> --%>
+<%-- 							&nbsp;&nbsp;&nbsp;&nbsp;본인인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"> --%>
 <!-- 							</p> -->
+							<!-- 인증 완료되지않은 경우 예시 -->
+							<p id="sellerAuthArea">
+							동네인증<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png">
+							&nbsp;&nbsp;&nbsp;&nbsp;본인인증<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png">
+							</p>
 					</div>
 					<div id="profileRightUpperRight">
+<!-- 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewViewFrom"> -->
+<!-- 							후기 보기 모달창 -->
+<!-- 						</button> -->
 						<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewViewFrom">
 							<img src="${pageContext.request.contextPath}/resources/images/member/reviewicon.png">
 							받은 후기
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="" data-bs-toggle="modal" data-bs-target="" id="">
-							<img src="${pageContext.request.contextPath}/resources/images/member/usericon.png">
-							내 정보 수정
+						<a href="" data-bs-toggle="modal" data-bs-target="" id="startChat">
+							<img src="${pageContext.request.contextPath}/resources/images/member/chaticon.png">
+							채팅하기
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="" data-bs-toggle="modal" data-bs-target="#memberModal" id="reportBtn">
+							<img src="${pageContext.request.contextPath}/resources/images/member/reporticon.png">
+							신고하기
+						</a>
+<%-- 						동네인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"> --%>
+<%-- 						&nbsp;&nbsp;&nbsp;&nbsp;본인인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"> --%>
 					</div>
 					<section id="profileRightMiddle">
 						<span>Lv.3</span>
@@ -160,10 +173,6 @@
 	<div id="categoryArea" class="btn-group col categoryBtn" role="group" aria-label="Basic radio toggle button group">
 	  <input type="radio" class="btn-check" name="category" id="allCategory" value="판매내역" autocomplete="off" checked="">
 	  <label class="btn btn-outline-primary" for="allCategory">판매내역</label>
-	  <input type="radio" class="btn-check" name="category" id="hotCategory" value="구매내역" autocomplete="off">
-	  <label class="btn btn-outline-primary" for="hotCategory">구매내역</label>
-	  <input type="radio" class="btn-check" name="category" id="infoCategory" value="찜 목록" autocomplete="off">
-	  <label class="btn btn-outline-primary" for="infoCategory">찜 목록</label>
 	  <input type="radio" class="btn-check" name="category" id="questionCategory" value="커뮤니티 작성 글" autocomplete="off">
 	  <label class="btn btn-outline-primary" for="questionCategory">커뮤니티 작성 글</label>
 	  <input type="radio" class="btn-check" name="category" id="dailyCategory" value="커뮤니티 작성 댓글" autocomplete="off">
@@ -207,6 +216,8 @@
 	    <div class="product-details-info" id="wholeProductArea">
 
 	    	<!-- 판매내역 옵션1-1 판매 중(끌올 불가) -->
+	    	<!-- 현재 hover시 singleProductArea 영역 모두 opacity 되도록 설정됨 -->
+	    	<!-- 이후에 판별 후 거래완료인 상품만 opacity 되도록 수정 -->
 	        <div class="single-block" id="singleProductArea">
 				<img src="${pageContext.request.contextPath}/resources/images/products/product-1.jpg">
 

@@ -97,5 +97,20 @@ public class MemberController {
 	public String MyPage2() {
 		return "member/myPage2";
 	}
+
+	// *********** 판매자 페이지 **************
+	// 뷰 제작 작업의 편의성을 위해 판매자 페이지는 임시로 서블릿 나눠서 매핑
+	// 판매자 페이지 상품 관련 탭(판매내역, 구매내역, 관심목록)
+	@GetMapping("SellerInfo")
+	public String SellerInfo() {
+		return "member/sellerInfo";
+	}
+	
+	// 판매자 페이지 커뮤니티 관련 탭(커뮤니티 작성글, 커뮤니티 작성 댓글)
+	@GetMapping("SellerInfo2")
+	public String SellerInfo2() {
+		return "member/sellerInfo2";
+	}
+	
 	
 }
