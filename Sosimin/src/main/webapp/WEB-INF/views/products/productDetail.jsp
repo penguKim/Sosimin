@@ -11,9 +11,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
-<%-- 1. 신고하기 기능 --%>
-<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
+	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 
 
 <!--     <meta http-equiv="x-ua-compatible" content="ie=edge" /> -->
@@ -31,13 +29,14 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
-	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
     
      <!-- ========================= JS here ========================= -->
-    <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
+     <%-- 신고하기 아코디언 부서짐 필요하면 다시 살리기 --%>
+<%--     <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script> --%>
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 
 </head>
 <style>
@@ -449,7 +448,9 @@ function Proposal() {
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/시간.png" width="25" height="25">
 	                        		몇일전
 	                        	</div>
-	                        	<button class="police" id="reviewCheckForm" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+	                        	<%-- 신고하기 --%>
+	                        	<button class="police" id="reviewCheckForm" type="button" class="btn btn-primary" 
+	                        	data-bs-toggle="modal" data-bs-target="#reportModal">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/product-details/신고하기.png" width="25" height="25">
 	                        		신고하기
 	                        	</button>

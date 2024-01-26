@@ -35,4 +35,38 @@ public class ProductController {
 		return"products/Proposal";
 	}
 	
-}
+	
+	// =============================== 관리자 페이지
+	// 등록 상품 목록
+	@GetMapping("ProductList")
+	public String productList() {
+		
+		return "admin/productList";
+	}
+	
+	@GetMapping("ProductListDetail")
+	public String productListDetail() {
+		
+		return "admin/productListDetail";
+	}
+	
+}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

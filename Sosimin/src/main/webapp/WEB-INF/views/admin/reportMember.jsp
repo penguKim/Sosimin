@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Sosimin</title>
 </head>
 <body>
-
+	<h1>회원 신고 목록</h1>
 </body>
 </html>
