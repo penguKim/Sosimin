@@ -82,14 +82,25 @@ function price(input) {
 }
 
 function salePrice(money) {
-	var normalMoney = $("#priceInput").val(); // 가격창에 있는 기본 가격
-	var moneyReplace = parseInt(normalMoney.replace(",","")); // 가격창에 있는 기본 가격 , 때고 int로 변환
-	var money = parseInt(money); // -2,000원 int 타입으로 변환
-	var moneySale = moneyReplace - money; // 원래있던 가격과 -2,000원 가격 뺀가격
+// 	var normalMoney = $("#priceInput").val(); // 가격창에 있는 기본 가격
+// 	var moneyReplace = parseInt(normalMoney.replace(",","")); // 가격창에 있는 기본 가격 , 때고 int로 변환
+// 	var money = parseInt(money); // -2,000원 int 타입으로 변환
+// 	var moneySale = moneyReplace - money; // 원래있던 가격과 -2,000원 가격 뺀가격
 	
     var int1 = document.getElementById("priceInput").value;
+    int1 = parseInt(int1.replace(",",""));
+	var int2 = document.getElementById("price2000").value;
+    int2 = parseInt(int2);
+    
+    int3 = int1 - int2;
 	
-	alert(int1);
+    
+    alert(int1)
+    
+//     document.getElementById("proposalProductPrice").value = int3;
+    
+    
+	
 };
 
 </script>

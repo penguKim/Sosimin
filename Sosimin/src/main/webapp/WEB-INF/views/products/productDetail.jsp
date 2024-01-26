@@ -120,7 +120,7 @@
 }
 #threeButton{
 	position: relative;
-	top: 35px;
+	top: 80px;
 	padding-bottom: 90px;
 }
 #chatButton{
@@ -137,7 +137,7 @@
 #likeImage{
 	display:inline-block;
 	position:relative;
-	right:50px;
+	right:70px;
 	bottom:4px;
 	z-index: 2;
 }
@@ -308,6 +308,10 @@
 	width: 193px;
 	bottom: 27px;
 }
+#tradeMethodDiv{
+	display:inline-block;
+	position: relative;
+}
 </style>
 <script>
 
@@ -455,32 +459,36 @@ function Proposal() {
                         <div>
                         	<div id="productStatusDiv">
                         		<span style="font-size: 6px;">●</span>
-                        		<div id="productStatus">상품상태</div>
+                        			<div id="productStatus">상품상태</div>
                         	 </div>
                         	 <div id="productStatusData">
                         	 	찢어지기직전
                         	 </div>
                         	 <div>
-                        	 <div id="productStatusDiv">
-                        		<span style="font-size: 6px;">●</span>
-                        		<div id="productStatus">거래지역</div>
+	                        	 <div id="productStatusDiv">
+	                        		<span style="font-size: 6px;">●</span>
+                        				<div id="productStatus">거래지역</div>
+	                        	 </div>
+	                        	 <div id="productStatusData">
+	                        	 	너네집과 우리집중간 어디쯤..
+	                        	 </div>
                         	 </div>
-                        	 <div id="productStatusData">
-                        	 	너네집과 우리집중간 어디쯤..
-                        	 </div>
+                        	 <div>
+	                        	 <div id="tradeMethodDiv">
+	                        		<span style="font-size: 6px;">●</span>
+	                        			<div id="productStatus">거래방법</div>
+	                        	 </div>
+	                        	 <div id="productStatusData">
+	                        	 	대면거래
+	                        	 </div>
                         	 </div>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-12">
-	                         <div class="wish-button" id="priceProposal">
-	                             <button class="btn" style="width:174px; height: 60px; font-size: 20px;" onclick="Proposal()">가격제안</button>
-	                         </div>
-                         </div>
                          <div class="bottom-content" id="threeButton">
                              <div class="row align-items-end">
                                  <div class="col-lg-4 col-md-4 col-12">
                                      <div class="button cart-button" id="likeButtonDiv">
                                         <button class="btn" style="width: 100%; height: 60px;" id="likeButton">
-                                        <span id="likeText">찜</span>
+                                        <span id="likeText">관심</span>
                                      		<img src="${pageContext.request.contextPath}/resources/images/product-details/찜하트모양.png" width="25" height="25" id="likeImage">
                                         <span id="likeButtonSpan">516</span>
                                         </button>
@@ -491,11 +499,11 @@ function Proposal() {
                                          <button class="btn" style="height: 60px;" id="chatButton"> 1:1채팅</button>
                                      </div>
                                  </div>
-                                 <div class="col-lg-4 col-md-4 col-12">
-                                     <div class="wish-button">
-                                         <input type="submit" class="btn" style="height: 60px;" id="nowPay" value="바로구매">
-                                     </div>
-                                 </div>
+	     						 <div class="col-lg-4 col-md-4 col-12">
+		                         <div class="wish-button" id="priceProposal">
+		                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; background-color: #39d274" onclick="Proposal()">가격제안</button>
+		                         </div>
+                         </div>
                              </div>
                          </div>
                          <hr>

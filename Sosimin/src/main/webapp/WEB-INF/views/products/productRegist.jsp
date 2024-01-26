@@ -381,6 +381,14 @@ padding-top: 21px;
  	padding-right: 30px;
  	width:1360px;
  } 
+ #priceText{
+ 	position: relative;
+ 	top: 20px;
+ }
+ .trade_methodDiv{
+ 	position: relative;
+ 	bottom:11px;
+ }
 </style>
 </head>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
@@ -755,21 +763,34 @@ function addFileInput() {
 						</li>
 					</ul>
 				</div>
+				<hr>
+				<div>
+					<div id="divLine" class="trade_methodDiv">
+						<p>거래방법<span>*</span></p>
+					</div>
+					<ul id="ulLine">
+						<li class="trade_methodRadio">
+							<label id="radioChoise">
+								<input type="radio" id="trade_method" name="trade_method"> 대면거래
+							</label><br>
+							<label id="radioChoise">
+								<input type="radio" id="trade_method" name="trade_method"> 비대면거래
+							</label><br>
+						</li>
+					</ul>
+				</div>
 				
 				<hr>
 				<div>
 					<div id="divLine" class="price">
 						<ul>
-							<li class="th"><p>가격<span>*</span></p></li>
+							<li id="priceText"><p>가격<span>*</span></p></li>
 						</ul>
 					</div>
 						<ul id="ulLine">
 							<li>
 								<input type="text" id="priceInput" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11">원
 								<div id="priceProposal">
-									<label>
-										<input type="checkbox"> 가격제안 받기
-									</label>
 								</div>
 							</li>
 						</ul>
