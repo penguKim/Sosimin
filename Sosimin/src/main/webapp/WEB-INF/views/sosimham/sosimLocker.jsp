@@ -84,14 +84,22 @@
 	
 	<h1> 소심함 무인택배함 </h1>
 	 <!-- Example single danger button -->
-	
-	<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
-		<c:forEach var="i" items="${resultMap}" varStatus="status" >
-			<input type="radio" class="btn-check" name="category" id="${i.key}" value="${i.key}" autocomplete="off" >
-			<label class="btn btn-outline-primary" for="${i.key}">${i.key}</label>
-		</c:forEach>
-	</div>
-	
+			<div class="btn-group">
+			  <button type="button" class="btngu btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+			    구 선택
+			  </button>
+			  <ul class="dropdown-menu">
+			  	<c:forEach var="i" items="${resultMap}" >
+			    	<li><a class="dropdown-item itemGu" href="#">${i.key}</a></li>
+			    </c:forEach>
+			  </ul>
+			  <button type="button" class="btndong btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+			    동 선택
+			  </button>
+			  <ul class="dropdown-menu dongSelect">
+			  	<li><a class="dropdown-item itemDong" href="#">구를 먼저 선택해주세요.</a></li>
+			  </ul>
+			 </div>
 			<hr>
 				<input type="hidden" value="${theaterName}">
 					<c:set var="theaterName" value="${theaterName.theater_name}"></c:set>
@@ -114,27 +122,16 @@
 				</a>
 			</div>
 			
-			<div class="btn-group">
-			  <button type="button" class="btngu btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-			    구 선택
-			  </button>
-			  <ul class="dropdown-menu">
-			  	<c:forEach var="i" items="${resultMap}" >
-			    	<li><a class="dropdown-item itemGu" href="#">${i.key}</a></li>
-			    </c:forEach>
-			  </ul>
-			  <button type="button" class="btndong btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-			    동 선택
-			  </button>
-			  <ul class="dropdown-menu dongSelect">
-			  	<li><a class="dropdown-item itemDong" href="#">구를 먼저 선택해주세요.</a></li>
-			  </ul>
-			 </div>
 			<ul class="tab-menu" id="menu">
+		    	<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
+					<c:forEach var="i" items="${resultMap}" varStatus="status" >
+						<input type="radio" class="btn-check" name="category" id="${i.key}" value="${i.key}" autocomplete="off" >
+						<label class="btn btn-outline-primary" for="${i.key}">${i.key}</label>
+					</c:forEach>
+				</div>
 		        <li class="on"><a href="movieSelect?theater_name=${theaterName.theater_name}" title="현재 선택됨">예매하기</a></li>
 		        <li class="last" onclick=""><a href="theater_parking?theater_name=${theaterName.theater_name}" id="carOk">위치/주차안내</a></li>
 		    </ul>
-		    
 		    
 			<div id="theater_top">
 				<div id="theater_price">

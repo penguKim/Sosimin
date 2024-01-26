@@ -51,7 +51,7 @@ public class ComponentController {
 		JSONObject object = new JSONObject(resultMap);
 		System.out.println("object test : " + object);
 		model.addAttribute("resultMap",resultMap);
-		model.addAttribute("object",object);
+		model.addAttribute("object",resultMap);
 		return "sosimham/sosimLocker";
 		
 	}

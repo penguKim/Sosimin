@@ -3864,7 +3864,7 @@ fieldset:disabled .btn {
 }
 
 .collapse:not(.show) {
-    display: none
+/*     display: none */
 }
 
 .collapsing {
@@ -4611,7 +4611,7 @@ fieldset:disabled .btn {
     }
 
     .navbar-expand-md .navbar-toggler {
-        display: none
+/*         display: none */
        
     }
 }
@@ -4679,7 +4679,7 @@ fieldset:disabled .btn {
     }
 
     .navbar-expand-xl .navbar-toggler {
-        display: none
+/*         display: none */
     }
 }
 
@@ -4712,7 +4712,7 @@ fieldset:disabled .btn {
     }
 
     .navbar-expand-xxl .navbar-toggler {
-        display: none
+/*         display: none */
     }
 }
 
@@ -4744,7 +4744,7 @@ fieldset:disabled .btn {
 }
 
 .navbar-expand .navbar-toggler {
-    display: none
+/*     display: none */
 }
 
 .navbar-light .navbar-brand {
