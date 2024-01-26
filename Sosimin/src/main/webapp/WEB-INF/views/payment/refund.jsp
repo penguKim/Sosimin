@@ -34,36 +34,116 @@ $(function() {
 		}
 	});
 	
-    let value = 0;
+	let input_amount = 0; // 인풋텍스트에 입력한 값을 담을 변수
+    let total_amount = 0; // 총 금액을 담을 변수
 	// 가격 버튼을 클릭할 때
 	$('.btn-check').click(function() {
+		if(!$('#pay-amount').val() == "") {
+			input_amount = parseInt($('#pay-amount').val().replace(/,/g, '')); // 인풋텍스트에 있는 값 숫자로 변환하여 대입			
+		}
+// 		console.log(input_amount);
 		// 클릭한 버튼의 값을 더하기
-		value += parseInt($(this).val());
+		total_amount = input_amount + parseInt($(this).val());
 
-		let formattedValue = value.toLocaleString();
+		let formattedValue = total_amount.toLocaleString(); // 1000단위마다 ,
         $('#pay-amount').val(formattedValue);
-		
+	});
+    
+	// 금액에 자동으로 , 입력
+	$("#pay-amount").blur(function() {
+		if(!$('#pay-amount').val() == "") {
+			input_amount = parseInt($('#pay-amount').val().replace(/,/g, '')); // 인풋텍스트에 있는 값 숫자로 변환하여 대입			
+		}
+
+		let formattedValue = input_amount.toLocaleString(); // 1000단위마다 ,
+        $('#pay-amount').val(formattedValue);
 	});
 	
 	// 비밀번호를 입력하고 등록버튼을 눌렀을 때 
-	$("form").submit(function() {
+	$("#passwd-btn").click(function() {
+		// 비밀번호 일치 여부 확인
+		let input_passwd = $('#pay-password').val();
+		let is_correct_passwd = false;
+		
+		console.log("input_passwd = " + input_passwd + ", is_correct_passwd = " + is_correct_passwd)
+		
+		$.ajax({
+			type: "GET",
+			url: "PasswdCheck",
+			data: {
+				"input_passwd": input_passwd
+			},
+			success:  function(data) {
+				if(data == "true") {
+					is_correct_passwd = true;
+				}
+			},
+			error: function(request, status, error) {
+		      // 요청이 실패한 경우 처리할 로직
+		      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+			}
+		});
+		
 		let regPw = /^\d{6}$/; // 6자리의 숫자를 표현한 정규표현식
 		
-		if(confirm("페이머니를 환급하시겠습니까?")) { // 컨펌창을 띄우고
-			if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
-				alert("숫자 6자리를 입력해주세요");
-				return false; // 계좌가 등록되지 않음
-			}
-			return true;
-		} 
+		event.preventDefault();
+		Swal.fire({
+	        title: '페이머니를 환급하시겠습니까?',
+	        text: "등록된 계좌로 환급이 진행됩니다.",
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '환급',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	        	if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
+					event.preventDefault();
+					$('#pay-password').val('');
+					Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: '숫자 6자리를 입력해주세요.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+				} else if(!is_correct_passwd) { // 비밀번호가 일치하지 않으면
+	        		event.preventDefault();
+	        		$('#pay-password').val('');
+	        		Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: '비밀번호가 일치하지 않습니다.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+				} else {
+					$("#pay-refund").submit();
+				}
+	        } else {
+	        	$('#password-modal').modal('hide'); // 모달창 닫기
+	        }
+	    });
 	});
+
 });
 
-// 모달 창을 열 때
+//모달 창을 열 때
 function openModal() {
 	event.preventDefault(); 
 	if($('#pay-amount').val() == null || $('#pay-amount').val() == 0) {
-		alert("값을 입력해주세요");
+		Swal.fire({
+			position: 'center',
+			icon: 'error',
+			title: '환급 금액을 입력해주세요.',
+			showConfirmButton: false,
+			timer: 2000,
+			toast: true
+		});
 		$('#pay-amount').focus();
 	} else {
 	    $('#password-modal').modal('show');
@@ -108,7 +188,7 @@ function openModal() {
     <!-- End Breadcrumbs -->
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
-	<form action="PayRefundPro" method="post">
+	<form action="PayRefundPro" method="post" id="pay-refund">
 		<div class="account-login section">
 	        <div class="container">
 	            <div class="row">
@@ -145,20 +225,21 @@ function openModal() {
 								    <label class="btn btn-outline-primary" for="btn-check3">+5만원</label>
 							        <input type="button" class="btn-check" id="btn-check4" value="100000" autocomplete="off">
 								    <label class="btn btn-outline-primary" for="btn-check4">+10만원</label>
-								</div>
-	                            
+								</div>      
 	                            <div class="msg">입금 계좌 확인</div>
-	                             <!-- 계좌리스트 한 줄 시작 -->
+	                            <!-- 계좌리스트 한 줄 시작 -->
 	                            <div class="account-info">    
 				                    <div class="row">
-				                        <div class="col-lg-3 col-md-3 col-12">
-				                           은행마크
+				                       <div class="col-lg-2 col-md-2 col-12" style="text-align: center;">
+				                       		<img src="./resources/images/payment/${payInfo.bank_name}.png" alt="이미지" width="50px"/>
 				                        </div>
-				                        <div class="col-lg-9 col-md-9 col-12">
+				                        <div class="col-lg-10 col-md-10 col-12">
 					                        <h5 class="bank-name">${payInfo.bank_name}</h5>
 					                        <p class="account-no">
 					                                ${payInfo.account_num_masked}
 					                         </p>
+					                         <input type="hidden" name="pay_id" value="${payInfo.pay_id}">
+					                         <input type="hidden" name="user_name" value="${payInfo.user_name}">
 					                         <input type="hidden" name="fintech_use_num" value="${payInfo.fintech_use_num}">
 				                   		</div>
 				                   	</div>

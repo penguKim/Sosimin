@@ -393,7 +393,16 @@ public class PaymentController {
 	
 	// 페이 충전 실패 페이지로 이동
 	@GetMapping("PayChargeRefused")
-	public String payChargeRefused() {
+	public String payChargeRefused(HttpSession session, Model model) {
+		String member_id = (String)session.getAttribute("sId");
+		
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		log.info("payInfo = " + payInfo);
+		
+		payInfo.put("pay_amount", session.getAttribute("pay_amount"));
+		
+		model.addAttribute("payInfo", payInfo);
+		
 		return "payment/chargeRefused";
 	}
 	

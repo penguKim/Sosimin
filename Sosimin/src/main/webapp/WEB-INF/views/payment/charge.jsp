@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,6 +47,16 @@ $(function() {
 		total_amount = input_amount + parseInt($(this).val());
 
 		let formattedValue = total_amount.toLocaleString(); // 1000단위마다 ,
+        $('#pay-amount').val(formattedValue);
+	});
+    
+	// 금액에 자동으로 , 입력
+	$("#pay-amount").blur(function() {
+		if(!$('#pay-amount').val() == "") {
+			input_amount = parseInt($('#pay-amount').val().replace(/,/g, '')); // 인풋텍스트에 있는 값 숫자로 변환하여 대입			
+		}
+
+		let formattedValue = input_amount.toLocaleString(); // 1000단위마다 ,
         $('#pay-amount').val(formattedValue);
 	});
 
@@ -208,13 +219,13 @@ function openModal() {
 								    <label class="btn btn-outline-primary" for="btn-check4">+10만원</label>
 								</div>
 	                            <div class="msg">출금 계좌 확인</div>
-	                             <!-- 계좌리스트 한 줄 시작 -->
+	                            <!-- 계좌리스트 한 줄 시작 -->
 	                            <div class="account-info">    
 				                    <div class="row">
-				                        <div class="col-lg-3 col-md-3 col-12">
-				                           은행마크
+				                       <div class="col-lg-2 col-md-2 col-12" style="text-align: center;">
+				                       		<img src="./resources/images/payment/${payInfo.bank_name}.png" alt="이미지" width="50px"/>
 				                        </div>
-				                        <div class="col-lg-9 col-md-9 col-12">
+				                        <div class="col-lg-10 col-md-10 col-12">
 					                        <h5 class="bank-name">${payInfo.bank_name}</h5>
 					                        <p class="account-no">
 					                                ${payInfo.account_num_masked}
