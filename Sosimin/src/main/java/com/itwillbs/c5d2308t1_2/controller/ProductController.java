@@ -103,6 +103,9 @@ public class ProductController {
 		System.out.println("뭐가 나올까요 : " + gu + "여기는?" + dong);
 //		System.out.println("태그네임결합 : " + tag_name);
 		
+		// 해야하는거 이미지 변환해서 upload에 하는거하기
+		// 임시저장?로컬스토리지 머시기
+		// 등록이 됐을때 상품목록에도 동시에 뿌려지는 트랜잭션 처리
 		
 		int successInsert = service.productRegist(map);
 		if(successInsert > 0 ) {

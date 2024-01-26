@@ -17,10 +17,10 @@
 			, #{product_category}
 			, #{tag_name}
 			, #{product_image1} 
-			, #{product_image2}  
-			, #{product_image3}  
-			, #{product_image4}  
-			, #{product_image5}  
+	        , <if test="product_image2 != null">#{product_image2}</if>NULL
+	        , <if test="product_image3 != null">#{product_image3}</if>NULL
+	        , <if test="product_image4 != null">#{product_image4}</if>NULL
+	        , <if test="product_image5 != null">#{product_image5}</if>NULL
 			, now()
 			, #{trade_method}
 			, #{product_status}
