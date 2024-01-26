@@ -6,7 +6,6 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>Sosimin</title>
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
@@ -656,7 +655,7 @@ function addFileInput() {
 <div id="background">
 	<div class="container content-wrapper">
 		<div class="addBox">
-			<form id="addForm" name="addForm" class="add-form" th:action="@{/admin/product/add}" method="post" enctype="multipart/form-data">
+			<form id="addForm" name="addForm" class="add-form" action="ProductRegistSuccess" method="post" enctype="multipart/form-data">
 				<br><br>
 				<h4>기본정보</h4><span id="required">*필수항목</span><br>
 				<hr style="border:0; height:3px; color:black;">
@@ -692,7 +691,7 @@ function addFileInput() {
 							<li class="td">
 						</ul>
 					</div>
-						<input type="text" id="productName" onkeyup="productKey()" maxlength="40" oninput="limitInputLength(this, 40)"
+						<input type="text" id="productName" name="product_name" onkeyup="productKey()" maxlength="40" oninput="limitInputLength(this, 40)"
 						placeholder="상품명을 입력해 주세요." class="text-box">
 						<a href="https://help.bunjang.co.kr/faq/2/220" target="_blank" id="tradeX">
 						 <span id="tradeXText">거래금지 품목 보기</span></a>
@@ -710,7 +709,7 @@ function addFileInput() {
 					</div>
 					<ul id="ulLine">
 						<li class="td">
-							<select id="categoryName" name="categoryName" class="dataTable-selector selector" onchange="addACategory();">
+							<select id="categoryName" name="product_category" class="dataTable-selector selector" onchange="addACategory();">
 								<option value="default">카테고리를 선택하세요.</option>
 								<option>패션잡화(모자/가방/지갑)</option>
 								<option>아우터</option>
@@ -739,7 +738,7 @@ function addFileInput() {
 							<li class="td">
 								<input type="hidden" id="map">
 									<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="내 위치"></div>
-								<input type="text" name="myMap" id="myMap" size="64" required disabled placeholder="지역을 설정해 주세요">
+								<input type="text" id="myMap" name="trade_place"  size="64" required disabled placeholder="지역을 설정해 주세요">
 							</li>
 						</ul>
 				</div>
@@ -789,7 +788,7 @@ function addFileInput() {
 					</div>
 						<ul id="ulLine">
 							<li>
-								<input type="text" id="priceInput" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11">원
+								<input type="text" id="priceInput" name="product_price" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11">원
 								<div id="priceProposal">
 								</div>
 							</li>
@@ -804,7 +803,7 @@ function addFileInput() {
 						</ul>
 					</div>
 					<div id="ulLine">
-						<textarea rows="6" cols="100" style="resize: none;" id="ProductDescription" maxlength="2000" onkeyup="ProductDescriptionKey()" 
+						<textarea rows="6" cols="100" style="resize: none;" id="ProductDescription" name="product_txt" maxlength="2000" onkeyup="ProductDescriptionKey()" 
 							oninput="limitInputLength2(this, 2000)" placeholder="구매시기,브랜드/모델명,제품의 상태(사용감,하자 유무) 등을 입력해 주세요"></textarea>
 					</div>
 					<div id="explanationLength">
@@ -820,7 +819,7 @@ function addFileInput() {
 						<input type="text" id="tagName" placeholder="태그를 입력해 주세요. (최대 4개 까지)" size="34" maxlength="9" onkeypress="handleKeyPress(event)">
 						<input type="button" value="등록" onclick="handleTagRegistration()" id="tagName2"><br><br>
 					</div>
-						<div id="tagContainer"></div><br>
+						<div id="tagContainer" name="tag_name"></div><br>
 						<div id="tagCs">
 						- 태그는 띄어쓰기로 구분되며 최대 9자까지 입력할 수 있어요.<br>
 						- 내 상품을 다양한 태그로 표현해 보세요.<br>

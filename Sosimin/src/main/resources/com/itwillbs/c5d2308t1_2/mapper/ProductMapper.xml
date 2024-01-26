@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.c5d2308t1_2.mapper.ProductMapper">
+	
+	<!-- 상품 등록 - INSERT -->
+	<insert id="productInsert">
+		INSERT INTO Product
+		VALUES (
+			null
+			, 'admin'
+			, #{product_name}
+			, #{product_price}
+			, #{product_txt}
+			, #{product_category}
+			, '태그네임'
+			, '상품이미지1' 
+			, null  
+			, '상품이미지3' -- 주석  
+			, '상품이미지4'  
+			, '상품이미지5'  
+			, now()
+			, 0
+			, '전포동'
+			, 0
+		)
+	</insert>	
+	
+	<!-- 상품 게시글 등록 - INSERT -->
+	<insert id="productBoardInsert">
+		INSERT INTO Product_board
+		VALUES (
+			null
+			, 
+		)
+	</insert>
+
+</mapper>
