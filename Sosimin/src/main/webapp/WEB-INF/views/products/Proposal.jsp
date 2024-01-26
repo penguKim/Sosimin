@@ -64,14 +64,6 @@
 	}
 </style>
 <script>
-function test() {
-	
-	var money = $("#priceInput").val();
-	var moneyReplace = money.replace(",","");
-	var price2000 = $("#price2000").val();
-	alert(moneyReplace);
-};
-
 function price(input) {
 	 
 	var value = input.value.replace(/[^0-9]/g, '');
@@ -81,31 +73,45 @@ function price(input) {
 	input.value = formattedValue;
 }
 
-function salePrice(money) {
-// 	var normalMoney = $("#priceInput").val(); // 가격창에 있는 기본 가격
-// 	var moneyReplace = parseInt(normalMoney.replace(",","")); // 가격창에 있는 기본 가격 , 때고 int로 변환
-// 	var money = parseInt(money); // -2,000원 int 타입으로 변환
-// 	var moneySale = moneyReplace - money; // 원래있던 가격과 -2,000원 가격 뺀가격
-	
-    var int1 = document.getElementById("priceInput").value;
-    int1 = parseInt(int1.replace(",",""));
-	var int2 = document.getElementById("price2000").value;
-    int2 = parseInt(int2);
-    
-    int3 = int1 - int2;
-	
-    
-    alert(int1)
-    
-//     document.getElementById("proposalProductPrice").value = int3;
+var isProcessing = false; // 처리 중인지 여부를 저장하는 변수
+
+function salePrice(discount) {
+    if (isProcessing) {
+        return false; // 이미 처리 중인 경우 함수를 종료
+    }
     
     
-	
-};
+    var normalMoney = $("#priceInput").val(); // 가격창에 있는 기본 가격
+    var moneyReplace = parseInt(normalMoney.replace(/,/g, "")); // 가격창에 있는 기본 가격의 쉼표를 제거하고 숫자로 변환
+    var discountInt = parseInt(discount); // 할인 금액을 숫자로 변환
+    var moneySale = moneyReplace - discountInt; // 원래 가격에서 할인 금액을 뺀 새로운 가격
+    
+    if(moneySale < 1000) {
+    	alert("1,000원보다 작을수 없습니다.");
+    }else {
+    // 결과를 표시하는 부분
+    $("#priceInput").val(moneySale.toLocaleString()); // 가격창에 새로운 가격을 표시
+    $("#test2").html(moneySale.toLocaleString() + "원"); // 다른 요소에도 새로운 가격을 표시
+    
+    }
+}
+
+
+// 버튼 클릭 이벤트를 jQuery로 바인딩
+$(document).ready(function(){
+    $("#price2000").click(function() {
+        salePrice(this.value);
+    });
+    $("#price3000").click(function() {
+        salePrice(this.value);
+    });
+    $("#price5000").click(function() {
+        salePrice(this.value);
+    });
+});
 
 </script>
 <body>
-	<form action="">
 		<div id="proposalBackground">
 			<div id="proposalThree">
 				<div id="proposalProductImage">
@@ -126,7 +132,7 @@ function salePrice(money) {
         <div class="col-lg-4 col-md-4 col-12">
 	        <div class="wish-button" id="priceProposal">
 	        	<div id="priceContainer">
-	            	<button class="btn" style="width:174px; height: 60px; font-size: 20px;" value="2000" id="price2000" onclick="salePrice(this.value)">- 2,000원</button><span></span>
+	            	<button class="btn" style="width:174px; height: 60px; font-size: 20px;" value="2000" id="price2000" onclick="salePrice(this.value)">- 2,000원</button>
 	            </div>
 	        	<div id="priceContainer">
 	            	<button class="btn" style="width:174px; height: 60px; font-size: 20px;" value="3000" id="price3000">- 3,000원</button>
@@ -136,6 +142,11 @@ function salePrice(money) {
 	            </div>
 	        </div>
         </div>
+        <input type="text" id="test3">
+        <div id="test2">
+        
+        </div>
+	<form action="">
 		<input type="submit" onclick="test()" value="제안하기">
 	</form>
 </body>

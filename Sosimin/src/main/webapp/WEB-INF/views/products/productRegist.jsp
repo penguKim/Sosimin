@@ -774,7 +774,7 @@ function addFileInput() {
 								<input type="radio" id="trade_method" name="trade_method"> 대면거래
 							</label><br>
 							<label id="radioChoise">
-								<input type="radio" id="trade_method" name="trade_method"> 비대면거래
+								<input type="radio" id="trade_method" name="trade_method"> 소심거래
 							</label><br>
 						</li>
 					</ul>
