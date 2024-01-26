@@ -103,14 +103,32 @@ $(function() {
         var normalMoney = $(this).val(); // 입력된 값 가져오기
         var moneyReplace = parseInt(normalMoney.replace(/,/g, "")); // 쉼표 제거 후 정수 변환
 
-        if (moneyReplace < 1000) { // 1000 이하인지 비교
-            $("#priceX").html("최소 가격인 1,000원보다 작을수 없습니다.");
-        
+        if (moneyReplace < 1000) { // 1000 이하인지 비교한다
+            $("#priceX").html("최소 가격인 1,000원보다 작을 수 없습니다.");
         } else {
-            $("#priceX").empty(); // 조건이 만족하지 않으면 메시지 제거
+            $("#priceX").empty(); // 조건이 만족하지 않으면 메시지 제거한다
         }
     });
 });
+
+function submit() {
+    var priceInput = $("#priceInput"); // 입력된 가격 가져오기
+    var moneyReplace = parseInt(priceInput.val().replace(/,/g, "")); // 쉼표 제거 후 정수 변환
+    
+    if (moneyReplace < 1000) { // 1000원보다 작은지 비교한다
+    	   alert("최소 가격보다 작습니다.");
+           priceInput.focus(); // 가격창에 focus 주기
+        return false; // submit 버튼 동작 중지
+    }
+    return true; // submit 버튼 동작 허용
+}
+
+$(document).ready(function() {
+    $("#proposal").click(function() {
+        return submit();
+    });
+});
+
 function price(input) {
 	 
 	var value = input.value.replace(/[^0-9]/g, '');
@@ -185,8 +203,8 @@ $(document).ready(function(){
 	            </div>
 	        </div>
         </div>
-	<form action="가라 1대1 채팅으로">
-		<input type="submit" onclick="test()" value="제안하기" id="proposal">
-	</form>
+		<form action="가라 1대1 채팅으로">
+		    <input type="submit" value="제안하기" id="proposal">
+		</form>
 </body>
 </html>

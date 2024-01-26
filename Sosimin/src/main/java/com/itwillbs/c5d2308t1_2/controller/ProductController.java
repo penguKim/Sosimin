@@ -1,5 +1,6 @@
 package com.itwillbs.c5d2308t1_2.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.c5d2308t1_2.service.ProductService;
 
@@ -47,26 +49,57 @@ public class ProductController {
 	}
 	
 	// 상품 등록
+//	@PostMapping("ProductRegistSuccess")
+//	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, @RequestParam("product_image") MultipartFile[] productImages) {
+//		
+//		System.out.println(map);
+//		
+//		List<String> fileNames = new ArrayList<>(); // 파일 이름을 저장하는 리스트 생성
+//			
+//		   for (int i = 0; i < productImages.length; i++) {
+//		        MultipartFile productImage = productImages[i];
+//		        if (!productImage.isEmpty()) {
+//		            // 파일이 존재할 경우 처리
+//		            String fileName = productImage.getOriginalFilename();
+//		            fileNames.add(fileName); // 리스트에 파일 이름 추가
+//		        }
+//		    }
+//		   // 모든 파일의 이름을 출력
+//		   for(String name : fileNames){
+//		       System.out.println("파일 이름: " + name);
+//		   }
+//		   return "ProductDetail";
+//	}
+
+	
 	@PostMapping("ProductRegistSuccess")
-	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model) {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>> : " + map);
-		map.put("product_price", map.get("product_price").replace(",", ""));
-		System.out.println(">>>>>>>>>>>>>>>" + map.get("product_name"));
-		System.out.println(">>>>>>>>>>>>>>>" + map.get("product_category"));
-		System.out.println(">>>>>>>>>>>>>>>" + map.get("product_txt"));
-		System.out.println(">>>>>>>>>>>>>>>" + map.get("product_price"));
+	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, @RequestParam("product_image") MultipartFile[] productImages, @RequestParam(value = "product_image_name", required = false) List<String> imageNames) {
+	    System.out.println(map);
+//	    if (productImages != null) {
+//	        for (MultipartFile productImage : productImages) {
+//	            System.out.println("파일 이름: " + productImage.getOriginalFilename());
+//	        }
+//	    }
+	    if (imageNames != null) {
+	        for (String name : imageNames) {
+	            System.out.println("파일 이름: " + name);
+	        }
+	    }
+	    return "ProductDetail";
+	}
 		
-		
-		System.out.println("가격 변경 : " + map.get("product_price"));
+//	    map.put("product_price", map.get("product_price").replace(",", ""));
+//		String tag_name =  map.get("tag_name1") + map.get("tag_name2") + map.get("tag_name3")+ map.get("tag_name4");
+//		System.out.println(tag_name);
+//		map.put("tag_name", tag_name);
+//		System.out.println("가격 변경 : " + map.get("product_price"));
 		
 		
 //		int successInsert = service.productRegist(map);
 //		if(successInsert > 0 ) {
 //			System.out.println("성공");
 //		} 
-		
-		return "products/productDetail";
-	}
+//	}
 	
 	// 상품 상세페이지
 	@GetMapping("ProductDetail")
