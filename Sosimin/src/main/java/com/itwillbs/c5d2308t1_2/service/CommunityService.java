@@ -87,7 +87,9 @@ public class CommunityService {
 	@Transactional
 	public int registReReply(CommunityReplyVO reply) {
 		// 기존 대댓글의 순서조정
-		mapper.updateReplySeq(reply);
+//		if(reply.getReply_re_lev() > 0) {
+			mapper.updateReplySeq(reply);
+//		}
 		
 		// 대댓글 작성 요청
 		return mapper.insertReReply(reply);

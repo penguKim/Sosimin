@@ -160,7 +160,30 @@
 	    });
 	}
 	
-	// 대댓글 입력
+	// 댓글 작성
+	function ReplyWrite() {
+		event.preventDefault();
+		if (!$(".needs-validation")[0].checkValidity()) {
+			event.stopPropagation();
+			$(".replyForm").addClass('was-validated');
+			Swal.fire({
+				position: 'center',
+				icon: 'error',
+				title: '내용을 입력해주세요.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			})
+			$("#replyTextarea").focus();
+			return;
+		} else {
+			 $(".needs-validation")[0].submit();
+		}
+		
+		
+	}
+	
+	// 대댓글 입력창
 	function reReplyWriteForm(reply_id, reply_re_ref, reply_re_lev, reply_re_seq) {
 		console.log(reply_id, reply_re_ref, reply_re_lev, reply_re_seq);
 		// 대댓글 말풍선 제거
@@ -195,7 +218,7 @@
 			Swal.fire({
 				position: 'center',
 				icon: 'error',
-				title: '항목을 입력해주세요.',
+				title: '내용을 입력해주세요.',
 				showConfirmButton: false,
 				timer: 2000,
 				toast: true
@@ -212,8 +235,6 @@
 			success: function(result) {
 				if(result == "true") {
 					location.reload(); // 페이지 갱신(POST 방식일 시 전달받은 데이터 유지,브라우저 갱신 이력 남지 않음)
-// 					location.href = location.href; // 현재페이지를 다시 할당해준다.
-// 					location.replace(location.href);
 				} else {
 					alert("댓글 삭제 실패!");
 				}
@@ -332,7 +353,7 @@
 			</div>
 			<section id="replyArea" class="reply rounded-3 p-4 w-50 mx-auto">
 <!-- 			<section id="replyArea" class="reply collapse rounded-3 p-4 w-50 mx-auto"> -->
-				<form action="CommunityReplyWrite" method="post" class="needs-validation d-flex justify-content-center">
+				<form action="CommunityReplyWrite" method="post" class="needs-validation replyForm d-flex justify-content-center">
 					<input type="hidden" name="community_id" value="${com.community_id }">
 					<input type="hidden" name="pageNum" value="${param.pageNum }">
 <%-- 					<input type="hidden" name="reply_writer" value="${sessionScope.sId }"> --%>
@@ -345,7 +366,7 @@
 <%-- 						</c:when> --%>
 <%-- 						<c:otherwise> --%>
 							<textarea class="form-control" id="replyTextarea" name="reply_content" required></textarea>
-							<input type="submit" class="btn btn-primary" value="댓글쓰기" id="replySubmit">
+							<input type="submit" class="btn btn-primary" value="댓글쓰기" id="replySubmit" onclick="ReplyWrite()">
 <%-- 						</c:otherwise> --%>
 <%-- 					</c:choose> --%>
 				</form>
@@ -376,6 +397,8 @@
 										<div class="row">
 											<div class="col">
 												<span class="align-middle">${reply.reply_content }</span>
+											</div>
+											<div class="col-1">
 												<span class="reDelBtn ms-3 align-middle float-end">
 													<a href="javascript:confirmReplyDelete(${reply.reply_id })">
 														<i class="fa fa-times-circle align-middle" style="font-size:18px"></i>

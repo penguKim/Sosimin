@@ -57,18 +57,26 @@ public class CommunityController {
 		
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
         
         for(CommunityVO datetime : communityList) {
         	LocalDateTime comDateTime = LocalDateTime.parse(datetime.getCommunity_datetime().toString(), formatter);
         	
             long minutes = Duration.between(comDateTime, now).toMinutes();
             long hours = minutes / 60;
+            hours %= 24;
             minutes %= 60;
-
             String timeAgo = "";
-            if (hours > 0) {
+            if (hours >= 24) { // 하루이상 차이날 때
+                if (comDateTime.getYear() == now.getYear()) {
+                    timeAgo = comDateTime.format(formatterMonthDay);
+                } else {
+                    timeAgo = comDateTime.format(formatterDate);
+                }
+            } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
                 timeAgo = hours + "시간 전";
-            } else if (minutes > 0) {
+            } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
                 timeAgo = minutes + "분 전";
             } else {
                 timeAgo = "방금 전";
@@ -240,20 +248,34 @@ public class CommunityController {
 		
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+        
+        // 게시시간 가져오기
     	LocalDateTime comDateTime = LocalDateTime.parse(map.get("community_datetime").toString(), formatter);
     	
         long minutes = Duration.between(comDateTime, now).toMinutes();
-        long hours = minutes / 60;
-        minutes %= 60;
-
-        String timeAgo = "";
-        if (hours > 0) {
-            timeAgo = hours + "시간 전";
-        } else if (minutes > 0) {
-            timeAgo = minutes + "분 전";
-        } else {
-            timeAgo = "방금 전";
-        }
+		System.out.println("처음 분계산 : " + minutes);
+		long hours = minutes / 60;
+		System.out.println("처음 시계산 : " + hours);
+		hours %= 24;
+		System.out.println("나머지 시계산 : " + hours);
+		minutes %= 60;
+		System.out.println("나머지 분계산 : " + minutes);
+		String timeAgo = "";
+		if (hours >= 24) { // 하루이상 차이날 때
+		    if (comDateTime.getYear() == now.getYear()) {
+		        timeAgo = comDateTime.format(formatterMonthDay);
+		    } else {
+		        timeAgo = comDateTime.format(formatterDate);
+		    }
+		} else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+		    timeAgo = hours + "시간 전";
+		} else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+		    timeAgo = minutes + "분 전";
+		} else {
+		    timeAgo = "방금 전";
+		}
 
         map.put("community_datetime", timeAgo);
         
@@ -266,17 +288,24 @@ public class CommunityController {
         	LocalDateTime reDateTime = LocalDateTime.parse(datetime.getReply_datetime().toString(), formatter);
         	
             minutes = Duration.between(reDateTime, now).toMinutes();
-            hours = minutes / 60;
-            minutes %= 60;
-
-            timeAgo = "";
-            if (hours > 0) {
-                timeAgo = hours + "시간 전";
-            } else if (minutes > 0) {
-                timeAgo = minutes + "분 전";
-            } else {
-                timeAgo = "방금 전";
-            }
+    		hours = minutes / 60;
+    		hours %= 24;
+    		minutes %= 60;
+    		timeAgo = "";
+    		
+    		if (hours >= 24) { // 하루이상 차이날 때
+    		    if (comDateTime.getYear() == now.getYear()) {
+    		        timeAgo = comDateTime.format(formatterMonthDay);
+    		    } else {
+    		        timeAgo = comDateTime.format(formatterDate);
+    		    }
+    		} else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+    		    timeAgo = hours + "시간 전";
+    		} else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+    		    timeAgo = minutes + "분 전";
+    		} else {
+    		    timeAgo = "방금 전";
+    		}
 
             datetime.setReply_datetime(timeAgo);
             
@@ -554,6 +583,8 @@ public class CommunityController {
 //		}
 		
 		reply.setReply_writer("leess");
+		
+//		reply.setReply_re_lev(reply.getReply_re_lev() + 1);
 		
 		int insertCount = communityService.registReReply(reply);
 		

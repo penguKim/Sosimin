@@ -194,6 +194,12 @@ textarea.form-control {
 	color: #000;
 }
 
+/* 댓글 줄바꿈 설정 */
+.replyContent span {
+    word-break: break-all; /* 영역을 벗어나면 줄바꿈 */
+    overflow-wrap: break-word; /* 단어 단위로 줄바꿈 */
+}
+
 /* 삭제 버튼 */
 .reDelBtn a:hover {
 	color: #f00;

@@ -162,11 +162,15 @@
 		WHERE 
 			community_id = #{community_id}
 		ORDER BY
-<!-- 			reply_re_ref DESC -->
-<!-- 			, reply_re_seq ASC -->
-					reply_re_ref DESC
-					<!-- , reply_re_lev ASC -->
-					,reply_re_seq ASC
+				reply_re_ref DESC
+				,reply_re_seq ASC
+				<!-- 댓글 최신순, 대댓글 오름차순을 위한 희망 -->
+<!-- 			reply_re_ref DESC, -->
+<!-- 		    CASE  -->
+<!-- 		        WHEN reply_re_seq = 0 THEN 0 -->
+<!-- 		        ELSE 1 -->
+<!-- 		    END,  -->
+<!-- 		    reply_re_seq DESC; -->
 	</select>
 	
 	<!-- 댓글 작성자 조회 -->
@@ -190,8 +194,24 @@
 		WHERE
 			community_id = #{community_id}
 			AND	reply_re_ref = #{reply_re_ref}
-			AND reply_re_seq >= #{reply_re_seq} 
+			AND reply_re_seq > #{reply_re_seq} 
 	</update>
+<!-- 	<update id="updateReplySeq"> -->
+<!-- 		UPDATE CommunityReply -->
+<!-- 		SET -->
+<!-- 			reply_re_seq = reply_re_seq + 1 -->
+<!-- 		WHERE -->
+<!-- 			community_id = #{community_id} -->
+<!-- 			AND	reply_re_ref = #{reply_re_ref} -->
+<!-- 			<choose> -->
+<!-- 				<when test="reply_re_seq > 0"> -->
+<!-- 					AND reply_re_seq >= #{reply_re_seq}  -->
+<!-- 				</when> -->
+<!-- 				<when test="reply_re_seq = 0"> -->
+<!-- 					AND reply_re_seq > #{reply_re_seq}  -->
+<!-- 				</when> -->
+<!-- 			</choose> -->
+<!-- 	</update> -->
 	
 	<!-- 대댓글 작성 작성 -->
 	<insert id="insertReReply">
@@ -204,9 +224,8 @@
 			, #{reply_image}
 			, #{reply_re_ref}
 			, #{reply_re_lev} + 1
-			, #{reply_re_seq}
+			, #{reply_re_seq} + 1
 			, now()
-			
 		)
 	</insert>
 </mapper>
