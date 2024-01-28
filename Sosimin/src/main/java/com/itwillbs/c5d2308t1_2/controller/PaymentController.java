@@ -33,6 +33,7 @@ public class PaymentController {
 	private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
 	
 	
+// =============================== 메인페이지 =======================================	
 	// 계좌인증 페이지로 이동
 	@GetMapping("AccountVerification")
 	public String accountVerification(HttpSession session, Model model) {
@@ -493,8 +494,8 @@ public class PaymentController {
 	
 	
 	
-	// ========================== 관리자페이지 시작 ===================================
-
+	
+// =============================== 관리자페이지 =======================================	
 	
 	// 계좌 관리 페이지로 이동
 	@GetMapping("MemberAccount")
@@ -513,23 +514,11 @@ public class PaymentController {
 	public String chargeRefund() {
 		return "admin/chargeRefund";
 	}
-	
-	// 충전/환급 관리 상세페이지로 이동
-	@GetMapping("ChargeRefundDetail")
-	public String chargeRefundDetail() {
-		return "admin/chargeRefundDetail";
-	}
-	
+
 	// 사용/수익 관리 페이지로 이동
 	@GetMapping("SpentRevenue")
 	public String spentRevenue() {
 		return "admin/spentRevenue";
-	}
-	
-	// 사용/수익 관리 상세페이지로 이동
-	@GetMapping("SpentRevenueDetail")
-	public String spentRevenueDetail() {
-		return "admin/spentRevenueDetail";
 	}
 	
 	// 거래 내역 관리 페이지로 이동
@@ -537,12 +526,6 @@ public class PaymentController {
 	public String orderList() {
 		return "admin/orderList";
 	}
-	
-	// 거래 내역 관리 상세 페이지로 이동
-	@GetMapping("OrderListDetail")
-	public String orderListDetail() {
-		return "admin/orderListDetail";
-	}
 
-	
+
 }
