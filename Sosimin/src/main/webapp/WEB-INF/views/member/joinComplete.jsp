@@ -20,6 +20,15 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+<script type="text/javascript">
+	$(function() {
+		<%-- 뒤로가기 방지 --%>
+		if (performance.navigation.type == 2) { <%-- 0 : 처음 로딩/새로고침, 1 : 페이지가 앞/뒤로 이동, 2 : 페이지가 뒤로 이동  --%>
+			alert('비정상적인 접근입니다.\n메인페이지로 이동합니다.');
+			location.href = './'; // 메인 페이지로 강제 이동
+		}
+	});
+</script>
 </head>
 <body>
     <!--[if lte IE 9]>
@@ -80,7 +89,7 @@
                         <div class="card-body">
                             <div class="title">
                                 <h4>소시민의 가족이 되신 것을 환영합니다!</h4><br><br>
-								<p>[ ${param.member_real_id} ] 님의 가입을 축하합니다!<br>
+								<p> ${param.member_id} 님의 가입을 축하합니다!<br>
 								"소시민"은 동네 인증 및 본인 인증과 리뷰 시스템을 통해 신뢰성을 보장하며,<br> 
 								다양한 제휴 혜택과 이벤트도 제공하고 있습니다!<br> 
 								"소시민"을 통해 부산시가 제공하는 안전하고 편리한 환경에서 물건을 거래해보세요!<br>
@@ -88,7 +97,7 @@
 								다시 한 번 축하드리며, 감사합니다! </p>
 								<br>
 <!-- 								<section id="join_button"> -->
-								<section class="button">
+								<section class="button" id="joinCompleteButtonArea">
 									<a href="./"><input type="button" class="btn" value="메인페이지"></a>
 									<a href="MemberLogin"> <input type="button" class="btn" value="로그인"></a>
 <!-- 								</section> -->

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,16 +94,26 @@
                             </div>
                             <div class="form-group">
                                 <label for="reg-ln" id="mgForThree">아이디</label>
-                                <input class="form-control" type="text" required>
+                                <c:choose>
+                                	<c:when test="${not empty param.member_id }">
+		                                <input class="form-control" type="text" name="member_id" value=""${param.member_id } required>
+                                	</c:when>
+                                	<c:otherwise>
+		                                <input class="form-control" type="text" name="member_id" value="${cookie.cookieId.value }" required>
+                                	</c:otherwise>
+                                </c:choose>
+                                
                             </div>
                             <div class="form-group">
                                 <label for="reg-fn" id="mgForFour">비밀번호</label>
-                                <input class="form-control" type="password" required>
+                                <input class="form-control" type="password" name="member_password" required>
                             </div>
                             <div class="d-flex flex-wrap justify-content-between bottom-content">
                                 <div class="form-check" id="rememberIdArea">
-                                    <input type="checkbox" class="form-check-input width-auto" id="exampleCheck1">
-                                    <label class="form-check-label">아이디 저장</label>
+                                    <input type="checkbox" class="form-check-input width-auto" id="exampleCheck1" name="rememberId"<c:if test="${not empty cookie.cookieId.value}">checked</c:if>>
+                                    
+                                    
+                                    <label class="form-check-label">아이디 기억하기</label>
                                 </div>
                                 <div id="findArea">
 	                                <a class="lost-pass" href="MemberFindId">아이디 찾기</a>

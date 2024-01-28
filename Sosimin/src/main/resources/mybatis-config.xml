@@ -6,5 +6,6 @@
 	<typeAliases>
 		<typeAlias type="com.itwillbs.c5d2308t1_2.vo.CommunityVO" alias="community"/>
 		<typeAlias type="com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO" alias="reply"/>
+		<typeAlias type="com.itwillbs.c5d2308t1_2.vo.MemberVO" alias="member"/>
 	</typeAliases>
 </configuration>

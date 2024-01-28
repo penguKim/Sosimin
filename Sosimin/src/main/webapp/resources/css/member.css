@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* =================== 회원가입 & 로그인 =======================  */
+/* =================== 회원가입 & 로그인 CSS =======================  */
 /* ============== */
 /* 회원가입 메인 */
 #joinWithNaver {
@@ -135,6 +135,10 @@
 	margin-right: 7px !important;
 }
 
+#joinCompleteButtonArea input[type="button"] {
+	width: 130px !important;
+	
+}
 /* =========== */
 /* 로그인 메인 */
 #socialLoginArea > div {
@@ -211,8 +215,9 @@
 	margin-right: 13px;
 	
 }
+
 /* =============================================================================== */
-/* 마이페이지 CSS */
+/* ============================ 마이페이지 CSS =================================== */
 #wholeMyPageSection {
 	background-color: #fff;
     padding: 30px;
@@ -228,11 +233,7 @@
 	color: black;
 	font-size: large;
 }
-
-/* a { */
-/* 	all: unset; */
-/* } */
-
+/* =========== */
 /* 프로필 영역 */
 #profileArea {
 	width: 1200px !important;
@@ -321,7 +322,7 @@
 }
 
 
-
+/* ========================= */
 /* 카테고리 영역(라디오버튼) */
 #categoryArea {
 	width: 1198px;
@@ -513,8 +514,8 @@
     margin: 25px;
     box-sizing: border-box;
 }
-
-/* 좋아요 버튼 */
+/* ========= */
+/* 하트 버튼 */
 .heart {
 	width: 80px;
 	height: 80px;
@@ -675,7 +676,7 @@
 	margin-top: 90px;
 }
 
-
+/* ================ */
 /* 커뮤니티 댓글 탭 */
 #singleCommunityReplyArea {
 	width: 1178px;
@@ -731,7 +732,7 @@
     margin-left: -100px;
 }
 
-
+/* ================= */
 /* 판매자 페이지 CSS */
 #sellerAuthArea {
 	font-size: smaller;
@@ -744,3 +745,7 @@
     margin-left: 2px;
     margin-bottom: 2px;
 }
+
+
+/* ========================================================================================== */
+/* ============================ 관리자페이지 회원관리 CSS =================================== */

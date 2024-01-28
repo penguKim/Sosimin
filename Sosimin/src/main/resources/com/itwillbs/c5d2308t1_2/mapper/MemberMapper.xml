@@ -5,5 +5,35 @@
 
 <mapper namespace="com.itwillbs.c5d2308t1_2.mapper.MemberMapper">
 
+	<insert id="insertMember">
+		INSERT INTO Member
+		VALUES (
+			#{member_id}
+			, #{member_name}
+			, #{member_email}
+			, #{member_birth}
+			, #{member_nickname}
+			, #{member_phone}
+			, 1 -- 회원 상태
+			, #{member_password}
+			, null -- 프로필 임시로 null
+			, #{member_address}
+			, null -- 탈퇴시간 임시로 null
+			, 0 -- 본인인증여부 임시로 미인증
+			, 0 -- 동네인증여부 임시로 미인증
+			, null -- 동네인증 시간 임시로 null
+			, 0 -- 페이인증여부 임시로 미인증
+			, 1 -- 회원레벨 임시로 1
+			, null -- 동 임시로 null
+			, 0 -- 최종신고횟수 임시로 0
+		
+		)
+	</insert>
+	
+	<select id="selectMember" resultType="member">
+		SELECT *
+		FROM Member
+		WHERE Member.member_id = #{member_id} 
+	</select>
 
 </mapper>

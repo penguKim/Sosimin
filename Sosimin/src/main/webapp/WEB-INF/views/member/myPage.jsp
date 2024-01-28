@@ -23,48 +23,36 @@
 <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
-// 	function reviewViewFrom() {
-// 		$("#staticBackdropLabel").text("보낸 후기");
-// 		$(".modal-body input[type='radio']").attr("disabled", true);
-// 		$("#reviewCheck").empty();
-// 		$("#reviewCheck").html(
-// 				'<ul class="list-group list-group-flush">'
-// 					+'<li class="list-group-item">후기입니다1.</li>'
-// 					+'<li class="list-group-item">후기입니다1.</li>'
-// 					+'<li class="list-group-item">후기입니다1.</li>'
-// 					+'<li class="list-group-item">후기입니다1.</li>'
-// 				+'</ul>'
-// 		);
-// 		$(".modal-footer").html(
-// 				'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
-// 				+ '<button type="button" class="btn btn-primary" id="reviewBtn" onclick="reviewDelete()">'
-// 				+'후기 삭제</button>'	
-// 		);
-// 	}
+	function openReceivedReviewModal() {
+		$("#staticBackdropLabel").text("받은 후기");
+		$(".modal-body input[type='radio']").attr("disabled", false);
+		$(".modal-body input[type='radio']").eq(0).prop("selected", true);
+		
+		$("#reviewCheck").empty();
+		$("#reviewCheck").html(
+				'<ul class="list-group list-group-flush">'
+					+'<li class="list-group-item">후기입니다1.</li>'
+					+'<li class="list-group-item">후기입니다1.</li>'
+					+'<li class="list-group-item">후기입니다1.</li>'
+					+'<li class="list-group-item">후기입니다1.</li>'
+				+'</ul>'
+		);
+		$(".modal-footer").html(
+				'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
+				+ '<button type="button" class="btn btn-primary" id="reviewBtn" onclick="reviewDelete()">'
+				+'후기 삭제</button>'	
+		);
+	}
+	
 	$(function(){
 		$("#reviewViewFrom").on("click", function() {
-			$("#staticBackdropLabel").text("보낸 후기");
-			$(".modal-body input[type='radio']").attr("disabled", true);
-			$("#reviewCheck").empty();
-			$("#reviewCheck").html(
-					'<ul class="list-group list-group-flush">'
-						+'<li class="list-group-item">후기입니다1.</li>'
-						+'<li class="list-group-item">후기입니다1.</li>'
-						+'<li class="list-group-item">후기입니다1.</li>'
-						+'<li class="list-group-item">후기입니다1.</li>'
-					+'</ul>'
-			);
-			$(".modal-footer").html(
-					'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
-					+ '<button type="button" class="btn btn-primary" id="reviewBtn" onclick="reviewDelete()">'
-					+'후기 삭제</button>'	
-			);
+			openReceivedReviewModal();
 		});
-			// 좋아요 버튼 클릭 이벤트
-	        $(".heart").on("click", function () {
-	            $(this).toggleClass("is-active");
-	        });
-		
+			
+		// 좋아요 버튼 클릭 이벤트
+        $(".heart").on("click", function () {
+            $(this).toggleClass("is-active");
+        });
 	});
 </script>
 </head>
@@ -127,7 +115,9 @@
 <!-- 							</p> -->
 					</div>
 					<div id="profileRightUpperRight">
-						<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewViewFrom">
+<!-- 						<a href="javascript:reviewViewFrom()" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> -->
+						<a href="#staticBackdrop" data-bs-toggle="modal" id="reviewViewFrom">
+<!-- 						<a href="javascript:reviewViewFrom()"> -->
 							<img src="${pageContext.request.contextPath}/resources/images/member/reviewicon.png">
 							받은 후기
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
