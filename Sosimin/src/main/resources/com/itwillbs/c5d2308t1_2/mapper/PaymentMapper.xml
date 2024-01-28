@@ -170,4 +170,14 @@
 			, null
 		);
 	</insert>
+	
+	
+	
+	<!-- ================ 관리자페이지 ====================== -->
+	<select id="selectPayHistory" resultType="map">
+		SELECT *
+		FROM PayHistory
+	</select>
+	
+	
 </mapper>

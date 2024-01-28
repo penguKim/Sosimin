@@ -511,7 +511,12 @@ public class PaymentController {
 	
 	// 충전/환급 관리 페이지로 이동
 	@GetMapping("ChargeRefund")
-	public String chargeRefund() {
+	public String chargeRefund(Model model) {
+		List<Map<String, Object>> payHistoryList = service.getPayHistory();
+		log.info(payHistoryList.toString());
+		
+		model.addAttribute("payHistoryList", payHistoryList);
+		
 		return "admin/chargeRefund";
 	}
 

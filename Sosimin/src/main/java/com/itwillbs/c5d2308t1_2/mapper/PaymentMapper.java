@@ -41,4 +41,9 @@ public interface PaymentMapper {
 	// 페이 충전 내역 저장 요청
 	void insertPayHistory(Map<String, Object> map);
 
+	// ====================== 관리자페이지 ==================
+	
+	// 페이 사용 내역 불러오기(전체)
+	List<Map<String, Object>> selectPayHistory();
+
 }

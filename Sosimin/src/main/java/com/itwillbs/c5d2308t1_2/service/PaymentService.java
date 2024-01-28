@@ -110,5 +110,13 @@ public class PaymentService {
 		
 		return mapper.updatePay(map);
 	}
+	
+	
+	// ============= 관리자 페이지 ======================
+	// 페이 이용 내역 불러오기
+	public List<Map<String, Object>> getPayHistory() {	
+		return mapper.selectPayHistory();
+	}
+	
 
 }
