@@ -392,6 +392,184 @@ padding-top: 21px;
 </head>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
+
+// 임시저장을 위한 함수
+//$(document).ready(() => {
+//var isConfirmed = false;
+
+//function showConfirmMessage() {
+//  if (!isConfirmed && (localStorage.getItem("productName") || localStorage.getItem("categoryName") || localStorage.getItem("tradePlace") || localStorage.getItem("productStatus") || localStorage.getItem("trade_method") || localStorage.getItem("product_price") || localStorage.getItem("tag_names"))) {
+//    if (confirm("최근 작성한 글을 불러오시겠습니까?")) {
+//      console.log(localStorage.getItem("productName"));
+//      $("#productName").val(localStorage.getItem("productName"));
+
+//      var categoryName = localStorage.getItem("categoryName");
+//      if (categoryName) {
+//        $('#categoryName').val(categoryName);
+//        $('#selectCategory').text(categoryName); 
+
+//        var selectElement = document.getElementById("categoryName");
+//        var defaultOption = selectElement.querySelector("option[value='default']");
+//        if (defaultOption) {
+//          selectElement.removeChild(defaultOption);
+//        }
+//      }
+
+//      if (localStorage.getItem("tradePlace")) {
+//        $("#myMap").val(localStorage.getItem("tradePlace"));
+//      }
+//      if (localStorage.getItem("product_price")) {
+//        $("#priceInput").val(localStorage.getItem("product_price"));
+//      }
+//      if (localStorage.getItem("ProductDescription")) {
+//        $("#ProductDescription").val(localStorage.getItem("ProductDescription"));
+//      }
+//      if (localStorage.getItem("productStatus")) {
+//        $("input[name=product_status][value=" + localStorage.getItem("productStatus") + "]").prop('checked', true);
+//      }
+//      if (localStorage.getItem("trade_method")) {
+//        $("input[name=trade_method][value=" + localStorage.getItem("trade_method") + "]").prop('checked', true);
+//      }
+
+//      loadTagsFromLocalStorage();
+//    } else {
+//      localStorage.clear();
+//    }
+//    isConfirmed = true;
+//  }
+//}
+
+//showConfirmMessage();
+
+//$("#productName").keydown(() => {
+//  var productName = $("#productName").val();
+//  console.log(productName);
+//  localStorage.setItem("productName", productName);
+//  showConfirmMessage();
+//});
+
+//// 카테고리 저장 코드
+//$("#categoryName").change(() => {
+//  var categoryName = $("#categoryName").val();
+//  console.log(categoryName);
+//  localStorage.setItem("categoryName", categoryName);
+//  $('#selectCategory').text(categoryName); 
+
+//  var selectElement = document.getElementById("categoryName");
+//  var defaultOption = selectElement.querySelector("option[value='default']");
+//  if (defaultOption) {
+//    selectElement.removeChild(defaultOption);
+//  }
+//  showConfirmMessage();
+//});
+
+//// 지역 설정 저장 코드
+//$("#myMap").change(() => {
+//  var tradePlace = $("#myMap").val();
+//  console.log(tradePlace);
+//  localStorage.setItem("tradePlace", tradePlace);
+//  showConfirmMessage();
+//});
+
+//// 상품 상태 라디오 버튼 상태 저장 코드
+//$("input[name=product_status]").change(() => {
+//  var productStatus = $("input[name=product_status]:checked").val();
+//  console.log(productStatus);
+//  localStorage.setItem("productStatus", productStatus);
+//  showConfirmMessage();
+//});
+
+//// 거래방법 라디오 버튼 상태 저장 코드
+//$("input[name=trade_method]").change(() => {
+//  var trade_method = $("input[name=trade_method]:checked").val();
+//  console.log(trade_method);
+//  localStorage.setItem("trade_method", trade_method);
+//  showConfirmMessage();
+//});
+
+//// 가격 설정 저장 코드
+//$("#priceInput").change(() => {
+//  var product_price = $("#priceInput").val();
+//  console.log(product_price);
+//  localStorage.setItem("product_price", product_price);
+//  showConfirmMessage();
+//});
+
+//// 설명 저장 코드
+//$("#ProductDescription").change(() => {
+//  var ProductDescription = $("#ProductDescription").val();
+//  console.log(ProductDescription);
+//  localStorage.setItem("ProductDescription", ProductDescription);
+//  showConfirmMessage();
+//});
+
+//$("#tagName").keypress(function(e) {
+//  if (e.which == 13) {  // 엔터 키
+//    $("#tagName2").click();
+//    e.preventDefault();
+//  }
+//});
+
+//$("#tagName2").click(() => {
+//  var tagName = $("#tagName").val();
+//  if (tagName) {
+//    addTag(tagName);
+//    $("#tagName").val("");
+//    saveTagsToLocalStorage();
+//    showConfirmMessage();
+//  }
+//});
+
+//$(document).on("click", ".close-button", function() {
+//  $(this).closest(".tag").remove();
+//  $("#tagName").prop("disabled", false);
+//  saveTagsToLocalStorage();
+//  showConfirmMessage();
+//});
+//});
+
+//// 로컬스토리지에 태그 저장
+//function saveTagsToLocalStorage() {
+//var tags = [];
+//$("#tagContainer .tag").each(function() {
+//  tags.push($(this).text().substring(1));  // '#' 제거
+//});
+//localStorage.setItem("tag_names", JSON.stringify(tags));
+//}
+
+//// 로컬스토리지에서 태그 불러오기
+//function loadTagsFromLocalStorage() {
+//var tags = JSON.parse(localStorage.getItem("tag_names"));
+//if (tags) {
+//  for (var i = 0; i < tags.length; i++) {
+//    addTag(tags[i]);
+//  }
+//}
+//}
+
+//// 태그 추가
+//function addTag(tagName) {
+//var tagElement = document.createElement("span");
+//tagElement.innerText = "#" + tagName;
+//tagElement.classList.add("tag");
+
+//var closeButton = document.createElement("button");
+//closeButton.innerText = "";
+//closeButton.classList.add("close-button");
+//tagElement.appendChild(closeButton);
+
+//var tagContainer = document.getElementById("tagContainer");
+//tagContainer.appendChild(tagElement);
+
+//if (tagContainer.querySelectorAll(".tag").length >= 4) {
+//  document.getElementById("tagName").disabled = true;
+//}
+//}
+
+
+
+
+
 $(function() {
 	
 	navigator.geolocation.getCurrentPosition(function(position) {

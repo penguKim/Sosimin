@@ -353,7 +353,7 @@ padding-top: 21px;
     margin-bottom: 50px;
 }
 
-#save2{
+#temporarySaveButton{
 	position:relative;
     height: 3.5rem;
     width: 10rem;
@@ -434,17 +434,206 @@ $(function() {
 	          
 	          var address = result[0].address.address_name; // 지번 주소
 	          
-	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          
+// 	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          
+	          if(address.split(' ')[0] == "부산" || address.split(' ')[0] == "대구" || address.split(' ')[0] == "인천" || address.split(' ')[0] == "광주" || address.split(' ')[0] == "대전" || address.split(' ')[0] == "울산"  ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else if(address.split(' ')[0] == "서울" ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "특별시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else {
+	        	  var modifiedAddress = address.split(' ')[0]  + " " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          }
+		      
 	          
 	          $("#myMap").val(modifiedAddress);
-	          
+	          localStorage.setItem("tradePlace", modifiedAddress);
 	          
 		    } else {
 		      alert("주소를 가져오지 못했습니다.");
 		    }
 		  });
 		});
+	
+		function askForTemporarySave() {
+			  if (confirm("임시저장 하시겠습니까?")) {
+			    // '예'를 선택하면, 입력한 값을 로컬 스토리지에 저장합니다.
+			    localStorage.setItem("productName", $("#productName").val());
+			    var categoryName = $("#categoryName").val();
+			    if (categoryName !== 'default') {
+			      localStorage.setItem("categoryName", categoryName);
+			    }
+			    localStorage.setItem("tradePlace", $("#myMap").val());
+			    localStorage.setItem("productStatus", $("input[name=product_status]:checked").val());
+			    localStorage.setItem("trade_method", $("input[name=trade_method]:checked").val());
+			    localStorage.setItem("product_price", $("#priceInput").val());
+			    localStorage.setItem("ProductDescription", $("#ProductDescription").val());
+			    saveTagsToLocalStorage();
+			    localStorage.setItem("isTempSaved", "1");
+			  }
+			}
+			$(document).ready(() => {
+			  // 페이지가 로드될 때마다 '최근 작성한 글을 불러오시겠습니까?'라는 메시지를 표시합니다.
+			  showConfirmMessage();
+			});
+			// 임시저장 버튼이 클릭되었을 때 askForTemporarySave 함수를 호출합니다.
 		
+$(document).ready(() => {
+	
+  function showConfirmMessage() {
+    if (localStorage.getItem("isTempSaved") === "1") {
+      if (confirm("최근 작성한 글을 불러오시겠습니까?")) {
+        $("#productName").val(localStorage.getItem("productName"));
+        var categoryName = localStorage.getItem("categoryName");
+        if (categoryName) {
+          $("#categoryName").val(categoryName);
+          $('#selectCategory').text(categoryName); 
+
+          var selectElement = document.getElementById("categoryName");
+          var defaultOption = selectElement.querySelector("option[value='default']");
+          if (defaultOption) {
+            selectElement.removeChild(defaultOption);
+          }
+        }
+        $("#myMap").val(localStorage.getItem("tradePlace"));
+        $("#priceInput").val(localStorage.getItem("product_price"));
+        $("#ProductDescription").val(localStorage.getItem("ProductDescription"));
+        $("input[name=product_status][value=" + localStorage.getItem("productStatus") + "]").prop('checked', true);
+        $("input[name=trade_method][value=" + localStorage.getItem("trade_method") + "]").prop('checked', true);
+        loadTagsFromLocalStorage();
+      } else {
+          localStorage.removeItem("isTempSaved");  // '아니오'를 선택하면 플래그를 삭제합니다.
+          localStorage.clear();
+      }
+    }
+  }
+  $('#temporarySaveButton').click(askForTemporarySave);
+  showConfirmMessage();
+
+  $("#productName").keyup(() => {
+    localStorage.setItem("productName", $("#productName").val());
+  });
+
+  $("#categoryName").change(() => {
+    var categoryName = $("#categoryName").val();
+    localStorage.setItem("categoryName", categoryName);
+    $('#selectCategory').text(categoryName); 
+
+    var selectElement = document.getElementById("categoryName");
+    var defaultOption = selectElement.querySelector("option[value='default']");
+    if (defaultOption) {
+      selectElement.removeChild(defaultOption);
+    }
+  });
+
+  $("#myMap").change(() => {
+    localStorage.setItem("tradePlace", $("#myMap").val());
+  });
+
+  $("input[name=product_status]").change(() => {
+    localStorage.setItem("productStatus", $("input[name=product_status]:checked").val());
+  });
+
+  $("input[name=trade_method]").change(() => {
+    localStorage.setItem("trade_method", $("input[name=trade_method]:checked").val());
+  });
+
+  $("#priceInput").change(() => {
+    localStorage.setItem("product_price", $("#priceInput").val());
+  });
+
+  $("#ProductDescription").change(() => {
+    localStorage.setItem("ProductDescription", $("#ProductDescription").val());
+  });
+
+  $("#tagName").keypress(function(e) {
+    if (e.which == 13) {
+      $("#tagName2").click();
+      e.preventDefault();
+    }
+  });
+
+  $("#tagName2").click(() => {
+    var tagName = $("#tagName").val();
+    if (tagName) {
+      addTag(tagName);
+      $("#tagName").val("");
+      saveTagsToLocalStorage();
+    }
+  });
+
+  $(document).on("click", ".close-button", function() {
+    $(this).closest(".tag").remove();
+    $("#tagName").prop("disabled", false);
+    saveTagsToLocalStorage();
+  });
+});
+
+function saveTagsToLocalStorage() {
+  var tags = [];
+  $("#tagContainer .tag").each(function() {
+    tags.push($(this).text().substring(1));  // '#' 제거
+  });
+  localStorage.setItem("tag_names", JSON.stringify(tags));
+}
+
+function loadTagsFromLocalStorage() {
+  var tags = JSON.parse(localStorage.getItem("tag_names"));
+  if (tags) {
+    for (var i = 0; i < tags.length; i++) {
+      addTag(tags[i]);
+    }
+  }
+}
+
+function addTag(tagName) {
+  var tagElement = document.createElement("span");
+  tagElement.innerText = "#" + tagName;
+  tagElement.classList.add("tag");
+
+  var closeButton = document.createElement("button");
+  closeButton.innerText = "";
+  closeButton.classList.add("close-button");
+  tagElement.appendChild(closeButton);
+
+  var tagContainer = document.getElementById("tagContainer");
+  tagContainer.appendChild(tagElement);
+
+  if (tagContainer.querySelectorAll(".tag").length >= 4) {
+    document.getElementById("tagName").disabled = true;
+  }
+}
+		
+//이미지 파일 선택 시 실행되는 함수
+function handleImageUpload(event) {
+  var file = event.target.files[0];
+
+  // FileReader 객체 생성
+  var reader = new FileReader();
+
+  // FileReader 로드 완료 후 실행되는 함수
+  reader.onload = function(event) {
+    var imageData = event.target.result;
+
+    // 이미지 데이터를 로컬 스토리지에 저장
+    localStorage.setItem("productImage", imageData);
+  };
+
+  // 이미지 파일을 읽기
+  reader.readAsDataURL(file);
+}
+// 	    window.onload = () => {
+// 	        if (localStorage.getItem("productName")) {
+// 	          if (confirm("최근 작성한 글을 불러오시겠습니까?")) {
+// 	            console.log(localStorage.getItem("productName"));
+
+// 	            document.querySelector(".area").innerText =
+// 	              localStorage.getItem("productName");
+// 	          } else {
+// 	            localStorage.removeItem("productName");
+// 	          }
+// 	        }
+// 	      };
 	});
 
 // XX 자릿수 이상을 입력 못하게 하기위한 코드
@@ -537,44 +726,45 @@ function handleKeyPress(e) {
 
 var tagCounter = 1; // 태그의 순차적인 카운터 변수
 
-function handleTagRegistration() {
-  var tagName = document.getElementById("tagName").value;
+// function handleTagRegistration() {
+//   var tagName = document.getElementById("tagName").value;
 
-  if (tagName !== "") {
-    var tagElement = document.createElement("span");
-    tagElement.innerText = "#" + tagName;
-    tagElement.classList.add("tag");
-    var tagNameInput = document.createElement("input");
-    tagNameInput.type = "hidden";
-    tagNameInput.name = "tag_name" + tagCounter; // 컨트롤러로 전달할 name 속성 (순차적으로 증가)
-    tagNameInput.value = tagName; // 컨트롤러로 전달할 값 설정
-    tagElement.appendChild(tagNameInput);
+//   if (tagName !== "") {
+//     var tagElement = document.createElement("span");
+//     tagElement.innerText = "#" + tagName;
+//     tagElement.classList.add("tag");
+//     var tagNameInput = document.createElement("input");
+//     tagNameInput.type = "hidden";
+//     tagNameInput.name = "tag_name" + tagCounter; // 컨트롤러로 전달할 name 속성 (순차적으로 증가)
+//     tagNameInput.value = tagName; // 컨트롤러로 전달할 값 설정
+//     tagElement.appendChild(tagNameInput);
 
-    var closeButton = document.createElement("button");
-    closeButton.innerText = "";
-    closeButton.classList.add("close-button");
-    tagElement.appendChild(closeButton);
+//     var closeButton = document.createElement("button");
+//     closeButton.innerText = "";
+//     closeButton.classList.add("close-button");
+//     tagElement.appendChild(closeButton);
 
-    var tagContainer = document.getElementById("tagContainer");
-    tagContainer.appendChild(tagElement);
+//     var tagContainer = document.getElementById("tagContainer");
+//     tagContainer.appendChild(tagElement);
 
-    if (tagContainer.querySelectorAll(".tag").length >= 4) {
-      document.getElementById("tagName").disabled = true;
-    }
+//     if (tagContainer.querySelectorAll(".tag").length >= 4) {
+//       document.getElementById("tagName").disabled = true;
+//     }
 
-    tagCounter++; // 카운터 변수 증가
-    document.getElementById("tagName").value = "";
-  }
-}
+//     tagCounter++; // 카운터 변수 증가
+//     document.getElementById("tagName").value = "";
+//   }
+// }
 
-$(document).on("click", ".close-button", function() {
-  $(this).closest(".tag").remove();
-  $("#tagName").prop("disabled", false);
-});
+// $(document).on("click", ".close-button", function() {
+//   $(this).closest(".tag").remove();
+//   $("#tagName").prop("disabled", false);
+// });
 
 var imageCounter = 1;
 // 썸네일 작업
 function setThumbnail(event) {
+	
   var files = event.target.files;
 
   for (var i = 0; i < files.length; i++) {
@@ -635,7 +825,6 @@ function setThumbnail(event) {
 		}
 	} 
 }
-
 //파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
 function addFileInput() {
 document.getElementById("product_image").click();
@@ -748,8 +937,12 @@ function checkInput() {
     	$("#ProductDescription").focus();
     	return false;
     }
+    localStorage.clear();
     return true;
   }
+  
+  
+  // 상품등록이 성공적으로 됐을 시 로컬스토리지 초기화
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
 <body>
@@ -893,12 +1086,12 @@ function checkInput() {
 					</div>
 					<ul id="ulLine">
 						<li class="trade_methodRadio">
-							<label id="radioChoise">
-								<input type="radio" id="trade_method" name="trade_method" value="0"> 대면거래
-							</label><br>
-							<label id="radioChoise">
-								<input type="radio" id="trade_method" name="trade_method" value="1"> 소심거래
-							</label><br>
+						  <label id="radioChoise1">
+						    <input type="radio" id="trade_method1" name="trade_method" value="0"> 대면거래
+						  </label><br>
+						  <label id="radioChoise2">
+						    <input type="radio" id="trade_method2" name="trade_method" value="1"> 소심거래
+						  </label><br>
 						</li>
 					</ul>
 				</div>
@@ -955,7 +1148,7 @@ function checkInput() {
 				</div>
 				<hr>
    				<div id="save">
-					<button type="button" id="save2">임시저장</button>
+					<button type="button" id="temporarySaveButton">임시저장</button>
 					<input type="submit" id="buttonBox" value="상품등록">
 				</div>
 			</form>

@@ -77,10 +77,17 @@ $(function() {
 			
 		      var address = result[0].address.address_name; // 지번 주소
 	          
-	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          
+	          if(address.split(' ')[0] == "부산" || address.split(' ')[0] == "대구" || address.split(' ')[0] == "인천" || address.split(' ')[0] == "광주" || address.split(' ')[0] == "대전" || address.split(' ')[0] == "울산"  ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else if(address.split(' ')[0] == "서울" ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "특별시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else {
+	        	  var modifiedAddress = address.split(' ')[0]  + " " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          }
 		      
 	          $("#myMap").val(modifiedAddress);
-	          
+	          localStorage.setItem("tradePlace", modifiedAddress);
 		    // 마커를 클릭한 위치에 표시합니다
 		    marker.setPosition(coords);
 		    marker.setMap(map);
