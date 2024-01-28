@@ -5,7 +5,7 @@
   <li class="nav-heading">관리자페이지 메인</li>
 
   <li class="nav-item">
-    <a class="nav-link " href="index.html">
+    <a class="nav-link " href="AdminMain">
       <i class="bi bi-grid"></i>
       <span>Dashboard</span>
     </a>

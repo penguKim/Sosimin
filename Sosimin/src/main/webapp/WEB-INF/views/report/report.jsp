@@ -5,17 +5,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
-   
-    <%-- sweetalert --%>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 $(function() {
 	$("#testBtn").on("click", function() {
@@ -53,8 +42,6 @@ $(function() {
 
 <%-- sweetalert confirm --%>
 function reportRegist(index) {
-	
-	
 	<%-- 신고 분류 0: 게시물 신고, 1: 사용자 신고--%>
 // 	let report_content = $("#reportTextArea").val();
 	let report_type = index;
