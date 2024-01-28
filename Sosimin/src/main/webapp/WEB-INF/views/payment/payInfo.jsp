@@ -12,6 +12,7 @@
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- ========================= CSS here ========================= -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
@@ -100,60 +101,81 @@ function load_list() {
 		success:  function(data) {
 			console.log(data);
 			
-			for(let history of data.payHistoryList) {
-				
-				// pay_history_date 값을 분리하여 날짜와 시간을 추출
-				var date = history.pay_history_date.split("T")[0].split("-").slice(1).join("-");
-				var time = history.pay_history_date.split("T")[1].substring(0, 5);
-			
-				// pay_history_type 값에 따라 다른 결과 출력
-			    let pay_history_type = "";
-				let subject = "";
-			    if(history.pay_history_type == "1") {
-			    	pay_history_type = "충전";
-			    	subject = "페이충전";
-			    } else if(history.pay_history_type == "2") {
-			    	pay_history_type = "환급";
-			    	subject = "페이환급";
-			    } else if(history.pay_history_type == "3") {
-			    	pay_history_type = "사용";
-			    	subject = history.order_id;
-			    } else if(history.pay_history_type == "4") {
-			    	pay_history_type = "수익";
-			    	subject = history.order_id;
-			    }
-			    
-			    
-				let result = 
-					'<div class="cart-single-list">'
-			        +    '<div class="row align-items-center">'
-			        +        '<div class="col-lg-2 col-md-2 col-12">'
-			        +        	'<p class="pay-info-sub">'
-			        +        		date
-			        +        	'</p>'
-			        +        '</div>'
-			        +      '<div class="col-lg-6 col-md-6 col-12">'
-			        +            '<h5 class="product-name">' + subject + '</h5>'
-			        +            '<p class="pay-info-sub">'
-			        +        		time + ' | '
-			        +               pay_history_type
-			        +            '</p>'
-			        +        '</div>'
-			        +        '<div class="col-lg-4 col-md-4 col-12">'
-			        +            '<h5 class="pay-amount">' + history.pay_amount + '</h5>'
-			        +            '<p class="pay-balance-sub">'
-			        +					history.pay_history_balance
-			        +            '</p>'
-			        +        '</div>'
-			        +    '</div>'
-			        +'</div>'
-			     
-			    $("#payHistoryList").append(result);
-				
-				// 끝페이지 번호(maxPage) 값을 변수에 저장
-				maxPage = data.maxPage;    
-			}
-			
+			for(let item of data.payHistoryList) {
+				let pay_list_year = JSON.parse(item.json_result);
+				for (let year in pay_list_year) {
+					console.log("? " + year);
+					
+					// 연도별로 영역을 만들고 상단에 연도 출력
+					$("#payHistoryList").append(
+		 				'<div id="'+ year +'"><span id="year">' + year + '</span>년<div>'
+		 			)
+					
+					let pay_list_day = pay_list_year[year];
+					
+					for (let day in pay_list_day) {
+						console.log("? " + day);
+						// 날짜별로 ul 생성하기
+						$("#"+ year +"").append(
+		 					'<ul class="day" id="' + day + '">'
+		 					+	'<li class="date_list" id=' + day + 'list>'
+	 						+    	'<div class="date_area">'
+	  				        +        	'<p>' + day + '</p>'
+	  				        +    	'</div>'
+		 					+	'</li>'
+							+'</ul>'
+						);
+						let payment_list = pay_list_day[day];
+				      for (let history of payment_list) {
+				    	  console.log(history);
+				    	  
+						// pay_history_date 값을 분리하여 날짜와 시간을 추출
+						var date = history.pay_history_date.slice(5, 10);
+						var time = history.pay_history_date.slice(11, 16);
+						
+						// pay_history_type 값에 따라 다른 결과 출력
+						let pay_history_type = "";
+						let subject = "";
+						if(history.pay_history_type == "1") {
+							pay_history_type = "충전";
+							subject = "페이충전";
+						} else if(history.pay_history_type == "2") {
+							pay_history_type = "환급";
+							subject = "페이환급";
+						} else if(history.pay_history_type == "3") {
+							pay_history_type = "사용";
+							subject = history.order_id;
+						} else if(history.pay_history_type == "4") {
+							pay_history_type = "수익";
+							subject = history.order_id;
+						}
+				    	  
+				    	  $("#"+ date +"list").append(
+				    			'<div class="list_area col-lg-9 col-md-9 col-12">'
+		 						+	'<div class="row content_list">'
+		  				        +      '<div class="col-lg-7 col-md-7 col-12">'
+		  				        +          '<h5 class="product-name">' + subject + '</h5>'
+		  				        +          '<p class="pay-info-sub">'
+		  				        +        		time + ' | '
+		  				        +               pay_history_type
+		  				        +          '</p>'
+		  				        +      '</div>'
+		  				        +      '<div class="col-lg-5 col-md-5 col-12">'
+		  				        +          '<h5 class="pay-amount">' + history.pay_amount + '</h5>'
+		  				        +          '<p class="pay-balance-sub">'
+		  				        +					history.pay_history_balance
+		  				        +          '</p>'
+		  				        +      '</div>'
+		  				        +	'</div>'
+		  				        +'</div>'
+						  );
+// 				
+// 					// 끝페이지 번호(maxPage) 값을 변수에 저장
+// 					maxPage = data.maxPage;    
+						}
+					}
+				}
+			}	
 			
 		},
 		error: function(request, status, error) {
@@ -251,6 +273,13 @@ function load_list() {
 						        <input type="radio" name="options" class="btn-check" id="btn-check5" value="4" autocomplete="off">
 							    <label class="btn btn-outline-primary" for="btn-check5">수익</label>
 							</div>
+							<div id="period_select">전체기간 <i class="fa fa-caret-down"></i></div>
+							<hr>
+							<div id="period_info">
+								<div id="info_left">총 0건</div>
+								<div id="info_right">2023.01.28 ~ 2024.01.28</div>
+							</div>
+							<hr>
 							
 							<div id="payHistoryList">
 								<%-- 페이사용 내역이 출력되는 영역 --%>

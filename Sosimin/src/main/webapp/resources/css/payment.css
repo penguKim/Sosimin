@@ -127,3 +127,61 @@
 .complete {
 	text-align: center;
 }
+
+#period_info {
+	display: flex;
+	justify-content: space-between;
+}
+
+#info_left {
+	display: inline-block;
+}
+
+#info_right {
+	display: inline-block;
+	text-align: right;	
+}
+
+#period_select {
+	text-align: right;
+}
+
+.day {
+	border-top: 0.5px solid #c0c0c0; 
+	width: 100%;
+}
+
+.date_list {
+	position: relative;
+}
+
+.date_area {
+	position: absolute;
+	left: 10px;
+	top: 20px;
+}
+
+.date_area>p {
+	font-size: 17px;
+}
+
+#year {
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.list_area {
+	display: inline-block;	
+	margin-left: 90px;
+	margin-right: 20px;
+	width: 80%
+}
+
+.content_list {
+	padding: 20px 0;
+	line-height: 22px;
+}
+
+.list_area+.list_area  {
+	border-top: 0.5px solid #c0c0c0; 	
+}

@@ -81,15 +81,16 @@ public class PaymentService {
 
 	// 페이 이용 내역 불러오기
 	public List<Map<String, Object>> getPayHistory(Map<String, Object> map) {
-		
-		return mapper.selectPayHistory(map);
+//		
+		return mapper.selectPayHistoryByYear(map);
+//		return mapper.selectPayHistory(map);
 	}
 
 	// 페이 내역 개수 세기(페이징)
-	public int getPayHistoryCount(Map<String, Object> map) {
-		
-		return mapper.selectPayHistoryCount(map);
-	}
+//	public int getPayHistoryCount(Map<String, Object> map) {
+//		
+//		return mapper.selectPayHistoryCount(map);
+//	}
 
 	// 계좌 상세정보 조회 요청
 	public Map<String, Object> requestAccountDetail(Map<String, Object> map) {

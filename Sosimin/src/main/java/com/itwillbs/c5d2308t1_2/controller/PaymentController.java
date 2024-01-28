@@ -1,5 +1,6 @@
 package com.itwillbs.c5d2308t1_2.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -242,13 +243,12 @@ public class PaymentController {
 		
 		log.info("map객체는 >>>>" + map);
 		
-		// CsService - getFaqList() 메서드 호출하여 자주 묻는 질문 출력
-		// => 파라미터 : 시작행번호, 목록갯수   리턴타입 : List<CsVO>(noticeList)
 		List<Map<String, Object>> payHistoryList = service.getPayHistory(map);
+		log.info(payHistoryList.toString());
 		
 		// ======================================================
-		int listCount = service.getPayHistoryCount(map);
-		int maxPage = listCount / listLimit + ((listCount % listLimit) > 0 ? 1 : 0);
+//		int listCount = service.getPayHistoryCount(map);
+//		int maxPage = listCount / listLimit + ((listCount % listLimit) > 0 ? 1 : 0);
 		
 		// 게시물 목록 조회 결과 Map 객체에 추가
 		Map<String, Object> historyMap = new HashMap<String, Object>();
@@ -256,7 +256,7 @@ public class PaymentController {
 //		System.out.println(map);
 		
 		// 마지막 페이지 번호 Map 객체에 추가
-		historyMap.put("maxPage", maxPage);
+//		historyMap.put("maxPage", maxPage);
 		
 		JSONObject jsonObject = new JSONObject(historyMap);
 		System.out.println("jsonObject = " + jsonObject);

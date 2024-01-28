@@ -26,11 +26,14 @@ public interface PaymentMapper {
 	// 사용자 페이 가입 정보 불러오기
 	Map<String, Object> selectPayInfo(String member_id);
 
+	// 페이 사용 내역 연도별로 불러오기
+	List<Map<String, Object>> selectPayHistoryByYear(Map<String, Object> map);
+	
 	// 페이 사용 내역 불러오기
-	List<Map<String, Object>> selectPayHistory(Map<String, Object> map);
+//	List<Map<String, Object>> selectPayHistory(Map<String, Object> map);
 
 	// 페이 내역 개수 세기(페이징)
-	int selectPayHistoryCount(Map<String, Object> map);
+//	int selectPayHistoryCount(Map<String, Object> map);
 
 	// 페이 충전 요청
 	int updatePay(Map<String, Object> map);
