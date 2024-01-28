@@ -53,7 +53,6 @@ $(function() {
 
 <%-- sweetalert confirm --%>
 function reportRegist(index) {
-	alert("왜안돼지");
 	
 	
 	<%-- 신고 분류 0: 게시물 신고, 1: 사용자 신고--%>
