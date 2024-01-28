@@ -17,9 +17,12 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,7 +46,10 @@ public class CommunityController {
 	public String community(@RequestParam(defaultValue = "") String searchKeyword, 
 						    @RequestParam(defaultValue = "release") String searchType,
 					        @RequestParam(defaultValue = "1") int pageNum, 
-					        CommunityVO com, HttpSession session, Model model) {
+					        HttpSession session, Model model) {
+		
+		System.out.println("검색으로 넘어온 문자열" + searchKeyword);
+		System.out.println("검색으로 넘어온 셀렉트박ㄷ스" + searchType);
 		
 		// 페이지 번호와 글의 개수를 파라미터로 전달
 		PageDTO page = new PageDTO(pageNum, 15);
@@ -60,15 +66,16 @@ public class CommunityController {
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
         
-        for(CommunityVO datetime : communityList) {
-        	LocalDateTime comDateTime = LocalDateTime.parse(datetime.getCommunity_datetime().toString(), formatter);
+        for(CommunityVO com : communityList) {
+        	LocalDateTime comDateTime = LocalDateTime.parse(com.getCommunity_datetime().toString(), formatter);
         	
             long minutes = Duration.between(comDateTime, now).toMinutes();
             long hours = minutes / 60;
+            long days = hours / 24;
             hours %= 24;
             minutes %= 60;
             String timeAgo = "";
-            if (hours >= 24) { // 하루이상 차이날 때
+            if (days > 0) { // 하루이상 차이날 때
                 if (comDateTime.getYear() == now.getYear()) {
                     timeAgo = comDateTime.format(formatterMonthDay);
                 } else {
@@ -81,8 +88,9 @@ public class CommunityController {
             } else {
                 timeAgo = "방금 전";
             }
-
-            datetime.setCommunity_datetime(timeAgo);
+            
+            // 계산한 시간 목록
+            com.setCommunity_datetime(timeAgo);
             
         }
         
@@ -97,7 +105,14 @@ public class CommunityController {
 	@GetMapping("CommunityWrite")
 	public String communityWrite(HttpSession session, Model model) {
 		
-		// >>>>>>>>>>>>>>>>>>> 로그인 처리 필요
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "로그인이 필요합니다!");
+			model.addAttribute("msg2", "로그인 후 글쓰기 페이지로 이동합니다");
+			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		}
 		
 		return "community/communityWrite";
 	}
@@ -106,9 +121,15 @@ public class CommunityController {
 	@PostMapping("CommunityWritePro")
 	public String communityWritePro(CommunityVO com, HttpSession session, Model model) {
 
-		// >>>>>>>>>>>>>>>>>>> 로그인 처리 필요
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "로그인이 필요합니다!");
+			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		}
 		
-		com.setCommunity_writer("leess");
+		com.setCommunity_writer(sId);
 		
 		String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
 		String saveDir = session.getServletContext().getRealPath(uploadDir);
@@ -279,6 +300,9 @@ public class CommunityController {
 
         map.put("community_datetime", timeAgo);
         
+        // 좋아요 갯수 불러오기
+        int likeCount = communityService.getLikeCount(com);
+        
         // 댓글 불러오기
         List<CommunityReplyVO> replyList = communityService.getreplyList(com);
         
@@ -312,9 +336,8 @@ public class CommunityController {
         }
 		
 		model.addAttribute("com", map);
+		model.addAttribute("likeCount", likeCount);
 		model.addAttribute("replyList", replyList);
-		
-		// >>>>>>>>>>>>>>>>>>> 댓글 처리
 		
 		return "community/communityDetail";
 	}
@@ -324,7 +347,13 @@ public class CommunityController {
 	public String communityDelete(@RequestParam(defaultValue = "1") String pageNum,
 								  CommunityVO com, HttpSession session, Model model) {
 		
-		// >>>>>>>>>>>>>>>>>>> 로그인 처리
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "로그인이 필요합니다!");
+			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		}
 		
 		// 게시글 상세정보 조회
 		// 조회수 증가 여부 false
@@ -332,10 +361,10 @@ public class CommunityController {
 		map = communityService.getCommunity(com, false);
 		
 		// 게시글이 없거나 작성자와 관리자가 아닐 경우 fail_back
-//		if(com == null || !sId.equals(com.getCommunity_writer()) && !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다.");
-//			return "fail_back";
-//		}
+		if(map == null || !sId.equals(com.getCommunity_writer()) && !sId.equals("admin")) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
+		}
 		
 		// 게시글 삭제 작업
 		int deleteCount = communityService.removeCommunity(com);
@@ -377,7 +406,13 @@ public class CommunityController {
 	@GetMapping("CommunityModify")
 	public String communityModify(CommunityVO com, HttpSession session, Model model) {
 		
-		// >>>>>>>>>>>>>>>>> 로그인 처리
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "로그인이 필요합니다!");
+			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		}
 		
 		// 게시글 상세정보 조회
 		// 조회수 증가 여부 false
@@ -385,10 +420,10 @@ public class CommunityController {
 		map = communityService.getCommunity(com, false);
 		
 		// 게시글이 없거나 작성자와 관리자가 아닐 경우 fail_back
-//		if(com == null || !sId.equals(com.getCommunity_writer()) && !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다.");
-//			return "fail_back";
-//		}
+		if(map == null || !sId.equals(com.getCommunity_writer()) && !sId.equals("admin")) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "fail_back";
+		}
 		
 		model.addAttribute("com", map);
 		
@@ -399,8 +434,6 @@ public class CommunityController {
 	@ResponseBody
 	@PostMapping("CommunityDeleteFile")
 	public String communityDeleteFile(CommunityVO com, HttpSession session) {
-		
-		System.out.println(com);
 		
 		// 파일 삭제 작업
 		int removeCount = communityService.removeBoardFile(com);
@@ -429,9 +462,16 @@ public class CommunityController {
 	public String communityModifyPro(CommunityVO com, HttpSession session, Model model, 
 									 @RequestParam(defaultValue = "1") String pageNum) {
 		
-		
-		// >>>>>>>>>>>>>>> 로그인 처리
-		
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "로그인이 필요합니다!");
+			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		} else if(!sId.equals(com.getCommunity_writer()) && !sId.equals("admin")) {
+			model.addAttribute("msg", "잘못된 접근입니다");
+			return "fail_back";
+		}
 		
 		String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
 		String saveDir = session.getServletContext().getRealPath(uploadDir);
@@ -516,14 +556,67 @@ public class CommunityController {
 		
 	}
 	
+	// 게시글 좋아요 AJAX
+	@ResponseBody
+	@PostMapping("likeCheck")
+	public String likeCheck(@RequestParam Map<String, String> like, HttpSession session) {
+		
+		String sId = (String)session.getAttribute("sId");
+		
+		if(sId == null) {
+			return "login";
+		}
+		
+		like.put("member_id", sId);
+		
+		// 좋아요 판별 수행 후 문자열 리턴
+		String isChecked = communityService.getLike(like);
+		
+        // 좋아요 갯수 불러오기
+		CommunityVO com = new CommunityVO();
+		com.setCommunity_id(Integer.parseInt(like.get("community_num")));
+        int likeCount = communityService.getLikeCount(com);
+        
+        JSONObject object = new JSONObject();
+        object.put("isChecked", isChecked);
+        object.put("likeCount", likeCount);
+		
+		return object.toString();
+	}
+	
+	// 상세 게시글 좋아요 불러오기 AJAX
+	@ResponseBody
+	@PostMapping("likeShow")
+	public String likeShow(@RequestParam Map<String, String> like, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		
+		if(sId != null) {
+			
+			like.put("member_id", sId);
+			like = communityService.getmemberLike(like);
+			System.out.println("회원의 좋아요는 : " + like);
+			
+			JSONObject object = new JSONObject(like);
+			
+			return object.toString();
+		}
+		return "{}";
+	}
+	
 	// 게시글 댓글 쓰기
 	@PostMapping("CommunityReplyWrite")
 	public String communityReplyWrite(CommunityReplyVO reply , HttpSession session, Model model,
 									  @RequestParam(defaultValue = "1") String pageNum) {
 		
-		// >>>>>>>>>>>>>>>>> 로그인 처리
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "로그인이 필요합니다!");
+			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		}
 		
-		reply.setReply_writer("leess");
+		reply.setReply_writer(sId);
 		
 		// 댓글 등록작업
 		int insertCount = communityService.registReplyCommunity(reply);
@@ -544,13 +637,10 @@ public class CommunityController {
 	@GetMapping("CommunityReplyDelete")
 	public String communityReplyDelete(CommunityReplyVO reply, HttpSession session) {
 		
-		// >>>>>>>>>>>>>>>> 로그인 처리
-//		String sId = (String)session.getAttribute("sId");
-//		if(sId == null) {
-//			return "invalidSession";
-//		}
-		
-		String sId = "leess";
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "invalidSession";
+		}
 		
 		// 댓글 작성자 조회
 		reply = communityService.getReplyWriter(reply);
@@ -577,14 +667,12 @@ public class CommunityController {
 		System.out.println("대댓글 작성 시 넘어온 값은 : " + reply);
 		
 		// >>>>>>>>>>>>>>>> 로그인 처리
-//		String sId = (String)session.getAttribute("sId");
-//		if(sId == null) {
-//			return "invalidSession";
-//		}
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "invalidSession";
+		}
 		
 		reply.setReply_writer("leess");
-		
-//		reply.setReply_re_lev(reply.getReply_re_lev() + 1);
 		
 		int insertCount = communityService.registReReply(reply);
 		
@@ -610,4 +698,21 @@ public class CommunityController {
 		
 		return "true";
 	}
+	
+	// ============= 관리자 페이지 ==============
+	
+	@GetMapping("CommunityList")
+	public String adminCommunityList() {
+		
+		
+		return "admin/communityList";
+	}
+	
+	@GetMapping("CommunityReplyList")
+	public String adminCommunityReply() {
+		
+		
+		return "admin/communityReplyList";
+	}
+	
 }

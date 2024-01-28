@@ -147,7 +147,6 @@
 			, #{community_id}			
 			, #{reply_writer}			
 			, #{reply_content}			
-			, #{reply_image}			
 			, #{reply_id} + 1
 			, 0
 			, 0
@@ -221,13 +220,60 @@
 			, #{community_id}
 			, #{reply_writer}
 			, #{reply_content}
-			, #{reply_image}
 			, #{reply_re_ref}
 			, #{reply_re_lev} + 1
 			, #{reply_re_seq} + 1
 			, now()
 		)
 	</insert>
+	
+	<!-- 상세 개시글 좋아요 갯수 -->
+	<select id="selectLikeCount" resultType="int">
+		SELECT IFNULL(COUNT(*), 0) 
+		FROM CommunityLike
+		WHERE 
+			community_like_status = 0
+			AND community_num = #{community_id}
+	</select>
+	
+	<!-- 상세 게시글 좋아요 판별 -->
+	<select id="selectLike" resultType="map">
+		SELECT *
+		FROM CommunityLike
+		WHERE
+			member_id = #{member_id}
+			AND community_like_status = #{community_like_status}
+			AND community_num = #{community_num}
+	</select>
+	
+	<!-- 좋아요 삭제 -->
+	<delete id="deleteLike">
+		DELETE FROM CommunityLike
+		WHERE
+			member_id = #{member_id}
+			AND community_like_status = #{community_like_status}
+			AND community_num = #{community_num}
+	</delete>
+	
+	<!-- 좋아요 등록 -->
+	<insert id="insertLike">
+		INSERT INTO CommunityLike
+		VALUES(
+			null
+			, #{member_id}
+			, #{community_like_status}
+			, #{community_num}
+		)
+	</insert>
+	
+	<!-- 회원의 좋아요 목록 -->
+	<select id="selectLikeList">
+		SELECT *
+		FROM CommunityLike
+		WHERE 
+			member_id = #{sId}
+			AND community_like_status = #{community_like_status}
+	</select>
 </mapper>
 
 

@@ -52,6 +52,23 @@
 	font-weight: 900;	
 }
 
+/* 제목 말줄임 */
+.ellipsis {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 450px;
+}
+
+/* 제목 td 클릭 시 상세페이지 이동 */
+#subject {
+	cursor: pointer;
+}
+
+#subject:hover a {
+	color: #39d274;
+}
+
 /* ============== 페이징 ============== */
 .pagination {
     display: flex;
@@ -62,8 +79,14 @@
 }
 
 
+/* ========== 커뮤니티 모바일 ========== */
+.mobileArea:hover{
+	color: #000;
+}
 
-
+.mobileComInfo {
+	color: #888888;
+}
 
 
 /* ============== 상세 페이지==============  */
@@ -245,5 +268,11 @@ textarea.form-control {
 		padding-right: 0 !important;
 	}
 	
-
+	.ellipsis {
+		max-width: 300px !important;
+	}
+	
+	.likeCount {
+		padding-left: 0.25rem !important;
+	}
 }

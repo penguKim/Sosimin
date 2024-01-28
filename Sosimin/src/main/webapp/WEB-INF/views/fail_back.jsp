@@ -10,6 +10,7 @@
 			icon: 'error',
 			title: '${msg}',
 			text: '${msg2}',
+			allowOutsideClick: false
 		}).then((result) => {
 			if(result.isConfirmed) {
 				// Model 객체로 전달받은 "isClose" 값이 true일 경우 현재 창 종료, 아니면 이전페이지로 돌아가기

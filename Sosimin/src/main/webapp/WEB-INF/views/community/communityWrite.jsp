@@ -30,31 +30,6 @@
 		// 10초마다 게시글 임시저장
 		let tempSave = setInterval(tempToast, 10000);
 		
-		
-		
-// 		$("#writeBtn").on("click", function() {
-// 			Swal.fire({
-// 			      title: '정말로 그렇게 하시겠습니까?',
-// 			      text: "다시 되돌릴 수 없습니다. 신중하세요.",
-// 			      icon: 'warning',
-// 			      showCancelButton: true,
-// 			      confirmButtonColor: '#3085d6',
-// 			      cancelButtonColor: '#d33',
-// 			      confirmButtonText: '승인',
-// 			      cancelButtonText: '취소',
-// 			      reverseButtons: true, // 버튼 순서 거꾸로
-			      
-// 			    }).then((result) => {
-// 			      if (result.isConfirmed) {
-// 			        Swal.fire(
-// 			          '승인이 완료되었습니다.',
-// 			          '화끈하시네요~!',
-// 			          'success'
-// 			        )
-// 			      }
-// 			    });
-// 		});
-		
 		// 게시글 등록하기
 		$('#writeBtn').on('click', function(event) {
 				event.preventDefault();
@@ -108,6 +83,7 @@
 			        confirmButtonText: '등록',
 			        cancelButtonText: '취소',
 			        reverseButtons: true,
+			        allowOutsideClick: false
 			    }).then((result) => {
 			        if (result.isConfirmed) {
 			            $(".needs-validation")[0].submit();

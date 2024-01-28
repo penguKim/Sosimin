@@ -31,5 +31,9 @@ public class HomeController {
 		return "main";
 	}
 	
+	@GetMapping("AdminMain")
+	public String adminMain() {
+		return "admin/adminMain";
+	}
 
 }

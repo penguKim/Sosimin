@@ -41,8 +41,8 @@ public class CommunityService {
 		
 		// 조회 결과가 존재하고 isIncreaseReadcount 가 true 일 경우 조회수 증가 작업 요청
 		if(com != null && isIncreaseReadcount) {
-			// 전달한 객체와 리턴할 객체가 동일하기에 sql 구문 실행후 증가한 조회수도 객체에 저장되어 반영된다.
 			mapper.updateReadcount(com);
+			map.put("community_readcount", (int)map.get("community_readcount") + 1);
 		}
 		
 		return map;
@@ -87,12 +87,36 @@ public class CommunityService {
 	@Transactional
 	public int registReReply(CommunityReplyVO reply) {
 		// 기존 대댓글의 순서조정
-//		if(reply.getReply_re_lev() > 0) {
 			mapper.updateReplySeq(reply);
-//		}
 		
 		// 대댓글 작성 요청
 		return mapper.insertReReply(reply);
+	}
+
+	// 상세 게시글 좋아요 갯수
+	public int getLikeCount(CommunityVO com) {
+		return mapper.selectLikeCount(com);
+	}
+
+	// 상세 게시글 좋아요 비즈니스 로직
+	public String getLike(Map<String, String> like) {
+		Map<String, String> map = new HashMap<String, String>();
+		map = mapper.selectLike(like);
+		System.out.println("셀렉트한 좋아요 : " + map);
+		
+		if(map != null) { // 해당 영화를 찜한 경우
+			mapper.deleteLike(like); // 찜하기 삭제 수행
+			return "true";
+		} else { // 찜을 안한 경우
+			mapper.insertLike(like); // 찜하기 등록 수행
+			return "false";
+		}
+	}
+
+	// 회원의 게시글 좋아요 가져오기
+	public Map<String, String> getmemberLike(Map<String, String> like) {
+		
+		return mapper.selectLike(like);
 	}
 
 

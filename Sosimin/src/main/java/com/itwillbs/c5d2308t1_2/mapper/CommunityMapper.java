@@ -54,5 +54,20 @@ public interface CommunityMapper {
 
 	// 대댓글 작성 요청
 	int insertReReply(CommunityReplyVO reply);
+
+	// 상세 게시글 좋아요 갯수
+	int selectLikeCount(CommunityVO com);
+
+	// 상세 게시글 좋아요 판별
+	Map<String, String> selectLike(Map<String, String> like);
+
+	// 좋아요 삭제
+	void deleteLike(Map<String, String> like);
+
+	// 좋아요 등록
+	void insertLike(Map<String, String> like);
+
+	// 회원의 좋아요 목록
+	List<Map<String, String>> selectLikeList(String sId);
 	
 }

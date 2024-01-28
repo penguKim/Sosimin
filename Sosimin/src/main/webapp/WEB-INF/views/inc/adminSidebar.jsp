@@ -106,12 +106,12 @@
 		</a>
 		<ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 			<li>
-				<a href="CmList">
+				<a href="CommunityList">
 					<i class="bi bi-circle"></i><span>게시글관리</span>
 				</a>
 			</li>
 			<li>
-				<a href="CmReplyList">
+				<a href="CommunityReplyList">
 					<i class="bi bi-circle"></i><span>댓글관리</span>
 				</a>
 			</li>

@@ -27,6 +27,28 @@
 <script type="text/javascript">
 	$(function() {
 		
+		// 찜정보 가져오기
+		$.ajax({
+			type: "POST",
+			url: "likeShow", <%-- 회원의 찜 정보 가져오기 --%>
+			data: {
+				community_like_status: 0,
+				community_num: ${param.community_id}
+			},
+			dataType: "json",
+			success: function(result) {
+				console.log(result);
+				if(Object.keys(result) == 0) {
+					if(result.community_num = ${param.community_id}) {
+						$(".heart").toggleClass("is-active");
+					}
+				}
+			},
+			error: function(xhr, textStatus, errorThrown) {
+					alert("현재 상영작 불러오기를 실패했습니다.\n새로고침을 해주세요.");
+			}
+		});
+		
 		// 모달 닫기 버튼 클릭 이벤트
 		$(".close").on("click", function() {
 		  $("#myModal").hide(); <%-- div 영역 숨김 --%>
@@ -41,8 +63,37 @@
 		
 		// 좋아요 버튼 클릭 이벤트
         $(".heart").on("click", function () {
+    		$.ajax({
+    			type: "POST",
+    			url: "likeCheck", <%-- 해당 영화의 찜 정보가 DB에 있는지 판별 --%>
+    			data: {
+    				community_like_status: 0,
+    				community_num: ${param.community_id}
+    			},
+    			dataType: "json",
+    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+    			console.log(result)
+    				if(result == 'login') {
+    					if(confirm("로그인이 필요한 서비스입니다.\n로그인하시겠습니까?")){
+    						location.href = "memberLogin";
+    					}
+    				} else if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
+						$(this).toggleClass("is-active");
+    					$(".likeCount").text(result.likeCount);
+    				} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
+						$(this).toggleClass("is-active");
+    					$(".likeCount").text(result.likeCount);
+    				}
+    			},
+    			error: function(xhr, textStatus, errorThrown) {
+    				alert("찜하기를 실패했습니다.");
+    			}
+    		});
             $(this).toggleClass("is-active");
         });
+//         $(".heart").on("click", function () {
+//             $(this).toggleClass("is-active");
+//         });
         
 		// 신고 버튼 클릭 이벤트
         $("#reportBtn").on("click", function() {
@@ -55,12 +106,12 @@
         $("#replyBtn").on("click", function() {
 			$(this).toggleClass("replyHide");
 			if($(this).hasClass("replyHide")) {
-				console.log("댓글창 닫김");
 				$("#replyArea").hide();
+				$("#replyBtn").text("댓글 보이기");
 // 				$("#replyArea").slideUp();
 			} else {
-				console.log("댓글창 열렸어요!!!");
 				$("#replyArea").show();
+				$("#replyBtn").text("댓글 숨기기");
 // 				$("#replyArea").slideDown();
 			}
 		});
@@ -76,6 +127,7 @@
     	        confirmButtonText: '수정',
     	        cancelButtonText: '취소',
     	        reverseButtons: true,
+    	        allowOutsideClick: false
     	    }).then((result) => {
     	        if (result.isConfirmed) {
     	        	location.href="CommunityModify?community_id=${com.community_id}&pageNum=${param.pageNum }";
@@ -100,6 +152,7 @@
 	        confirmButtonText: '삭제',
 	        cancelButtonText: '취소',
 	        reverseButtons: true,
+	        allowOutsideClick: false
 	    }).then((result) => {
 	        if (result.isConfirmed) {
 	        	location.href="CommunityDelete?community_id=${com.community_id}&pageNum=${param.pageNum }";
@@ -128,6 +181,7 @@
 	        confirmButtonText: '삭제',
 	        cancelButtonText: '취소',
 	        reverseButtons: true,
+	        allowOutsideClick: false
 	    }).then((result) => {
 	        if (result.isConfirmed) {
 	    		$.ajax({
@@ -285,7 +339,7 @@
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
-                        <li>커뮤니티</li>
+                        <li><a href="Community?pageNum=${param.pageNum }">커뮤니티</a></li>
                     </ul>
                 </div>
             </div>
@@ -339,15 +393,21 @@
 			    		</c:if>
 			    	</c:forEach>
 					</div>
-					<div class="d-flex justify-content-between" style="height: 80px;">
-<%-- 						<c:if test="${com.community_writer ne 'leess'}"> --%>
-							<div class="heart"></div>
-<%-- 						</c:if> --%>
-						<div class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn">댓글 숨기기</div>
+<!-- 					<div class="d-flex justify-content-between" style="height: 80px;"> -->
+					<div class="row" style="height: 80px;">
+						<c:if test="${com.community_writer ne sessionScope.sId}">
+							<div class="col-1">
+								<div class="heart"></div>
+							</div>
+							<span class="likeCount col-1 align-self-end ps-0" style="font-size: 20px;">${likeCount }</span>
+						</c:if>
+						<div class="col align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn">
+							댓글 숨기기
+						</div>
 <!-- 						  <button class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn" type="button" data-bs-toggle="collapse" data-bs-target="#replyArea" aria-expanded="false" aria-controls="collapseExample">댓글 숨기기</button> -->
-<%-- 						<c:if test="${com.community_writer ne 'leess'}"> --%>
-							<div class="align-self-end" style="width: 80px;"><i class="fa fa-warning d-flex justify-content-end" id="reportBtn" style="font-size:24px"></i></div>
-<%-- 						</c:if> --%>
+						<c:if test="${com.community_writer ne sessionScope.sId}">
+							<div class="col-1 align-self-end" style="width: 80px;"><i class="fa fa-warning d-flex justify-content-end" id="reportBtn" style="font-size:24px"></i></div>
+						</c:if>
 					</div>
 			    </div>
 			</div>
@@ -357,38 +417,31 @@
 					<input type="hidden" name="community_id" value="${com.community_id }">
 					<input type="hidden" name="pageNum" value="${param.pageNum }">
 <%-- 					<input type="hidden" name="reply_writer" value="${sessionScope.sId }"> --%>
-					<%-- 세션 아이디가 없을 경우(미로그인 시) 댓글 작성 차단 --%>
-					<%-- textarea 및 버튼 disabled 처리 --%>
-<%-- 					<c:choose> --%>
-<%-- 						<c:when test="${empty sessionScope.sId }"> 세션 아이디 없음 --%>
-<!-- 							<textarea class="form-control" id="replyTextarea" name="reply_content" placeholder="로그인 한 사용자만 작성 가능합니다" disabled></textarea> -->
-<!-- 							<input type="submit" class="btn btn-primary disabled" value="댓글쓰기" id="replySubmit" disabled> -->
-<%-- 						</c:when> --%>
-<%-- 						<c:otherwise> --%>
+					<c:choose>
+						<c:when test="${empty sessionScope.sId }">
+							<textarea class="form-control" id="replyTextarea" name="reply_content" placeholder="로그인 한 사용자만 작성 가능합니다" disabled></textarea>
+							<input type="submit" class="btn btn-primary disabled" value="댓글쓰기" id="replySubmit" disabled>
+						</c:when>
+						<c:otherwise>
 							<textarea class="form-control" id="replyTextarea" name="reply_content" required></textarea>
 							<input type="submit" class="btn btn-primary" value="댓글쓰기" id="replySubmit" onclick="ReplyWrite()">
-<%-- 						</c:otherwise> --%>
-<%-- 					</c:choose> --%>
+						</c:otherwise>
+					</c:choose>
 				</form>
 				<div id="replyListArea">
 					<table class="table">
-<!-- 					<tr> -->
-<!-- 						<td class="replyContent"> -->
-<!-- 						</td> -->
-<!-- 					</tr> -->
 					<c:forEach var="reply" items="${replyList }">
 						<tr id="replyTr_${reply.reply_id }">
 							<td class="replyContent">
 								<div class="row">
 									<c:forEach var="i" begin="1" end="${reply.reply_re_lev }">
-	<!-- 									&nbsp;&nbsp; -->
 										<div class="col-1"></div>
 									</c:forEach>
 									<div class="col">
 										<div class="row">
 											<div class="col">
 												<span class="me-2 mb-2">${reply.reply_writer }</span>
-												<c:if test="${reply.reply_writer eq 'leess' }">
+												<c:if test="${reply.reply_writer eq sessionScope.sId }"> <%-- 댓글 작성자 표시 --%>
 													<span class="writerInfo border rounded-3 me-3 align-middle">작성자</span>
 												</c:if>
 												<span class="float-end">${reply.reply_datetime }</span>
@@ -398,53 +451,38 @@
 											<div class="col">
 												<span class="align-middle">${reply.reply_content }</span>
 											</div>
-											<div class="col-1">
+											<div class="col-1"> <%-- 삭제 버튼 --%>
+											<c:if test="${sessionScope.sId eq reply.reply_writer or sessionScope.sId eq 'admin' }">
 												<span class="reDelBtn ms-3 align-middle float-end">
 													<a href="javascript:confirmReplyDelete(${reply.reply_id })">
 														<i class="fa fa-times-circle align-middle" style="font-size:18px"></i>
 													</a>
 												</span>
+											</c:if>
 											</div>
 										</div>
-										<div class="row" id="reReplyBtn">
+										<c:if test="${not empty sessionScope.sId }">
+										<div class="row" id="reReplyBtn"> <%-- 대댓글 버튼 --%>
 											<div class="col">
 												<a href="javascript:reReplyWriteForm(${reply.reply_id }, ${reply.reply_re_ref }, ${reply.reply_re_lev }, ${reply.reply_re_seq })">
 													<i class="fa fa-comment-o"></i>
 												</a>
 											</div>
 										</div>
+										</c:if>
 									</div>
-<%-- 								${reply.reply_content } --%>
-<%-- 								<c:if test="${not empty sessionScope.sId }"> --%>
-<%-- 									<a href="javascript:reReplyWriteForm(${reply.reply_id }, ${reply.reply_re_ref }, ${reply.reply_re_lev }, ${reply.reply_re_seq })"> 하이퍼링크의 기본 기능으로 이동 --%>
-<!-- 										<i class="fa fa-comment-o"></i> -->
-<%-- 										<img src="${pageContext.request.contextPath }/resources/images/reply-icon.png"> --%>
-<!-- 									</a> -->
-<%-- 									<c:if test="${sessionScope.sId eq reply.reply_writer or sessionScope.sId eq 'admin' }"> --%>
-<%-- 									<a href="javascript:void(0)" onclick="confirmReplyDelete(${reply.reply_id })"> void(0)으로 하이퍼링크를 막고 onclick 이벤트로 이동 --%>
-<!-- 										<i class="fa fa-times-circle"></i> -->
-<%-- 										<img src="${pageContext.request.contextPath }/resources/images/delete-icon.png"> --%>
-<!-- 									</a> -->
-<%-- 									</c:if> --%>
-<%-- 								</c:if> --%>
 								</div>
 							</td>
-<%-- 							<td class="replyWriter">${reply.reply_writer }</td> --%>
-<!-- 							<td class="replyDate"> -->
-<%-- 								${reply.reply_datetime } --%>
-<!-- 							</td> -->
 						</tr>
 					</c:forEach>
 					</table>
 				</div>
 			</section>
 			<div class="mx-auto w-50 mt-1 mb-3 row d-flex justify-content-between" id="commandCell">
-		<%-- 		<c:if test="${not empty sessionScope.sId and (sessionScope.sId eq board.board_name or sessionScope.sId eq 'admin') }"> --%>
-<%-- 				<c:if test="${com.community_writer ne 'leess'}"> --%>
+				<c:if test="${not empty sessionScope.sId and (sessionScope.sId eq com.community_writer or sessionScope.sId eq 'admin') }">
 					<input type="button" class="btn btn-secondary col-xl-2 col-md-3 col-12 me-2" id="modifyBtn" value="수정">
 					<input type="button" class="btn btn-danger col-xl-2 col-md-3 col-12 me-auto" value="삭제" onclick="confirmDelete()">
-<%-- 				</c:if> --%>
-		<%-- 		</c:if> --%>
+				</c:if>
 				<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="목록" onclick="location.href='Community?pageNum=${param.pageNum}'">
 			</div>
 		</div>
@@ -469,7 +507,7 @@
 	<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+<%-- 	<script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script> --%>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-</body>
+	</body>
 </html>

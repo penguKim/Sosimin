@@ -10,6 +10,7 @@
 			icon: 'error',
 			title: '${msg}',
 			text: '${msg2}',
+			allowOutsideClick: false
 		}).then((result) => {
 			if(result.isConfirmed) {
 				// Model 객체로 전달받은 "isClose" 값에 따른 처리
