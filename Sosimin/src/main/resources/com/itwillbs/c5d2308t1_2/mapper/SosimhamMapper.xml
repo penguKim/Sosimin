@@ -3,9 +3,14 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.itwillbs.c5d2308t1_2.mapper.ComponentMapper">
+<mapper namespace="com.itwillbs.c5d2308t1_2.mapper.SosimhamMapper">
 	<select id="selectLocation" resultType="map">
 		SELECT *
 		FROM Town 
+	</select>
+	
+	<select id="selectGu" resultType="String">
+		SELECT *
+		FROM City
 	</select>
 </mapper>

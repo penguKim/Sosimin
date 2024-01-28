@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <title>Bootstrap Example</title>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	
     <!-- ========================= CSS here ========================= -->
@@ -82,38 +83,66 @@
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
 	
-	<h1 id="h01">소심함 위치 정보</h1>
+	<h1> 소심함 무인택배함 </h1>
+	 <!-- Example single danger button -->
+			<div class="btn-group">
+			  <button type="button" class="btngu btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+			    구 선택
+			  </button>
+			  <ul class="dropdown-menu">
+			  	<c:forEach var="i" items="${resultMap}" >
+			    	<li><a class="dropdown-item itemGu">${i.key}</a></li>
+			    </c:forEach>
+			  </ul>
+			  <button type="button" class="btndong btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+			    동 선택                                
+			  </button>
+			  <ul class="dropdown-menu dongSelect">
+			  	<li><a class="dropdown-item itemDong">구를 먼저 선택해주세요.</a></li>
+			  </ul>
+			 </div>
 			<hr>
 				<input type="hidden" value="${theaterName}">
-					<c:set var="theaterName" value="${theaterName.theater_name}"></c:set>
-				<div id="img_div">
-					<img src="${pageContext.request.contextPath}/resources/images/sosimham/진구.jpg" alt="진구" id="image">
+				<div class="AddressContainer">
+					<img src="${pageContext.request.contextPath}/resources/images/sosimham/서구.jpg" alt="wl구" id="image">
+					<table class="AddressText">
+						<tr>
+							<td>xxx구</td>
+						</tr>
+						<tr>
+							<td>xxx동</td>
+						</tr>
+						<tr>
+							<td>xxx무인택배함</td>
+						</tr>
+						<tr>
+							<td>업무시간 안내</td>
+						</tr>
+						<tr>
+							<td>09:00</td>
+						</tr>
+						<tr>
+							<td>18:00</td>
+						</tr>
+					</table>
 				</div>
 			<hr>
-			<div class="menu" >
-				<nav class="theater1">
-					<c:forEach var="GuName" items="${ListGu}" varStatus="status">
-						<input type="button" name="GuNames" class="${GuName}" id="${GuName}" value="${GuName}">
-					</c:forEach>
-				</nav>
+			
+			
+			
+	    	<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
+				<c:forEach var="i" items="${resultMap}" varStatus="status" >
+					<input type="radio" class="btn-check" name="category" id="${i.key}" value="${i.key}" autocomplete="off" >
+					<label class="btn btn-outline-primary" for="${i.key}">${i.key}</label>
+				</c:forEach>
 			</div>
-			<hr>
-			
-			
-			
-<!-- 	    	<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group"> -->
-<%-- 				<c:forEach var="i" items="${resultMap}" varStatus="status" > --%>
-<%-- 					<input type="radio" class="btn-check" name="category" id="${i.key}" value="${i.key}" autocomplete="off" > --%>
-<%-- 					<label class="btn btn-outline-primary" for="${i.key}">${i.key}</label> --%>
-<%-- 				</c:forEach> --%>
-<!-- 			</div> -->
 		    
 			<div id="theater_top">
 				<div id="theater_price">
 					<h3>[ 가격 안내 ]</h3>
 					<table id="price_table">
 						<tr>
-							<th colspan="4" id="table_name">소심함 시간당 이용금액</th>
+							<th colspan="4" id="table_name">일반 2D</th>
 						</tr>
 						<tr>
 							<th>구분</th>
@@ -122,21 +151,21 @@
 						</tr>         
 					
 						<tr>
-							<th rowspan="4">시간</th>
-							<td>1시간 미만</td>
-							<td>500원</td>
+							<th rowspan="4">인원</th>
+							<td>일반</td>
+							<td>15,000</td>
 						</tr>
 						<tr>
-							<td>1시간 이상 2시간 미만</td>
-							<td>1,000원</td>
+							<td>청소년</td>
+							<td>11,000</td>
 						</tr>
 						<tr>
-							<td>3시간 이상</td>
-							<td>3,000원</td>
+							<td>경로</td>
+							<td>7,000</td>
 						</tr>
 						<tr>
-							<td>24시간 이상</td>
-							<td>5,000원</td>
+							<td>우대</td>
+							<td>5,000</td>
 						</tr>
 					</table>
 				</div>				
@@ -149,13 +178,13 @@
 							
 								var container = document.getElementById('map');
 								var options = {
-									center: new kakao.maps.LatLng(35.16283791857152, 129.0531628083784),
+									center: new kakao.maps.LatLng(35.149236094733254, 129.0635624238869),
 									level: 3
 								};
 								var map = new kakao.maps.Map(container, options);
 						
 								// 마커가 표시될 위치입니다 
-								var markerPosition  = new kakao.maps.LatLng(35.16283791857152, 129.0531628083784); 
+								var markerPosition  = new kakao.maps.LatLng(35.149278694688036, 129.06357447166218); 
 					
 								// 마커를 생성합니다
 								var marker = new kakao.maps.Marker({
@@ -193,94 +222,64 @@
 							
 							 var locations = [
 								  {
-								    id: "부산진구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/진구.jpg",
-								    lat: 35.16283791857152,
-								    lng: 129.0531628083784
+								    id: "서면삼정타워",
+								    imageSrc: "${pageContext.request.contextPath}/resources/img/삼정타워점.JPG",
+								    lat: 35.15301369233767,
+								    lng: 129.05962274791744
 								  },
 								  {
-								    id: "강서구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/강서구.jpg",
-								    lat: 35.21219886170481,
-								    lng: 128.98057003047273
+								    id: "동래",
+								    imageSrc: "${pageContext.request.contextPath}/resources/img/동래.JPG",
+								    lat: 35.221414075646194,
+								    lng: 129.0855232950597
 								  },
 								  {
-								    id: "동래구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/동래구.jpg",
-								    lat: 35.19630797610848,
-								    lng: 129.09387772556312
+								    id: "서면상상마당",
+								    imageSrc: "${pageContext.request.contextPath}/resources/img/상상마당.JPG",
+								    lat: 35.15423948976798,
+								    lng: 129.05748931736966
 								  },
 								  {
-								    id: "금정구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/금정구.jpg",
-								    lat: 35.242845042663966,
-								    lng: 129.09208055902218
+								    id: "부산명지",
+								    imageSrc: "${pageContext.request.contextPath}/resources/img/명지점.png",
+								    lat: 35.09440141296223,
+								    lng: 128.90351489468253
 								  },
 								  {
-								    id: "남구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/남구.jpg",
-								    lat: 35.13654456628705,
-								    lng: 129.08427447872236
+								    id: "아시아드",
+								    imageSrc: "${pageContext.request.contextPath}/resources/img/아시아드점.png",
+								    lat: 35.19154582406568,
+								    lng: 129.06328187601284
 								  },
 								  {
-								    id: "동구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/동구.jpg",
-								    lat: 35.129291948140526,
-								    lng: 129.04531078712344
+								    id: "센텀시티",
+								    imageSrc: "${pageContext.request.contextPath}/resources/img/센텀점.png",
+								    lat: 35.1691119842877,
+								    lng: 129.13038331260668
 								  },
 								  {
-								    id: "북구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/북구.jpg",
-								    lat: 35.197384443559564,
-								    lng: 128.990134815883
+								    id: "하단아트몰링",
+								    imageSrc: "${pageContext.request.contextPath}/resources/img/동구점.png",
+								    lat: 35.489848332547005,
+								    lng: 129.43101483150292
 								  },
 								  {
-								    id: "사상구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/사상구.jpg",
-								    lat: 35.152502576684626,
-								    lng: 128.9914411323253
+								    id: "서면",
+								    imageSrc: "${pageContext.request.contextPath}/resources/img/CGV서면.png",
+								    lat: 35.149278694688036,
+								    lng: 129.06357447166218
 								  },
 								  {
-								    id: "사하구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/사하구.jpg",
-								    lat: 35.10448114972414,
-								    lng: 128.97491129253802
+								    id: "화명",
+								    imageSrc: "${pageContext.request.contextPath}/resources/img/화명점.png",
+								    lat: 35.23471793459627,
+								    lng: 129.00987511366884
 								  },
 								  {
-								    id: "서구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/서구.jpg",
-								    lat: 35.097992866568646,
-								    lng: 129.0243281161757
-								  },
-								  {
-								    id: "수영구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/수영구.jpg",
-								    lat: 35.145458797615035,
-								    lng: 129.11316701614936
-								  },
-								  {
-								    id: "연제구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/연제구.jpg",
-								    lat: 35.17623288805716,
-								    lng: 129.07974208388646
-								  },
-								  {
-								    id: "영도구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/영도구.jpg",
-								    lat: 35.09131768458653,
-								    lng: 129.0679510693063
-								  },
-								  {
-								    id: "중구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/중구.jpg",
-								    lat: 35.106225641630374,
-								    lng: 129.0323725506374
-								  },
-								  {
-								    id: "해운대구",
-								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/해운대구.jpg",
-								    lat: 35.16308713064507,
-								    lng: 129.16358565267765
+								    id: "해운대",
+								    imageSrc: "${pageContext.request.contextPath}/resources/img/해운대점.png",
+								    lat: 35.1628435626128,
+								    lng: 129.1584244156929
 								  }
 								];
 							 
@@ -292,9 +291,9 @@
 							     container.onclick = function() {
 							       changeImage(location.imageSrc, location.lat, location.lng);
 							       selectedId = location.id; // 클릭한 위치의 ID를 변수에 저장합니다
-							       var GuElements = document.getElementsByName("GuNames");
-							       for (var i = 0; i < GuElements.length; i++) {
-							         var value = GuElements[i].value;
+							       var theaterElements = document.getElementsByName("theaterNames");
+							       for (var i = 0; i < theaterElements.length; i++) {
+							         var value = theaterElements[i].value;
 							       }
 							       
 							       if (selectedContainer) {
