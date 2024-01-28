@@ -31,7 +31,9 @@
 
   <!-- Template Main CSS File -->
   <link href="${pageContext.request.contextPath}/resources/css/admin/style.css" rel="stylesheet">
-
+	<%-- sweetalert --%>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Updated: Jan 09 2024 with Bootstrap v5.3.2
@@ -39,6 +41,43 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script type="text/javascript">
+function deleteProduct() {
+	
+	Swal.fire({
+		   title: '정말 삭제하시겠습니까?',
+		   text: '삭제된 상품은 되돌릴수 없습니다',
+		   icon: 'warning',
+		   
+		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+		   confirmButtonText: '삭제하기', // confirm 버튼 텍스트 지정
+		   cancelButtonText: '취소하기', // cancel 버튼 텍스트 지정
+		   reverseButtons: true, // 버튼 순서 거꾸로
+	}).then(result => {
+	    // 만약 Promise리턴을 받으면,
+	    if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+			Swal.fire('삭제되었습니다!', '화끈하시네요!', 'success');
+			$("#modalDismiss").click();
+// 	    	$.ajax({
+// 					url: "ProductDelete",
+// 					data: {
+// 					},
+// 					success: function() {
+// 						Swal.fire('삭제되었습니다!', '화끈하시네요!', 'success');
+						
+// 					},
+// 					error: function() {
+// 						Swal.fire('삭제 실패했습니다!', '죄송하지만 다시 부탁해요~!', 'error');
+// 					}
+// 			}); // 신고 등록 ajax 끝
+	   	}
+	});
+}	
+	
+</script>
 </head>
 
 <body>
@@ -85,7 +124,7 @@
 									</div>
 								</div>
 								<div class="datatable-container">
-									<table class="table datatable datatable-table" id="memberManagementTable">
+									<table class="table datatable datatable-table">
 										<thead>
 											<tr>
 												<th data-sortable="true">
@@ -144,7 +183,10 @@
 												<td>보통</td>
 												<td>거래중</td>
 												<td class="green">
-													<input type="button" class="btn btn-outline-primary" value="수정">
+													<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" 
+							                        		data-bs-target="#productListModal">
+															상세
+													</button>
 												</td>
 											</tr>
 										</tbody>
@@ -223,7 +265,80 @@
 			</div>
 		</section>
   </main>
-	
+  
+<div class="modal fade review-modal" id="productListModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="reportsubject">등록 상품 상세 정보</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modalDismiss"></button>
+			</div>
+			<div class="modal-body">
+				<table border="1" class="table datatable datatable-table">
+					<tr>
+						<th>상품번호</th>
+						<td>1</td>
+					</tr>
+					<tr>
+						<th>아이디</th>
+						<td>admin</td>
+					</tr>
+					<tr>
+						<th>상품명</th>
+						<td>가짜</td>
+					</tr>
+					<tr>
+						<th>글내용</th>
+						<td>이것은 가짜입니다</td>
+					</tr>
+					<tr>
+						<th>가격</th>
+						<td>50,000원</td>
+					</tr>
+					<tr>
+						<th>거래 지역</th>
+						<td>부산진구 부전동</td>
+					</tr>
+					<tr>
+						<th>상품 등록일</th>
+						<td>2024-01-28 16:55:24</td>
+					</tr>
+					<tr>
+						<th>카테고리</th>
+						<td>패션/잡화</td>
+					</tr>
+					<tr>
+						<th>상품 상태</th>
+						<td>보통</td>
+					</tr>
+					<tr>
+						<th>거래 방법</th>
+						<td>비대면</td>
+					</tr>
+					<tr>
+						<th>거래 상태</th>
+						<td>거래중</td>
+					</tr>
+					<tr>
+						<th>상품이미지</th>
+						<td>
+							<img src="${pageContext.request.contextPath}/resources/images/" width="80px" height="80px">
+							<img src="${pageContext.request.contextPath}/resources/images/" width="80px" height="80px">
+							<img src="${pageContext.request.contextPath}/resources/images/" width="80px" height="80px">
+							<img src="${pageContext.request.contextPath}/resources/images/" width="80px" height="80px">
+							<img src="${pageContext.request.contextPath}/resources/images/" width="80px" height="80px">
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal" id="modalDismiss">창닫기</button>
+				<button type="button" class="btn btn-outline-primary" onclick="deleteProduct()">삭제하기</button>
+			</div>
+		</div>
+	</div>
+</div>
+  	
   <footer id="footer" class="footer">
 	<jsp:include page="../inc/adminBottom.jsp"></jsp:include>	
   </footer><!-- End Footer -->

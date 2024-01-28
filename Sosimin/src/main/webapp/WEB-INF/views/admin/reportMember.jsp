@@ -28,10 +28,13 @@
   <link href="${pageContext.request.contextPath}/resources/css/admin/quill.bubble.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/css/admin/remixicon.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/css/admin/style2.css" rel="stylesheet">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
 
   <!-- Template Main CSS File -->
   <link href="${pageContext.request.contextPath}/resources/css/admin/style.css" rel="stylesheet">
-
+	<%-- sweetalert --%>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
   <!-- =======================================================
   * Template Name: NiceAdmin
   * Updated: Jan 09 2024 with Bootstrap v5.3.2
@@ -39,6 +42,42 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script type="text/javascript">
+function reportStatus() {
+	
+	Swal.fire({
+		   title: '정말 변경하시겠습니까?',
+		   text: '다시 한번 확인해주세요!',
+		   icon: 'warning',
+		   
+		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+		   confirmButtonText: '변경', // confirm 버튼 텍스트 지정
+		   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+		   reverseButtons: true, // 버튼 순서 거꾸로
+	}).then(result => {
+	    // 만약 Promise리턴을 받으면,
+	    if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+			Swal.fire('변경되었습니다!', '화끈하시네요!', 'success');
+	    	$("#modalDismiss").click();
+// 	    	$.ajax({
+// 					url: "ProductDelete",
+// 					data: {
+// 					},
+// 					success: function() {
+// 						Swal.fire('삭제되었습니다!', '화끈하시네요!', 'success');
+						
+// 					},
+// 					error: function() {
+// 						Swal.fire('삭제 실패했습니다!', '죄송하지만 다시 부탁해요~!', 'error');
+// 					}
+// 			}); // 신고 등록 ajax 끝
+	   	}
+	});
+}	
+</script>
 </head>
 
 <body>
@@ -119,7 +158,10 @@
 												<td>신고내용</td>
 												<td>2024/01/28</td>
 												<td class="green">
-													<input type="button" class="btn btn-outline-primary" value="수정">
+													<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" 
+							                        		data-bs-target="#productListModal">
+															상세
+													</button>
 												</td>
 											</tr>
 										</tbody>
@@ -198,6 +240,62 @@
 			</div>
 		</section>
   </main>
+
+	<div class="modal fade review-modal" id="productListModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="reportsubject">회원 신고 상세</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modalDismiss"></button>
+				</div>
+				<div class="modal-body">
+					<table border="1" class="table datatable datatable-table">
+						<tr>
+							<th>신고번호</th>
+							<td>1</td>
+						</tr>
+						<tr>
+							<th>신고자</th>
+							<td>신고</td>
+						</tr>
+						<tr>
+							<th>피신고자</th>
+							<td>피신</td>
+						</tr>
+						<tr>
+							<th>신고사유</th>
+							<td>비매너</td>
+						</tr>
+						<tr>
+							<th>신고내용</th>
+							<td>거래가끝났는데 채팅으로 계속 괴롭혀요</td>
+						</tr>
+						<tr>
+							<th>신고날짜</th>
+							<td>2024-01-28 16:55:24</td>
+						</tr>
+						<tr>
+							<th>신고처리 상태</th>
+							<td>
+								<span class="reportResultStatus">처리중</span>
+								<select>
+									<optgroup label="신고상태">
+										<option>처리중</option>
+										<option>문제없음</option>
+										<option>처리완료</option>
+									</optgroup>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal" id="modalDismiss">창닫기</button>
+					<button type="submit" class="btn btn-outline-primary" onclick="reportStatus()">변경저장</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	
   <footer id="footer" class="footer">
 	<jsp:include page="../inc/adminBottom.jsp"></jsp:include>	
