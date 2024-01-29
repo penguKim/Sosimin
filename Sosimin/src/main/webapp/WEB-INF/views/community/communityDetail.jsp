@@ -73,10 +73,10 @@
     			dataType: "json",
     			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
     				if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
-						$(this).addClass("is-active");
+						$(".heart").addClass("is-active");
     					$(".likeCount").text(result.likeCount);
     				} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
-						$(this).removeClass("is-active");
+						$(".heart").removeClass("is-active");
     					$(".likeCount").text(result.likeCount);
     				}
     			},
