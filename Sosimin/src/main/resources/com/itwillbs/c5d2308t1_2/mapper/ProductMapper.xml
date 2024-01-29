@@ -17,10 +17,10 @@
 			, #{product_category}
 			, #{tag_name}
 			, #{product_image1} 
-	        , <if test="product_image2 != null">#{product_image2}</if>NULL
-	        , <if test="product_image3 != null">#{product_image3}</if>NULL
-	        , <if test="product_image4 != null">#{product_image4}</if>NULL
-	        , <if test="product_image5 != null">#{product_image5}</if>NULL
+	        , <if test="product_image2 != null">#{product_image2}</if><if test="product_image2 == null">NULL</if> 
+	        , <if test="product_image3 != null">#{product_image3}</if><if test="product_image3 == null">NULL</if>
+	        , <if test="product_image4 != null">#{product_image4}</if><if test="product_image4 == null">NULL</if>
+	        , <if test="product_image5 != null">#{product_image5}</if><if test="product_image5 == null">NULL</if>
 			, now()
 			, #{trade_method}
 			, #{product_status}
@@ -30,5 +30,9 @@
 		)
 	</insert>	
 	
+	<select id="selectProduct">
+	
+	
+	</select>
 
 </mapper>

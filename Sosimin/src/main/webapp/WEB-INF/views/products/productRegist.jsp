@@ -763,8 +763,9 @@ var tagCounter = 1; // 태그의 순차적인 카운터 변수
 
 var imageCounter = 1;
 // 썸네일 작업
+var formData = new FormData(); // 전역 변수로 FormData 객체 생성
+
 function setThumbnail(event) {
-	
   var files = event.target.files;
 
   for (var i = 0; i < files.length; i++) {
@@ -779,52 +780,55 @@ function setThumbnail(event) {
       return false;
     }
 
-	 var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
-	 imageLength++;
-	 document.getElementById("imageLength").textContent = imageLength;
-   if (imageLength <= 5) {
-    var reader = new FileReader();
-    reader.onload = (function(file) {
-      return function(e) {
-        var img = document.createElement("img");
-        img.setAttribute("src", e.target.result);
-        img.setAttribute("class", "imageSize");
-	
-        var closeButton = document.createElement("button");
-        closeButton.setAttribute("type", "button");
-        closeButton.setAttribute("class", "imageClose");
-        closeButton.setAttribute("onclick", "removeImage(this)");
-        
-        var imageItem = document.createElement("span");
-        imageItem.classList.add("imageItem");
+    var imageLength = parseInt(document.getElementById("imageLength").textContent);
+    imageLength++;
+    document.getElementById("imageLength").textContent = imageLength;
 
-        var imageNameInput = document.createElement("input");
-        imageNameInput.type = "hidden";
-        imageNameInput.name = "product_image" + imageCounter; // name 속성 수정
-        imageNameInput.value = file.name; // input 값으로 파일 이름 설정
-        imageItem.appendChild(imageNameInput);
+    if (imageLength <= 5) {
+      var reader = new FileReader();
+      reader.onload = (function(file) {
+        return function(e) {
+          var img = document.createElement("img");
+          img.setAttribute("src", e.target.result);
+          img.setAttribute("class", "imageSize");
 
-        imageItem.appendChild(img);
-        imageItem.appendChild(closeButton);
-        document.getElementById("image_container").appendChild(imageItem);
-	
-        // 첫번째 이미지인 경우 대표이미지로 설정
-        if(imageCounter == 1) {
-          var mainImageText = document.querySelector(".mainImage");
-          mainImageText.style.display = "inline";
-        }
-        imageCounter++;
-      };
-    })(file);
+          var closeButton = document.createElement("button");
+          closeButton.setAttribute("type", "button");
+          closeButton.setAttribute("class", "imageClose");
+          closeButton.setAttribute("onclick", "removeImage(this)");
 
-    reader.readAsDataURL(file);
-  }else if (imageLength > 5) {
-	  alert("사진 첨부는 최대 5장까지 가능합니다.");
-	  imageLength = 5;
-	  document.getElementById("imageLength").textContent = imageLength;
-		}
-	} 
+          var imageItem = document.createElement("span");
+          imageItem.classList.add("imageItem");
+
+          imageItem.appendChild(img);
+          imageItem.appendChild(closeButton);
+          document.getElementById("image_container").appendChild(imageItem);
+
+          if(imageCounter == 1) {
+            var mainImageText = document.querySelector(".mainImage");
+            mainImageText.style.display = "inline";
+          }
+          imageCounter++;
+
+          formData.append("product_image" + imageCounter, file); // FormData 객체에 파일 추가
+        };
+      })(file);
+
+      reader.readAsDataURL(file);
+    } else if (imageLength > 5) {
+      alert("사진 첨부는 최대 5장까지 가능합니다.");
+      imageLength = 5;
+      document.getElementById("imageLength").textContent = imageLength;
+    }
+  }
 }
+
+// 제출 버튼 클릭 시 서버로 FormData 전송
+document.getElementById("submit").addEventListener("click", function() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/upload", true);
+  xhr.send(formData);
+});
 //파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
 function addFileInput() {
 document.getElementById("product_image").click();
@@ -1027,13 +1031,14 @@ function checkInput() {
 						<li class="td">
 							<select id="categoryName" name="product_category" class="dataTable-selector selector" onchange="addACategory();">
 								<option value="default">카테고리를 선택하세요.</option>
-								<option>패션잡화(모자/가방/지갑)</option>
-								<option>아우터</option>
 								<option>상의</option>
-								<option>하의(치마)</option>
+								<option>하의</option>
+								<option>아우터</option>
 								<option>아동복</option>
-								<option>셋업 세트(원피스)</option>
+								<option>셋업/세트</option>
+								<option>패션/잡화</option>
 								<option>신발</option>
+								<option>기타</option>
 							</select>
 							<div id="Category">
 							선택한 카테고리 : 
