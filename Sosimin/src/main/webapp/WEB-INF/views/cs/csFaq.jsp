@@ -1,50 +1,97 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Sosimin</title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
-
-    <!-- ========================= CSS here ========================= -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/csStyle.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+	<meta charset="UTF-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge" />
+	<title>Sosimin</title>
+	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+	<meta name="description" content="" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+	
+	<!-- ========================= CSS here ========================= -->
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/csStyle.css" />
+<script type="text/javascript">
+	$(function() {
+		
+		let width = $(window).width();
+		console.log(width);
+		
+		// 게시시간 변환 함수 호출
+		timeAgo();
+		
+		// 페이징 처리
+		if(${pageInfo.page.pageNum <= 1 }) {
+			$("#prevPage").addClass("disabled");
+		}
+		if(${pageInfo.page.pageNum >= pageInfo.maxPage }) {
+			$("#nextPage").addClass("disabled");
+		}
+		
 
+	
+	// 게시시간 변환
+	function timeAgo() {
+		let timeStamp = new Date("${cs.cs_datetime}".replace(" ", "T")).getTime(); // 비교 대상 시간
+	    let now = new Date();
+        secondsPast = (now.getTime() - timeStamp) / 1000;
+	    
+	    if(secondsPast < 60){
+	    	 $("#csDate").text("방금전");
+	    } else if(secondsPast < 60 * 60){
+	    	 $("#csDate").text(parseInt(secondsPast/60) + '분전');
+	    } else if(secondsPast <= 60 * 60 * 24){
+	    	 $("#csDate").text(parseInt(secondsPast/60 * 60) + '시간전');
+	    }
+	}
+	
+
+</script>
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="preloader-inner">
-            <div class="preloader-icon">
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </div>
-    <!-- /End Preloader -->
+	<%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1 로 저장) --%>
+	<c:set var="pageNum" value="1" />
+	<c:if test="${not empty param.pageNum }">
+		<c:set var="pageNum" value="${param.pageNum }" />
+	</c:if>
+	<!--[if lte IE 9]>
+      <p class="browserupgrade">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="https://browsehappy.com/">upgrade your browser</a> to improve
+        your experience and security.
+      </p>
+    <![endif]-->
 
+	<!-- Preloader -->
+	<div class="preloader" style="opacity: 0; display: none;">
+		<div class="preloader-inner">
+			<div class="preloader-icon">
+				<span></span> <span></span>
+			</div>
+		</div>
+	</div>
+	<!-- /End Preloader -->
+	
+	<!-- Start Header Area -->
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
-
-    <!-- Start Breadcrumbs -->
-    <div class="breadcrumbs">
+	<!-- End Header Area -->
+	
+	<!-- Start Breadcrumbs -->
+	<div class="breadcrumbs">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
@@ -54,7 +101,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./">Home</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
                         <li><a href="CsMain">고객센터</a></li>
                         <li>자주묻는질문</li>
                     </ul>
@@ -62,154 +109,115 @@
             </div>
         </div>
     </div>
-    <!-- End Breadcrumbs -->
-
-			    <!-- Start Faq Area -->
-    <section class="faqsection">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-	                <!-- Start Main Menu Search -->
-	                <div class="cs-search">
-	                    <!-- navbar search start -->
-	                    <div class="navbar-search search-style-5">
-	                        <div class="search-btn">
-	                            <input type="text" id="searchKeyword" placeholder="Search" >
-	                            <button onclick="location.href='csNotice'">
-	                            	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-									  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-									</svg>
-	                            </button>
-	                        </div>
-	                    </div>
-	                    <!-- navbar search Ends -->
-	                </div>
-                </div>
-            </div>
-	            <hr>
-	            <div>
-					<ul class="useful-links">
-						<li><a href="contact.html" id="menu1">전체</a><a href="contact.html" id="menu2">회원</a><a href="contact.html" id="menu3">거래분쟁</a></li>
-					</ul>
-	            </div>
-	            <hr>
-	            <div>
-					<ul class="useful-links">
-						<li><a href="contact.html" id="menu1">운영정책</a><a href="contact.html" id="menu2">안전결제</a><a href="contact.html" id="menu3">사이트이용</a></li>
-					</ul>
-	            </div>
-	            <hr>	            
-            <div class="row">
-                <div class="col-lg-10 offset-lg-1 col-md-12 col-12">
-                    <div class="accordion" id="accordionExample">
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="headingOne">
-								<button class="accordion-button" type="button" data-bs-toggle="collapse"
-										data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-									<span id="num">1</span>
-									<span id="noticeSubject"><b>공지제목란입니다</b></span>
-									<span id="type"><b>일반유형</b></span>
-									<span id="noticeDate"><b>2024.01.24</b></span>
-								</button>
-							</h2>
-							<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-								 data-bs-parent="#accordionExample">
-								<div class="accordion-body">
-									<p>내용</p>
-								</div>
+   	<!-- End Breadcrumbs -->
+	<section class="csArea section">
+		<div class="container-lg">
+			<div class="row mb-5 mx-auto">
+				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
+					<input type="radio" class="btn-check" name="category" id="allMenu" value="전체" autocomplete="off" checked>
+					<label class="btn btn-outline-primary" for="allMenu">전체</label>
+					<input type="radio" class="btn-check" name="category" id="Menu1" value="공지" autocomplete="off">
+					<label class="btn btn-outline-primary" for="Menu1">회원</label>
+					<input type="radio" class="btn-check" name="category" id="Menu2" value="정책변경" autocomplete="off">
+					<label class="btn btn-outline-primary" for="Menu2">금지품목</label>
+					<input type="radio" class="btn-check" name="category" id="Menu3" value="사기예방" autocomplete="off">
+					<label class="btn btn-outline-primary" for="Menu3">운영정책</label>
+					<input type="radio" class="btn-check" name="category" id="Menu4" value="사기예방" autocomplete="off">
+					<label class="btn btn-outline-primary" for="Menu4">안전결제</label>
+					<input type="radio" class="btn-check" name="category" id="Menu5" value="사기예방" autocomplete="off">
+					<label class="btn btn-outline-primary" for="Menu5">사이트이용</label>
+				</div>
+				<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
+					<form action="">
+	<!-- 					<div class="form-group row row-cols-1 row-cols-sm-2 row-cols-md-2"> -->
+						<div class="form-group row d-flex justify-content-end">
+							<div class="col-xl-2 col-md-2 col-sm-3 col-3 px-0 mb-2">
+<!-- 								<select class="form-select col-xl-1 col-md-3 col-sm-3 col-3" style="width: 20%;"> -->
+								<select class="form-select" name="searchType">
+									<option selected value="">전체</option>
+									<option value="subject">제목</option>
+									<option value="content">내용</option>
+								</select>
+							</div>
+							<div class="searchKeyword col-xl-5 col-md-6 col-sm-9 col-9 px-1 mb-2">
+								<input type="text" name="searchKeyword" class="form-control">
+							</div>
+							<div class="searchBtn col-xl-2 col-md-2 d-grid ps-0 pe-2 mb-2">
+								<input type="button" value="검색" class="btn btn-primary">
 							</div>
 						</div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-									<span id="num">1</span>
-									<span id="noticeSubject"><b>공지제목란입니다</b></span>
-									<span id="type"><b>일반유형</b></span>
-									<span id="noticeDate"><b>2024.01.24</b></span>
-                                </button>
-                            </h2>
-                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <p>내용1</p>
-                                    <p>내용2</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-									<span id="num">1</span>
-									<span id="noticeSubject"><b>공지제목란입니다</b></span>
-									<span id="type"><b>일반유형</b></span>
-									<span id="noticeDate"><b>2024.01.24</b></span>
-                                </button>
-                            </h2>
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <p>내용1</p>
-                                    <p>내용2</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingfour">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
-									<span id="num">1</span>
-									<span id="noticeSubject"><b>공지제목란입니다</b></span>
-									<span id="type"><b>일반유형</b></span>
-									<span id="noticeDate"><b>2024.01.24</b></span>
-                                </button>
-                            </h2>
-                            <div id="collapsefour" class="accordion-collapse collapse" aria-labelledby="headingfour"
-                                data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <p>내용1</p>
-                                    <p>내용2</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-					<!-- Pagination -->
-					<div class="pagination left">
-						<ul class="pagination-list">
-							<li><a href="javascript:void(0)"><</a></li>
-							<li><a href="javascript:void(0)">1</a></li>
-							<li class="active"><a href="javascript:void(0)">2</a></li>
-							<li><a href="javascript:void(0)">3</a></li>
-							<li><a href="javascript:void(0)">4</a></li>
-							<li><a href="javascript:void(0)">5</a></li>
-							<li><a href="javascript:void(0)">></a></li>
-						</ul>
-					</div>
-				<!--/ End Pagination -->
-            </div>
-        </div>
-    </section>
-    <!--/ End Faq Area -->
-
-
-<!-- ========================================================================== -->
-	<!-- Start Footer Bottom -->
+					</form>
+				</div>
+			</div>
+			<div class="csTable">
+				<table class="table table-hover contentList text-center">
+					<thead>
+						<tr class="table-light">
+							<th width=5%><span class="d-none d-md-inline">번호</span><span class="d-sm-block d-md-none">나는바보</span></th>
+							<th class="d-none d-md-table-cell">제목</th>
+							<th class="d-none d-md-table-cell" width=15%>유형</th>
+							<th class="d-none d-md-table-cell" width=20%>게시시간</th>
+							<th class="d-none d-md-table-cell" width=20%>작성자</th>
+						</tr>
+					</thead>
+					<c:forEach var="cs" items="${csList }" varStatus="status">
+						<tr>
+							<td>
+								${cs.cs_id }
+								<div class="d-sm-block d-md-none">
+									바보바보
+								</div>
+							</td>
+							<td id="subject" class="text-start d-none d-md-table-cell">
+								<a href="CsDetail?cs_id=${cs.cs_id }&pageNum=${pageNum}">
+									${cs.cs_subject }
+								</a>
+							</td>
+							<td class="d-none d-md-table-cell">${cs.cs_type }</td>
+							<td class="d-none d-md-table-cell">
+								<span id="csDate">${cs.cs_datetime }</span>
+<%-- 								<fmt:formatDate value="${com.community_datetime }" pattern="yy-MM-dd HH:mm"/> --%>
+							</td>
+							<td class="d-none d-md-table-cell">${cs.cs_writer }</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
+			<nav aria-label="Page navigation">
+				<ul class="pagination justify-content-center">
+					<li class="page-item" id="prevPage">
+						<a href="Cs?pageNum=${pageNum + 1}" class="page-link">&laquo;</a>
+					</li>
+					<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }">
+					<c:choose>
+						<c:when test="${pageNum eq i }">
+						<li class="page-item active"><span class="page-link">${i }</span></li>
+						</c:when>
+						<c:otherwise>
+						<li class="page-item"><a href="Cs?pageNum=${i }" class="page-link" >${i }</a></li>
+						</c:otherwise>
+					</c:choose>
+					</c:forEach>
+					<li class="page-item" id="nextPage">
+						<a href="Cs?pageNum=${pageNum + 1}" class="page-link">&raquo;</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		
+	</section>
 	<footer class="footer">
 		<jsp:include page="../inc/bottom.jsp"></jsp:include>
 	</footer>
+	<!-- ========================= scroll-top ========================= -->
+	<a href="#" class="scroll-top">
+	    <i class="lni lni-chevron-up"></i>
+	</a>
 
-    <!-- ========================= scroll-top ========================= -->
-    <a href="#" class="scroll-top">
-        <i class="lni lni-chevron-up"></i>
-    </a>
-
-    <!-- ========================= JS here ========================= -->
-    <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+	<!-- ========================= JS here ========================= -->
+	<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
 </body>
-
 </html>
