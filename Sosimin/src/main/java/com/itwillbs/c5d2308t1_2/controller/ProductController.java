@@ -151,13 +151,16 @@ public class ProductController {
 	
 	// 상품 상세페이지
 	@GetMapping("ProductDetail")
-	public String productDetail(@RequestParam Map<String, String> map , MemberVO member) {
+	public String productDetail(@RequestParam Map<String, String> map , MemberVO member, Model model) {
 		
 		System.out.println(">>>>>>>>>>> 무엇이 넘어 왔는가!! : " + map);
 		
 		
 		Map<String, String> Product = service.selectProduct(member);
 		
+		System.out.println(">>>>>>>>>>>>> 잘넘어왔는가 : " + Product);
+		model.addAttribute("Product", Product);
+	
 		return "products/productDetail";
 	}
 	

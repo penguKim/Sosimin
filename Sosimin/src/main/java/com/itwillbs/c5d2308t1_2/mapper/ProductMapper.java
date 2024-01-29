@@ -15,12 +15,13 @@ public interface ProductMapper {
 	int productInsert(Map<String, String> map);
 
 	// 상품 게시글 등록
-	int productBoardInsert(Map<String, String> map);
 
 	int insertProduct(ProductVO product);
 	
 	
 	Map<String, String> selectProduct(MemberVO member);
+
+	int productBoardInsert();
 
 
 }

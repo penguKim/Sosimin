@@ -29,10 +29,23 @@
 			, 0
 		)
 	</insert>	
-	
-	<select id="selectProduct">
-	
-	
+		
+	<insert id="productBoardInsert">
+		INSERT INTO Product_board
+		values (
+			null
+			,(SELECT max(product_id)
+			 FROM Product)
+			,0
+			,0
+			,0
+		);
+	</insert>
+		
+	<select id="selectProduct" resultType="hashMap">
+		SELECT *
+		FROM Product
+		WHERE product_id = 30;
 	</select>
 
 </mapper>

@@ -17,11 +17,10 @@ public class ProductService {
 	@Autowired
 	ProductMapper mapper;
 	
-	@Mapper
-	public int productRegist(Map<String, String> map) {
-//	// 상품등록 테이블
-	return mapper.productInsert(map);
-	}
+//	public int productRegist(Map<String, String> map) {
+////	// 상품등록 테이블
+//	return mapper.productInsert(map);
+//	}
 	
 	public int registProduct(ProductVO product) {
 		
@@ -34,26 +33,24 @@ public class ProductService {
 		return mapper.selectProduct(member);
 	}
 
-//	public int productRegist(Map<String, String> map, ProductVO product) {
-//		
-//		return mapper.productInsert(map,product);
-//	}
 
 	
 	
 	// 상품 등록
-//	@Transactional
-//	public int productRegist(Map<String, String> map) {
-//		// 상품등록 테이블
-//		mapper.productInsert(map);
-//		
-//		// 상품 게시물 테이블
-//		return mapper.productBoardInsert(map);
-//	}
-//
-//	public Map<String, String> selectProduct() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Transactional
+	public int productRegist(Map<String, String> map) {
+		// 상품등록 테이블
+		
+		int product_id = mapper.productInsert(map);
+		
+		// 상품 게시물 테이블
+		
+		return mapper.productBoardInsert();
+	}
+
+	public Map<String, String> selectProduct() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
