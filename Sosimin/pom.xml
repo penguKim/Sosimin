@@ -42,6 +42,13 @@
 		    <version>8.0.33</version>
 		</dependency>
 		
+		<!-- 시간 추가를 위해.. -->
+		<dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>
+		    <version>2.3.1</version>
+		</dependency>
+		
 		<!-- 2. 스프링에서 JDBC 연동에 필요한 기능을 제공하는 spring-jdbc 라이브러리 -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
 		<dependency>

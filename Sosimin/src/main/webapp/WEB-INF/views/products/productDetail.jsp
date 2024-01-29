@@ -353,7 +353,39 @@ function Proposal() {
 	window.open("Proposal", "상품이미지", options);
 }
 	
+
+function getTimeAgo(productTime) {
+	  var pastTime = new Date(productTime);
+	  var currentTime = new Date();
+	  var duration = currentTime - pastTime;
+
+	  var minutes = Math.floor(duration / (1000 * 60));
+	  if (minutes < 60) {
+	    return minutes + "분 전";
+	  }
+
+	  var hours = Math.floor(duration / (1000 * 60 * 60));
+	  if (hours < 24) {
+	    return hours + "시간 전";
+	  }
+
+	  var days = Math.floor(duration / (1000 * 60 * 60 * 24));
+	  if (days < 7) {
+	    return days + "일 전";
+	  }
+
+	  var weeks = Math.floor(days / 7);
+	  return weeks + "주 전";
+	  
+	  
+	}
 	
+var productTime = "${Product.product_datetime}";
+var timeAgo = getTimeAgo(productTime);
+alert(timeAgo);
+
+var whatTimeSpan = document.getElementById("whatTime");
+whatTimeSpan.innerText = timeAgo;
 </script>
 <body>
 
@@ -450,7 +482,7 @@ function Proposal() {
                        			</div>
 	                        	<div id="time">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/시간.png" width="25" height="25">
-	                        		${Product.product_datetime }
+	                        		<span id="whatTime"></span>
 	                        	</div>
 	                        	<%-- 신고하기 --%>
 	                        	<button class="police" id="reviewCheckForm" type="button" class="btn btn-primary" 
