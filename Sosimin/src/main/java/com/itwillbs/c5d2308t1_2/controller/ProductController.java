@@ -15,6 +15,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.c5d2308t1_2.service.ProductService;
@@ -35,19 +37,35 @@ public class ProductController {
 	ProductService service;
 	
 	
-	// 메인 상품 목록 페이지
-	// ajax 처리 
+	
+	// 메인 상품 목록 페이지 이동
 	@GetMapping("SearchProduct")
-	public String searchProduct(@RequestParam(defaultValue = "") Map<String, String> map, Model model ) {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 전" + map);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
-		
-		
-		// 회원 조회 후 지역이 있다면 지역 값 넘기기 없으면 검색 및 카테고리 값만 넘기기 
-		
-		
+	public String searchProduct() {
 		return "products/searchProduct";
 	}
+	
+	// 상품 목록 출력 ajax
+	@ResponseBody
+	@GetMapping("ProductList")
+	public String productList(@RequestParam(defaultValue = "") Map<String, String> map, HttpSession session,  Model model ) {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 전" + map);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
+		String id = (String)session.getAttribute("sId");
+		System.out.println(">>>>>>>>>>>>>>>>>>>> : " + id);
+		List<Map<String, Object>> productList = null;
+		// 미로그인 시 상품 목록 날짜 최신순으로 나열
+		productList = service.selectProductList(map);
+		
+		JSONArray jsonArray = new JSONArray(productList);
+		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> : " + jsonArray);
+		
+		// 로그인 시 사용자 지역, 날짜 최신순으로 나열
+		
+		return jsonArray.toString();
+	}
+	
+	
 	
 	// 상품 등록 페이지로 이동
 	@GetMapping("ProductRegist")

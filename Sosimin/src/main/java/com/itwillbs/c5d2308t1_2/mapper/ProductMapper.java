@@ -1,5 +1,6 @@
 package com.itwillbs.c5d2308t1_2.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -10,6 +11,10 @@ import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 
 @Mapper
 public interface ProductMapper {
+	
+	
+	// 미로그인 상품 목록 조회
+	List<Map<String, Object>> selectProductList(Map<String, String> map);
 	
 	// 상품 등록 
 	int productInsert(Map<String, String> map);
@@ -23,5 +28,8 @@ public interface ProductMapper {
 
 	int productBoardInsert();
 
+	int productBoardInsert(Map<String, String> map);
+	
+	
 
 }

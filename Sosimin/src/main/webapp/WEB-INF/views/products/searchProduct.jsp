@@ -27,6 +27,45 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 $(function() {
+
+	$.ajax({
+		url: "ProductList",
+		dataType: 'json',
+		success: function(result) {
+			
+			for(let i = 0; i < result.length; i++) {
+				$(".productList").append(
+					'<div class="col-lg-4-1 col-md-6 col-12" >'
+						+ ' <div class="single-product" >'
+							+ ' <a href="ProductDetail" class="product-image">'
+								+ ' <img src="' + result[i].product_image1 + '" alt="#">'
+							+ ' </a>'
+							+ ' <div class="product-info">'
+								+ '<h6>' + result[i].product_name + '</h6>'
+							+ ' <div class="heart position-absolute bottom-0 start-0"></div>'
+									+ ' <ul class="review">'
+										+ ' <li><span>' +  result[i].dong + '</span></li>'
+										+ ' <li><span>|</span></li>'
+										+ ' <li><span>' + result[i].product_datetime + '</span></li>'
+									+ ' </ul>'
+								+ ' <div class="price">'
+									+ ' <span>' + result[i].product_price + '원</span>'
+								+ ' </div>'
+								+ ' <div>'
+									+ '	<span>Pay</span>' 
+								+ ' </div>'
+							+ ' </div>'
+						+ ' </div>'
+					+ ' </div>'
+				);
+			}
+		},
+		error: function() {
+			alert("안되나");
+		}
+		
+	});
+			
 	//좋아요 버튼 클릭 이벤트
 	$(".heart").on("click", function () {
 	    $(this).toggleClass("is-active");
@@ -43,34 +82,38 @@ $(function() {
 	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
 	let category = "${param.category}";
 	let keyword = "${param.keyword}";
+	let price = "";
 	
-	
-	
-	
-	
+
+// 필터링 옵션 처리 후 ajax
 function filtering() {
-	var price = $("input[name='priceRadio']:checked").val();
-	
-	alert(price);
-// 	$.ajax({
-// 		url: "SearchProduct",
-// 		data: {
-// 			keyword:keyword,
-// 			product_category:category,
-// 			product_price: price
+	price = $("input[name='priceRadio']:checked").val();
+
+	let productStatus = "";  
+    $("input[name=productStatus]:checked").each(function(index) {  
+    	productStatus += $(this).val() + ",";  
+    });  
+    productStatus = productStatus.slice(0, -1);
+    
+    
+    
+	$.ajax({
+		url: "ProductList",
+		data: {
+			keyword:keyword,
+			product_category:category,
+			product_price: price,
+			product_status: productStatus
 			
+		},
+		success: function() {
 			
-			
-			
-// 		},
-// 		success: function() {
-			
-// 		},
-// 		error: function() {
-// 			alert("실패");
-// 		}
+		},
+		error: function() {
+			alert("실패");
+		}
 		
-// 	});
+	});
 	
 }
 
@@ -134,19 +177,19 @@ function filtering() {
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="100000~300000" id="priceCheck" >
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="100000~300000" id="priceCheck" onclick="filtering()">
                                 <label class="form-check-label" for="priceCheck">
                                    	10만원 이상 - 30만원 이하
                                 </label>
                             </div>
                             <div class="form-check"> 
-                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="300000~500000"  id="priceCheck" >
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="300000~500000"  id="priceCheck" onclick="filtering()">
                                 <label class="form-check-label" for="priceCheck">
                                     30만원 이상 - 50만원 이하 
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="500000" id="priceCheck" >
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="500000" id="priceCheck" onclick="filtering()">
                                 <label class="form-check-label" for="priceCheck">
                                     50만원 이상
                                 </label>
@@ -155,20 +198,20 @@ function filtering() {
                             <div style="margin-bottom: 20px;"></div>
                             <h3>상품 상태</h3>
                             <div class="form-check" >
-                                <input class="form-check-input clickfunc" type="checkbox" value="" id="flexCheckDefault11" >
-                                <label class="form-check-label" for="flexCheckDefault11">
+                                <input class="form-check-input productCheckbox" type="checkbox" name="productStatus" value="보통" id="flexCheckDefault1" onclick="filtering()">
+                                <label class="form-check-label" for="flexCheckDefault1">
                                     보통
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault22">
-                                <label class="form-check-label" for="flexCheckDefault22">
+                                <input class="form-check-input productCheckbox" type="checkbox" name="productStatus" value="좋은상태"  id="flexCheckDefault2" onclick="filtering()">
+                                <label class="form-check-label" for="flexCheckDefault2">
                                     좋은 상태
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault33">
-                                <label class="form-check-label" for="flexCheckDefault33">
+                                <input class="form-check-input productCheckbox" type="checkbox" name="productStatus" value="새상품" id="flexCheckDefault3" onclick="filtering()">
+                                <label class="form-check-label" for="flexCheckDefault3">
                                     새상품
                                 </label>
                             </div>
@@ -261,32 +304,32 @@ function filtering() {
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-grid" role="tabpanel"
                                 aria-labelledby="nav-grid-tab">
-                                <div class="row">
+                                <div class="row productList">
                                 	<!-- 한개의 상품 목록 -->
-                                    <div class="col-lg-4-1 col-md-6 col-12" >
-                                        <!-- Start Single Product -->
-                                        <div class="single-product" >
-                                        	<a href="ProductDetail" class="product-image">
-                                              	 <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
-                                            </a>
-                                            <div class="product-info">
-                                                    <h6>블루투스 스피커</h6>
-                                                    <!-- 좋아요 -->
-													<div class="heart position-absolute bottom-0 start-0"></div>
-                                                <ul class="review">
-                                                    <li><span>전포동</span></li>
-                                                    <li><span>|</span></li>
-                                                    <li><span>5분전</span></li>
-                                                </ul>
-                                                <div class="price">
-                                                    <span>14,000원</span>
-                                                </div>
-                                                <div>
+<!--                                     <div class="col-lg-4-1 col-md-6 col-12" > -->
+<!--                                         Start Single Product -->
+<!--                                         <div class="single-product" > -->
+<!--                                         	<a href="ProductDetail" class="product-image"> -->
+<%--                                               	 <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#"> --%>
+<!--                                             </a> -->
+<!--                                             <div class="product-info"> -->
+<!--                                                     <h6>블루투스 스피커</h6> -->
+<!--                                                     좋아요 -->
+<!-- 													<div class="heart position-absolute bottom-0 start-0"></div> -->
+<!--                                                 <ul class="review"> -->
+<!--                                                     <li><span>전포동</span></li> -->
+<!--                                                     <li><span>|</span></li> -->
+<!--                                                     <li><span>5분전</span></li> -->
+<!--                                                 </ul> -->
+<!--                                                 <div class="price"> -->
+<!--                                                     <span>14,000원</span> -->
+<!--                                                 </div> -->
+<!--                                                 <div> -->
                                                 	
-                                                	<span>Pay</span> 
-                                                </div>
-                                            </div>
-                                        </div>
+<!--                                                 	<span>Pay</span>  -->
+<!--                                                 </div> -->
+<!--                                             </div> -->
+<!--                                         </div> -->
                                         <!-- End Single Product -->
                                     </div>
                                 </div>
