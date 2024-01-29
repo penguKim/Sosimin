@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +48,7 @@ public class ProductController {
 	
 	// 상품 목록 출력 ajax
 	@ResponseBody
-	@GetMapping("ProductList")
+	@GetMapping("StoreProductList")
 	public String productList(@RequestParam(defaultValue = "") Map<String, String> map, HttpSession session,  Model model ) {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 전" + map);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
@@ -54,8 +56,46 @@ public class ProductController {
 		System.out.println(">>>>>>>>>>>>>>>>>>>> : " + id);
 		List<Map<String, Object>> productList = null;
 		// 미로그인 시 상품 목록 날짜 최신순으로 나열
+		map.put("sId", id);
+		
 		productList = service.selectProductList(map);
 		
+		
+		
+		// 상품 등록 시간 계산 처리 
+		// ===============================================================================================
+		LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+		
+		for(Map<String, Object> datetime : productList) {
+			LocalDateTime comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter);
+        	
+            long minutes = Duration.between(comDateTime, now).toMinutes();
+            long hours = minutes / 60;
+            long days = hours / 24;
+            hours %= 24;
+            minutes %= 60;
+            String timeAgo = "";
+            if (days > 0) { // 하루이상 차이날 때
+                if (comDateTime.getYear() == now.getYear()) {
+                    timeAgo = comDateTime.format(formatterMonthDay);
+                } else {
+                    timeAgo = comDateTime.format(formatterDate);
+                }
+            } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+                timeAgo = hours + "시간 전";
+            } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+                timeAgo = minutes + "분 전";
+            } else {
+                timeAgo = "방금 전";
+            }
+            // 계산한 시간 목록
+            datetime.put("product_datetime", timeAgo);
+		}
+		
+		// ===============================================================================================
 		JSONArray jsonArray = new JSONArray(productList);
 		
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> : " + jsonArray);

@@ -13,6 +13,15 @@
 		ON p.product_id = pb.product_id
 		JOIN Member m
 		ON p.member_id = m.member_id
+<!-- 		<choose> -->
+<!-- 			<when test="!sId.equals('')"> -->
+<!-- 				WHERE  -->
+<!-- 				m.member_address like '%${}%' AND gu = ''  -->
+<!-- 			</when> -->
+		
+<!-- 		</choose> -->
+			
+		
 		ORDER BY product_datetime DESC;
 	</select>
 	

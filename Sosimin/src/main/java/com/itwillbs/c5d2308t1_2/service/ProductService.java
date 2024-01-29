@@ -3,14 +3,12 @@ package com.itwillbs.c5d2308t1_2.service;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.c5d2308t1_2.mapper.ProductMapper;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
-import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 
 @Service
 public class ProductService {
@@ -23,6 +21,7 @@ public class ProductService {
 		
 		return mapper.selectProductList(map);
 	}
+	// ========================================================================================
 	
 	
 	// 상품 조회를 위한 select

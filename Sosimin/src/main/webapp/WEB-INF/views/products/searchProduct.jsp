@@ -27,12 +27,11 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 $(function() {
-
+	<%-- 기본 상품 목록 최신순으로 출력 --%> 
 	$.ajax({
-		url: "ProductList",
+		url: "StoreProductList",
 		dataType: 'json',
 		success: function(result) {
-			
 			for(let i = 0; i < result.length; i++) {
 				$(".productList").append(
 					'<div class="col-lg-4-1 col-md-6 col-12" >'
@@ -98,7 +97,7 @@ function filtering() {
     
     
 	$.ajax({
-		url: "ProductList",
+		url: "StoreProductList",
 		data: {
 			keyword:keyword,
 			product_category:category,
