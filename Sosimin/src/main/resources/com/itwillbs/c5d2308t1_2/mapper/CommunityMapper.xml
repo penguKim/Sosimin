@@ -27,24 +27,60 @@
 	<!-- 페이징 처리를 위한 게시물 개수 조회 작업 -->
 	<select id="selectCommunityListCount" resultType="int">
 		SELECT COUNT(*)
-		FROM Community
+		<choose>
+			<when test="category == 4">
+				FROM Community com JOIN CommunityLikeCount clc
+				ON com.community_id = clc.community_num 
+			</when>
+			<otherwise>
+				FROM Community
+			</otherwise>
+		</choose>
 		WHERE
-<!-- 		<if test="!category.equals('')"> -->
 			<choose>
-				<when test="category.equals('info')">
+				<when test="category == 1">
 					community_category = 1
 				</when>
-				<when test="category.equals('question')">
+				<when test="category == 2">
 					community_category = 2
 				</when>
-				<when test="category.equals('daily')">
+				<when test="category == 3">
 					community_category = 3
+				</when>
+				<when test="category == 4">
+					 count > 5
 				</when>
 				<when test="category.equals('')">
 					1=1 
 				</when>
 			</choose>
-<!-- 		</if> -->
+<!-- 		<choose> -->
+<!-- 			<when test="category.equals('hot')"> -->
+<!-- 				FROM Community com JOIN CommunityLikeCount clc -->
+<!-- 				ON com.community_id = clc.community_num  -->
+<!-- 			</when> -->
+<!-- 			<otherwise> -->
+<!-- 				FROM Community -->
+<!-- 			</otherwise> -->
+<!-- 		</choose> -->
+<!-- 		WHERE -->
+<!-- 			<choose> -->
+<!-- 				<when test="category.equals('info')"> -->
+<!-- 					community_category = 1 -->
+<!-- 				</when> -->
+<!-- 				<when test="category.equals('question')"> -->
+<!-- 					community_category = 2 -->
+<!-- 				</when> -->
+<!-- 				<when test="category.equals('daily')"> -->
+<!-- 					community_category = 3 -->
+<!-- 				</when> -->
+<!-- 				<when test="category.equals('hot')"> -->
+<!-- 					 count > 5 -->
+<!-- 				</when> -->
+<!-- 				<when test="category.equals('')"> -->
+<!-- 					1=1  -->
+<!-- 				</when> -->
+<!-- 			</choose> -->
 		<if test="!searchKeyword.equals('')">
 			<choose>
 				<when test="searchType.equals('subject')">
@@ -68,24 +104,33 @@
 	<!-- 한 페이지에 표시할 게시글 목록 조회 작업 요청 -->
 	<select id="selectCommunityList" resultType="community">
 		SELECT *
-		FROM Community
+		<choose>
+			<when test="category == 4">
+				FROM Community com JOIN CommunityLikeCount clc
+				ON com.community_id = clc.community_num 
+			</when>
+			<otherwise>
+				FROM Community
+			</otherwise>
+		</choose>
 		WHERE
-<!-- 		<if test="!category.equals('')"> -->
 			<choose>
-				<when test="category.equals('info')">
+				<when test="category == 1">
 					community_category = 1
 				</when>
-				<when test="category.equals('question')">
+				<when test="category == 2">
 					community_category = 2
 				</when>
-				<when test="category.equals('daily')">
+				<when test="category == 3">
 					community_category = 3
+				</when>
+				<when test="category == 4">
+					 count > 5
 				</when>
 				<when test="category.equals('')">
 					1=1 
 				</when>
 			</choose>
-<!-- 		</if> -->
 		<if test="!searchKeyword.equals('')">
 			<choose>
 				<when test="searchType.equals('subject')">
@@ -310,6 +355,43 @@
 			member_id = #{sId}
 			AND community_like_status = #{community_like_status}
 	</select>
+	
+	<!-- 임시저장한 게시글 조회 -->
+	<select id="selectTempCommunity" resultType="map">
+		SELECT *
+		FROM TempCommunity
+		WHERE temp_writer = #{community_writer}
+	</select>
+	
+	<!-- 게시글 임시저장 -->
+	<insert id="insertTempCommunity">
+		INSERT INTO TempCommunity
+		VALUES(
+			null
+			, #{community_category}
+			, #{community_writer}
+			, #{community_subject}
+			, #{community_content}
+			, #{community_image1}
+			, #{community_image2}
+			, #{community_image3}
+			, #{community_image4}
+			, #{community_image5}
+			, now()
+		)
+	</insert>
+	
+	<!-- 임시저장 게시글 업데이트 -->
+	<update id="updateTempCommunity">
+		UPDATE TempCommunity
+		SET 
+			temp_category = #{community_category}
+			, temp_writer = #{community_writer}
+			, temp_subject = #{community_subject}
+			, temp_content = #{community_content}
+			, temp_datetime = now()
+		WHERE temp_writer = #{community_writer}
+	</update>
 </mapper>
 
 

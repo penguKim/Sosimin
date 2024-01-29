@@ -27,6 +27,39 @@
 		let width = $(window).width();
 		console.log(width);
 		
+		// 임시저장한 게시글 불러오기
+		$.ajax({
+			type: "POST",
+			url: "TempCheck",
+			dataType: "json",
+			success: function(result) {
+				console.log(result);
+				
+				if(result.length != 0) {
+					Swal.fire({
+				        title: '임시 저장한 게시글이 있습니다.',
+				        text: "게시글을 사용하시겠습니까?",
+				        icon: 'question',
+				        showCancelButton: true,
+				        confirmButtonColor: '#39d274',
+				        cancelButtonColor: '#d33',
+				        confirmButtonText: '등록',
+				        cancelButtonText: '취소',
+				        reverseButtons: true,
+				        allowOutsideClick: false
+				    }).then((result) => {
+				        if (result.isConfirmed) {
+				        	
+				        } else {
+				        	
+				        }
+				    });
+					
+				}
+			}
+		});
+		
+		
 		// 10초마다 게시글 임시저장
 		let tempSave = setInterval(tempToast, 10000);
 		
@@ -99,16 +132,38 @@
 		$('#tempBtn').on('click', function(event) {
 			clearInterval(tempSave);
 			
-			Swal.fire({
-				position: 'center',
-				icon: 'success',
-				title: '작성글이 임시저장되었습니다.',
-				showConfirmButton: false,
-				timer: 2000,
-				toast: true
-			})
-			$(this).blur();
-			tempSave = setInterval(tempToast, 10000);
+			var form = $('#writeForm')[0];
+			var data = new FormData(form);
+			
+			$.ajax({
+				type: "POST",
+				url: "TempRegist",
+				enctype: 'multipart/form-data',
+				data: data,
+				<%-- multipart/form-data로 전송 --%>
+				contentType: false, 
+				<%-- formData가 String이 되지않음 --%>
+				processData: false, 
+				success: function(result) {
+					console.log(result);
+					
+					Swal.fire({
+						position: 'center',
+						icon: 'success',
+						title: '작성글이 임시저장되었습니다.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					})
+					$(this).blur();
+					tempSave = setInterval(tempToast, 10000);
+				}
+				
+			});
+			
+			
+			
+
 		});
 		
 	});
@@ -174,7 +229,7 @@
    	<section class="communityArea section">
 		<div class="container">
 			<h1>게시글 작성</h1>
-			<form action="CommunityWritePro" name="writeForm" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
+			<form action="CommunityWritePro" name="writeForm" class="needs-validation" id="writeForm" method="post" enctype="multipart/form-data" novalidate>
 				<div class="communityForm post p-4 w-50 mx-auto">
 				    <div class="post-header border-bottom">
 				    	<div class="row">
@@ -220,6 +275,8 @@
 					<input type="button" class="btn btn-secondary col-xl-2 col-md-3 col-12 me-2" value="돌아가기" onclick="history.back()">
 <!-- 					<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 me-auto" id="tempBtn" value="임시저장" formaction="tempWritePro"> -->
 					<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 me-auto" id="tempBtn" value="임시저장">
+<!-- 					<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 me-auto" id="tempBtn" value="임시저장"  -->
+<!-- 												formaction="TempRegist" formenctype="multipart/form-data" formmethod="post"> -->
 					<input type="submit" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" id="writeBtn" value="등록하기">
 				</div>
 		    </form>

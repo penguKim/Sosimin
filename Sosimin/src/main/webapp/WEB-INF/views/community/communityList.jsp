@@ -176,6 +176,7 @@
 
 		$(".categoryBtn .btn-check").on("click", function() {
 			$('#CommunityForm #searchKeyword').val('');
+			$('#CommunityForm #searchType').val('');
 			
 			$("#CommunityForm").submit();
 		});
@@ -282,24 +283,33 @@
 					<form action="" id="CommunityForm">
 			<div class="row mb-5 mx-auto">
 				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
-					
 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="allCategory">전체</label>
-					<input type="radio" class="btn-check" name="category" id="hotCategory" value="hot" autocomplete="off" <c:if test="${param.category eq 'hot' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="hotCategory" value="4" autocomplete="off" <c:if test="${param.category eq '4' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="hotCategory">인기글</label>
-					<input type="radio" class="btn-check" name="category" id="infoCategory" value="info" autocomplete="off" <c:if test="${param.category eq 'info' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="infoCategory" value="1" autocomplete="off" <c:if test="${param.category eq '1' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="infoCategory">동네소식</label>
-					<input type="radio" class="btn-check" name="category" id="questionCategory" value="question" autocomplete="off" <c:if test="${param.category eq 'question' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="questionCategory" value="2" autocomplete="off" <c:if test="${param.category eq '2' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="questionCategory">동네질문</label>
-					<input type="radio" class="btn-check" name="category" id="dailyCategory" value="daily" autocomplete="off" <c:if test="${param.category eq 'daily' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="dailyCategory" value="3" autocomplete="off" <c:if test="${param.category eq '3' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="dailyCategory">일상</label>
+<%-- 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>> --%>
+<!-- 					<label class="btn btn-outline-primary" for="allCategory">전체</label> -->
+<%-- 					<input type="radio" class="btn-check" name="category" id="hotCategory" value="hot" autocomplete="off" <c:if test="${param.category eq 'hot' }">checked</c:if>> --%>
+<!-- 					<label class="btn btn-outline-primary" for="hotCategory">인기글</label> -->
+<%-- 					<input type="radio" class="btn-check" name="category" id="infoCategory" value="info" autocomplete="off" <c:if test="${param.category eq 'info' }">checked</c:if>> --%>
+<!-- 					<label class="btn btn-outline-primary" for="infoCategory">동네소식</label> -->
+<%-- 					<input type="radio" class="btn-check" name="category" id="questionCategory" value="question" autocomplete="off" <c:if test="${param.category eq 'question' }">checked</c:if>> --%>
+<!-- 					<label class="btn btn-outline-primary" for="questionCategory">동네질문</label> -->
+<%-- 					<input type="radio" class="btn-check" name="category" id="dailyCategory" value="daily" autocomplete="off" <c:if test="${param.category eq 'daily' }">checked</c:if>> --%>
+<!-- 					<label class="btn btn-outline-primary" for="dailyCategory">일상</label> -->
 				</div>
 				<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
 	<!-- 					<div class="form-group row row-cols-1 row-cols-sm-2 row-cols-md-2"> -->
 						<div class="form-group row d-flex justify-content-end">
 							<div class="col-xl-2 col-md-2 col-sm-3 col-3 px-0 mb-2">
 <!-- 								<select class="form-select col-xl-1 col-md-3 col-sm-3 col-3" style="width: 20%;"> -->
-								<select class="form-select" name="searchType">
+								<select class="form-select" name="searchType" id="searchType">
 									<option value="" <c:if test="${param.searchType eq '' }">selected</c:if>>전체</option>
 									<option value="writer" <c:if test="${param.searchType eq 'writer' }">selected</c:if>>작성자</option>
 									<option value="subject" <c:if test="${param.searchType eq 'subject' }">selected</c:if>>제목</option>
@@ -331,12 +341,17 @@
 							<th class="d-none d-md-table-cell" width=8%>조회수</th>
 						</tr>
 					</thead>
-					<c:forEach var="com" items="${communityList }" varStatus="status">
+					<c:choose>
+						<c:when test="${empty communityList }">
+							<td colspan="6">결과가 없습니다.</td>
+						</c:when>
+						<c:otherwise>
+						<c:forEach var="com" items="${communityList }" varStatus="status">
 						<tr>
 							<td>
-								<div class="d-none d-md-table-cell">${com.community_id }</div>
+								<div class="d-none d-md-table-cell px-2"><span>${com.community_id }</span></div>
 								<div class="d-sm-block d-md-none">
-								<a class="mobileArea row" href="CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}">
+								<a class="mobileArea row" href="CommunityDetail?category=${com.community_category }&community_id=${com.community_id }&pageNum=${pageNum}">
 									<div class="col">
 										<div class="row mb-2">
 <!-- 											<div class="col-3 text-start"> -->
@@ -396,6 +411,10 @@
 							<td class="d-none d-md-table-cell">${com.community_readcount }</td>
 						</tr>
 					</c:forEach>
+						</c:otherwise>
+					</c:choose>
+					
+
 				</table>
 			</div>
 			<nav aria-label="Page navigation">

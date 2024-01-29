@@ -153,59 +153,36 @@ public class CommunityController {
 		}
 		// -------------------
 		// BoardVO 객체에 전달(저장)된 실제 파일 정보가 관리되는 MultipartFile 타입 객체 꺼내기
-		MultipartFile mFile1 = com.getFile1();
-		MultipartFile mFile2 = com.getFile2();
-		MultipartFile mFile3 = com.getFile3();
-		MultipartFile mFile4 = com.getFile4();
-		MultipartFile mFile5 = com.getFile5();
+		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
+		mFiles.add(com.getFile1());
+		mFiles.add(com.getFile2());
+		mFiles.add(com.getFile3());
+		mFiles.add(com.getFile4());
+		mFiles.add(com.getFile5());
 		
-		// MultipartFile 객체의 getOriginalFilename() 메서드 호출 시 업로드 된 파일명 리턴
-		System.out.println("원본파일명1 : " + mFile1.getOriginalFilename());
-		System.out.println("원본파일명2 : " + mFile2.getOriginalFilename());
-		System.out.println("원본파일명3 : " + mFile3.getOriginalFilename());
-		System.out.println("원본파일명4 : " + mFile4.getOriginalFilename());
-		System.out.println("원본파일명5 : " + mFile5.getOriginalFilename());
-		
-		com.setCommunity_image1("");
-		com.setCommunity_image2("");
-		com.setCommunity_image3("");
-		com.setCommunity_image4("");
-		com.setCommunity_image5("");
+		List<String> fileNames = new ArrayList<String>();
+		fileNames.add("");
+		fileNames.add("");
+		fileNames.add("");
+		fileNames.add("");
+		fileNames.add("");
 		
 		// UUID 를 변수에 저장해서 똑같은 난수를 넣어주는것보다 매번 호출하여
 		// 다른 난수를 파일마다 붙여주면 한번에 파일명이 같은 파일이 업로드되도 중복되지 않는다.
-		String fileName1 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile1.getOriginalFilename();
-		String fileName2 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile2.getOriginalFilename();
-		String fileName3 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile3.getOriginalFilename();
-		String fileName4 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile4.getOriginalFilename();
-		String fileName5 = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile5.getOriginalFilename();
-		System.out.println(fileName1);
-		System.out.println(fileName2);
-		System.out.println(fileName3);
-		System.out.println(fileName4);
-		System.out.println(fileName5);
-		
-		// 파일이 존재할 경우 BoardVO 객체에 서브디렉토리명(subDir)과 함께 파일명 저장
-		// ex) 2023/12/19/ef3e51e8_1.jpg
-		if(!mFile1.getOriginalFilename().equals("")) {
-			com.setCommunity_image1(subDir + "/" + fileName1);
+		for(int i = 0; i < 5; i++) {
+			MultipartFile mFile = mFiles.get(i);
+			if(mFile != null && !mFile.getOriginalFilename().equals("")) {
+				String fileName = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile.getOriginalFilename();
+				fileNames.set(i, subDir + "/" + fileName);
+			}
 		}
 		
-		if(!mFile2.getOriginalFilename().equals("")) {
-			com.setCommunity_image2(subDir + "/" + fileName2);
-		}
-		
-		if(!mFile3.getOriginalFilename().equals("")) {
-			com.setCommunity_image3(subDir + "/" + fileName3);
-		}
-		
-		if(!mFile4.getOriginalFilename().equals("")) {
-			com.setCommunity_image4(subDir + "/" + fileName3);
-		}
-		
-		if(!mFile5.getOriginalFilename().equals("")) {
-			com.setCommunity_image5(subDir + "/" + fileName3);
-		}
+		// 서브디렉토리 + 파일명을 저장
+		com.setCommunity_image1(fileNames.get(0));
+		com.setCommunity_image2(fileNames.get(1));
+		com.setCommunity_image3(fileNames.get(2));
+		com.setCommunity_image4(fileNames.get(3));
+		com.setCommunity_image5(fileNames.get(4));
 		
 		System.out.println("실제 업로드 파일명1 : " + com.getCommunity_image1());
 		System.out.println("실제 업로드 파일명2 : " + com.getCommunity_image2());
@@ -221,24 +198,16 @@ public class CommunityController {
 		// 게시물 등록 작업 요철 결과 판별
 		if(insertCount > 0) {
 			try {
-				if(!mFile1.getOriginalFilename().equals("")) {
-					mFile1.transferTo(new File(saveDir, fileName1));
-				}
-				
-				if(!mFile2.getOriginalFilename().equals("")) {
-					mFile2.transferTo(new File(saveDir, fileName2));
-				}
-				
-				if(!mFile3.getOriginalFilename().equals("")) {
-					mFile3.transferTo(new File(saveDir, fileName3));
-				}
-				
-				if(!mFile4.getOriginalFilename().equals("")) {
-					mFile4.transferTo(new File(saveDir, fileName4));
-				}
-				
-				if(!mFile5.getOriginalFilename().equals("")) {
-					mFile5.transferTo(new File(saveDir, fileName5));
+				// 파일명이 존재하는 파일만 이동 처리 작업 수행
+				for(int i = 0; i < 5; i++) {
+					MultipartFile mFile = mFiles.get(i);
+					String fileName = fileNames.get(i);
+					if(!fileName.equals("")) {
+						// 년월일 다음의 '/'를 인덱스로 지정 
+						fileName = fileName.substring(fileName.indexOf("/", 9));
+						mFile.transferTo(new File(saveDir, fileName));
+					}
+					
 				}
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
@@ -688,6 +657,152 @@ public class CommunityController {
 		}
 		
 	}
+	
+	// 게시글 임시저장 AJAX
+//	@ResponseBody
+//	@PostMapping("TempRegist")
+//	public String tempRegist(CommunityVO com, HttpSession session) {
+//		
+////		System.out.println("ajax로 넘어온 데이터 제발넘어와 : " + com);
+//		
+//		String sId = (String)session.getAttribute("sId");
+//		if(sId == null) {
+//			return "false";
+//		}
+//		
+//		com.setCommunity_writer(sId);
+//		
+//		String uploadDir = "/resources/tempUpload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+//		String saveDir = session.getServletContext().getRealPath(uploadDir);
+//		
+//		// 서브 디렉토리
+//		String subDir = "";
+//		
+//		LocalDate now = LocalDate.now();
+//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+//		subDir = now.format(dtf);
+//		
+//		saveDir += File.separator + subDir; // File.separator 대신 / 또는 \ 지정도 가능
+//		System.out.println(saveDir);
+//		try {
+//			Path path = Paths.get(saveDir); // 파라미터로 업로드 경로 전달
+//			Files.createDirectories(path); // 파라미터로 Path 객체 전달
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		// -------------------
+//		// BoardVO 객체에 전달(저장)된 실제 파일 정보가 관리되는 MultipartFile 타입 객체 꺼내기
+//		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
+//		mFiles.add(com.getFile1());
+//		mFiles.add(com.getFile2());
+//		mFiles.add(com.getFile3());
+//		mFiles.add(com.getFile4());
+//		mFiles.add(com.getFile5());
+//		
+//		List<String> fileNames = new ArrayList<String>();
+//		fileNames.add("");
+//		fileNames.add("");
+//		fileNames.add("");
+//		fileNames.add("");
+//		fileNames.add("");
+//		
+//		// UUID 를 변수에 저장해서 똑같은 난수를 넣어주는것보다 매번 호출하여
+//		// 다른 난수를 파일마다 붙여주면 한번에 파일명이 같은 파일이 업로드되도 중복되지 않는다.
+//		for(int i = 0; i < 5; i++) {
+//			MultipartFile mFile = mFiles.get(i);
+//			if(mFile != null && !mFile.getOriginalFilename().equals("")) {
+//				String fileName = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile.getOriginalFilename();
+//				fileNames.set(i, subDir + "/" + fileName);
+//			}
+//		}
+//		
+//		// 서브디렉토리 + 파일명을 저장
+//		com.setCommunity_image1(fileNames.get(0));
+//		com.setCommunity_image2(fileNames.get(1));
+//		com.setCommunity_image3(fileNames.get(2));
+//		com.setCommunity_image4(fileNames.get(3));
+//		com.setCommunity_image5(fileNames.get(4));
+//		
+//		System.out.println("실제 업로드 파일명1 : " + com.getCommunity_image1());
+//		System.out.println("실제 업로드 파일명2 : " + com.getCommunity_image2());
+//		System.out.println("실제 업로드 파일명3 : " + com.getCommunity_image3());
+//		System.out.println("실제 업로드 파일명4 : " + com.getCommunity_image4());
+//		System.out.println("실제 업로드 파일명5 : " + com.getCommunity_image5());
+//		
+//		// ----------------------------------------------------------------------
+//
+//		// 게시글 등록 작업
+//		int insertCount = communityService.registTempCommunity(com);
+//		
+//		// 게시물 등록 작업 요철 결과 판별
+//		if(insertCount > 0) {
+//			try {
+//				// 파일명이 존재하는 파일만 이동 처리 작업 수행
+//				for(int i = 0; i < 5; i++) {
+//					MultipartFile mFile = mFiles.get(i);
+//					String fileName = fileNames.get(i);
+//					if(!fileName.equals("")) {
+//						// 년월일 다음의 '/'를 인덱스로 지정 
+//						fileName = fileName.substring(fileName.indexOf("/", 9));
+//						System.out.println("파일 이동 할거야" + saveDir + fileName);
+//						mFile.transferTo(new File(saveDir, fileName));
+//					}
+//					
+//				}
+//			} catch (IllegalStateException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			
+//			return "true";
+//		} else {
+//			return "false";
+//		}
+//		
+//	}
+	
+	@ResponseBody
+	@PostMapping("TempRegist")
+	public String tempRegist(CommunityVO com, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "false";
+		}
+		
+		com.setCommunity_writer(sId);
+		
+		int insertCount = communityService.registTempCommunity(com);
+		
+		if(insertCount > 0) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
+	
+	// 글쓰기 페이지 로딩 시 임시저장 판별
+	@ResponseBody
+	@PostMapping("TempCheck")
+	public String tempCheck(CommunityVO com, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "[]";
+		}
+		com.setCommunity_writer(sId);
+		Map<String, Object> map = communityService.getTempCommunity(com);
+		System.out.println("임시저장한 게시글 : " + map);
+		
+		if(map == null) {
+			return "[]";
+		}
+		
+		JSONObject jo = new JSONObject(map);
+		
+		return jo.toString();
+	}
+	
+	
 	
 	
 	@ResponseBody

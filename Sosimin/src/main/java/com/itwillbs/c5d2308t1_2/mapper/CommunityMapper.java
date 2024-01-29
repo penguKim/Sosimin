@@ -69,5 +69,14 @@ public interface CommunityMapper {
 
 	// 회원의 좋아요 목록
 	List<Map<String, String>> selectLikeList(String sId);
+
+	// 임시저장한 게시글 조회
+	Map<String, Object> selectTempCommunity(CommunityVO com);
+
+	// 게시글 임시저장
+	int insertTempCommunity(CommunityVO com);
+
+	// 임시저장한 게시글 업데이트
+	int updateTempCommunity(CommunityVO com);
 	
 }

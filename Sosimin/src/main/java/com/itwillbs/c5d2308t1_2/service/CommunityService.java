@@ -119,5 +119,26 @@ public class CommunityService {
 		return mapper.selectLike(like);
 	}
 
+	// 게시글 임시저장
+	public int registTempCommunity(CommunityVO com) {
+		int count = 0;
+		
+		// 임시저장한 게시글 조회
+		Map<String, Object> map = mapper.selectTempCommunity(com);
+		System.out.println("map에는 뭐가들었나 : " + map);
+		if(map == null) { // 임시저장 게시글이 없을 때
+			count = mapper.insertTempCommunity(com);
+		} else {
+			count = mapper.updateTempCommunity(com);
+		}
+		
+		return count;
+	}
+
+	// 임시저장 게시글 판별
+	public Map<String, Object> getTempCommunity(CommunityVO com) {
+		return mapper.selectTempCommunity(com);
+	}
+
 
 }
