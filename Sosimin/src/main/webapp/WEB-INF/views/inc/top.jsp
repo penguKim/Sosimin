@@ -492,14 +492,14 @@
 								<a href="Community">커뮤니티</a>
                                 <ul class="sub-menu collapse" id="submenu-1-2">
                                     <li class="nav-item"><a href="about-us.html">About Us</a></li>
-                                    <li class="nav-item"><a href="CsMain">고객센터</a></li>
                                     <li class="nav-item"><a href="SosimLocker">소심함 위치 안내</a></li>
-                                    <li class="nav-item"><a href="register.html">Register</a></li>
-                                    <li class="nav-item"><a href="mail-success.html">Mail Success</a></li>
-                                    <li class="nav-item"><a href="404.html">404 Error</a></li>
+                                    <li class="nav-item"><a href="CsNotice">공지사항</a></li>
+                                    <li class="nav-item"><a href="CsFaq">자주묻는질문</a></li>
+                                    <li class="nav-item"><a href="CsOneOnOne">1대1 문의</a></li>
+                                    <li class="nav-item"><a href="CsMain">고객센터</a></li>
                                 </ul>
-                                
                             </li>
+                            <li class="nav-item"><a href="SosimLocker">소심함 위치 안내</a></li>
                         </ul>
                     </div> <!-- navbar collapse -->
                 </nav>
