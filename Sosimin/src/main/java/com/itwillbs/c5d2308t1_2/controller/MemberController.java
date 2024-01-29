@@ -17,12 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.c5d2308t1_2.service.MemberService;
+import com.itwillbs.c5d2308t1_2.service.PaymentService;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
 
 @Controller
 public class MemberController {
 	@Autowired
 	private MemberService service;
+	
+	@Autowired
+	private PaymentService paymentService;
 	
 	// ****************** 회원가입 ****************
 	
@@ -155,6 +159,20 @@ public class MemberController {
 		   model.addAttribute("dbMember", dbMember);
 		   session.setAttribute("sId", member.getMember_id());
 //		   System.out.println("로그인 성공했나요? : " + dbMember);
+		   
+		   // -------------------- 페이 인증을 위해 추가 ----------------------------
+		   // BankService - getBankUserInfo() 메서드 호출하여 엑세스 토큰 조회 요청
+		   // => 파라미터 : 아이디   리턴타입 : Map<String, String>
+		   Map<String, Object> token = paymentService.getTokenInfo(member.getMember_id());
+		   
+		   // 조회된 엑세스 토큰을 "access_token", 사용자번호를 "user_seq_no" 로 세션에 추가
+		   // => 단, Map 객체(token) 이 null 이 아닐 경우에만 수행
+		   if(token != null) {
+			   session.setAttribute("access_token", token.get("access_token"));
+			   session.setAttribute("user_seq_no", token.get("user_seq_no"));
+		   }
+		   // -----------------------------------------------------------------------
+		   
 		   
 		   // 이전 페이지 주소 판별 후 메인페이지로 리다이렉트
 		   if(prevPage == null || prevPage.equals("") || prevPage.equals("MemberFindId") || prevPage.equals("MemberJoinPro")) {
