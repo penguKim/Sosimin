@@ -22,4 +22,9 @@ public class MemberService {
 	public MemberVO getMember(MemberVO member) {
 		return mapper.selectMember(member);
 	}
+
+	// 회원 정보 조회해 중복 체크
+	public MemberVO getDupMemberInfo(MemberVO member) {
+		return mapper.selectDupMemberInfo(member);
+	}
 }

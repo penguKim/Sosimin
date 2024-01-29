@@ -172,6 +172,14 @@
 // 				$("#reviewClose").click();
 // 			}
 // 		});
+
+
+		$(".categoryBtn .btn-check").on("click", function() {
+			$('#CommunityForm #searchKeyword').val('');
+			
+			$("#CommunityForm").submit();
+		});
+
 		
 	});
 	
@@ -271,21 +279,22 @@
 			<br>
 			<br>
 			<br>
+					<form action="" id="CommunityForm">
 			<div class="row mb-5 mx-auto">
 				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
-					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" checked>
+					
+					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="allCategory">전체</label>
-					<input type="radio" class="btn-check" name="category" id="hotCategory" value="hot" autocomplete="off">
+					<input type="radio" class="btn-check" name="category" id="hotCategory" value="hot" autocomplete="off" <c:if test="${param.category eq 'hot' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="hotCategory">인기글</label>
-					<input type="radio" class="btn-check" name="category" id="infoCategory" value="1" autocomplete="off">
+					<input type="radio" class="btn-check" name="category" id="infoCategory" value="info" autocomplete="off" <c:if test="${param.category eq 'info' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="infoCategory">동네소식</label>
-					<input type="radio" class="btn-check" name="category" id="questionCategory" value="2" autocomplete="off">
+					<input type="radio" class="btn-check" name="category" id="questionCategory" value="question" autocomplete="off" <c:if test="${param.category eq 'question' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="questionCategory">동네질문</label>
-					<input type="radio" class="btn-check" name="category" id="dailyCategory" value="3" autocomplete="off">
+					<input type="radio" class="btn-check" name="category" id="dailyCategory" value="daily" autocomplete="off" <c:if test="${param.category eq 'daily' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="dailyCategory">일상</label>
 				</div>
 				<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
-					<form action="">
 	<!-- 					<div class="form-group row row-cols-1 row-cols-sm-2 row-cols-md-2"> -->
 						<div class="form-group row d-flex justify-content-end">
 							<div class="col-xl-2 col-md-2 col-sm-3 col-3 px-0 mb-2">
@@ -298,7 +307,7 @@
 								</select>
 							</div>
 							<div class="searchKeyword col-xl-5 col-md-6 col-sm-9 col-9 px-1 mb-2">
-								<input type="text" name="searchKeyword" class="form-control" value="${param.searchKeyword }">
+								<input type="text" name="searchKeyword" id="searchKeyword" class="form-control" value="${param.searchKeyword }">
 							</div>
 							<div class="searchBtn col-xl-2 col-md-2 d-grid ps-0 pe-2 mb-2">
 								<input type="submit" value="검색" class="btn btn-primary" formaction="Community">
@@ -307,9 +316,9 @@
 								<input type="button" value="글쓰기" class="writeBtn btn btn-primary" onclick="location.href='CommunityWrite'" />
 							</div>
 						</div>
-					</form>
 				</div>
 			</div>
+					</form>
 			<div class="communityTable">
 				<table class="table table-hover contentList text-center">
 					<thead>
@@ -392,7 +401,8 @@
 			<nav aria-label="Page navigation">
 				<ul class="pagination justify-content-center">
 					<li class="page-item" id="prevPage">
-						<a href="Community?pageNum=${pageNum - 1}" class="page-link">&laquo;</a>
+<%-- 						<a href="Community?pageNum=${pageNum - 1}" class="page-link">&laquo;</a> --%>
+						<a href="Community?category=${param.category }&searchType=${param.searchType }&searchKeyword=${param.searchKeyword }&pageNum=${pageNum - 1}" class="page-link">&laquo;</a>
 					</li>
 					<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }">
 					<c:choose>
@@ -400,12 +410,12 @@
 						<li class="page-item active"><span class="page-link">${i }</span></li>
 						</c:when>
 						<c:otherwise>
-						<li class="page-item"><a href="Community?pageNum=${i }" class="page-link" >${i }</a></li>
+						<li class="page-item"><a href="Community?category=${param.category }&searchType=${param.searchType }&searchKeyword=${param.searchKeyword }&pageNum=${i }" class="page-link" >${i }</a></li>
 						</c:otherwise>
 					</c:choose>
 					</c:forEach>
 					<li class="page-item" id="nextPage">
-						<a href="Community?pageNum=${pageNum + 1}" class="page-link">&raquo;</a>
+						<a href="Community?category=${param.category }&searchType=${param.searchType }&searchKeyword=${param.searchKeyword }&pageNum=${pageNum + 1}" class="page-link">&raquo;</a>
 					</li>
 				</ul>
 			</nav>

@@ -38,14 +38,14 @@
 			dataType: "json",
 			success: function(result) {
 				console.log(result);
-				if(Object.keys(result) == 0) {
-					if(result.community_num = ${param.community_id}) {
-						$(".heart").toggleClass("is-active");
+// 				if(Object.keys(result) == 0) {
+					if(result.community_num == ${param.community_id}) {
+						$(".heart").addClass("is-active");
 					}
-				}
+// 				}
 			},
 			error: function(xhr, textStatus, errorThrown) {
-					alert("현재 상영작 불러오기를 실패했습니다.\n새로고침을 해주세요.");
+					alert("찜 불러오기를 실패했습니다.\n새로고침을 해주세요.");
 			}
 		});
 		
@@ -72,24 +72,33 @@
     			},
     			dataType: "json",
     			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-    			console.log(result)
-    				if(result == 'login') {
-    					if(confirm("로그인이 필요한 서비스입니다.\n로그인하시겠습니까?")){
-    						location.href = "memberLogin";
-    					}
-    				} else if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
-						$(this).toggleClass("is-active");
+    				if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
+						$(".heart").addClass("is-active");
     					$(".likeCount").text(result.likeCount);
     				} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
-						$(this).toggleClass("is-active");
+						$(".heart").removeClass("is-active");
     					$(".likeCount").text(result.likeCount);
     				}
     			},
     			error: function(xhr, textStatus, errorThrown) {
-    				alert("찜하기를 실패했습니다.");
+    				Swal.fire({
+    	    	        title: '회원만 사용가능합니다.',
+    	    	        text: '로그인 페이지로 이동하시겠습니까?',
+    	    	        icon: 'error',
+    	    	        showCancelButton: true,
+    	    	        confirmButtonColor: '#39d274',
+    	    	        cancelButtonColor: '#d33',
+    	    	        confirmButtonText: '이동',
+    	    	        cancelButtonText: '취소',
+    	    	        reverseButtons: true,
+    	    	        allowOutsideClick: false
+    	    	    }).then((result) => {
+    	    	        if (result.isConfirmed) {
+    	    	        	location.href="MemberLogin";
+    	    	        }
+    	    	    });
     			}
     		});
-            $(this).toggleClass("is-active");
         });
 //         $(".heart").on("click", function () {
 //             $(this).toggleClass("is-active");
@@ -370,11 +379,11 @@
 				        </div>
 				        <div class="col">
 				        	<div class="row">
-						        <p class="col-xl-2 col-3">${com.community_writer }</p>
+						        <p class="col-xl-3 col-4">${com.community_writer }</p>
 						        <p class="col">LV. ${com.member_level }</p>
 				        	</div>
 				        	<div class="row">
-						        <p class="col-xl-2 col-3" id="comDate">${com.community_datetime }</p>
+						        <p class="col-xl-3 col-4" id="comDate">${com.community_datetime }</p>
 						        <p class="col">조회수 ${com.community_readcount }</p>
 				        	</div>
 				        </div>

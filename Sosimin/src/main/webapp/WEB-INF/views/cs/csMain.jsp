@@ -29,22 +29,24 @@
 </head>
 
 <style>
-/* .row { */
-/*   display: flex; */
-/*   justify-content: center; /* 이미지를 가운데 정렬합니다. */ 
-/*   align-items: center; /* 이미지를 세로로 정렬합니다. */ 
-/* } */
+#rowCenter{
+	position:relative;
+	left:280px;
+}
 
-/* .row a { */
-/*   flex-basis: 33.33%; /* 각 이미지가 1/3의 가로 공간을 차지하도록 설정합니다. */ 
-/*   display: flex; */
-/*   align-items: center; */
-/*   text-decoration: none; */
-/* } */
+#csFaqDiv{
+	position: relative;
+	left:160px;
+}
 
-/* .row a img { */
-/*   margin-bottom: 10px; */
-/* } */
+#CsOnoOnOneDiv{
+	position: relative;
+	left:320px;
+}
+
+#CsNoticeDiv , #csFaqDiv , #CsOnoOnOneDiv{
+	display: inline-block;
+}
 </style>
 
 
@@ -75,7 +77,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./">Home</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
                         <li>고객센터</li>
                     </ul>
                 </div>
@@ -95,19 +97,25 @@
                     </div>
                 </div>
             </div>
-				<div class="row">
-				    <a href="CsNotice">
-				        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
-				        <span id="">공지사항</span>
-				    </a>
-				    <a href="CsFaq">
-				        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
-				        <span>자주묻는질문</span>
-				    </a>
-				    <a href="CsOneOnOne">
-				        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
-				        <span>1:1채팅문의</span>
-				    </a>
+				<div id="rowCenter">
+					<div id="CsNoticeDiv">
+					    <a href="CsNotice">
+					        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
+					        <span id="">공지사항</span>
+					    </a>
+					    </div>
+					    <div id="csFaqDiv">
+					    <a href="CsFaq">
+					        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
+					        <span>자주묻는질문</span>
+					    </a>
+					    </div>
+					    <div id="CsOnoOnOneDiv">
+					    <a href="CsOneOnOne">
+					        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
+					        <span>1:1채팅문의</span>
+					    </a>
+				    </div>
 				</div>
         </div>
     </section>

@@ -5,7 +5,7 @@
 
 	<li class="nav-item">
 		<a class="nav-link " href="AdminMain">
-			<i class="bi bi-grid"></i>
+			<i class="bi bi-house"></i>
 			<span>관리자메인</span>
 		</a>
 	</li><!-- End Dashboard Nav -->
@@ -19,7 +19,7 @@
 
 	<li class="nav-item">
 		<a class="nav-link collapsed" href="ProductBoardList">
-			<i class="bi bi-envelope"></i>
+			<i class="bi bi-archive"></i>
 			<span>상품관리</span>
 		</a>
 	</li><!-- End Contact Page Nav -->
@@ -27,21 +27,21 @@
 
 	<li class="nav-item">
 		<a class="nav-link collapsed" href="OrderList">
-			<i class="bi bi-person"></i>
+			<i class="bi bi-cart2"></i>
 			<span>거래관리</span>
 		</a>
 	</li><!-- End Profile Page Nav -->
   
 	<li class="nav-item">
 		<a class="nav-link collapsed" href="MemberAccount">
-		<i class="bi bi-card-list"></i>
+		<i class="bi bi-credit-card-2-back"></i>
 		<span>계좌관리</span>
 		</a>
 	</li><!-- End Register Page Nav -->
 
 	<li class="nav-item">
 		<a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-			<i class="bi bi-journal-text"></i><span>페이관리</span><i class="bi bi-chevron-down ms-auto"></i>
+			<i class="bi bi-cash-coin"></i><span>페이관리</span><i class="bi bi-chevron-down ms-auto"></i>
 		</a>
 		<ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 			<li>
@@ -59,7 +59,7 @@
 
 	<li class="nav-item">
 		<a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-			<i class="bi bi-menu-button-wide"></i><span>신고관리</span><i class="bi bi-chevron-down ms-auto"></i>
+			<i class="bi bi-x-circle"></i><span>신고관리</span><i class="bi bi-chevron-down ms-auto"></i>
 		</a>
 		<ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 			<li>
@@ -78,7 +78,7 @@
 
 	<li class="nav-item">
 		<a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-			<i class="bi bi-gem"></i><span>고객센터관리</span><i class="bi bi-chevron-down ms-auto"></i>
+			<i class="bi bi-people"></i><span>고객센터관리</span><i class="bi bi-chevron-down ms-auto"></i>
 		</a>
 		<ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 			<li>
@@ -102,7 +102,7 @@
 
 	<li class="nav-item">
 		<a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-			<i class="bi bi-layout-text-window-reverse"></i><span>커뮤니티관리</span><i class="bi bi-chevron-down ms-auto"></i>
+			<i class="bi bi-chat-dots"></i><span>커뮤니티관리</span><i class="bi bi-chevron-down ms-auto"></i>
 		</a>
 		<ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 			<li>

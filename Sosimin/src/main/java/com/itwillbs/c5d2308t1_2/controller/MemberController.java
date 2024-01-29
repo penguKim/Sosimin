@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.c5d2308t1_2.service.MemberService;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
@@ -37,7 +38,21 @@ public class MemberController {
 		return "member/joinForm";
 	}
 	
-
+	// 회원가입 폼 입력 시 아이디, 닉네임, 이메일, 휴대폰번호 중복검사 실행
+	@ResponseBody
+	@GetMapping("checkDupMemberInfo")
+	public String checkDupMemberInfo(MemberVO member) {
+		System.out.println("ajax로 넘긴 파라미터 확인 : " + member); // member_id 잘 넘어옴
+		MemberVO dbMember = service.getDupMemberInfo(member);
+//		
+		if(dbMember == null) { // 중복된 회원정보 없음 = 사용가능
+			return "false";
+		} else { // 중복
+			return "true";
+		}
+	}
+	
+	
 	// 회원가입 폼의 정보를 DB에 저장 후 가입 완료/축하 페이지로 이동
 	@PostMapping("MemberJoinPro")
 	public String MemberJoinPro(MemberVO member, Model model) {

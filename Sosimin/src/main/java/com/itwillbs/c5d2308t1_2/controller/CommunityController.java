@@ -44,22 +44,24 @@ public class CommunityController {
 	// 커뮤니티 게시판으로 이동
 	@GetMapping("Community")
 	public String community(@RequestParam(defaultValue = "") String searchKeyword, 
-						    @RequestParam(defaultValue = "release") String searchType,
+						    @RequestParam(defaultValue = "") String searchType,
+						    @RequestParam(defaultValue = "") String category,
 					        @RequestParam(defaultValue = "1") int pageNum, 
 					        HttpSession session, Model model) {
 		
 		System.out.println("검색으로 넘어온 문자열" + searchKeyword);
-		System.out.println("검색으로 넘어온 셀렉트박ㄷ스" + searchType);
+		System.out.println("검색으로 넘어온 셀렉트박스" + searchType);
+		System.out.println("검색으로 넘어온 카테고리" + category);
 		
 		// 페이지 번호와 글의 개수를 파라미터로 전달
 		PageDTO page = new PageDTO(pageNum, 15);
 		// 전체 게시글 갯수 조회
-		int listCount = communityService.getCommunityListCount(searchKeyword, searchType);
+		int listCount = communityService.getCommunityListCount(searchKeyword, searchType, category);
 		System.out.println(listCount);
 		// 페이징 처리
 		PageInfo pageInfo = new PageInfo(page, listCount, 3);
 		// 한 페이지에 불러올 게시글 목록 조회
-		List<CommunityVO> communityList = communityService.getCommunityList(searchKeyword, searchType, page);
+		List<CommunityVO> communityList = communityService.getCommunityList(searchKeyword, searchType, category, page);
 		
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -257,15 +259,17 @@ public class CommunityController {
 	@GetMapping("CommunityDetail")
 	public String communityDetail(CommunityVO com, Model model) {
 		
+		System.out.println("파라미터로 넘어온 com은 : " + com);
+		if(com == null || com.getCommunity_id() == 0) {
+			model.addAttribute("msg", "존재하지 않는 게시물입니다.");
+			return "fail_back";
+		}
+		
 		// 게시글 상세정보 조회
 		// 조회수 증가 여부 true
 		Map<String, Object> map = new HashMap<String, Object>();
 		map = communityService.getCommunity(com, true);
 		
-		if(com == null) {
-			model.addAttribute("msg", "존재하지 않는 게시물입니다.");
-			return "fail_back";
-		}
 		
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -597,6 +601,7 @@ public class CommunityController {
 			System.out.println("회원의 좋아요는 : " + like);
 			
 			JSONObject object = new JSONObject(like);
+			System.out.println("오브젝트는 뭔가요 : " + object);
 			
 			return object.toString();
 		}

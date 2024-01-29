@@ -29,9 +29,23 @@ public class CsController {
 		return "cs/csOneOnOne";
 	}
 	
-	@GetMapping("Chat")
-	public String chat() {
-		return "chat/chat";
+	@GetMapping("CsNoticeList")
+	public String csNoticeList() {
+		
+		return "admin/csNoticeList";
 	}
+	
+	@GetMapping("CsFaqList")
+	public String csFaqList() {
+		
+		return "admin/csFaqList";
+	}
+	
+	@GetMapping("CsOneOnOneList")
+	public String csOneOnOneList() {
+		
+		return "admin/csOneOnOneList";
+	}
+	
 	
 }
