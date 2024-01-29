@@ -19,13 +19,13 @@ public class CommunityService {
 	CommunityMapper mapper;
 	
 	// 게시글 목록
-	public int getCommunityListCount(String searchKeyword, String searchType) {
-		return mapper.selectCommunityListCount(searchKeyword, searchType);
+	public int getCommunityListCount(String searchKeyword, String searchType, String category) {
+		return mapper.selectCommunityListCount(searchKeyword, searchType, category);
 	}
 	
 	// 한 페이지에 표시할 게시글 목록 조회 작업 요청 
-	public List<CommunityVO> getCommunityList(String searchKeyword, String searchType, PageDTO page) {
-		return mapper.selectCommunityList(searchKeyword, searchType, page);
+	public List<CommunityVO> getCommunityList(String searchKeyword, String searchType, String category, PageDTO page) {
+		return mapper.selectCommunityList(searchKeyword, searchType, category, page);
 	}
 	
 	// 게시글 등록

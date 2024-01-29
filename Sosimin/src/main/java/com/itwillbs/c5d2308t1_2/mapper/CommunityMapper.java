@@ -17,10 +17,10 @@ public interface CommunityMapper {
 	int insertCommunity(CommunityVO com);
 	
 	// 페이징 처리를 위한 게시물 개수 조회 작업
-	int selectCommunityListCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType);
+	int selectCommunityListCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("category") String category);
 
 	// 한 페이지에 표시할 게시글 목록 조회 작업 요청 
-	List<CommunityVO> selectCommunityList(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("page") PageDTO page);
+	List<CommunityVO> selectCommunityList(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("category") String category, @Param("page") PageDTO page);
 
 	// 게시글 조회
 	Map<String, Object> selectCommunity(CommunityVO com);
