@@ -223,7 +223,7 @@ public class PaymentController {
 		// --------------------------------------------------
 		// 페이징
 		// 한 페이지에서 표시할 글 목록 갯수 지정 (테스트)
-		int listLimit = 5;
+		int listLimit = 10;
 		
 		int pageNum = Integer.parseInt(map.get("pageNum").toString());
 		
@@ -255,7 +255,7 @@ public class PaymentController {
 		
 		JSONObject jsonObject = new JSONObject(historyMap);
 		System.out.println("jsonObject = " + jsonObject);
-			
+		
 		return jsonObject.toString();
 	}
 	

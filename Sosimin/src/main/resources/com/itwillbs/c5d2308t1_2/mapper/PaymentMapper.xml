@@ -66,41 +66,20 @@
 			AND pay_status = 1
 	</select>
 	
-	<!-- 페이 내역 불러오기(연도별 그룹화) -->
-<!-- 	<select id="selectPayHistoryByYear" resultType="map"> -->
-<!-- 		SELECT YEAR(pay_history_date) AS year, -->
-<!-- 			JSON_ARRAYAGG( -->
-<!-- 				JSON_OBJECT( -->
-<!-- 					'pay_history_id', pay_history_id, -->
-<!-- 		            'pay_id', pay_id, -->
-<!-- 		            'pay_amount', pay_amount, -->
-<!-- 		            'pay_history_balance', pay_history_balance, -->
-<!-- 		            'pay_history_type', pay_history_type, -->
-<!-- 		            'order_id', order_id, -->
-<!-- 		            'pay_history_date', pay_history_date, -->
-<!-- 		            'pay_history_state', pay_history_state, -->
-<!-- 		            'pay_cancel_date', pay_cancel_date -->
-<!-- 				) -->
-<!-- 			) AS list -->
-<!-- 		FROM PayHistory -->
-<!-- 		WHERE pay_id = 2 -->
-<!-- 		<if test="pay_history_type != null and !pay_history_type.equals('')"> -->
-<!-- 			AND pay_history_type = #{pay_history_type} -->
-<!-- 		</if> -->
-<!-- 		GROUP BY YEAR(pay_history_date) -->
-<!-- 		ORDER BY year DESC -->
-<!-- 		LIMIT #{startRow}, #{listLimit} -->
-<!-- 	</select> -->
-
+	<!-- 페이 내역 불러오기 -->
 	<select id="selectPayHistory" resultType="map">
 		SELECT *
 		FROM PayHistory
 		WHERE pay_id = #{pay_id}
+		<if test="pay_history_type != null and !pay_history_type.equals('')">
+			AND pay_history_type = #{pay_history_type}
+		</if>
 		ORDER BY pay_history_date DESC
+		LIMIT #{startRow}, #{listLimit}
 	</select>
 	
 	<!-- 페이 내역 개수 세기(페이징) -->
-	<select id="selectPayHistoryCount" resultType="map">
+	<select id="selectPayHistoryCount" resultType="int">
 		SELECT COUNT(*)
 		FROM PayHistory
 		WHERE pay_id = #{pay_id}

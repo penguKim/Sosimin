@@ -26,6 +26,12 @@
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 
+<!-- ========================== 달력 ===================================== -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 <!-- ========================= 자바스크립트 시작 ========================= -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
@@ -52,7 +58,7 @@ $(function() {
 		let documentHeight = $(document).height(); // 문서 높이
 // 		console.log("scrollTop : " + scrollTop + ", windowHeight : " + windowHeight + ", documentHeight : "+ documentHeight);
 			
-		if(scrollTop + windowHeight + 1 >= documentHeight) {
+		if(scrollTop + windowHeight + 50 >= documentHeight) {
 			pageNum++; // 페이지번호 1 층가
 			
 			// 페이지 번호를 계속 불러오는 현상 막기
@@ -64,7 +70,7 @@ $(function() {
 	});
 	
 	<%-- 모아보기 버튼을 클릭하면 파라미터를 넘기며 주소를 새로 요청함 --%>
-	$(".btn-check").change(function() {
+	$("[name='options']").change(function() {
 		let pay_history_type = $(this).val();
 		location.href="PayInfo?pay_history_type="+pay_history_type;
 	});
@@ -100,80 +106,86 @@ function load_list() {
 		dataType: "json",
 		success:  function(data) {
 			console.log(data);
+	
+			$("#info_left").html("총 <span>" + data.listCount + "</span>건");
 			
-			
-			
-			
-			
-			
-// 			$("#info_left").append("총 " + data.listCount + "건");
-			
-// 			for (let item of data.payHistoryList) {
-// // 				console.log("연도 : " + item.year); // 2024
-				
-// 				$("#payHistoryList").append(
-// 					'<div id="'+ item.year +'">'
-// 					+	'<span id="year">' + item.year + '</span>년'
-// 					+	'<div class="year_list" id="' + item.year + 'list"></div>'
-// 					+ '</div>'
-// 				);
-				
-// 				let payment_list = JSON.parse(item.list);
+			// 연도별로 그룹화할 객체 생성
+			let groupedData = {};
 
-// 				for (let history of payment_list) {
-// // 					console.log(history);
-			    	  
-// 					// pay_history_date 값을 분리하여 날짜와 시간을 추출
-// 					var year = history.pay_history_date.slice(0, 4);
-// 					var date = history.pay_history_date.slice(5, 10);
-// 					var time = history.pay_history_date.slice(11, 16);
+			// payHistoryList를 순회하며 연도별로 그룹화
+			for (let item of data.payHistoryList) {
+				let year = new Date(item.pay_history_date).getFullYear();
+  
+				if (!groupedData[year]) {
+					groupedData[year] = [];
+				}
+  
+				groupedData[year].push(item);
+			}
+
+			// 그룹화된 데이터를 이용하여 각 연도별로 div 영역에 추가
+			let years = Object.keys(groupedData).reverse(); // 연도 속성을 반대로 순회할 배열 생성
+			for (let year of years) {
+				$("#payHistoryList").append(
+					'<div id="'+ year +'">'
+					+	'<span id="year">' + year + '</span>년'
+					+	'<div class="year_list" id="' + year + 'list"></div>'
+					+ '</div>'
+				);
+				
+				const paymentArray = groupedData[year]; // 데이터 배열
+
+				for (let history of paymentArray) {
+					console.log("pay_history_id:", history.pay_history_id);
 					
-// 					// pay_history_type 값에 따라 다른 결과 출력
-// 					let pay_history_type = "";
-// 					let subject = "";
-// 					if(history.pay_history_type == "1") {
-// 						pay_history_type = "충전";
-// 						subject = "페이충전";
-// 					} else if(history.pay_history_type == "2") {
-// 						pay_history_type = "환급";
-// 						subject = "페이환급";
-// 					} else if(history.pay_history_type == "3") {
-// 						pay_history_type = "사용";
-// 						subject = history.order_id;
-// 					} else if(history.pay_history_type == "4") {
-// 						pay_history_type = "수익";
-// 						subject = history.order_id;
-// 					}
+					// pay_history_date 값을 분리하여 날짜와 시간을 추출
+					let date = history.pay_history_date.slice(5, 10);
+					let time = history.pay_history_date.slice(11, 16);
+					
+					// pay_history_type 값에 따라 다른 결과 출력
+					let pay_history_type = "";
+					let subject = "";
+					if(history.pay_history_type == "1") {
+						pay_history_type = "충전";
+						subject = "페이충전";
+					} else if(history.pay_history_type == "2") {
+						pay_history_type = "환급";
+						subject = "페이환급";
+					} else if(history.pay_history_type == "3") {
+						pay_history_type = "사용";
+						subject = '<a href="#">' + history.order_id + ' ></a>';
+					} else if(history.pay_history_type == "4") {
+						pay_history_type = "수익";
+						subject = '<a href="#">' + history.order_id + ' ></a>';
+					}
 			    	  
-// 			    	  $("#" + year + "list").append(
-// 	 						'<div class="row content_list">'
-// 	  				        +     '<div class="col-lg-2 col-md-2 col-12">'
-// 	  				        +         '<h5 class="pay_date">' + date + '</h5>'
-// 	  				        +     '</div>'
-// 	  				        +     '<div class="col-lg-7 col-md-7 col-12">'
-// 	  				        +         '<h5 class="product-name">' + subject + '</h5>'
-// 	  				        +         '<p class="pay-info-sub">'
-// 	  				        +        		time + ' | '
-// 	  				        +               pay_history_type
-// 	  				        +         '</p>'
-// 	  				        +     '</div>'
-// 	  				        +     '<div class="col-lg-3 col-md-3 col-12">'
-// 	  				        +          '<h5 class="pay-amount">' + history.pay_amount + '</h5>'
-// 	  				        +          '<p class="pay-balance-sub">'
-// 	  				        +				history.pay_history_balance
-// 	  				        +         '</p>'
-// 	  				        +     '</div>'
-// 	  				        +'</div>'
+			    	  $("#" + year + "list").append(
+	 						'<div class="row content_list">'
+	  				        +     '<div class="col-lg-2 col-md-2 col-12">'
+	  				        +         '<h5 class="pay_date">' + date + '</h5>'
+	  				        +     '</div>'
+	  				        +     '<div class="col-lg-7 col-md-7 col-12">'
+	  				        +         '<h5 class="product-name">' + subject + '</h5>'
+	  				        +         '<p class="pay-info-sub">'
+	  				        +        		time + ' | '
+	  				        +               pay_history_type
+	  				        +         '</p>'
+	  				        +     '</div>'
+	  				        +     '<div class="col-lg-3 col-md-3 col-12">'
+	  				        +          '<h5 class="pay-amount">' + history.pay_amount + '</h5>'
+	  				        +          '<p class="pay-balance-sub">'
+	  				        +				history.pay_history_balance
+	  				        +         '</p>'
+	  				        +     '</div>'
+	  				        +'</div>'
 
-// 						);
-// // 				
-// // 					// 끝페이지 번호(maxPage) 값을 변수에 저장
-// 					maxPage = data.maxPage;
-// // 					console.log("maxPage" + maxPage);
-// 				}
-// 			}
-
-			
+						);
+// 				
+// 					// 끝페이지 번호(maxPage) 값을 변수에 저장
+					maxPage = data.maxPage;
+// 					console.log("maxPage" + maxPage);			
+				}	
+			}
 		},
 		error: function(request, status, error) {
 	      // 요청이 실패한 경우 처리할 로직
@@ -270,13 +282,12 @@ function load_list() {
 						        <input type="radio" name="options" class="btn-check" id="btn-check5" value="4" autocomplete="off">
 							    <label class="btn btn-outline-primary" for="btn-check5">수익</label>
 							</div>
-							<div id="period_select">전체기간 <i class="fa fa-caret-down"></i></div>
-							<hr>
+							<div id="date_select"><button data-bs-toggle="modal" data-bs-target="#date_modal">전체기간<i class="fa fa-caret-down"></i></button></div>
+							
 							<div id="period_info">
 								<div id="info_left"></div>
-								<div id="info_right">2023.01.28 ~ 2024.01.28</div>
+								<div id="info_right" onclick="#">2023-01-10 ~ 2024-02-10</div>
 							</div>
-							<hr>
 							
 							<div id="payHistoryList">
 								<%-- 페이사용 내역이 출력되는 영역 --%>
@@ -288,6 +299,43 @@ function load_list() {
         </div>
     </div>
 
+    <!-- Review Modal -->
+    <div class="modal review-modal" id="date_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">조회 기간을 선택해주세요</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="btn-group col">
+						        <input type="radio" name="period" class="btn-check" id="btn-date1" value="1" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-date1">1개월</label>
+						        <input type="radio" name="period" class="btn-check" id="btn-date2" value="3" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-date2">3개월</label>
+						        <input type="radio" name="period"class="btn-check" id="btn-date3" value="6" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-date3">6개월</label>
+						        <input type="radio" name="period" class="btn-check" id="btn-date4" value="12" autocomplete="off">
+							    <label class="btn btn-outline-primary" for="btn-date4">최대(1년)</label>
+							</div>
+                        </div>
+                        <div class="date_area col">
+                            <div class="start_date"><input type="date"></div>
+                            <div class="pattern"> ~ </div>
+                            <div class="end_date"><input type="date"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer button">
+                    <button type="submit" class="btn" id="passwd-btn">조회하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Review Modal -->
 
 	
 	
