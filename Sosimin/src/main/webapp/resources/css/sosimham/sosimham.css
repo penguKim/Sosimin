@@ -7,16 +7,12 @@ a {
 
 #img_div {
 	text-align: center;
-	width:986px;
-	height:430px;
 	max-width:986px;
 	max-height:430px;
 	margin: auto;
 }
 
 #img_div img {
-	width:986px;
-	height:430px;
 	max-width:986px;
 	max-height:430px;
 }
@@ -36,19 +32,21 @@ color:#433581;
 }
 
 .theater1>input {
-	background-color:#433581; /* 메뉴바 색깔 변경 */
-	color : white; /* 글자색을 흰색으로 */
+	background-color:#fff; /* 메뉴바 색깔 변경 */
+	color : black; /* 글자색을 흰색으로 */
 	width: 150px; height: 30px; /* 가로 세로 크기 */ 
 	border-radius:10px 10px 10px 10px ; /* 둥글이? */
 	text-align: center;  /* 글자를 가운데로 */
 	line-height: 30px; /* 행간=영역의 높이값 */
 	margin: 5px;
 	/*수직정렬 가운데 */
+	font-weight: bold;
 }
 
 .theater1>input:hover {
 	cursor: pointer;
-	background-color:#331f62;
+	background-color:#39d274;
+	color: #fff;
 }
 
 	

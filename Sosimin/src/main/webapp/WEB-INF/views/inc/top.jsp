@@ -161,7 +161,7 @@
 	}
 	
 	function localStorageClean(){
-		window.localStorage.clear();
+		window.localStorage.removeItem('keywords');
 		// 테이블 생성
 		let tableHTML = '<table>';
 		tableHTML += 
