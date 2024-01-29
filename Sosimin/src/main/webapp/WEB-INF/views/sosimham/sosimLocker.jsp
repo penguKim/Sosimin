@@ -82,7 +82,28 @@
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
 	
-	<h1 id="h01">소심함 위치 정보</h1>
+	
+	<!-- Start Breadcrumbs -->
+	<div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">소심함 위치 정보</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li>소심함 위치 정보</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+   	<!-- End Breadcrumbs -->
+	
+	
 			<hr>
 				<input type="hidden" value="${theaterName}">
 					<c:set var="theaterName" value="${theaterName.theater_name}"></c:set>

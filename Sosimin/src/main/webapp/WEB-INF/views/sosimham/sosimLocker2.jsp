@@ -35,7 +35,7 @@
 			// 클릭된 드롭다운 메뉴 아이템의 텍스트를 가져와서 버튼의 내용으로 설정합니다.
 			var gu = $(this).text();
 		    $('.btngu').text(gu);
-		    let object = ${object};
+		    let object = "${object}";
 		    console.log("object : " + object);
 		    console.log(object[gu]);
 		    $(".dongSelect").html("");
