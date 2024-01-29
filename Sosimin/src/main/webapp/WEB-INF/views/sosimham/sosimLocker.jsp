@@ -31,11 +31,10 @@
 		$('.itemGu').click(function() {
 			// 클릭된 드롭다운 메뉴 아이템의 텍스트를 가져와서 버튼의 내용으로 설정합니다.
 			var gu = $(this).text();
-			alert("선택된 구 : " + gu);
 		    $('.btngu').text(gu);
 		    let object = ${object};
 		    console.log("object : " + object);
-		    console.log(${object[gu]});
+		    console.log(object[gu]);
 		    $(".dongSelect").html("");
 		    for(let i = 0; i<object[gu].length; i++){
 			    $(".dongSelect").prepend(
@@ -43,29 +42,7 @@
 			    );
 		    }
 	    });
-// 		//@@@@@@@@@@@@@@@@@@@@@@@@@theater@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-// 	    var urlParams = new URLSearchParams(window.location.search);
-// 	    var theaterName = urlParams.get('theater_name');
-
-// 	    // 버튼들을 선택합니다
-// 	    var theaterButtons = $("input[name='theaterNames']");
-
-// 	    // 버튼 클릭 이벤트 핸들러를 등록합니다
-// 	    theaterButtons.on("click", function() {
-// 	      // 이전에 선택된 버튼의 배경색을 초기화합니다
-// 	      theaterButtons.css("background-color", "");
-
-// 	      // 클릭한 버튼의 배경색을 보라색으로 변경합니다
-// 	      $(this).css("background-color", "purple");
-// 	    });
-
-// 	    // 파라미터로 넘어온 버튼을 찾아서 해당 버튼을 클릭한 것처럼 처리합니다
-// 	    theaterButtons.each(function() {
-// 	      if ($(this).val() === theaterName) {
-// 	        $(this).trigger("click");
-// 	      }
-// 	    });
-// 		//@@@@@@@@@@@@@@@@@@@@@@@@@theater@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		
 	});// document.ready END
 	function itemdong(dong){
 		var dong = $(dong).text();
@@ -101,23 +78,31 @@
     </div>
    	<!-- End Breadcrumbs -->
 	
-	
 			<hr>
-				<input type="hidden" value="${theaterName}">
-					<c:set var="theaterName" value="${theaterName.theater_name}"></c:set>
-				<div id="img_div">
-					<img src="${pageContext.request.contextPath}/resources/images/sosimham/진구.jpg" alt="진구" id="image">
-				</div>
+<!-- 			<div class="menu" > -->
+<!-- 				<nav class="theater1"> -->
+<%-- 					<c:forEach var="GuName" items="${ListGu}" varStatus="status"> --%>
+<%-- 						<input type="button" name="GuNames" class="${GuName}" id="${GuName}" value="${GuName}"> --%>
+<%-- 					</c:forEach> --%>
+<!-- 				</nav> -->
+<!-- 			</div> -->
+			<div class="btn-group">
+				  <button type="button" class="btngu btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+				    구 선택
+				  </button>
+				  <ul class="dropdown-menu">
+				  	<c:forEach var="i" items="${resultMap}" >
+				    	<li><a class="dropdown-item itemGu" href="#">${i.key}</a></li>
+				    </c:forEach>
+				  </ul>
+				  <button type="button" class="btndong btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+				    동 선택
+				  </button>
+				  <ul class="dropdown-menu dongSelect">
+				  	<li><a class="dropdown-item itemDong" href="#">구를 먼저 선택해주세요.</a></li>
+				  </ul>
+			 </div>
 			<hr>
-			<div class="menu" >
-				<nav class="theater1">
-					<c:forEach var="GuName" items="${ListGu}" varStatus="status">
-						<input type="button" name="GuNames" class="${GuName}" id="${GuName}" value="${GuName}">
-					</c:forEach>
-				</nav>
-			</div>
-			<hr>
-			
 			
 			
 <!-- 	    	<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group"> -->
@@ -129,35 +114,10 @@
 		    
 			<div id="theater_top">
 				<div id="theater_price">
-					<h3>[ 가격 안내 ]</h3>
-					<table id="price_table">
-						<tr>
-							<th colspan="4" id="table_name">소심함 시간당 이용금액</th>
-						</tr>
-						<tr>
-							<th>구분</th>
-							<th>타입</th>
-							<th>금액</th>
-						</tr>         
-					
-						<tr>
-							<th rowspan="4">시간</th>
-							<td>1시간 미만</td>
-							<td>500원</td>
-						</tr>
-						<tr>
-							<td>1시간 이상 2시간 미만</td>
-							<td>1,000원</td>
-						</tr>
-						<tr>
-							<td>3시간 이상</td>
-							<td>3,000원</td>
-						</tr>
-						<tr>
-							<td>24시간 이상</td>
-							<td>5,000원</td>
-						</tr>
-					</table>
+					<h3>[ 택배 보관함 위치 ]</h3>
+					<div id="img_div">
+						<img src="${pageContext.request.contextPath}/resources/images/sosimham/진구.jpg" alt="진구" id="image">
+					</div>
 				</div>				
 				
 				<div id="theater_map">
@@ -334,31 +294,31 @@
 
 
 
-							 var buttons = document.querySelectorAll('input[type="button"]');
-							 buttons.forEach(function(button) {
-							   button.addEventListener('click', function(event) {
-							     // 선택된 버튼의 아이디 값을 가져와서 변수에 저장
-							     selectedId = event.target.id;
-							   });
-							 });
+// 							 var buttons = document.querySelectorAll('input[type="button"]');
+// 							 buttons.forEach(function(button) {
+// 							   button.addEventListener('click', function(event) {
+// 							     // 선택된 버튼의 아이디 값을 가져와서 변수에 저장
+// 							     selectedId = event.target.id;
+// 							   });
+// 							 });
 
-							 document.querySelector('.on a').addEventListener('click', function(event) {
-							   event.preventDefault();
-							   var url = event.target.href;
-							   if (selectedId) {
-							     url += selectedId;
-							   }
-							   window.location.href = url;
-							 });
+// 							 document.querySelector('.on a').addEventListener('click', function(event) {
+// 							   event.preventDefault();
+// 							   var url = event.target.href;
+// 							   if (selectedId) {
+// 							     url += selectedId;
+// 							   }
+// 							   window.location.href = url;
+// 							 });
 							 
-							 document.querySelector('.last a').addEventListener('click', function(event) {
-							   event.preventDefault();
-							   var url = event.target.href;
-							   if (selectedId) {
-							     url += selectedId;
-							   }
-							   window.location.href = url;
-							 });
+// 							 document.querySelector('.last a').addEventListener('click', function(event) {
+// 							   event.preventDefault();
+// 							   var url = event.target.href;
+// 							   if (selectedId) {
+// 							     url += selectedId;
+// 							   }
+// 							   window.location.href = url;
+// 							 });
 
 							</script>
 						</div>

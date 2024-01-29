@@ -13,6 +13,8 @@ a {
 }
 
 #img_div img {
+	width: 400px;
+    height: 400px;
 	max-width:986px;
 	max-height:430px;
 }

@@ -50,9 +50,11 @@ public class SosimhamController {
 		
 		JSONObject object = new JSONObject(resultMap);
 		System.out.println("object test : " + object);
+		model.addAttribute("object", object);
+		System.out.println("resultMap test : " + resultMap);
 		model.addAttribute("resultMap",resultMap);
-		model.addAttribute("object",resultMap);
-		return "sosimham/sosimLocker";
+		 
+		return "sosimham/sosimLocker2";
 		
 	}
 }

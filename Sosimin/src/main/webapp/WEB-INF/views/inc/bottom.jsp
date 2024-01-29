@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!-- Start Footer Middle -->
 <div class="footer-middle">
     <div class="container">
@@ -25,8 +25,8 @@
                      <h3>문의방법</h3>
                      <ul class="app-btn">
                          <li>
-                             <a href="javascript:void(0)">
-                                 <i class="lni lni-apple"></i>
+                             <a href="CsMain">
+                                <i class="material-icons">&#xe7fc;</i>
                                  <span class="big-title">cs center</span>
                              </a>
                          </li>
@@ -37,23 +37,28 @@
              <div class="col-lg-3 col-md-6 col-12">
                  <!-- Single Widget -->
                  <div class="single-footer f-link">
-                     <h3>Information</h3>
+                     <h3>회사 소개</h3>
                      <ul>
-                         <li><a href="javascript:void(0)">About Us</a></li>
-                         <li><a href="javascript:void(0)">Contact Us</a></li>
-                         <li><a href="javascript:void(0)">Downloads</a></li>
+                         <li><a href="javascript:void(0)">보도자료</a></li>
+                         <li><a href="javascript:void(0)">새소식</a></li>
+                         <li><a href="javascript:void(0)">마케팅 행사</a></li>
                      </ul>
+<!--                      <ul> -->
+<!--                          <li><a href="javascript:void(0)">About Us</a></li> -->
+<!--                          <li><a href="javascript:void(0)">Contact Us</a></li> -->
+<!--                          <li><a href="javascript:void(0)">Downloads</a></li> -->
+<!--                      </ul> -->
                  </div>
                  <!-- End Single Widget -->
              </div>
              <div class="col-lg-3 col-md-6 col-12">
                  <!-- Single Widget -->
                  <div class="single-footer f-link">
-                     <h3>Shop Departments</h3>
+                     <h3>이용 방법 안내</h3>
                      <ul>
-                         <li><a href="javascript:void(0)">Computers & Accessories</a></li>
-                         <li><a href="javascript:void(0)">Smartphones & Tablets</a></li>
-                         <li><a href="javascript:void(0)">TV, Video & Audio</a></li>
+                         <li><a href="javascript:void(0)">소심함 이용방법</a></li>
+                         <li><a href="javascript:void(0)">판매금지 물품 안내</a></li>
+                         <li><a href="javascript:void(0)">개인정보처리방침</a></li>
                      </ul>
                  </div>
                  <!-- End Single Widget -->

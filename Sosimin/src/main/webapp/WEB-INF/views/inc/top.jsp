@@ -299,14 +299,10 @@
                         	<!-- 나라별 언어 선택 -->
                             <div class="select-position">
                                 <select id="select5">
-                                    <option value="ko-kr" selected>한국어</option>
-                                    <option value="0" >English</option>
-                                    <option value="1">Español</option>
-                                    <option value="2">Filipino</option>
-                                    <option value="3">Français</option>
-                                    <option value="4">العربية</option>
-                                    <option value="5">हिन्दी</option>
-                                    <option value="6">বাংলা</option>
+                                    <option value="ko" selected>한국어</option>
+                                    <option value="en" >영어</option>
+                                    <option value="ja">일본어</option>
+                                    <option value="ch">중국어</option>
                                 </select>
                             </div>
                         </li>
@@ -492,11 +488,11 @@
 								<a href="Community">커뮤니티</a>
                                 <ul class="sub-menu collapse" id="submenu-1-2">
                                     <li class="nav-item"><a href="about-us.html">About Us</a></li>
+                                    <li class="nav-item"><a href="Community?category=hot">인기글</a></li>
+                                    <li class="nav-item"><a href="Community?category=info">동네소식</a></li>
+                                    <li class="nav-item"><a href="Community?category=question">동네질문</a></li>
+                                    <li class="nav-item"><a href="Community?category=daily">일상</a></li>
                                     <li class="nav-item"><a href="SosimLocker">소심함 위치 안내</a></li>
-                                    <li class="nav-item"><a href="CsNotice">공지사항</a></li>
-                                    <li class="nav-item"><a href="CsFaq">자주묻는질문</a></li>
-                                    <li class="nav-item"><a href="CsOneOnOne">1대1 문의</a></li>
-                                    <li class="nav-item"><a href="CsMain">고객센터</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item"><a href="SosimLocker">소심함 위치 안내</a></li>
