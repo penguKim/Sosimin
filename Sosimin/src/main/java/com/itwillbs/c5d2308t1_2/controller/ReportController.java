@@ -45,7 +45,7 @@ public class ReportController {
 	
 	// *================================= adminReport
 	// 회원 신고 목록 
-	@GetMapping("ReportMember")
+	@GetMapping("MemberReport")
 	public String reportMember(@RequestParam Map<String, String> map, HttpSession session, Model model) {
 		
 		
@@ -60,7 +60,7 @@ public class ReportController {
 	}
 	
 	// 게시글 신고 목록
-	@GetMapping("ReportBoard")
+	@GetMapping("BoardReport")
 	public String reportBoard(@RequestParam Map<String, String> map, HttpSession session, Model model) {
 		
 		

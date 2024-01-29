@@ -140,7 +140,7 @@ public class ProductController {
 	
 	// =============================== 관리자 페이지
 	// 등록 상품 목록
-	@GetMapping("ProductList")
+	@GetMapping("ProductBoardList")
 	public String productList() {
 		
 		return "admin/productList";

@@ -219,11 +219,11 @@ function filtering() {
 								테스트버튼
 						</button>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                        		data-bs-target="#reportModal" id="reportBtn">
+                        		data-bs-target="#reportModal" >
 								게시글 신고하기
 						</button>
 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                        		data-bs-target="#memberModal" id="reportBtn">
+                        		data-bs-target="#memberModal">
 								회원 신고하기
 						</button>
                         </div>
