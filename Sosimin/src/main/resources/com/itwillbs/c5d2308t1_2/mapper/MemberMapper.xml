@@ -40,7 +40,9 @@
 		SELECT * 
 		FROM Member
 		WHERE member_id = #{member_id}
-			OR member_nickname = #{member_nickname} OR member_email = #{member_email}
+			OR member_nickname = #{member_nickname} 
+			OR member_email = #{member_email}
+			OR member_phone = #{member_phone}
 		<!-- OR member_email = #{member_email} OR member_phone = #{member_phone} --> 
 	</select>
 
