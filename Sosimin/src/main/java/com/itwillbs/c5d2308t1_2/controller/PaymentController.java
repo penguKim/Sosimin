@@ -37,10 +37,6 @@ public class PaymentController {
 	// 계좌인증 페이지로 이동
 	@GetMapping("AccountVerification")
 	public String accountVerification(HttpSession session, Model model) {
-		// ------------------------------------------------------------------
-		session.setAttribute("sId", "leess"); // 로그인 구현되고나면 지우기
-		// ------------------------------------------------------------------
-		
 		// 로그인을 하지 않은 사용자는 접근을 제한함
 		if(session.getAttribute("sId") == null) {
 			model.addAttribute("msg", "로그인 필수!");
@@ -191,10 +187,6 @@ public class PaymentController {
 	// 페이정보 페이지로 이동
 	@GetMapping("PayInfo")
 	public String payInfo(HttpSession session, Model model) {
-		// ------------------------------------------------------------------
-		session.setAttribute("sId", "leess"); // 로그인 구현되고나면 지우기
-		// ------------------------------------------------------------------
-		
 		// 세션아이디가 null 일 경우 로그인 페이지 이동 처리
 		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
 		String member_id = (String)session.getAttribute("sId");
@@ -231,7 +223,7 @@ public class PaymentController {
 		// --------------------------------------------------
 		// 페이징
 		// 한 페이지에서 표시할 글 목록 갯수 지정 (테스트)
-		int listLimit = 10;
+		int listLimit = 5;
 		
 		int pageNum = Integer.parseInt(map.get("pageNum").toString());
 		
@@ -248,8 +240,9 @@ public class PaymentController {
 		log.info(payHistoryList.toString());
 		
 		// ======================================================
-//		int listCount = service.getPayHistoryCount(map);
-//		int maxPage = listCount / listLimit + ((listCount % listLimit) > 0 ? 1 : 0);
+		int listCount = service.getPayHistoryCount(map);
+		
+		int maxPage = listCount / listLimit + ((listCount % listLimit) > 0 ? 1 : 0);
 		
 		// 게시물 목록 조회 결과 Map 객체에 추가
 		Map<String, Object> historyMap = new HashMap<String, Object>();
@@ -257,7 +250,8 @@ public class PaymentController {
 //		System.out.println(map);
 		
 		// 마지막 페이지 번호 Map 객체에 추가
-//		historyMap.put("maxPage", maxPage);
+		historyMap.put("maxPage", maxPage);
+		historyMap.put("listCount", listCount);
 		
 		JSONObject jsonObject = new JSONObject(historyMap);
 		System.out.println("jsonObject = " + jsonObject);

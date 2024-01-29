@@ -67,82 +67,47 @@
 	</select>
 	
 	<!-- 페이 내역 불러오기(연도별 그룹화) -->
-	<select id="selectPayHistoryByYear" resultType="map">
-<!-- 		SELECT  -->
-<!-- 			YEAR(pay_history_date) AS year, -->
+<!-- 	<select id="selectPayHistoryByYear" resultType="map"> -->
+<!-- 		SELECT YEAR(pay_history_date) AS year, -->
 <!-- 			JSON_ARRAYAGG( -->
 <!-- 				JSON_OBJECT( -->
-<!-- 					'pay_history_id', pay_history_id,  -->
-<!-- 					'pay_id', pay_id, -->
-<!-- 					'pay_amount', pay_amount, -->
-<!-- 					'pay_history_balance', pay_history_balance, -->
-<!-- 					'pay_history_type', pay_history_type, -->
-<!-- 					'order_id', IFNULL(order_id, 'null'), -->
-<!-- 					'pay_history_date', pay_history_date, -->
-<!-- 					'pay_history_state', pay_history_state, -->
-<!-- 					'pay_cancel_date', IFNULL(pay_cancel_date, 'null') -->
+<!-- 					'pay_history_id', pay_history_id, -->
+<!-- 		            'pay_id', pay_id, -->
+<!-- 		            'pay_amount', pay_amount, -->
+<!-- 		            'pay_history_balance', pay_history_balance, -->
+<!-- 		            'pay_history_type', pay_history_type, -->
+<!-- 		            'order_id', order_id, -->
+<!-- 		            'pay_history_date', pay_history_date, -->
+<!-- 		            'pay_history_state', pay_history_state, -->
+<!-- 		            'pay_cancel_date', pay_cancel_date -->
 <!-- 				) -->
-<!-- 			) AS json_data -->
+<!-- 			) AS list -->
 <!-- 		FROM PayHistory -->
-<!-- 		GROUP BY YEAR(pay_history_date) -->
-<!-- 		ORDER BY YEAR(pay_history_date) DESC; -->
-		SELECT
-		  JSON_OBJECTAGG(
-		    year_date, json_data
-		  ) AS json_result
-		FROM (
-		  SELECT
-		    year_date,
-		    JSON_OBJECTAGG(
-		      date_date, json_array
-		    ) AS json_data
-		  FROM (
-		    SELECT
-		      YEAR(pay_history_date) AS year,
-		      DATE_FORMAT(pay_history_date, '%Y') AS year_date,
-		      DATE_FORMAT(pay_history_date, '%m-%d') AS date_date,
-		      JSON_ARRAYAGG(
-		        JSON_OBJECT(
-		          'pay_history_id', pay_history_id,
-		          'pay_id', pay_id,
-		          'pay_amount', pay_amount,
-		          'pay_history_balance', pay_history_balance,
-		          'pay_history_type', pay_history_type,
-		          'order_id', order_id,
-		          'pay_history_date', pay_history_date,
-		          'pay_history_state', pay_history_state,
-		          'pay_cancel_date', pay_cancel_date
-		        )
-		      ) AS json_array
-		    FROM PayHistory
-		    WHERE pay_id = #{pay_id}
-		    GROUP BY year, year_date, date_date
-		  ) AS subquery1
-		  GROUP BY year_date
-		) AS subquery2;
-	</select>
-	
-	<!-- 페이 내역 불러오기(페이징) -->
-<!-- 	<select id="selectPayHistory" resultType="map"> -->
-<!-- 		SELECT * -->
-<!-- 		FROM PayHistory -->
-<!-- 		WHERE pay_id = #{pay_id} -->
+<!-- 		WHERE pay_id = 2 -->
 <!-- 		<if test="pay_history_type != null and !pay_history_type.equals('')"> -->
 <!-- 			AND pay_history_type = #{pay_history_type} -->
 <!-- 		</if> -->
-<!-- 		ORDER BY pay_history_date DESC -->
+<!-- 		GROUP BY YEAR(pay_history_date) -->
+<!-- 		ORDER BY year DESC -->
 <!-- 		LIMIT #{startRow}, #{listLimit} -->
 <!-- 	</select> -->
+
+	<select id="selectPayHistory" resultType="map">
+		SELECT *
+		FROM PayHistory
+		WHERE pay_id = #{pay_id}
+		ORDER BY pay_history_date DESC
+	</select>
 	
 	<!-- 페이 내역 개수 세기(페이징) -->
-<!-- 	<select id="selectPayHistoryCount"> -->
-<!-- 		SELECT COUNT(*) -->
-<!-- 		FROM PayHistory -->
-<!-- 		WHERE pay_id = #{pay_id} -->
-<!-- 		<if test="pay_history_type != null and !pay_history_type.equals('')"> -->
-<!-- 			AND pay_history_type = #{pay_history_type} -->
-<!-- 		</if> -->
-<!-- 	</select> -->
+	<select id="selectPayHistoryCount" resultType="map">
+		SELECT COUNT(*)
+		FROM PayHistory
+		WHERE pay_id = #{pay_id}
+		<if test="pay_history_type != null and !pay_history_type.equals('')">
+			AND pay_history_type = #{pay_history_type}
+		</if>
+	</select>
 	
 	<!-- 페이 잔액 충전 -->
 	<update id="updatePay">
@@ -168,13 +133,13 @@
 			, now()
 			, 1 -- 완료
 			, null
-		);
+		)
 	</insert>
 	
 	
 	
 	<!-- ================ 관리자페이지 ====================== -->
-	<select id="selectPayHistory" resultType="map">
+	<select id="selectPayHistoryAll" resultType="map">
 		SELECT *
 		FROM PayHistory
 	</select>
