@@ -15,4 +15,7 @@ public interface MemberMapper {
 	// 회원 정보 조회
 	MemberVO selectMember(MemberVO member);
 
+	// 회원 정보 조회해 중복 체크
+	MemberVO selectDupMemberInfo(MemberVO member);
+
 }

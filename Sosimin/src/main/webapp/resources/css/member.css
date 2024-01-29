@@ -329,7 +329,8 @@
     max-width: 100%;
     padding-right: calc(var(--bs-gutter-x)/ 2);
     padding-left: calc(var(--bs-gutter-x)/ 2);
-    margin-left: 354px;
+/*     margin-left: 354px; */
+    margin-left: 75px;
     margin-top: 20px;
 }
 

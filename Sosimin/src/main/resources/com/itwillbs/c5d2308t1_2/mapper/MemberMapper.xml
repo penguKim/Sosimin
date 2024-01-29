@@ -4,7 +4,7 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.c5d2308t1_2.mapper.MemberMapper">
-
+	<!--  회원가입 INSERT  -->
 	<insert id="insertMember">
 		INSERT INTO Member
 		VALUES (
@@ -34,6 +34,14 @@
 		SELECT *
 		FROM Member
 		WHERE Member.member_id = #{member_id} 
+	</select>
+
+	<select id="selectDupMemberInfo" resultType="member">
+		SELECT * 
+		FROM Member
+		WHERE member_id = #{member_id}
+			OR member_nickname = #{member_nickname} OR member_email = #{member_email}
+		<!-- OR member_email = #{member_email} OR member_phone = #{member_phone} --> 
 	</select>
 
 </mapper>
