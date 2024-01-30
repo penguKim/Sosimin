@@ -41,7 +41,7 @@
 		WHERE member_id = #{member_id}
 	</select>
 	
-	<!-- 페이 가입 - INSERT -->
+	<!-- 페이 가입(계좌등록) - INSERT -->
 	<insert id="insertPay">
 		INSERT INTO Pay
 		VALUES (
@@ -59,6 +59,19 @@
 		)
 	</insert>
 	
+	<!-- 페이 수정(계좌수정) - UPDATE -->
+	<update id="updatePay">
+		UPDATE Pay
+		SET
+			user_name = #{user_name}
+			, fintech_use_num = #{fintech_use_num}
+			, bank_name = #{bank_name}
+			, account_num_masked = #{account_num_masked}
+			, pay_password = #{pay_password}
+		WHERE member_id = #{member_id}
+	</update>
+	
+	<!-- 페이 가입 정보 조회 -->
 	<select id="selectPayInfo" resultType="map">
 		SELECT *
 		FROM Pay
@@ -74,6 +87,9 @@
 		<if test="pay_history_type != null and !pay_history_type.equals('')">
 			AND pay_history_type = #{pay_history_type}
 		</if>
+		<if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
+			AND DATE(pay_history_date) BETWEEN #{start_date} AND #{end_date}
+		</if>
 		ORDER BY pay_history_date DESC
 		LIMIT #{startRow}, #{listLimit}
 	</select>
@@ -86,15 +102,30 @@
 		<if test="pay_history_type != null and !pay_history_type.equals('')">
 			AND pay_history_type = #{pay_history_type}
 		</if>
+		<if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
+			AND DATE(pay_history_date) BETWEEN #{start_date} AND #{end_date}
+		</if>
 	</select>
 	
 	<!-- 페이 잔액 충전 -->
-	<update id="updatePay">
+	<update id="updatePayBalance">
 		UPDATE Pay
-		SET pay_balance = pay_balance + CAST(#{tran_amt} AS SIGNED)
+		SET 
+		<choose>
+			<when test="pay_history_type == 1">
+				pay_balance = pay_balance + CAST(#{tran_amt} AS SIGNED)
+			</when>
+			<when test="pay_history_type == 2">
+				pay_balance = pay_balance - CAST(#{tran_amt} AS SIGNED)
+			</when>
+			<otherwise>
+				pay_balance = pay_balance
+			</otherwise>
+		</choose>
 		WHERE fintech_use_num = #{fintech_use_num}	
 	</update>
 	
+	<!-- 페이 이용 내역 -->
 	<insert id="insertPayHistory">
 		<selectKey keyProperty="pay_history_balance" resultType="INT" order="BEFORE">
 			SELECT pay_balance
@@ -106,8 +137,18 @@
 			null
 			, #{pay_id}
 			, #{tran_amt}
-			, #{pay_history_balance} + CAST(#{tran_amt} AS SIGNED)
-			, 1 -- 충전
+			<choose>
+				<when test="pay_history_type == 1">
+					, #{pay_history_balance} + CAST(#{tran_amt} AS SIGNED)
+				</when>
+				<when test="pay_history_type == 2">
+					, #{pay_history_balance} - CAST(#{tran_amt} AS SIGNED)
+				</when>
+				<otherwise>
+					, #{pay_history_balance}
+				</otherwise>
+			</choose>
+			, #{pay_history_type}
 			, null -- 상품관련아님
 			, now()
 			, 1 -- 완료
@@ -115,12 +156,39 @@
 		)
 	</insert>
 	
+	<!-- 출금을 위해 관리자 토큰 조회(oob) -->
+	<select id="selectAdminAccessToken" resultType="string">
+		SELECT access_token
+		FROM Token
+		WHERE member_id = 'admin'
+	</select>
+	
+	
 	
 	
 	<!-- ================ 관리자페이지 ====================== -->
-	<select id="selectPayHistoryAll" resultType="map">
+	<!-- 충전/환급 페이지 -->
+	<select id="selectPayChargeRefund" resultType="map">
 		SELECT *
-		FROM PayHistory
+		FROM PayHistory JOIN Pay
+		ON PayHistory.pay_id = Pay.pay_id
+		WHERE pay_history_type = 1
+			OR pay_history_type = 2
+	</select>
+	
+	<!-- 사용/수익 페이지 -->
+	<select id="selectPaySpentRevenue" resultType="map">
+		SELECT *
+		FROM PayHistory JOIN Pay
+		ON PayHistory.pay_id = Pay.pay_id
+		WHERE pay_history_type = 3
+			OR pay_history_type = 4
+	</select>
+	
+	<!-- 회원 계좌 페이지 -->
+	<select id="selectPayListAll" resultType="map">
+		SELECT *
+		FROM Pay
 	</select>
 	
 	

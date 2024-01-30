@@ -20,9 +20,12 @@ public interface PaymentMapper {
 	// 페이 가입 중복 처리를 위한 아이디 조회
 	int selectPay(Map<String, Object> map);
 
-	// 페이 가입
+	// 페이 가입(계좌 insert)
 	int insertPay(Map<String, Object> map);
 
+	// 페이 수정(계좌 update)
+	int updatePay(Map<String, Object> map);
+	
 	// 사용자 페이 가입 정보 불러오기
 	Map<String, Object> selectPayInfo(String member_id);
 
@@ -33,15 +36,27 @@ public interface PaymentMapper {
 	// 페이 내역 개수 세기(페이징)
 	int selectPayHistoryCount(Map<String, Object> map);
 
-	// 페이 충전 요청
-	int updatePay(Map<String, Object> map);
+	// 페이 충전/환급 요청
+	int updatePayBalance(Map<String, Object> map);
 
-	// 페이 충전 내역 저장 요청
+	// 페이 충전/환급 내역 저장 요청
 	void insertPayHistory(Map<String, Object> map);
+	
+	// 관리자 엑세스토큰 조회 요청
+	String selectAdminAccessToken();
+
 
 	// ====================== 관리자페이지 ==================
 	
-	// 페이 사용 내역 불러오기(전체)
-	List<Map<String, Object>> selectPayHistoryAll();
+	// 페이 사용 내역 불러오기(충전/환급)
+	List<Map<String, Object>> selectPayChargeRefund();
+
+	// 페이 사용 내역 불러오기(사용/수익)
+	List<Map<String, Object>> selectPaySpentRevenue();
+
+	// 회원 계좌 내역 불러오기
+	List<Map<String, Object>> selectPayListAll();
+
+
 
 }

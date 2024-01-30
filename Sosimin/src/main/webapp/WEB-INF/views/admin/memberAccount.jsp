@@ -43,6 +43,11 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 ======================================================== -->
+<script>
+function MemberAccountDetail() {
+	
+}
+</script>
 </head>
 <body>
 
@@ -85,69 +90,16 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="pay_list" items="${payHistoryList}">
+									<c:forEach var="pay_list" items="${payList}">
 										<tr>
-											<td>${pay_list.pay_history_id}</td>
 											<td>${pay_list.pay_id}</td>
-											<td>${pay_list.pay_amount}</td>
-											<td>${pay_list.pay_history_type}</td>
+											<td>${pay_list.member_id}</td>
+											<td>${pay_list.bank_name}</td>
+											<td>${pay_list.account_num_masked}</td>
 											<td class="green">
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${pay_list.pay_history_id}">
+												<button type="button" class="btn btn-primary" onclick="MemberAccountDetail()">
 													상세보기
 												</button>
-												<!-- Basic Modal -->
-												<div class="modal fade" id="modal-${pay_list.pay_history_id}" tabindex="-1">
-													<div class="modal-dialog">
-														<div class="modal-content">
-															<div class="modal-header">
-																<h5 class="modal-title">충전/환급 상세보기</h5><!-- 모달 제목 -->
-																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-															</div>
-															<div class="modal-body">
-																<!-- 모달 내용이 들어가는 부분 -->
-																<table border="1">
-																	<tr>
-																		<th>거래내역번호</th>
-																		<td>${pay_list.pay_history_id}</td>
-																	</tr>
-																	<tr>
-																		<th>pay번호</th>
-																		<td>${pay_list.pay_id}</td>
-																	</tr>
-																	<tr>
-																		<th>회원아이디</th>
-																		<td></td>
-																	</tr>
-																	<tr>
-																		<th>거래금액</th>
-																		<td>${pay_list.pay_amount}</td>
-																	</tr>
-																	<tr>
-																		<th>거래유형</th>
-																		<td>${pay_list.pay_history_type}</td>
-																	</tr>
-																	<tr>
-																		<th>pay잔액</th>
-																		<td>${pay_list.pay_history_balance}</td>
-																	</tr>
-																	<tr>
-																		<th>거래일</th>
-																		<td>
-																			<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
-																			<c:set var="date" value="${datetime[0]}" />
-																			${date}
-																		</td>
-																	</tr>
-																</table>
-															</div>
-															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">뒤로가기</button>
-																<button type="button" class="btn btn-primary">거래취소</button>
-															</div>
-														</div>
-													</div>
-												</div>
-												<!-- End Basic Modal-->
 											</td>
 										</tr>
 									</c:forEach>

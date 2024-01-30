@@ -1,6 +1,5 @@
 package com.itwillbs.c5d2308t1_2.controller;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +38,10 @@ public class PaymentController {
 	public String accountVerification(HttpSession session, Model model) {
 		// 로그인을 하지 않은 사용자는 접근을 제한함
 		if(session.getAttribute("sId") == null) {
-			model.addAttribute("msg", "로그인 필수!");
-			model.addAttribute("targetURL", "MemberLogin");
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "MemberLogin");	
 			return "forward";
 		}
 		
@@ -63,8 +64,10 @@ public class PaymentController {
 		String id = (String)session.getAttribute("sId");
 		if(id == null) {
 			// "fail_back.jsp" 페이지로 포워딩 시 "isClose" 값을 true 로 설정하여 전달
-			model.addAttribute("msg", "로그인을 해주세요");
-			model.addAttribute("isClose", true); // 현재 창(서브 윈도우) 닫도록 명령
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("isClose", "true"); // 현재 창(서브 윈도우) 닫도록 명령
 			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
 			return "forward";
 		}
@@ -75,6 +78,8 @@ public class PaymentController {
 		if(session.getAttribute("state") == null 
 				|| !session.getAttribute("state").equals(authResponse.get("state"))) {
 			model.addAttribute("msg", "잘못된 요청입니다!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "error");
 			return "fail_back";
 		}
 		
@@ -89,7 +94,9 @@ public class PaymentController {
 		// ResponseTokenVO 객체가 null 이거나 엑세스토큰 값이 null일 경우
 		// state값 갱신을 위해 "AccountVerification" 페이지로 이동
 		if(responseToken == null || responseToken.getAccess_token() == null) {
-			model.addAttribute("msg", "토큰 발급을 실패했습니다! 다시 인증하세요!");
+			model.addAttribute("msg", "토큰 발급을 실패했습니다!");
+			model.addAttribute("msg2", "다시 인증해주세요!");
+			model.addAttribute("msg3", "error");
 			model.addAttribute("isClose", true); // 현재 창(서브 윈도우) 닫도록 명령		
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
@@ -109,7 +116,7 @@ public class PaymentController {
 		// 인증창을 닫고 계좌 등록 페이지로 이동
 		model.addAttribute("msg", "계좌 인증이 완료되었습니다!");
 		model.addAttribute("isClose", true); // 현재 창(서브 윈도우) 닫도록 명령
-		model.addAttribute("targetURL", "AccountRegist"); 
+		model.addAttribute("targetURL", "PayInfo"); 
 		return "forward";
 	}
 	
@@ -121,11 +128,15 @@ public class PaymentController {
 		// 세션아이디가 null 일 경우 로그인 페이지 이동 처리
 		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
 		if(session.getAttribute("sId") == null) {
-			model.addAttribute("msg", "로그인을 해주세요");
-			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
 			return "forward";
 		} else if(session.getAttribute("access_token") == null) {
-			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("msg", "계좌 인증이 필요합니다!");
+			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		}
@@ -150,15 +161,19 @@ public class PaymentController {
 		// 세션아이디가 null 일 경우 로그인 페이지 이동 처리
 		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
 		if(session.getAttribute("sId") == null) {
-			model.addAttribute("msg", "로그인을 해주세요");
-			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
 			return "forward";
 		} else if(session.getAttribute("access_token") == null) {
 			model.addAttribute("msg", "계좌 인증이 필요합니다");
-			model.addAttribute("targetURL", "AccountVerification");	
+			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
 			return "forward";
 		}
 		
+		map.put("userInfo", model.getAttribute("userInfo"));
 		map.put("member_id", session.getAttribute("sId")); // map 객체에 아이디 저장
 //		log.info("map : " + map);
 		
@@ -169,14 +184,16 @@ public class PaymentController {
 		
 		map.put("pay_password", securePasswd);
 		
-//		log.info("map 암호화 : " + map);
+		log.info("map : " + map);
 		
-		int insertCount = service.registPay(map);
+		int count = service.registPay(map);
 		
-		if(insertCount > 0) { // 페이 가입이 되면
+		if(count > 0) { // 페이 가입이 되면
 			return "redirect:/PayInfo";
 		} else {
-			model.addAttribute("msg", "계좌 등록을 실패하였습니다");
+			model.addAttribute("msg", "계좌 등록을 실패하였습니다!");
+			model.addAttribute("msg2", "계좌 목록으로 돌아갑니다.");
+			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "AccountRegist"); // 계좌 목록 페이지로 이동
 			return "forward";
 		}
@@ -192,8 +209,10 @@ public class PaymentController {
 		String member_id = (String)session.getAttribute("sId");
 		
 		if(member_id == null) {
-			model.addAttribute("msg", "로그인을 해주세요");
-			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
 			return "forward";
 		}
 		
@@ -203,10 +222,14 @@ public class PaymentController {
 		
 		if(session.getAttribute("access_token") == null) {
 			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		} else if(payInfo == null) {
 			model.addAttribute("msg", "계좌 등록이 필요합니다");
+			model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
 			return "forward";
 		}
@@ -272,15 +295,21 @@ public class PaymentController {
 		// DB에서 페이 가입 여부 조회하고 정보 가져오기
 		Map<String, Object> payInfo = service.getPayInfo(member_id);
 		if(member_id == null) {
-			model.addAttribute("msg", "로그인을 해주세요");
-			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
 			return "forward";
 		} else if(session.getAttribute("access_token") == null) {
 			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		} else if(payInfo == null) {
 			model.addAttribute("msg", "계좌 등록이 필요합니다");
+			model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
 			return "forward";
 		}
@@ -298,11 +327,15 @@ public class PaymentController {
 		String member_id = (String)session.getAttribute("sId");
 		
 		if(member_id == null) {
-			model.addAttribute("msg", "로그인을 해주세요");
-			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "MemberLogin");	// 로그인 페이지로 이동
 			return "forward";
 		} else if(session.getAttribute("access_token") == null) {
 			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		}
@@ -344,17 +377,21 @@ public class PaymentController {
 			
 			// 2.5. 계좌이체 서비스 - 2.5.1. 출금이체 API
 			Map<String, Object> withdrawResult = service.requestWithdraw(map);
-//			log.info(">>>>>>>>>>>>>>>>>withdrawResult : " + withdrawResult);
+			log.info(">>>>>>>>>>>>>>>>>withdrawResult : " + withdrawResult);
 //			log.info(">>>>>>>>>>>>>>>>>출금?? : " + withdrawResult.get("rsp_code"));
 			
 			// 요청 결과를 Model 객체에 저장
 			model.addAttribute("withdrawResult", withdrawResult);
 			
+			// pay_history_type을 충전으로 지정
+			map.put("pay_history_type", 1);
+			
 			if(withdrawResult.get("rsp_code").equals("A0000")) {
 				log.info("이거임 >>>>>>>>>>>>>>>" + map.toString());
 //				System.out.println("출금됨");
 				// 페이 잔액을 업데이트
-				int updateCount = service.chargePay(map);
+				int updateCount = service.updatePayBalance(map);
+				
 				
 				if(updateCount > 0) {
 					return "redirect:/PayChargeComplete";					
@@ -380,10 +417,11 @@ public class PaymentController {
 		log.info("payInfo = " + payInfo);
 		
 		payInfo.put("pay_amount", session.getAttribute("pay_amount"));
+		payInfo.put("result", "charge_success");
 		
 		model.addAttribute("payInfo", payInfo);
 		
-		return "payment/chargeComplete";
+		return "payment/payModifyComplete";
 	}
 	
 	// 페이 충전 실패 페이지로 이동
@@ -395,13 +433,55 @@ public class PaymentController {
 		log.info("payInfo = " + payInfo);
 		
 		payInfo.put("pay_amount", session.getAttribute("pay_amount"));
+		payInfo.put("result", "charge_refused");
 		
 		model.addAttribute("payInfo", payInfo);
 		
-		return "payment/chargeRefused";
+		return "payment/payModifyComplete";
 	}
 	
 	// ----------- 페이환급 ---------------	
+	// 이용기관의 계좌에 접근 가능한 엑세스토큰 발급
+	// 관리자페이지에서 관리자 아이디로 등록
+	@GetMapping("AdminAccountRegist")
+	public String adminAccountRegist(HttpSession session, Model model) {
+		String id = (String)session.getAttribute("sId");
+		// 세션아이디가 null 일 경우 로그인 페이지 이동 처리
+		// 관리자가 아닐 경우 "잘못된 접근입니다!" 처리
+		if(id == null) {
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "MemberLogin");		
+			return "forward";
+		} else if(!id.equals("admin")) {
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "./");	
+			return "forward";
+		}
+		
+		// 관리자 엑세스토큰 발급 요청
+		ResponseTokenVO responseToken = service.requestAdminAccessToken();
+		log.info("관리자 엑세스토큰 : " + responseToken);
+		
+		// refresh_token 과 user_seq_no 값은 널스트링("")으로 설정
+		responseToken.setRefresh_token("");
+		responseToken.setUser_seq_no("");
+		
+		// 토큰 관련 정보 저장 요청
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("member_id", id); // 세션아이디 저장
+		map.put("token", responseToken);
+		
+		service.registAccessToken(map);
+		
+		model.addAttribute("msg", "토큰 발급 완료!");
+		model.addAttribute("msg3", "success");
+		model.addAttribute("targetURL", "MemberAccount");
+		return "forward";
+	}
+	
 	// 페이 환급 페이지로 이동
 	@GetMapping("PayRefund")
 	public String payRefund(HttpSession session, Model model) {
@@ -409,41 +489,129 @@ public class PaymentController {
 		// 엑세스토큰이 null 일 경우 "계좌 인증 필수!" 메세지 출력 후 "forward.jsp" 페이지 포워딩
 		String member_id = (String)session.getAttribute("sId");
 		
-		if(member_id == null) {
-			model.addAttribute("msg", "로그인을 해주세요");
-			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
-			return "forward";
-		}
-		
 		// DB에서 페이 가입 여부 조회하고 정보 가져오기
 		Map<String, Object> payInfo = service.getPayInfo(member_id);
-		
-		if(payInfo == null) {
+		if(member_id == null) {
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
+			return "forward";
+		} else if(session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "AccountVerification");	
+			return "forward";
+		} else if(payInfo == null) {
 			model.addAttribute("msg", "계좌 등록이 필요합니다");
-			model.addAttribute("targetURL", "AccountRegist"); // 로그인 페이지로 이동
+			model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
 			return "forward";
 		}
 		
 		model.addAttribute("payInfo", payInfo);
 	
-		
 		return "payment/refund";
 	}
 	
 	// 페이 환급 처리
-	// 2.3.1. 잔액조회 API
+	// 2.5.2. 입금이체 API
 	@PostMapping("PayRefundPro")
-	public String payRefundPro(@RequestParam Map<String, String> map) {
-		log.info(map.toString());
+	public String payRefundPro(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
+		String member_id = (String)session.getAttribute("sId");
 		
-		return "redirect:/PayRefundComplete";
+		if(member_id == null) {
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "MemberLogin");	// 로그인 페이지로 이동
+			return "forward";
+		} else if(session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "AccountVerification");	
+			return "forward";
+		}
+		
+		// 저장된 "admin" 계정의 엑세스토큰(oob) 조회 필요
+		map.put("access_token", service.getAdminAccessToken());
+		map.put("member_id", member_id);
+		
+		// 파라미터로 입력받은 값을 숫자로 변환
+		String pay_amountString = (String) map.get("pay_amount");
+		pay_amountString = pay_amountString.replace(",", "");
+		int pay_amount = Integer.parseInt(pay_amountString);
+		
+		map.put("tran_amt", pay_amount);
+		session.setAttribute("pay_amount", pay_amount);
+		log.info(">>>>>>>>>>>>> 입금이체 map 데이터 " + map);
+		
+		// BankService - requestDeposit() 메서드 호출하여 상품에 대한 환불(입금이체) 요청
+		// => 파라미터 : Map 객체   리턴타입 : Map<String, Object>(depositResult)
+		Map<String, Object> depositResult = service.requestDeposit(map);
+		log.info(">>>>>>>>>>>>>>>>>depositResult : " + depositResult);
+		
+		// 요청 결과를 Model 객체에 저장
+		model.addAttribute("depositResult", depositResult);
+		
+		// pay_history_type을 환급으로 지정
+		map.put("pay_history_type", 2);
+		
+		if(depositResult.get("rsp_code").equals("A0000")) {
+//			log.info("이거임 >>>>>>>>>>>>>>>" + map.toString());
+//			System.out.println("입금됨");
+			// 페이 잔액을 업데이트
+			int updateCount = service.updatePayBalance(map);
+			
+			if(updateCount > 0) {
+				return "redirect:/PayRefundComplete";					
+			} else {
+				return "redirect:/PayRefundRefused"; // 입금 실패 페이지로 이동				
+			}
+
+		} else {
+//			System.out.println("입금안됨!!!!!!!!!!!!!!!!!!");				
+			return "redirect:/PayRefundRefused"; // 입금 실패 페이지로 이동
+		}
+
+		
 	}
-	
+
 	// 페이 환급 완료 페이지로 이동
 	@GetMapping("PayRefundComplete")
-	public String payRefundComplete() {
-		return "payment/refundComplete";
+	public String payRefundComplete(HttpSession session, Model model) {
+		String member_id = (String)session.getAttribute("sId");
+		
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		log.info("payInfo = " + payInfo);
+		
+		payInfo.put("pay_amount", session.getAttribute("pay_amount"));
+		payInfo.put("result", "refund_success");
+		
+		model.addAttribute("payInfo", payInfo);
+		
+		return "payment/payModifyComplete";
 	}
+	
+	// 페이 환급 실패 페이지로 이동
+	@GetMapping("PayRefundRefused")
+	public String payRefundRefused(HttpSession session, Model model) {
+		String member_id = (String)session.getAttribute("sId");
+		
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		log.info("payInfo = " + payInfo);
+		
+		payInfo.put("pay_amount", session.getAttribute("pay_amount"));
+		payInfo.put("result", "refund_refused");
+		
+		model.addAttribute("payInfo", payInfo);
+		
+		return "payment/payModifyComplete";
+	}
+	
 	
 	
 	// ----------- 페이사용 ---------------
@@ -493,7 +661,12 @@ public class PaymentController {
 	
 	// 계좌 관리 페이지로 이동
 	@GetMapping("MemberAccount")
-	public String memberAccount() {
+	public String memberAccount(Model model) {
+		List<Map<String, Object>> payList = service.getPayListAll();
+		log.info(payList.toString());
+		
+		model.addAttribute("payList", payList);
+		
 		return "admin/memberAccount";
 	}
 	
@@ -506,7 +679,7 @@ public class PaymentController {
 	// 충전/환급 관리 페이지로 이동
 	@GetMapping("ChargeRefund")
 	public String chargeRefund(Model model) {
-		List<Map<String, Object>> payHistoryList = service.getPayHistory();
+		List<Map<String, Object>> payHistoryList = service.getPayHistoryChargeRefund();
 		log.info(payHistoryList.toString());
 		
 		model.addAttribute("payHistoryList", payHistoryList);
@@ -516,7 +689,12 @@ public class PaymentController {
 
 	// 사용/수익 관리 페이지로 이동
 	@GetMapping("SpentRevenue")
-	public String spentRevenue() {
+	public String spentRevenue(Model model) {
+		List<Map<String, Object>> payHistoryList = service.getPayHistorySpentRevenue();
+		log.info(payHistoryList.toString());
+		
+		model.addAttribute("payHistoryList", payHistoryList);
+		
 		return "admin/spentRevenue";
 	}
 	

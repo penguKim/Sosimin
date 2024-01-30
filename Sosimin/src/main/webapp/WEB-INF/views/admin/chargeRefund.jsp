@@ -78,7 +78,7 @@
 							<table class="table datatable">
 								<thead>
 									<tr>
-										<th>거래내역번호</th>
+										<th>페이내역번호</th>
 										<th>회원아이디</th>
 										<th>거래금액</th>
 										<th>거래유형</th>
@@ -90,9 +90,17 @@
 									<c:forEach var="pay_list" items="${payHistoryList}">
 										<tr>
 											<td>${pay_list.pay_history_id}</td>
-											<td>${pay_list.pay_id}</td>
-											<td>${pay_list.pay_amount}</td>
-											<td>${pay_list.pay_history_type}</td>
+											<td>${pay_list.member_id}</td>
+											<td>
+												<c:set var="payAmount" value="${pay_list.pay_amount}" />
+												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />
+											</td>
+											<td>
+												<c:choose>
+													<c:when test="${pay_list.pay_history_type eq '1'}">충전</c:when>
+													<c:when test="${pay_list.pay_history_type eq '2'}">환급</c:when>
+												</c:choose>
+											</td>
 											<td>
 												<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
@@ -114,7 +122,7 @@
 																<!-- 모달 내용이 들어가는 부분 -->
 																<table border="1">
 																	<tr>
-																		<th>거래내역번호</th>
+																		<th>페이내역번호</th>
 																		<td>${pay_list.pay_history_id}</td>
 																	</tr>
 																	<tr>
@@ -123,19 +131,30 @@
 																	</tr>
 																	<tr>
 																		<th>회원아이디</th>
-																		<td></td>
+																		<td>${pay_list.member_id}</td>
 																	</tr>
 																	<tr>
 																		<th>거래금액</th>
-																		<td>${pay_list.pay_amount}</td>
+																		<td>
+																			<c:set var="payAmount" value="${pay_list.pay_amount}" />
+																			<fmt:formatNumber value="${payAmount}" pattern="#,##0" />
+																		</td>
 																	</tr>
 																	<tr>
 																		<th>거래유형</th>
-																		<td>${pay_list.pay_history_type}</td>
+																		<td>
+																			<c:choose>
+																				<c:when test="${pay_list.pay_history_type eq '1'}">충전</c:when>
+																				<c:when test="${pay_list.pay_history_type eq '2'}">환급</c:when>
+																			</c:choose>
+																		</td>
 																	</tr>
 																	<tr>
 																		<th>pay잔액</th>
-																		<td>${pay_list.pay_history_balance}</td>
+																		<td>
+																			<c:set var="payBalance" value="${pay_list.pay_history_balance}" />
+																			<fmt:formatNumber value="${payBalance}" pattern="#,##0" />
+																		</td>
 																	</tr>
 																	<tr>
 																		<th>거래일</th>

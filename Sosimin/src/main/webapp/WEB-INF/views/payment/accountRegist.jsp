@@ -28,10 +28,11 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 // 등록버튼을 눌렀을 때
-function openModal(bank_name, account_num_masked, fintech_use_num) {
+function openModal(user_name, bank_name, account_num_masked, fintech_use_num) {
 	$('#password-modal').modal('show'); // 모달창을 띄움
     $('#pay-password').val(''); // 비밀번호 입력창을 초기 값으로 설정
     $('#pay-password2').val(''); // 비밀번호 입력창을 초기 값으로 설정
+    $('#user_name').val(user_name); // hidden 속성에 user_name를 넘김
     $('#bank_name').val(bank_name); // hidden 속성에 fintech_use_num를 넘김
     $('#account_num_masked').val(account_num_masked); // hidden 속성에 fintech_use_num를 넘김
     $('#fintech_use_num').val(fintech_use_num); // hidden 속성에 fintech_use_num를 넘김
@@ -51,13 +52,13 @@ $(function() {
 		
 		event.preventDefault();
 		Swal.fire({
-	        title: '소심페이에 가입하시겠습니까?',
+	        title: '소심페이에 계좌를<br>등록하시겠습니까?',
 	        text: "등록된 계좌는 소심페이 충전과 환급에 사용됩니다.",
 	        icon: 'question',
 	        showCancelButton: true,
 	        confirmButtonColor: '#39d274',
 	        cancelButtonColor: '#d33',
-	        confirmButtonText: '가입',
+	        confirmButtonText: '계좌등록',
 	        cancelButtonText: '취소',
 	        reverseButtons: true,
 	    }).then((result) => {
@@ -149,7 +150,7 @@ $(function() {
 				                <div class="cart-single-list">
 				                    <div class="row align-items-center">
 				                        <div class="col-lg-2 col-md-2 col-12">
-				                           <p class="pay-info-sub">${account.account_holder_name}</p>
+				                           <p class="pay-info-sub">${userInfo.user_name}</p>
 				                        </div>
 				                        <div class="col-lg-6 col-md-6 col-12">
 				                            <h5 class="bank-name">${account.bank_name}</h5>
@@ -159,7 +160,7 @@ $(function() {
 				                        </div>
 				                        <div class="col-lg-4 col-md-4 col-12">
 				                             <div class="button" id="regist-btn">
-				                                <button class="btn" onclick="openModal('${account.bank_name}', '${account.account_num_masked}', '${account.fintech_use_num}')">등록하기</button>
+				                                <button class="btn" onclick="openModal('${userInfo.user_name}', '${account.bank_name}', '${account.account_num_masked}', '${account.fintech_use_num}')">등록하기</button>
 				                            </div>
 				                        </div>
 				                    </div>
@@ -203,6 +204,7 @@ $(function() {
 	                </div>
 	                <div class="modal-footer button">
 		                    <button type="submit" class="btn" id="passwd-btn">등록하기</button>
+		                    <input type="hidden" id="user_name" name="user_name" value="">
 		                    <input type="hidden" id="bank_name" name="bank_name" value="">
 		                    <input type="hidden" id="account_num_masked" name="account_num_masked" value="">
 		                    <input type="hidden" id="fintech_use_num" name="fintech_use_num" value="">

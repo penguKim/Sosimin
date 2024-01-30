@@ -57,21 +57,23 @@ public class PaymentService {
 		return mapper.selectAccessToken(map);
 	}
 
-	// 페이 가입 정보 저장 요청
+	// 페이 가입 정보 저장 요청(계좌 등록 / 수정)
 	public int registPay(Map<String, Object> map) {
-		int insertCount = 0;
+		int count = 0;
 		
 		// 해당 아이디로 가입된 정보가 있는지 확인
 		int idCount = mapper.selectPay(map);
 		
-		// 아이디가 존재하지 않을 경우 엑세스토큰 INSERT
+		// 아이디가 존재하지 않을 경우 pay정보 insert
 		if(idCount == 0) {
-			insertCount = mapper.insertPay(map);
-		} 
+			count = mapper.insertPay(map);
+		} else { // 아이디가 존재할 경우 pay정보 update
+			count = mapper.updatePay(map);			
+		}
 		
-		return insertCount;
+		return count;
 		
-	}
+	}	
 
 	// 사용자 페이 가입 정보 불러오기
 	public Map<String, Object> getPayInfo(String member_id) {
@@ -103,20 +105,47 @@ public class PaymentService {
 		return bankApiClient.requestWithdraw(map);
 	}
 
-	// 페이 충전 및 충전 내역 저장 요청
+	// 페이 충전/환급 및 충전/환급 내역 저장 요청
 	@Transactional
-	public int chargePay(Map<String, Object> map) {
+	public int updatePayBalance(Map<String, Object> map) {
 		mapper.insertPayHistory(map);
 		
-		return mapper.updatePay(map);
+		return mapper.updatePayBalance(map);
 	}
+	
+	// 관리자 엑세스토큰(oob) 발급 요청
+	public ResponseTokenVO requestAdminAccessToken() {
+		return bankApiClient.requestAdminAccessToken();
+	}
+	
+	// 관리자 엑세스토큰 조회 요청
+	public String getAdminAccessToken() {
+		return mapper.selectAdminAccessToken();
+	}
+	
+	// 입금 이체 요청
+	public Map<String, Object> requestDeposit(Map<String, Object> map) {
+		return bankApiClient.requestDeposit(map);
+	}
+
 	
 	
 	// ============= 관리자 페이지 ======================
-	// 페이 이용 내역 불러오기
-	public List<Map<String, Object>> getPayHistory() {	
-		return mapper.selectPayHistoryAll();
-	}
 	
+	// 페이 이용 내역 불러오기(충전/환급)
+	public List<Map<String, Object>> getPayHistoryChargeRefund() {	
+		return mapper.selectPayChargeRefund();
+	}
+
+	// 페이 이용 내역 불러오기(사용/수익)
+	public List<Map<String, Object>> getPayHistorySpentRevenue() {
+		return mapper.selectPaySpentRevenue();
+	}
+
+	// 회원 계좌 내역 불러오기
+	public List<Map<String, Object>> getPayListAll() {
+		return mapper.selectPayListAll();
+	}
+
 
 }
