@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sosiminMain.css" />
 
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+
 </head>
 
 <body>

@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+.about-section {
+  padding: 25px;
+  text-align: center;
+  color: linear-gradient(to left, #39d274, #9effba, #e5ffd3);
+}
+
 a {
     color: inherit;
     text-decoration: none;

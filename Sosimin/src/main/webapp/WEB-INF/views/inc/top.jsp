@@ -113,6 +113,15 @@
 		
 			var searchKeywordUrl = "SearchProduct?keyword=" + encodeURIComponent(keyword);
 			window.location.href = searchKeywordUrl;
+		}else{
+			Swal.fire({
+				position: 'center',
+				icon: 'error',
+				title: '항목을 입력해주세요.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			})
 		}
 	}
 	
@@ -520,3 +529,26 @@
     </div>
 </div>
 <!-- End Header Bottom -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -4,26 +4,33 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html>
+<html class="no-js" lang="zxx">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="x-ua-compatible" content="ie=edge" />
-	<title>Sosimin</title>
-	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-	<meta name="description" content="" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
-	
-	<!-- ========================= CSS here ========================= -->
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Sosimin</title>
+    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
+    
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sosimham/sosimham.css" />
+    
+    <!--  icon  -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/sosimham/sosimham.css" />
+    
+<!--     <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css"> -->
+<!--     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+<!--     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet"> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	
 	
 	<script>
 	$(function(){
@@ -48,7 +55,7 @@
 		var dong = $(dong).text();
 		$('.btndong').text(dong);
 	}
-	</script>    
+	</script>
 </head>
 
 <body>
@@ -77,42 +84,57 @@
         </div>
     </div>
    	<!-- End Breadcrumbs -->
+	<div class="about-section">
+	  <h1>소심함이란?</h1>
+	  <p>소심한 시민들을 위한 중고거래 프로젝트</p>
+	  <p>제작기간 2024.01.15~ 02.14</p>
+	</div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 col-md-5 col-10">
+                <div class="breadcrumbs-content">
+                    <h2 class="page-title">왼쪽 정렬 말 찌끄리기</h2>
+                    <p>
+                    	Lourem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-10">
+					<h2> 오른쪽 말 찌끄리기</h2>
+                    <p>
+                    	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    </p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-4">
+					<h2> 사이즈 2 오른쪽 말 찌끄리기</h2>
+                    <p>
+                    	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    </p>
+            </div>
+        </div>
+    </div>
+   	<div class="menu" >
+		<div class="btn-group">
+		  <button type="button" class="btngu btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+		    구 선택
+		  </button>
+		  <ul class="dropdown-menu">
+		  	<c:forEach var="i" items="${resultMap}" >
+		    	<li><a class="dropdown-item itemGu ${i.key}" id="${i.key}" value="${i.key}" name="GuNames">${i.key}</a></li>
+		    </c:forEach>
+		  </ul>
+	<%-- 	  <input type="button" name="GuNames" class="${GuName}" id="${GuName}" value="${GuName}"> --%>
+		  <button type="button" class="btndong btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+		    동 선택
+		  </button>
+		  <ul class="dropdown-menu dongSelect">
+		  	<li><a class="dropdown-item itemDong" href="#">구를 먼저 선택해주세요.</a></li>
+		  </ul>
+		 </div>
+	 </div>
 	
-			<hr>
-<!-- 			<div class="menu" > -->
-<!-- 				<nav class="theater1"> -->
-<%-- 					<c:forEach var="GuName" items="${ListGu}" varStatus="status"> --%>
-<%-- 						<input type="button" name="GuNames" class="${GuName}" id="${GuName}" value="${GuName}"> --%>
-<%-- 					</c:forEach> --%>
-<!-- 				</nav> -->
-<!-- 			</div> -->
-			<div class="btn-group">
-				  <button type="button" class="btngu btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-				    구 선택
-				  </button>
-				  <ul class="dropdown-menu">
-				  	<c:forEach var="i" items="${resultMap}" >
-				    	<li><a class="dropdown-item itemGu" href="#">${i.key}</a></li>
-				    </c:forEach>
-				  </ul>
-				  <button type="button" class="btndong btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-				    동 선택
-				  </button>
-				  <ul class="dropdown-menu dongSelect">
-				  	<li><a class="dropdown-item itemDong" href="#">구를 먼저 선택해주세요.</a></li>
-				  </ul>
-			 </div>
-			<hr>
-			
-			
-<!-- 	    	<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group"> -->
-<%-- 				<c:forEach var="i" items="${resultMap}" varStatus="status" > --%>
-<%-- 					<input type="radio" class="btn-check" name="category" id="${i.key}" value="${i.key}" autocomplete="off" > --%>
-<%-- 					<label class="btn btn-outline-primary" for="${i.key}">${i.key}</label> --%>
-<%-- 				</c:forEach> --%>
-<!-- 			</div> -->
-		    
-			<div id="theater_top">
+	
+	<div id="theater_top">
 				<div id="theater_price">
 					<h3>[ 택배 보관함 위치 ]</h3>
 					<div id="img_div">
@@ -293,53 +315,10 @@
 							 });
 
 
-
-// 							 var buttons = document.querySelectorAll('input[type="button"]');
-// 							 buttons.forEach(function(button) {
-// 							   button.addEventListener('click', function(event) {
-// 							     // 선택된 버튼의 아이디 값을 가져와서 변수에 저장
-// 							     selectedId = event.target.id;
-// 							   });
-// 							 });
-
-// 							 document.querySelector('.on a').addEventListener('click', function(event) {
-// 							   event.preventDefault();
-// 							   var url = event.target.href;
-// 							   if (selectedId) {
-// 							     url += selectedId;
-// 							   }
-// 							   window.location.href = url;
-// 							 });
-							 
-// 							 document.querySelector('.last a').addEventListener('click', function(event) {
-// 							   event.preventDefault();
-// 							   var url = event.target.href;
-// 							   if (selectedId) {
-// 							     url += selectedId;
-// 							   }
-// 							   window.location.href = url;
-// 							 });
-
 							</script>
 						</div>
 					</div>
 				</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	<footer class="footer">
 		<jsp:include page="../inc/bottom.jsp"></jsp:include>

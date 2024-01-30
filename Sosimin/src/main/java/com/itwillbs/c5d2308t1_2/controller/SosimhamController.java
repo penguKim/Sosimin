@@ -54,7 +54,7 @@ public class SosimhamController {
 		System.out.println("resultMap test : " + resultMap);
 		model.addAttribute("resultMap",resultMap);
 		 
-		return "sosimham/sosimLocker2";
+		return "sosimham/sosimLocker";
 		
 	}
 	
