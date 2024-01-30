@@ -29,6 +29,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/admin/quill.bubble.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/admin/remixicon.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/admin/style2.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 
 <!-- Template Main CSS File -->
 <link href="${pageContext.request.contextPath}/resources/css/admin/style.css" rel="stylesheet">
@@ -59,11 +60,13 @@
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>계좌관리</h1>
+			<h1>${payList.member_id} 님의 페이 정보</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
-					<li class="breadcrumb-item active">계좌관리</li>
+					<li class="breadcrumb-item">페이관리</li>
+					<li class="breadcrumb-item">페이정보관리</li>
+					<li class="breadcrumb-item active">회원 페이 정보</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->
@@ -73,14 +76,75 @@
 				<div class="col-lg-12">
 					<div class="card">
 						<div class="card-body">
+							<table class="top_table">
+								<tr>
+									<th>페이 번호</th>
+									<td>${payList.pay_id}</td>
+									<th>회원아이디</th>
+									<td>${payList.member_id}</td>
+									<th>가입상태</td>
+									<td>
+										<c:choose>
+											<c:when test="${payList.pay_status eq '1'}">정상</c:when>
+											<c:when test="${payList.pay_status eq '2'}">취소</c:when>
+										</c:choose>
+									</td>
+									<td class="green">
+										<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${pay_list.pay_history_id}">
+											정보수정
+										</button>
+										<!-- Basic Modal -->
+										<div class="modal fade" id="modal-${pay_list.pay_history_id}" tabindex="-1">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title">소심페이 정보수정</h5><!-- 모달 제목 -->
+														<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+													</div>
+													<div class="modal-body">
+														<!-- 모달 내용이 들어가는 부분 -->
+														<table class="table modal_table">
+															<tr>
+																<th scope="row">소심페이잔액</th>
+																<td>
+																	<input type="text" placeholder="${payList.pay_balance}">
+																</td>
+															</tr>
+															<tr>
+																<th scope="row">소심페이상태</th>
+																<td>
+																	<select>
+																		<option <c:if test="${payList.pay_status eq '1'}">selected</c:if>>정상</option>
+																		<option <c:if test="${payList.pay_status eq '2'}">selected</c:if>>탈퇴</option>
+																	</select>
+																</td>
+															</tr>
+															<tr>
+																<th scope="row">소심페이비밀번호</th>
+																<td><input type="password" maxlength="6" placeholder="변경시에만 입력"></td>
+															</tr>
+														</table>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">뒤로가기</button>
+														<button type="button" class="btn btn-primary">변경하기</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- End Basic Modal-->
+									</td>
+								</tr>
+							</table>
+						
 							<!-- Table with stripped rows -->
 							<table class="table datatable">
 								<thead>
 									<tr>
-										<th>페이번호</th>
-										<th>회원아이디</th>
-										<th>은행명</th>
-										<th>계좌번호</th>
+										<th>페이내역번호</th>
+										<th>거래금액</th>
+										<th>거래유형</th>
+										<th>거래일</th>
 										<th>상세보기</th>
 									</tr>
 								</thead>
@@ -88,9 +152,23 @@
 									<c:forEach var="pay_list" items="${payHistoryList}">
 										<tr>
 											<td>${pay_list.pay_history_id}</td>
-											<td>${pay_list.pay_id}</td>
-											<td>${pay_list.pay_amount}</td>
-											<td>${pay_list.pay_history_type}</td>
+											<td>
+												<c:set var="payAmount" value="${pay_list.pay_amount}" />
+												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+											</td>
+											<td>
+												<c:choose>
+													<c:when test="${pay_list.pay_history_type eq '1'}">충전</c:when>
+													<c:when test="${pay_list.pay_history_type eq '2'}">환급</c:when>
+													<c:when test="${pay_list.pay_history_type eq '3'}">사용</c:when>
+													<c:when test="${pay_list.pay_history_type eq '4'}">수익</c:when>
+												</c:choose>
+											</td>
+											<td>
+												<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
+												<c:set var="date" value="${datetime[0]}" />
+												${date}
+											</td>
 											<td class="green">
 												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${pay_list.pay_history_id}">
 													상세보기
@@ -100,38 +178,49 @@
 													<div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header">
-																<h5 class="modal-title">충전/환급 상세보기</h5><!-- 모달 제목 -->
+																<h5 class="modal-title">페이사용내역 상세보기</h5><!-- 모달 제목 -->
 																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 															</div>
 															<div class="modal-body">
 																<!-- 모달 내용이 들어가는 부분 -->
-																<table border="1">
+																<table class="table modal_table">
 																	<tr>
-																		<th>거래내역번호</th>
+																		<th scope="row">페이내역번호</th>
 																		<td>${pay_list.pay_history_id}</td>
 																	</tr>
 																	<tr>
-																		<th>pay번호</th>
+																		<th scope="row">pay번호</th>
 																		<td>${pay_list.pay_id}</td>
 																	</tr>
 																	<tr>
-																		<th>회원아이디</th>
-																		<td></td>
+																		<th scope="row">회원아이디</th>
+																		<td>${payList.member_id}</td>
 																	</tr>
 																	<tr>
-																		<th>거래금액</th>
-																		<td>${pay_list.pay_amount}</td>
+																		<th scope="row">거래금액</th>
+																		<td>
+																			<c:set var="payAmount" value="${pay_list.pay_amount}" />
+																			<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+																		</td>
 																	</tr>
 																	<tr>
-																		<th>거래유형</th>
-																		<td>${pay_list.pay_history_type}</td>
+																		<th scope="row">거래유형</th>
+																		<td>
+																			<c:choose>
+																				<c:when test="${pay_list.pay_history_type eq '1'}">충전</c:when>
+																				<c:when test="${pay_list.pay_history_type eq '2'}">환급</c:when>
+																			</c:choose>
+																		</td>
 																	</tr>
 																	<tr>
-																		<th>pay잔액</th>
-																		<td>${pay_list.pay_history_balance}</td>
+																		<th scope="row">소심페이잔액</th>
+																		<td>
+																			<c:set var="payBalance" value="${pay_list.pay_history_balance}" />
+																			<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원
+																		</td>
 																	</tr>
 																	<tr>
-																		<th>거래일</th>
+																		<th scope="row">거래일</th>
 																		<td>
 																			<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
 																			<c:set var="date" value="${datetime[0]}" />

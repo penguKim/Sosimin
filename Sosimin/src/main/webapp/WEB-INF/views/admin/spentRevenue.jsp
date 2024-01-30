@@ -29,6 +29,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/admin/quill.bubble.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/admin/remixicon.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/admin/style2.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 
 <!-- Template Main CSS File -->
 <link href="${pageContext.request.contextPath}/resources/css/admin/style.css" rel="stylesheet">
@@ -80,8 +81,8 @@
 									<tr>
 										<th>페이내역번호</th>
 										<th>회원아이디</th>
-										<th>거래금액</th>
 										<th>거래유형</th>
+										<th>거래금액</th>
 										<th>거래일</th>
 										<th>상세보기</th>
 									</tr>
@@ -92,14 +93,14 @@
 											<td>${pay_list.pay_history_id}</td>
 											<td>${pay_list.member_id}</td>
 											<td>
-												<c:set var="payAmount" value="${pay_list.pay_amount}" />
-												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />
-											</td>
-											<td>
 												<c:choose>
 													<c:when test="${pay_list.pay_history_type eq '3'}">사용</c:when>
 													<c:when test="${pay_list.pay_history_type eq '4'}">수익</c:when>
 												</c:choose>
+											</td>
+											<td>
+												<c:set var="payAmount" value="${pay_list.pay_amount}" />
+												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
 											</td>
 											<td>
 												<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
@@ -120,28 +121,21 @@
 															</div>
 															<div class="modal-body">
 																<!-- 모달 내용이 들어가는 부분 -->
-																<table border="1">
+																<table class="table modal_table">
 																	<tr>
-																		<th>페이내역번호</th>
+																		<th scope="row">페이내역번호</th>
 																		<td>${pay_list.pay_history_id}</td>
 																	</tr>
 																	<tr>
-																		<th>pay번호</th>
+																		<th scope="row">pay번호</th>
 																		<td>${pay_list.pay_id}</td>
 																	</tr>
 																	<tr>
-																		<th>회원아이디</th>
+																		<th scope="row">회원아이디</th>
 																		<td>${pay_list.member_id}</td>
 																	</tr>
 																	<tr>
-																		<th>거래금액</th>
-																		<td>
-																			<c:set var="payAmount" value="${pay_list.pay_amount}" />
-																			<fmt:formatNumber value="${payAmount}" pattern="#,##0" />
-																		</td>
-																	</tr>
-																	<tr>
-																		<th>거래유형</th>
+																		<th scope="row">거래유형</th>
 																		<td>
 																			<c:choose>
 																				<c:when test="${pay_list.pay_history_type eq '3'}">사용</c:when>
@@ -150,20 +144,50 @@
 																		</td>
 																	</tr>
 																	<tr>
-																		<th>pay잔액</th>
+																		<th scope="row">거래번호</th>
+																		<td>${pay_list.order_id}</td>
+																	</tr>
+																	<tr>
+																		<th scope="row">거래금액</th>
 																		<td>
-																			<c:set var="payBalance" value="${pay_list.pay_history_balance}" />
-																			<fmt:formatNumber value="${payBalance}" pattern="#,##0" />
+																			<c:set var="payAmount" value="${pay_list.pay_amount}" />
+																			<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
 																		</td>
 																	</tr>
 																	<tr>
-																		<th>거래일</th>
+																		<th scope="row">소심페이잔액</th>
+																		<td>
+																			<c:set var="payBalance" value="${pay_list.pay_history_balance}" />
+																			<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원
+																		</td>
+																	</tr>
+																	<tr>
+																		<th scope="row">거래일</th>
 																		<td>
 																			<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
 																			<c:set var="date" value="${datetime[0]}" />
 																			${date}
 																		</td>
 																	</tr>
+																	<tr>
+																		<th scope="row">거래상태</th>
+																		<td>
+																			<c:choose>
+																				<c:when test="${pay_list.pay_history_status eq '1'}">정상</c:when>
+																				<c:when test="${pay_list.pay_history_status eq '2'}">취소</c:when>
+																			</c:choose>
+																		</td>
+																	</tr>
+																	<c:if test="${pay_list.pay_history_status eq '2'}">
+																		<tr>
+																			<th scope="row">거래취소일</th>
+																			<td>
+																				<c:set var="datetime" value="${fn:split(pay_list.pay_cancel_date, 'T')}" />
+																				<c:set var="date" value="${datetime[0]}" />
+																				${date}
+																			</td>
+																		</tr>
+																	</c:if>
 																</table>
 															</div>
 															<div class="modal-footer">

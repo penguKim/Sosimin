@@ -659,21 +659,32 @@ public class PaymentController {
 	
 // =============================== 관리자페이지 =======================================	
 	
-	// 계좌 관리 페이지로 이동
-	@GetMapping("MemberAccount")
+	// 페이정보관리 페이지로 이동
+	@GetMapping("MemberPay")
 	public String memberAccount(Model model) {
 		List<Map<String, Object>> payList = service.getPayListAll();
 		log.info(payList.toString());
 		
 		model.addAttribute("payList", payList);
 		
-		return "admin/memberAccount";
+		return "admin/memberPay";
 	}
 	
 	// 계좌 관리 상세 페이지로 이동
-	@GetMapping("MemberAccountDetail")
-	public String memberAccountDetail() {
-		return "admin/memberAccountDetail";
+	@GetMapping("MemberPayDetail")
+	public String memberAccountDetail(@RequestParam Map<String, Object> map, Model model) {
+		log.info("map은 " + map);
+		
+		Map<String, Object> payList = service.getPayList(map);
+		List<Map<String, Object>> payHistoryList = service.getPayHistory(map);
+		
+		log.info("payList" + payList);
+		log.info("payHistoryList" + payHistoryList);
+		
+		model.addAttribute("payList", payList);
+		model.addAttribute("payHistoryList", payHistoryList);
+		
+		return "admin/memberPayDetail";
 	}
 	
 	// 충전/환급 관리 페이지로 이동

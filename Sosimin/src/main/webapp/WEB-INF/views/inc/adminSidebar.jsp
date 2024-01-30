@@ -33,9 +33,9 @@
 	</li><!-- End Profile Page Nav -->
   
 	<li class="nav-item">
-		<a class="nav-link collapsed" href="MemberAccount">
+		<a class="nav-link collapsed" href="">
 		<i class="bi bi-credit-card-2-back"></i>
-		<span>계좌관리</span>
+		<span>소심함관리</span>
 		</a>
 	</li><!-- End Register Page Nav -->
 
@@ -44,6 +44,11 @@
 			<i class="bi bi-cash-coin"></i><span>페이관리</span><i class="bi bi-chevron-down ms-auto"></i>
 		</a>
 		<ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+			<li>
+				<a href="MemberPay">
+					<i class="bi bi-circle"></i><span>페이정보관리</span>
+				</a>
+			</li>
 			<li>
 				<a href="ChargeRefund">
 					<i class="bi bi-circle"></i><span>충전/환급관리</span>

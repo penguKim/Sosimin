@@ -29,6 +29,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/admin/quill.bubble.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/admin/remixicon.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/admin/style2.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 
 <!-- Template Main CSS File -->
 <link href="${pageContext.request.contextPath}/resources/css/admin/style.css" rel="stylesheet">
@@ -44,8 +45,8 @@
 * License: https://bootstrapmade.com/license/
 ======================================================== -->
 <script>
-function MemberAccountDetail() {
-	
+function MemberAccountDetail(pay_id) {
+	location.href = "MemberPayDetail?pay_id=" + pay_id;
 }
 </script>
 </head>
@@ -64,11 +65,12 @@ function MemberAccountDetail() {
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>계좌관리</h1>
+			<h1>페이정보관리</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
-					<li class="breadcrumb-item active">계좌관리</li>
+					<li class="breadcrumb-item">페이관리</li>
+					<li class="breadcrumb-item active">페이정보관리</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->
@@ -84,8 +86,10 @@ function MemberAccountDetail() {
 									<tr>
 										<th>페이번호</th>
 										<th>회원아이디</th>
-										<th>은행명</th>
-										<th>계좌번호</th>
+										<th>핀테크번호</th>
+										<th>소심페이잔액</th>
+										<th>가입일</th>
+										<th>가입상태</th>
 										<th>상세보기</th>
 									</tr>
 								</thead>
@@ -94,10 +98,24 @@ function MemberAccountDetail() {
 										<tr>
 											<td>${pay_list.pay_id}</td>
 											<td>${pay_list.member_id}</td>
-											<td>${pay_list.bank_name}</td>
-											<td>${pay_list.account_num_masked}</td>
+											<td>${pay_list.fintech_use_num}</td>
+											<td>
+												<c:set var="payAmount" value="${pay_list.pay_balance}" />
+												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+											</td>
+											<td>
+												<c:set var="datetime" value="${fn:split(pay_list.pay_date, 'T')}" />
+												<c:set var="date" value="${datetime[0]}" />
+												${date}
+											</td>
+											<td>
+												<c:choose>
+													<c:when test="${pay_list.pay_status eq '1'}">정상</c:when>
+													<c:when test="${pay_list.pay_status eq '2'}">취소</c:when>
+												</c:choose>
+											</td>
 											<td class="green">
-												<button type="button" class="btn btn-primary" onclick="MemberAccountDetail()">
+												<button type="button" class="btn btn-primary" onclick="MemberAccountDetail('${pay_list.pay_id}')">
 													상세보기
 												</button>
 											</td>

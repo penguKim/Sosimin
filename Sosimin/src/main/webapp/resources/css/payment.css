@@ -229,3 +229,39 @@
 	text-align: center;
 	font-size: 17px;
 }
+
+
+/* 관리자페이지 */
+.modal_table {
+	table-layout: auto; 
+	width: 100%; 
+	table-layout: fixed;
+}	
+	
+.modal_table th {
+	text-align: center;
+	width: 200px;
+}
+
+.datatable th button {
+	text-align: center;
+}
+
+.datatable {
+	text-align: center;
+}
+
+.top_table {
+	text-align: center;
+	width: 80%;
+	margin: 0 auto;
+	margin-top: 20px;
+	border: 1px solid #dee2e6;
+	line-height: 40px;
+	table-layout: auto;
+	table-layout: fixed;
+}
+
+.top_table th {
+	background-color: #dee2e6;
+}

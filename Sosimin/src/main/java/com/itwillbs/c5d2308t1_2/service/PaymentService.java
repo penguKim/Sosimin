@@ -132,6 +132,16 @@ public class PaymentService {
 	
 	// ============= 관리자 페이지 ======================
 	
+	// 페이 가입 내역 불러오기
+	public List<Map<String, Object>> getPayListAll() {
+		return mapper.selectPayListAll();
+	}
+	
+	// 회원의 페이 정보 불러오기
+	public Map<String, Object> getPayList(Map<String, Object> map) {
+		return mapper.selectPayList(map);
+	}
+	
 	// 페이 이용 내역 불러오기(충전/환급)
 	public List<Map<String, Object>> getPayHistoryChargeRefund() {	
 		return mapper.selectPayChargeRefund();
@@ -140,11 +150,6 @@ public class PaymentService {
 	// 페이 이용 내역 불러오기(사용/수익)
 	public List<Map<String, Object>> getPayHistorySpentRevenue() {
 		return mapper.selectPaySpentRevenue();
-	}
-
-	// 회원 계좌 내역 불러오기
-	public List<Map<String, Object>> getPayListAll() {
-		return mapper.selectPayListAll();
 	}
 
 

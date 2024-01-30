@@ -48,14 +48,17 @@ public interface PaymentMapper {
 
 	// ====================== 관리자페이지 ==================
 	
+	// 페이 가입 내역 불러오기
+	List<Map<String, Object>> selectPayListAll();
+	
+	// 회원의 페이 정보 불러오기
+	Map<String, Object> selectPayList(Map<String, Object> map);
+	
 	// 페이 사용 내역 불러오기(충전/환급)
 	List<Map<String, Object>> selectPayChargeRefund();
 
 	// 페이 사용 내역 불러오기(사용/수익)
 	List<Map<String, Object>> selectPaySpentRevenue();
-
-	// 회원 계좌 내역 불러오기
-	List<Map<String, Object>> selectPayListAll();
 
 
 

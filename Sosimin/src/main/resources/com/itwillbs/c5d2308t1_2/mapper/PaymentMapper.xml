@@ -91,7 +91,9 @@
 			AND DATE(pay_history_date) BETWEEN #{start_date} AND #{end_date}
 		</if>
 		ORDER BY pay_history_date DESC
-		LIMIT #{startRow}, #{listLimit}
+		<if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')">
+			LIMIT #{startRow}, #{listLimit}
+		</if>
 	</select>
 	
 	<!-- 페이 내역 개수 세기(페이징) -->
@@ -166,7 +168,21 @@
 	
 	
 	
-	<!-- ================ 관리자페이지 ====================== -->
+	<!-- ================ 관리자페이지 ====================== -->	
+	
+	<!-- 페이 관리 페이지 -->
+	<select id="selectPayListAll" resultType="map">
+		SELECT *
+		FROM Pay
+	</select>
+	
+	<!-- 페이 관리 상세 페이지 -->
+	<select id="selectPayList" resultType="map">
+		SELECT *
+		FROM Pay
+		WHERE pay_id = #{pay_id}
+	</select>
+	
 	<!-- 충전/환급 페이지 -->
 	<select id="selectPayChargeRefund" resultType="map">
 		SELECT *
@@ -184,12 +200,5 @@
 		WHERE pay_history_type = 3
 			OR pay_history_type = 4
 	</select>
-	
-	<!-- 회원 계좌 페이지 -->
-	<select id="selectPayListAll" resultType="map">
-		SELECT *
-		FROM Pay
-	</select>
-	
 	
 </mapper>
