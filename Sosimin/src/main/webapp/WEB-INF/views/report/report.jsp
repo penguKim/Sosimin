@@ -16,6 +16,8 @@ $(function() {
 			icon:'info',                         // Alert 타입
 		});
 		
+		location.href="Test";
+		
 	});
 });
 </script>

@@ -14,8 +14,12 @@ public interface ProductMapper {
 	
 	
 	// 미로그인 상품 목록 조회
-	List<Map<String, Object>> selectProductList(Map<String, String> map);
+	List<Map<String, Object>> selectProductList(Map<String, Object> map);
 	
+	// 상품 목록 카운트
+	int productListCount(Map<String, Object> map);
+	
+	// =============================================================================
 	// 상품 등록 
 	int productInsert(Map<String, String> map);
 
@@ -32,6 +36,7 @@ public interface ProductMapper {
 	int productBoardInsert();
 
 	int productBoardInsert(Map<String, String> map);
+
 
 	
 	

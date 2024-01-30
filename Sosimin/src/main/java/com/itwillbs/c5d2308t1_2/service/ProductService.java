@@ -17,10 +17,16 @@ public class ProductService {
 	ProductMapper mapper;
 	
 	// 미로그인 시 날짜 최신순으로 상목 목록 조회
-	public List<Map<String, Object>> selectProductList(Map<String, String> map) {
+	public List<Map<String, Object>> selectProductList(Map<String, Object> map) {
 		
 		return mapper.selectProductList(map);
 	}
+	
+	// 페이지 카운트 조회
+	public int getProductListCount(Map<String, Object> map) {
+		return mapper.productListCount(map);
+	}
+
 	// ========================================================================================
 	
 	
@@ -48,6 +54,8 @@ public class ProductService {
 		return mapper.productBoardInsert();
 	}
 
+
+	
 
 	
 }

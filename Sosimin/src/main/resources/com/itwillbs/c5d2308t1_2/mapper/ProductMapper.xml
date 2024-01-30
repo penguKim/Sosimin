@@ -5,6 +5,8 @@
 
 <mapper namespace="com.itwillbs.c5d2308t1_2.mapper.ProductMapper">
 	
+	
+	
 	<!-- 상품 목록 조회 -->
 	<select id="selectProductList" resultType="map"> 
 		SELECT p.product_id, p.member_id, product_board_id, product_name, product_price, gu, p.dong 
@@ -20,9 +22,13 @@
 <!-- 			</when> -->
 		
 <!-- 		</choose> -->
-			
-		
-		ORDER BY product_datetime DESC;
+		ORDER BY product_datetime DESC
+		LIMIT #{page.startRow}, #{page.listLimit}
+	</select>
+	
+	<select id="productListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM Product
 	</select>
 	
 	

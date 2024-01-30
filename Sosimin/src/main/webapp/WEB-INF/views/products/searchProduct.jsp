@@ -40,15 +40,15 @@ $(function() {
 								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + result[i].product_image1 + '" alt="#">'
 							+ ' </a>'
 							+ ' <div class="product-info">'
-								+ '<h6>' + result[i].product_name + '</h6>'
+								+ '<h6>' + result[i].productList.product_name + '</h6>'
 							+ ' <div class="heart position-absolute bottom-0 start-0"></div>'
 									+ ' <ul class="review">'
-										+ ' <li><span>' +  result[i].dong + '</span></li>'
+										+ ' <li><span>' +  result[i].productList.dong + '</span></li>'
 										+ ' <li><span>|</span></li>'
-										+ ' <li><span>' + result[i].product_datetime + '</span></li>'
+										+ ' <li><span>' + result[i].productList.product_datetime + '</span></li>'
 									+ ' </ul>'
 								+ ' <div class="price">'
-									+ ' <span>' + result[i].product_price + '원</span>'
+									+ ' <span>' + result[i].productList.product_price + '원</span>'
 								+ ' </div>'
 								+ ' <div>'
 									+ '	<span>Pay</span>' 
@@ -268,6 +268,8 @@ function filtering() {
                         		data-bs-target="#memberModal">
 								회원 신고하기
 						</button>
+						<input type="file" value="이미지 등록" multiple="multiple">
+						
                         </div>
                    </div>
                </div>

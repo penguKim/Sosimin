@@ -30,8 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.itwillbs.c5d2308t1_2.service.ProductService;
-import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
+import com.itwillbs.c5d2308t1_2.vo.PageDTO;
+import com.itwillbs.c5d2308t1_2.vo.PageInfo;
 import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 
 @Controller
@@ -39,8 +40,6 @@ public class ProductController {
 	
 	@Autowired
 	ProductService service;
-	
-	
 	
 	// 메인 상품 목록 페이지 이동
 	@GetMapping("SearchProduct")
@@ -51,7 +50,8 @@ public class ProductController {
 	// 상품 목록 출력 ajax
 	@ResponseBody
 	@GetMapping("StoreProductList")
-	public String productList(@RequestParam(defaultValue = "") Map<String, String> map, HttpSession session,  Model model ) {
+	public String productList(@RequestParam(defaultValue = "") Map<String, Object> map, HttpSession session,  Model model
+			, @RequestParam(defaultValue = "1") int pageNum) {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 전" + map);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
 		String id = (String)session.getAttribute("sId");
@@ -60,9 +60,16 @@ public class ProductController {
 		// 미로그인 시 상품 목록 날짜 최신순으로 나열
 		map.put("sId", id);
 		
-		productList = service.selectProductList(map);
+		// ====================페이징 처리 ===============================================================
+		PageDTO page = new PageDTO(pageNum, 20);
+		map.put("pageNum", pageNum);
+		int listCount = service.getProductListCount(map);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>" + listCount);
+		PageInfo pageInfo = new PageInfo(page, listCount, 3);
+		map.put("page", page);
+		// ===============================================================================================
 		
-		
+		productList = service.selectProductList(map); 
 		
 		// 상품 등록 시간 계산 처리 
 		// ===============================================================================================
@@ -98,7 +105,9 @@ public class ProductController {
 		}
 		
 		// ===============================================================================================
-		JSONArray jsonArray = new JSONArray(productList);
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.put(productList);
+		jsonArray.put(pageInfo);
 		
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> : " + jsonArray);
 		
@@ -141,13 +150,10 @@ public class ProductController {
 //		   return "ProductDetail";
 //	}
 
-	
+	  
 	
 	@PostMapping("ProductRegistSuccess")
 	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, ProductVO product, HttpServletRequest request, @RequestParam("product_image") MultipartFile[] files, MultipartHttpServletRequest request2) {
-		
-		
-		
 		
 	    String uploadDir = "/resources/upload";
 	    String saveDir = session.getServletContext().getRealPath(uploadDir);
