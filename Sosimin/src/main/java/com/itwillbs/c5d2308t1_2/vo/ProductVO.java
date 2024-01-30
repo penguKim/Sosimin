@@ -59,10 +59,10 @@ public class ProductVO {
 	private String product_category;
 	private String tag_name;
 	private String product_image1;
-	private MultipartFile product_image2;
-	private MultipartFile product_image3;
-	private MultipartFile product_image4;
-	private MultipartFile product_image5;
+	private String product_image2;
+	private String product_image3;
+	private String product_image4;
+	private String product_image5;
 	private int product_datetime;
 	private int trade_method;
 	private String gu;

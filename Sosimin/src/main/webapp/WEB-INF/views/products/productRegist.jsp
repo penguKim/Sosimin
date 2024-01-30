@@ -768,10 +768,7 @@ var imageCounter = 1;
 
 function setThumbnail(event) {
   var newFiles = event.target.files;
-	
-  
-  files = [];
-  
+
   for (var i = 0; i < newFiles.length; i++) {
     var file = newFiles[i];
     var ext = file.name.split('.').pop().toLowerCase();
@@ -784,8 +781,7 @@ function setThumbnail(event) {
     }
 
     // 파일을 files 배열에 추가
-    files.push({name: "product_image" + (files.length + 1), file: file});
-
+    files.push(file);
 
     var imageLength = parseInt(document.getElementById("imageLength").textContent);
     imageLength++;
@@ -834,7 +830,19 @@ document.getElementById("submit").addEventListener("click", function() {
   
   var data = new FormData();
   for (var i = 0; i < files.length; i++) {
-    data.append(files[i].name, files[i].file);
+    data.append("product_image" + (i + 1), files[i]);
+  }
+  xhr.send(data);
+});
+
+// 제출 버튼 클릭 시 서버로 FormData 전송
+document.getElementById("submit").addEventListener("click", function() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/upload", true);
+  
+  var data = new FormData();
+  for (var i = 0; i < files.length; i++) {
+    data.append("product_image" + (i + 1), files[i]);
   }
   xhr.send(data);
 });
@@ -843,6 +851,7 @@ function addFileInput() {
 document.getElementById("product_image").click();
 }
 
+// 이미지 삭제
 
 // 이미지 삭제
 function removeImage(button) {
