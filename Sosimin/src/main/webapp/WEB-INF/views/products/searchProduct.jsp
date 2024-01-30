@@ -37,7 +37,7 @@ $(function() {
 					'<div class="col-lg-4-1 col-md-6 col-12" >'
 						+ ' <div class="single-product" >'
 							+ ' <a href="ProductDetail" class="product-image">'
-								+ ' <img src="' + result[i].product_image1 + '" alt="#">'
+								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + result[i].product_image1 + '" alt="#">'
 							+ ' </a>'
 							+ ' <div class="product-info">'
 								+ '<h6>' + result[i].product_name + '</h6>'

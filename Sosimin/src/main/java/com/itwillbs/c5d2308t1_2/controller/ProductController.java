@@ -27,8 +27,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.itwillbs.c5d2308t1_2.service.ProductService;
+import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
 import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 
@@ -142,13 +144,20 @@ public class ProductController {
 	
 	
 	@PostMapping("ProductRegistSuccess")
-	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, ProductVO product, HttpServletRequest request, @RequestParam("product_image") MultipartFile[] files) {
+	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, ProductVO product, HttpServletRequest request, @RequestParam("product_image") MultipartFile[] files, MultipartHttpServletRequest request2) {
+		
+		
+		
+		
 	    String uploadDir = "/resources/upload";
 	    String saveDir = session.getServletContext().getRealPath(uploadDir);
 
+	 // 서브 디렉토리
+ 		String subDir = "";
+	    
 	    LocalDate now = LocalDate.now();
 	    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-	    String subDir = now.format(dtf);
+	   subDir = now.format(dtf);
 
 	    saveDir += File.separator + subDir;
 
@@ -158,7 +167,9 @@ public class ProductController {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
-
+	    
+	    
+	    
 	    for (int i = 0; i < files.length; i++) {
 	        MultipartFile file = files[i];
 	        String originalName = file.getOriginalFilename(); // 원래 파일명
@@ -166,13 +177,19 @@ public class ProductController {
 	        String filePath = saveDir + File.separator + fileName;
 	        try {
 	            file.transferTo(new File(filePath)); // 파일 저장
-	            map.put("product_image" + (i + 1), filePath); // 파일 경로를 map에 추가
+	            
+	            // 파일 경로에서 'upload' 이후의 부분만 추출
+	            int uploadIndex = filePath.indexOf("upload");
+	            if (uploadIndex != -1) {
+	                String relativePath = filePath.substring(uploadIndex + "upload".length() + 1);
+	                map.put("product_image" + (i + 1), relativePath); // 파일 경로를 map에 추가
+	            }
 	        } catch (IllegalStateException | IOException e) {
 	            e.printStackTrace();
 	        }
 	        System.out.println("여기 뭐가 들었음? : " + fileName);
 	    }
-
+	    
 	    product.setWriter_ip(request.getRemoteAddr());
 
 	    String product_price =  map.get("product_price").replace(",", ""); // 받아온 money값 ,때기
@@ -197,11 +214,13 @@ public class ProductController {
 	    map.put("product_price" , product_price);
 	    map.put("gu", gu);
 	    map.put("dong", dong);
-
+	    
+	    
 	    int successInsert = service.productRegist(map);
-	    if(successInsert > 0 ) {
+
+	    if (successInsert > 0) {
 	        System.out.println("성공");
-	    } 
+	    }
 
 	    return "products/productDetail";
 	}
@@ -215,9 +234,48 @@ public class ProductController {
 		
 		
 		Map<String, String> Product = service.selectProduct(member);
+		List<Map<String,Object>> Product2 = service.selectProduct2(member);
+		
+
+
+        
+		LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+		
+		for(Map<String, Object> datetime : Product2) {
+			LocalDateTime comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter);
+        	
+            long minutes = Duration.between(comDateTime, now).toMinutes();
+            long hours = minutes / 60;
+            long days = hours / 24;
+            hours %= 24;
+            minutes %= 60;
+            String timeAgo = "";
+            if (days > 0) { // 하루이상 차이날 때
+                if (comDateTime.getYear() == now.getYear()) {
+                    timeAgo = comDateTime.format(formatterMonthDay);
+                } else {
+                    timeAgo = comDateTime.format(formatterDate);
+                }
+            } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+                timeAgo = hours + "시간 전";
+            } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+                timeAgo = minutes + "분 전";
+            } else {
+                timeAgo = "방금 전";
+            }
+            // 계산한 시간 목록
+            datetime.put("product_datetime", timeAgo);
+		}
+		
+		
 		
 		System.out.println(">>>>>>>>>>>>> 잘넘어왔는가 : " + Product);
+		System.out.println(">>>>>>>>>>>>> 이건 잘잘넘어왔는가 : " + Product2);
 		model.addAttribute("Product", Product);
+		model.addAttribute("Product2", Product2);
 	
 		return "products/productDetail";
 	}

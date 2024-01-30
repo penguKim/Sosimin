@@ -30,6 +30,11 @@ public class ProductService {
 		return mapper.selectProduct(member);
 	}
 
+	// 상품 조회를 List 형식으로 뿌린방법
+	public List<Map<String, Object>> selectProduct2(MemberVO member) {
+	
+		return mapper.selectProduct2(member);
+	}
 
 	// 상품 등록
 	@Transactional
@@ -43,9 +48,6 @@ public class ProductService {
 		return mapper.productBoardInsert();
 	}
 
-	public Map<String, String> selectProduct() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 }

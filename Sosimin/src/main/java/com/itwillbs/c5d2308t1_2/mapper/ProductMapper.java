@@ -23,12 +23,16 @@ public interface ProductMapper {
 
 	int insertProduct(ProductVO product);
 	
-	
+	// 상품 조회<Map>
 	Map<String, String> selectProduct(MemberVO member);
 
+	// 상품 조회<List>
+	List<Map<String, Object>> selectProduct2(MemberVO member);
+	
 	int productBoardInsert();
 
 	int productBoardInsert(Map<String, String> map);
+
 	
 	
 

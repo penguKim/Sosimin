@@ -67,7 +67,13 @@
 	<select id="selectProduct" resultType="hashMap">
 		SELECT *
 		FROM Product
-		WHERE product_id = 30;
+		WHERE product_id = 44;
+	</select>
+	
+	<select id="selectProduct2" resultType="map">
+		SELECT *
+		FROM Product
+		WHERE product_id = 44;
 	</select>
 
 </mapper>

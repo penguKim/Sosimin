@@ -726,52 +726,55 @@ function handleKeyPress(e) {
 
 var tagCounter = 1; // 태그의 순차적인 카운터 변수
 
-// function handleTagRegistration() {
-//   var tagName = document.getElementById("tagName").value;
+function handleTagRegistration() {
+  var tagName = document.getElementById("tagName").value;
 
-//   if (tagName !== "") {
-//     var tagElement = document.createElement("span");
-//     tagElement.innerText = "#" + tagName;
-//     tagElement.classList.add("tag");
-//     var tagNameInput = document.createElement("input");
-//     tagNameInput.type = "hidden";
-//     tagNameInput.name = "tag_name" + tagCounter; // 컨트롤러로 전달할 name 속성 (순차적으로 증가)
-//     tagNameInput.value = tagName; // 컨트롤러로 전달할 값 설정
-//     tagElement.appendChild(tagNameInput);
+  if (tagName !== "") {
+    var tagElement = document.createElement("span");
+    tagElement.innerText = "#" + tagName;
+    tagElement.classList.add("tag");
+    var tagNameInput = document.createElement("input");
+    tagNameInput.type = "hidden";
+    tagNameInput.name = "tag_name" + tagCounter; // 컨트롤러로 전달할 name 속성 (순차적으로 증가)
+    tagNameInput.value = tagName; // 컨트롤러로 전달할 값 설정
+    tagElement.appendChild(tagNameInput);
 
-//     var closeButton = document.createElement("button");
-//     closeButton.innerText = "";
-//     closeButton.classList.add("close-button");
-//     tagElement.appendChild(closeButton);
+    var closeButton = document.createElement("button");
+    closeButton.innerText = "";
+    closeButton.classList.add("close-button");
+    tagElement.appendChild(closeButton);
 
-//     var tagContainer = document.getElementById("tagContainer");
-//     tagContainer.appendChild(tagElement);
+    var tagContainer = document.getElementById("tagContainer");
+    tagContainer.appendChild(tagElement);
 
-//     if (tagContainer.querySelectorAll(".tag").length >= 4) {
-//       document.getElementById("tagName").disabled = true;
-//     }
+    if (tagContainer.querySelectorAll(".tag").length >= 4) {
+      document.getElementById("tagName").disabled = true;
+    }
 
-//     tagCounter++; // 카운터 변수 증가
-//     document.getElementById("tagName").value = "";
-//   }
-// }
+    tagCounter++; // 카운터 변수 증가
+    document.getElementById("tagName").value = "";
+  }
+}
 
-// $(document).on("click", ".close-button", function() {
-//   $(this).closest(".tag").remove();
-//   $("#tagName").prop("disabled", false);
-// });
+$(document).on("click", ".close-button", function() {
+  $(this).closest(".tag").remove();
+  $("#tagName").prop("disabled", false);
+});
 
-var imageCounter = 1;
 // 썸네일 작업
 var formData = new FormData(); // 전역 변수로 FormData 객체 생성
+var files = []; // 사용자가 선택한 모든 파일을 저장할 배열
+var imageCounter = 1;
 
 function setThumbnail(event) {
-  var files = event.target.files;
-
-  for (var i = 0; i < files.length; i++) {
-    var file = files[i];
+  var newFiles = event.target.files;
+	
+  
+  files = [];
+  
+  for (var i = 0; i < newFiles.length; i++) {
+    var file = newFiles[i];
     var ext = file.name.split('.').pop().toLowerCase();
-
     var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
 
     if (!allowedExtensions.includes(ext)) {
@@ -779,6 +782,10 @@ function setThumbnail(event) {
       event.target.value = "";
       return false;
     }
+
+    // 파일을 files 배열에 추가
+    files.push({name: "product_image" + (files.length + 1), file: file});
+
 
     var imageLength = parseInt(document.getElementById("imageLength").textContent);
     imageLength++;
@@ -809,11 +816,8 @@ function setThumbnail(event) {
             mainImageText.style.display = "inline";
           }
           imageCounter++;
-
-          formData.append("product_image" + imageCounter, file); // FormData 객체에 파일 추가
         };
       })(file);
-
       reader.readAsDataURL(file);
     } else if (imageLength > 5) {
       alert("사진 첨부는 최대 5장까지 가능합니다.");
@@ -823,18 +827,22 @@ function setThumbnail(event) {
   }
 }
 
-// 제출 버튼 클릭 시 서버로 FormData 전송
+// 제출 버튼 클릭 시 서버로 모든 파일 전송
 document.getElementById("submit").addEventListener("click", function() {
   var xhr = new XMLHttpRequest();
   xhr.open("POST", "/upload", true);
-  xhr.send(formData);
+  
+  var data = new FormData();
+  for (var i = 0; i < files.length; i++) {
+    data.append(files[i].name, files[i].file);
+  }
+  xhr.send(data);
 });
 //파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
 function addFileInput() {
 document.getElementById("product_image").click();
 }
 
-// 이미지 삭제
 
 // 이미지 삭제
 function removeImage(button) {

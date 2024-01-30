@@ -283,7 +283,6 @@
 
 #tradeAddressName{
 	position: relative;
-	left:53px;
 	top:10px;
 }
 #addressDetailA{
@@ -307,6 +306,7 @@
 	position: relative;
 	width: 193px;
 	bottom: 27px;
+	text-align: center;
 }
 #tradeMethodDiv{
 	display:inline-block;
@@ -354,38 +354,37 @@ function Proposal() {
 }
 	
 
-function getTimeAgo(productTime) {
-	  var pastTime = new Date(productTime);
-	  var currentTime = new Date();
-	  var duration = currentTime - pastTime;
+window.onload = function() {
+	  function getTimeAgo(productTime) {
+	    var pastTime = new Date(productTime);
+	    var currentTime = new Date();
+	    var duration = currentTime - pastTime;
 
-	  var minutes = Math.floor(duration / (1000 * 60));
-	  if (minutes < 60) {
-	    return minutes + "분 전";
+	    var minutes = Math.floor(duration / (1000 * 60));
+	    if (minutes < 60) {
+	      return minutes + "분 전";
+	    }
+
+	    var hours = Math.floor(duration / (1000 * 60 * 60));
+	    if (hours < 24) {
+	      return hours + "시간 전";
+	    }
+
+	    var days = Math.floor(duration / (1000 * 60 * 60 * 24));
+	    if (days < 7) {
+	      return days + "일 전";
+	    }
+
+	    var weeks = Math.floor(days / 7);
+	    return weeks + "주 전";
 	  }
 
-	  var hours = Math.floor(duration / (1000 * 60 * 60));
-	  if (hours < 24) {
-	    return hours + "시간 전";
-	  }
+	  var productTime = "${Product.product_datetime}";
+	  var timeAgo = getTimeAgo(productTime);
 
-	  var days = Math.floor(duration / (1000 * 60 * 60 * 24));
-	  if (days < 7) {
-	    return days + "일 전";
-	  }
-
-	  var weeks = Math.floor(days / 7);
-	  return weeks + "주 전";
-	  
-	  
+	  var whatTimeSpan = document.getElementById("whatTime");
+	  whatTimeSpan.innerText = timeAgo;
 	}
-	
-var productTime = "${Product.product_datetime}";
-var timeAgo = getTimeAgo(productTime);
-alert(timeAgo);
-
-var whatTimeSpan = document.getElementById("whatTime");
-whatTimeSpan.innerText = timeAgo;
 </script>
 <body>
 
@@ -482,7 +481,9 @@ whatTimeSpan.innerText = timeAgo;
                        			</div>
 	                        	<div id="time">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/시간.png" width="25" height="25">
-	                        		<span id="whatTime"></span>
+	                        		<c:forEach var="Product" items="${Product2}">
+	                        			${Product.product_datetime }
+	                        		</c:forEach>
 	                        	</div>
 	                        	<%-- 신고하기 --%>
 	                        	<button class="police" id="reviewCheckForm" type="button" class="btn btn-primary" 
@@ -499,7 +500,17 @@ whatTimeSpan.innerText = timeAgo;
                         			<div id="productStatus">상품상태</div>
                         	 </div>
                         	 <div id="productStatusData">
-                        	 	찢어지기직전
+                        	 	<c:choose>
+                        	 		<c:when test="${Product.product_status eq 1}">
+                        	 			보통
+                        	 		</c:when>
+                        	 		<c:when test="${Product.product_status eq 2}">
+                        	 			좋은상품
+                        	 		</c:when>
+                        	 		<c:otherwise>
+                        	 			새상품
+                        	 		</c:otherwise>
+                        	 	</c:choose>
                         	 </div>
                         	 <div>
 	                        	 <div id="productStatusDiv">
@@ -507,7 +518,7 @@ whatTimeSpan.innerText = timeAgo;
                         				<div id="productStatus">거래지역</div>
 	                        	 </div>
 	                        	 <div id="productStatusData">
-	                        	 	너네집과 우리집중간 어디쯤..
+									${Product.gu }  ${Product.dong }	                        	 
 	                        	 </div>
                         	 </div>
                         	 <div>
@@ -516,7 +527,10 @@ whatTimeSpan.innerText = timeAgo;
 	                        			<div id="productStatus">거래방법</div>
 	                        	 </div>
 	                        	 <div id="productStatusData">
-	                        	 	대면거래
+	                        	 	<c:if test="${Product.trade_method eq 0 } ">
+	                        	 		대면거래
+	                        	 	</c:if>
+	                        	 		비대면거래
 	                        	 </div>
                         	 </div>
                         </div>
@@ -545,38 +559,35 @@ whatTimeSpan.innerText = timeAgo;
                          </div>
                          <hr>
                          <div id="tradeAddressTag">
-                         	<div id="tradeAddress">
+                         	<div id="tradeAddress" style="text-align: center">
                          		<div id="tradeAddressName">
 	                         		<span id="tradeAddressSpan">거래지역</span>
 	                         		<img src="${pageContext.request.contextPath}/resources/images/product-details/거래지역.png" width="25" height="25" id="tradeImage">
                          		</div>
-                         		<div id="addressDetail">부산광역시 부산진구 부전동</div>
+                         		<div id="addressDetail">${Product.gu }  ${Product.dong }</div>
                          	</div>
-                         	<div id="tradeAddress">
+                         	<div id="tradeAddress" style="text-align: center">
                          		<div id="tradeAddressName">
 	                         		<span id="tradeAddressSpan">카테고리</span>
 	                         		<img src="${pageContext.request.contextPath}/resources/images/product-details/카테고리이미지.png" width="25" height="25" id="tradeImage">
                          		</div>
                          		<div id="categoryDiv">
                          			<a href="" id="addressDetailA" style="text-align: center;">
-	                         			<div id="categoryDetail">아이유</div>
+	                         			<span id="categoryDetail">${Product.product_category }</span>
 	                         		</a>
                          		</div>
                          	</div>
-                         	<div id="productTag">
+                         	
+                         	<div id="productTag" style="text-align: center">
                          		<div id="tradeAddressName">
-	                         		<span id="tradeAddressSpan">상품태그</span>
+	                         		<span id="tradeAddressSpan" >상품태그</span>
 	                         		<img src="${pageContext.request.contextPath}/resources/images/product-details/상품태그이미지.png" width="25" height="25" id="tradeImage">
                          		</div>
                          		<div id="tagDiv">
-                         			<a href="" id="addressDetailA" style="text-align: center;">
-	                         			<div id="tagDetail">#아이유dddd</div></a>
-                         			<a href="" id="addressDetailA" style="text-align: center;">
-	                         			<div id="tagDetail">#아이유</div></a>
-                         			<a href="" id="addressDetailA" style="text-align: center;">
-	                         			<div id="tagDetail">#아이유</div></a>
-                         			<a href="" id="addressDetailA" style="text-align: center;">
-	                         			<div id="tagDetail">#아이유</div></a>
+                         			<c:forEach var="Product2" items="${Product2 }">
+	                         			<a href="" id="addressDetailA">
+	                         				<span id="tagDetail">${Product2.tag_name}</span></a>
+                         			</c:forEach>
                          		</div>
                          	</div>
                          </div>
