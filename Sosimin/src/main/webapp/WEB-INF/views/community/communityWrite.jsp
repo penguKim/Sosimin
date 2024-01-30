@@ -20,26 +20,39 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
+<style type="text/css">
+#fileArea {
+    width: 100px;
+    height: 100px;
+/*     border: 1px solid #000; */
+}
+
+</style>
 <script type="text/javascript">
 	$(function() {
 		let width = $(window).width();
 		console.log(width);
+		
+		// 10초마다 게시글 임시저장
+		let tempSave = setInterval(tempToast, 10000);
 		
 		// 임시저장한 게시글 불러오기
 		$.ajax({
 			type: "POST",
 			url: "TempCheck",
 			dataType: "json",
-			success: function(result) {
-				console.log(result);
-				
-				if(result.length != 0) {
+			success: function(temp) {
+				if(temp.length != 0) {
+					
+					clearInterval(tempSave);
+					
 					Swal.fire({
 				        title: '임시 저장한 게시글이 있습니다.',
-				        text: "게시글을 사용하시겠습니까?",
-				        icon: 'question',
+				        text: "취소할 경우 임시저장 데이터는 사라집니다.",
+				        icon: 'info',
 				        showCancelButton: true,
 				        confirmButtonColor: '#39d274',
 				        cancelButtonColor: '#d33',
@@ -49,9 +62,32 @@
 				        allowOutsideClick: false
 				    }).then((result) => {
 				        if (result.isConfirmed) {
+				        	$(".formCategory option:selected").prop("selected", false);
+				        	$(".formCategory option[value='" + temp.temp_category + "']").prop("selected", true);
+				        	$("#title").val(temp.temp_subject);
+				        	$('#titleLenth').text('제목 (' + temp.temp_subject.length + '/40)');
+				        	$("#content").val(temp.temp_content);
+				        	$('#contentLength').text('내용 (' + temp.temp_content.length + '/1000)');
 				        	
+				        	tempSave = setInterval(tempToast, 10000);
 				        } else {
-				        	
+				        	$.ajax({
+				        		type: "POST",
+				        		url: "TempDelete",
+				        		success: function(data) {
+				        			if(data == 'true') {
+				        				Swal.fire({
+				        					position: 'center',
+				        					icon: 'success',
+				        					title: '임시 저장글이 삭제되었습니다.',
+				        					showConfirmButton: false,
+				        					timer: 2000,
+				        					toast: true
+				        				});
+				        			}
+				        			tempSave = setInterval(tempToast, 10000);
+								}
+				        	});
 				        }
 				    });
 					
@@ -59,9 +95,59 @@
 			}
 		});
 		
+	    $('#title').on('keyup', function() {
+	        var text = $(this).val();
+	        
+	        // 텍스트 제한
+	        if(text.length == 0 || text == "") {
+		        $('#titleLenth').text('제목 (0/40)');
+	        } else {
+		        $('#titleLenth').text('제목 (' + text.length + '/40)');
+	        }
+	        
+	        // 글자수 제한
+	        if (text.length > 40) {
+	        	// 제한수 넘으면 자르기
+	            $(this).val($(this).val().substring(0, 40));
+	            
+				Swal.fire({
+					position: 'center',
+					icon: 'warning',
+					title: '글자수는 40자까지 입력 가능합니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+	        };
+	    });
+	    
+	    $('#content').on('keyup', function() {
+	        var text = $(this).val();
+	        
+	        // 텍스트 변경
+	        if(text.length == 0 || text == "") {
+		        $('#contentLength').text('내용 (0/1000)');
+	        } else {
+		        $('#contentLength').text('내용 (' + text.length + '/1000)');
+	        }
+	        
+	        // 글자수 제한
+	        if (text.length > 1000) {
+	        	// 제한수 넘으면 자르기
+	            $(this).val($(this).val().substring(0, 1000));
+	            
+				Swal.fire({
+					position: 'center',
+					icon: 'warning',
+					title: '글자수는 1000자까지 입력 가능합니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+	        };
+	    });
+	        
 		
-		// 10초마다 게시글 임시저장
-		let tempSave = setInterval(tempToast, 10000);
 		
 		// 게시글 등록하기
 		$('#writeBtn').on('click', function(event) {
@@ -97,15 +183,8 @@
 				        return false;
 				    }
 					
-// 		            if ($(this).val() == '') {
-// 		                $(this).focus();
-// 		                $('#writeBtn').blur();
-// 		                tempSave = setInterval(tempToast, 10000);
-// 		                return false;
-// 		            }
 		        });
 			} else {
-// 				event.preventDefault();
 				Swal.fire({
 			        title: '게시글을 등록하시겠습니까?',
 			        text: "등록 후 커뮤니티 게시판으로 이동합니다.",
@@ -160,25 +239,108 @@
 				}
 				
 			});
-			
-			
-			
-
 		});
 		
 	});
 	
+	// 게시글 임시저장 토스트
 	function tempToast() {
-		Swal.fire({
-			position: 'bottom',
-			icon: 'success',
-			title: '작성글이 임시저장되었습니다.',
-			showConfirmButton: false,
-			timer: 2000,
-			toast: true
-		})
+		var form = $('#writeForm')[0];
+		var data = new FormData(form);
+		
+		$.ajax({
+			type: "POST",
+			url: "TempRegist",
+			enctype: 'multipart/form-data',
+			data: data,
+			<%-- multipart/form-data로 전송 --%>
+			contentType: false, 
+			<%-- formData가 String이 되지않음 --%>
+			processData: false, 
+			success: function(result) {
+				console.log(result);
+				
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: '작성글이 임시저장되었습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				})
+				$(this).blur();
+			}
+		});
 	}
 	
+	$(document).ready(function() {
+		$('#asd').on('click', function(e) {
+		    e.preventDefault(); // form의 기본 submit 이벤트를 막습니다.
+
+		    $.ajax({
+		        url: 'ImageTest',
+		        type: 'POST',
+		        data: formData,
+		        processData: false, // 필수
+		        contentType: false, // 필수
+		        success: function(response) {
+		            console.log('File uploaded successfully');
+		        },
+		        error: function(err) {
+		            console.log('Error in file upload', err);
+		        }
+		    });
+		});
+	});
+
+	
+	// ---- 이미지 파일 처리
+	var formData = new FormData();
+	
+	function clickFile() {
+	    for (var i = 1; i <= 5; i++) {
+	        if (!formData.get('file' + i)) {
+	            $('#file' + i).click();
+	            break;
+	        }
+	    }
+	}
+	
+	function showThumbnail(input) {
+		
+	    if (input.files && input.files[0]) {
+	        var reader = new FileReader();
+	        var fileId = input.id;
+	
+	        reader.onload = function (e) {
+	            var thumbnail = $('<div class="col-auto rounded-3 overflow-hidden mx-2 p-0 position-releative">').html('<img src="' + e.target.result + '" style=\"width: 80px; height: 80px;\"><i class="material-icons position-absolute translate-middle">cancel</i>');
+	            thumbnail.find('i').click(function() {
+	                removeThumbnail(this, fileId);
+	            });
+	            $('#thumbnailArea > div').append(thumbnail);
+	            formData.append(fileId, input.files[0]); // 파일을 formData에 추가합니다.
+	        }
+	
+	        reader.readAsDataURL(input.files[0]);
+	    }
+	}
+	
+	function removeThumbnail(del, fileId) {
+	    var thumbnail = $(del).parent();
+	
+	    formData.delete(fileId); // 파일을 formData에서 제거합니다.
+	
+	    // 파일 입력 필드의 값을 조정합니다.
+	    var nextFileId = Number(fileId.replace('file', '')) + 1;
+	    while (formData.get('file' + nextFileId)) {
+	        formData.set('file' + (nextFileId - 1), formData.get('file' + nextFileId));
+	        nextFileId++;
+	    }
+	    formData.delete('file' + (nextFileId - 1));
+	
+	    thumbnail.remove();
+	}
+	// ---- 이미지 파일 처리 ----
 </script>
 </head>
 <body>
@@ -229,13 +391,19 @@
    	<section class="communityArea section">
 		<div class="container">
 			<h1>게시글 작성</h1>
+<!-- <form action="ImageTest" method="post" enctype="multipart/form-data" > -->
+<!-- 	<input type="file" name="image" id="fileUpload" multiple hidden /> -->
+<!-- 	<div id="uploadArea"></div> -->
+<!-- 	<div id="previewArea"></div> -->
+<!-- 	<input type="submit" value="파일"> -->
+<!-- </form> -->
 			<form action="CommunityWritePro" name="writeForm" class="needs-validation" id="writeForm" method="post" enctype="multipart/form-data" novalidate>
-				<div class="communityForm post p-4 w-50 mx-auto">
+				<div class="communityForm post p-4 mx-auto" style="width: 65%;">
 				    <div class="post-header border-bottom">
 				    	<div class="row">
 					    	<div class="col-xl-4 col-md-6 col-sm-6 col-6">
 								<select class="formCategory form-select mb-3 formFocus" name="community_category" required>
-										<option selected disabled value="">카테고리</option>
+										<option selected disabled value="0">카테고리</option>
 										<option value="1">동네소식</option>
 										<option value="2">동네질문</option>
 										<option value="3">일상</option>
@@ -246,32 +414,48 @@
 							<div class="col-12">
 								<div class="form-floating mb-1">
 									<input type="text" class="form-control form-control-lg formFocus" id="title" name="community_subject" required>
-									<label for="title">제목</label>
+									<label id="titleLenth" for="title">제목 (0/40)</label>
 								</div>
 <!-- 								<div class="input-group"> -->
 <!-- 									<input type="text" name="name" class="form-control form-control-lg" placeholder="제목을 입력하세요"> -->
 <!-- 								</div> -->
-								<div class="form-text" id="basic-addon4">
-									무언가를 표시할때 사용할거야
-								</div>
+<!-- 								<div class="form-text" id="tBottom"> -->
+<!-- 									(0/40) -->
+<!-- 								</div> -->
 							</div>
 						</div>
 				   	</div>
 				    <div class="post-content mt-3">
 						<div class="form-floating">
-							<textarea class="form-control communityFormSubject formFocus" name="community_content" id="floatingTextarea" style="height: 500px;" required></textarea>
-							<label for="floatingTextarea">내용</label>
+							<textarea class="form-control communityFormSubject formFocus" name="community_content" id="content" style="height: 500px;" required></textarea>
+							<label id="contentLength" for="content">내용 (0/1000)</label>
 						</div>
 				    </div>
-				    <div class="post-file mt-3">
-				    	<input type="file" name="file1">
-				    	<input type="file" name="file2">
-				    	<input type="file" name="file3">
-				    	<input type="file" name="file4">
-				    	<input type="file" name="file5">
+<!-- 				    <div class="post-file mt-3"> -->
+<!-- 				    	<input type="file" name="file1"> -->
+<!-- 				    	<input type="file" name="file2"> -->
+<!-- 				    	<input type="file" name="file3"> -->
+<!-- 				    	<input type="file" name="file4"> -->
+<!-- 				    	<input type="file" name="file5"> -->
+<!-- 				    </div> -->
+				    <div class="post-file mt-3" id="uploadArea">
+				    	<div class="row mx-auto" style="height:110px;">
+							<div class="col-2 border rounded-3 h-100 me-2" id="fileArea" onclick="clickFile()">
+							<i class="material-icons d-flex justify-content-center" style="font-size:110px;">image</i>
+							</div>
+							<div class="col border rounded-3 d-flex align-items-center" id="thumbnailArea">
+								<div class="scrolling-wrapper row flex-nowrap mx-auto">
+								</div>
+							</div>
+							<input type="file" id="file1" name="file1" style="display:none" onchange="showThumbnail(this)">
+							<input type="file" id="file2" name="file2" style="display:none" onchange="showThumbnail(this)">
+							<input type="file" id="file3" name="file3" style="display:none" onchange="showThumbnail(this)">
+							<input type="file" id="file4" name="file4" style="display:none" onchange="showThumbnail(this)">
+							<input type="file" id="file5" name="file5" style="display:none" onchange="showThumbnail(this)">
+						</div>
 				    </div>
 				</div>
-				<div class="mx-auto w-50 mt-2 row d-flex justify-content-between" id="commandCell">
+				<div class="mx-auto mt-2 row d-flex justify-content-between" id="commandCell" style="width: 65%;">
 					<input type="button" class="btn btn-secondary col-xl-2 col-md-3 col-12 me-2" value="돌아가기" onclick="history.back()">
 <!-- 					<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 me-auto" id="tempBtn" value="임시저장" formaction="tempWritePro"> -->
 					<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 me-auto" id="tempBtn" value="임시저장">
@@ -280,21 +464,6 @@
 					<input type="submit" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" id="writeBtn" value="등록하기">
 				</div>
 		    </form>
-<!-- 					<tr> -->
-<!-- 						<td><label for="file1">파일첨부</label></td> -->
-<!-- 						<td> -->
-<%-- 							파일 첨부 형식은 input 태그 type="file" 속성 활용 --%>
-<%-- 							한번에 하나의 파일 선택 --%>
-<!-- 							<input type="file" name="file1"> -->
-<!-- 							<input type="file" name="file2"> -->
-<!-- 							<input type="file" name="file3"> -->
-<!-- 	<!-- 						<br>--------------<br> -->
-<%-- 							한번에 복수개의 파일 선택 시 multiple 속성 추가 --%>
-<!-- 	<!-- 						<input type="file" name="file" multiple> -->
-<!-- 						</td> -->
-<!-- 					</tr> -->
-<!-- 				</table> -->
-
 		</div>
 	</section>
 	<footer class="footer">

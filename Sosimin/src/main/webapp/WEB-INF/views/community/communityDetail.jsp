@@ -26,7 +26,7 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
 <script type="text/javascript">
 	$(function() {
-		
+		console.log("세션에 저장된 아이디 ; " + '${sessionScope.sId}');
 		// 찜정보 가져오기
 		$.ajax({
 			type: "POST",
@@ -100,12 +100,9 @@
     			}
     		});
         });
-//         $(".heart").on("click", function () {
-//             $(this).toggleClass("is-active");
-//         });
-        
+		
 		// 신고 버튼 클릭 이벤트
-        $("#reportBtn").on("click", function() {
+        $(".reportBtn").on("click", function() {
 			if(confirm("신고하시겠습니까?")) {
 				alert("신고했습니다.");
 			}
@@ -117,13 +114,43 @@
 			if($(this).hasClass("replyHide")) {
 				$("#replyArea").hide();
 				$("#replyBtn").text("댓글 보이기");
-// 				$("#replyArea").slideUp();
 			} else {
 				$("#replyArea").show();
 				$("#replyBtn").text("댓글 숨기기");
-// 				$("#replyArea").slideDown();
 			}
 		});
+        
+	    $('#reReplyTextarea').on('keyup', function() {
+	    	console.log(asd);
+	        var text = $(this).val();
+	        
+	        // 텍스트 제한
+	        if(text.length == 0 || text == "") {
+		        $('#reReLenth').text('(0/40)자');
+	        } else {
+		        $('#reReLenth').text('(' + text.length + '/40)자까지 입력');
+	        }
+// 	        if(text.length == 0 || text == "") {
+// 		        $('#reReLenth').text('(0/40)자까지 입력이 가능합니다.');
+// 	        } else {
+// 		        $('#reReLenth').text('(' + text.length + '/40)자까지 입력이 가능합니다.');
+// 	        }
+	        
+	        // 글자수 제한
+	        if (text.length > 40) {
+	        	// 제한수 넘으면 자르기
+	            $(this).val($(this).val().substring(0, 40));
+	            
+				Swal.fire({
+					position: 'center',
+					icon: 'warning',
+					title: '글자수는 40자까지 입력 가능합니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+	        };
+	    });
         
         // 게시글 수정
         $("#modifyBtn").on("click", function() {
@@ -267,6 +294,7 @@
 				+ '<textarea class="form-control" id="reReplyTextarea" name="reply_content" required></textarea>'
 				+ '<input type="submit" class="btn btn-primary" value="댓글쓰기" id="reReplySubmit" onclick="reReplyWrite()">'
 				+ '</form>'
+				+ '<label id="reReLenth" for="reReplyTextarea" style="color: #888;">(0/40)자까지 입력이 가능합니다.</label>'
 				+ '</div>'
 				+ '</div>'
 		);
@@ -359,7 +387,7 @@
 	<!-- 게시판 상세내용 보기 -->
 	<section class="communityArea section">
 		<div class="container">
-			<div class="communityDetail post p-4 w-50 mx-auto rounded-3 p-4">
+			<div class="communityDetail post p-4 mx-auto rounded-3 p-4"  style="width: 65%;">
 			    <div class="post-header border-bottom">
 			    	<div class="row">
 			    		<p>
@@ -415,12 +443,12 @@
 						</div>
 <!-- 						  <button class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn" type="button" data-bs-toggle="collapse" data-bs-target="#replyArea" aria-expanded="false" aria-controls="collapseExample">댓글 숨기기</button> -->
 						<c:if test="${com.community_writer ne sessionScope.sId}">
-							<div class="col-1 align-self-end" style="width: 80px;"><i class="fa fa-warning d-flex justify-content-end" id="reportBtn" style="font-size:24px"></i></div>
+							<div class="col-1 align-self-end" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i></div>
 						</c:if>
 					</div>
 			    </div>
 			</div>
-			<section id="replyArea" class="reply rounded-3 p-4 w-50 mx-auto">
+			<section id="replyArea" class="reply rounded-3 p-4 mx-auto"  style="width: 65%;">
 <!-- 			<section id="replyArea" class="reply collapse rounded-3 p-4 w-50 mx-auto"> -->
 				<form action="CommunityReplyWrite" method="post" class="needs-validation replyForm d-flex justify-content-center">
 					<input type="hidden" name="community_id" value="${com.community_id }">
@@ -429,14 +457,15 @@
 					<c:choose>
 						<c:when test="${empty sessionScope.sId }">
 							<textarea class="form-control" id="replyTextarea" name="reply_content" placeholder="로그인 한 사용자만 작성 가능합니다" disabled></textarea>
-							<input type="submit" class="btn btn-primary disabled" value="댓글쓰기" id="replySubmit" disabled>
+							<input type="submit" class="btn btn-primary" value="댓글쓰기" id="replySubmit" disabled>
 						</c:when>
 						<c:otherwise>
 							<textarea class="form-control" id="replyTextarea" name="reply_content" required></textarea>
-							<input type="submit" class="btn btn-primary" value="댓글쓰기" id="replySubmit" onclick="ReplyWrite()">
+							<input type="submit" class="btn btn-primary col-2" value="댓글쓰기" id="replySubmit" onclick="ReplyWrite()">
 						</c:otherwise>
 					</c:choose>
 				</form>
+				<label class="titleLenth" for="replyTextarea">(0/40)자까지 입력이 가능합니다.</label>
 				<div id="replyListArea">
 					<table class="table">
 					<c:forEach var="reply" items="${replyList }">
@@ -453,32 +482,45 @@
 												<c:if test="${reply.reply_writer eq sessionScope.sId }"> <%-- 댓글 작성자 표시 --%>
 													<span class="writerInfo border rounded-3 me-3 align-middle">작성자</span>
 												</c:if>
-												<span class="float-end">${reply.reply_datetime }</span>
+<%-- 												<span class="float-end">${reply.reply_datetime }</span> --%>
 											</div>
 										</div>
 										<div class="row">
 											<div class="col">
 												<span class="align-middle">${reply.reply_content }</span>
 											</div>
-											<div class="col-1"> <%-- 삭제 버튼 --%>
-											<c:if test="${sessionScope.sId eq reply.reply_writer or sessionScope.sId eq 'admin' }">
-												<span class="reDelBtn ms-3 align-middle float-end">
-													<a href="javascript:confirmReplyDelete(${reply.reply_id })">
-														<i class="fa fa-times-circle align-middle" style="font-size:18px"></i>
-													</a>
-												</span>
-											</c:if>
-											</div>
+
 										</div>
 										<c:if test="${not empty sessionScope.sId }">
 										<div class="row" id="reReplyBtn"> <%-- 대댓글 버튼 --%>
 											<div class="col">
-												<a href="javascript:reReplyWriteForm(${reply.reply_id }, ${reply.reply_re_ref }, ${reply.reply_re_lev }, ${reply.reply_re_seq })">
-													<i class="fa fa-comment-o"></i>
+												<a class="replyBtn" href="javascript:reReplyWriteForm(${reply.reply_id }, ${reply.reply_re_ref }, ${reply.reply_re_lev }, ${reply.reply_re_seq })">
+													<i class="fa fa-comment-o" style="font-size:18px;"></i>
 												</a>
 											</div>
 										</div>
 										</c:if>
+									</div>
+									<div class="col-3"> <%-- 삭제/신고 버튼 --%>
+										<div class="row mb-3">
+											<span class="text-end">${reply.reply_datetime }</span>
+										</div>							
+										<div class="row">
+											<c:choose>
+												<c:when test="${sessionScope.sId eq '' }">
+													<span class="text-end">
+														<i class="reportBtn fa fa-warning" style="font-size:18px"></i>
+													</span>
+												</c:when>
+												<c:when test="${sessionScope.sId eq reply.reply_writer or sessionScope.sId eq 'admin' }">
+													<span class="reDelBtn text-end">
+														<a href="javascript:confirmReplyDelete(${reply.reply_id })">
+															<i class="fa fa-times-circle align-middle" style="font-size:22px"></i>
+														</a>
+													</span>
+												</c:when>
+											</c:choose>
+										</div>
 									</div>
 								</div>
 							</td>
@@ -487,12 +529,13 @@
 					</table>
 				</div>
 			</section>
-			<div class="mx-auto w-50 mt-1 mb-3 row d-flex justify-content-between" id="commandCell">
+			<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="commandCell"  style="width: 65%;">
 				<c:if test="${not empty sessionScope.sId and (sessionScope.sId eq com.community_writer or sessionScope.sId eq 'admin') }">
 					<input type="button" class="btn btn-secondary col-xl-2 col-md-3 col-12 me-2" id="modifyBtn" value="수정">
 					<input type="button" class="btn btn-danger col-xl-2 col-md-3 col-12 me-auto" value="삭제" onclick="confirmDelete()">
 				</c:if>
-				<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="목록" onclick="location.href='Community?category=${param.category }&pageNum=${param.pageNum}'">
+				<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="목록" 
+						onclick="location.href='Community?category=${param.category }&searchType=${param.searchType }&searchKeyword=${param.searchKeyword }&pageNum=${param.pageNum }'">
 			</div>
 		</div>
 	</section>

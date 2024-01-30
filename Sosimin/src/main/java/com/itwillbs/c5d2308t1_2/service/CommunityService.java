@@ -140,5 +140,10 @@ public class CommunityService {
 		return mapper.selectTempCommunity(com);
 	}
 
+	// 임시저장 게시글 삭제
+	public int removeTempCommunity(CommunityVO com) {
+		return mapper.deleteTempCommunity(com);
+	}
+
 
 }

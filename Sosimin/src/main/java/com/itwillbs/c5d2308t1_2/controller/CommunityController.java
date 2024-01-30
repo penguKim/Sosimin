@@ -111,6 +111,7 @@ public class CommunityController {
 		if(sId == null) {
 			model.addAttribute("msg", "로그인이 필요합니다!");
 			model.addAttribute("msg2", "로그인 후 글쓰기 페이지로 이동합니다");
+			model.addAttribute("msg3", "warning");
 			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
 			model.addAttribute("targetURL", "MemberLogin");
 			return "forward";
@@ -126,6 +127,8 @@ public class CommunityController {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			model.addAttribute("msg", "로그인이 필요합니다!");
+			model.addAttribute("msg2", "로그인 후 글쓰기 페이지로 이동합니다");
+			model.addAttribute("msg3", "warning");
 			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
 			model.addAttribute("targetURL", "MemberLogin");
 			return "forward";
@@ -198,6 +201,9 @@ public class CommunityController {
 		// 게시물 등록 작업 요철 결과 판별
 		if(insertCount > 0) {
 			try {
+				// 임시저장된 게시글 삭제
+				communityService.removeTempCommunity(com);
+				
 				// 파일명이 존재하는 파일만 이동 처리 작업 수행
 				for(int i = 0; i < 5; i++) {
 					MultipartFile mFile = mFiles.get(i);
@@ -765,12 +771,17 @@ public class CommunityController {
 	@ResponseBody
 	@PostMapping("TempRegist")
 	public String tempRegist(CommunityVO com, HttpSession session) {
+		System.out.println("ajax로 넘어온 데이터 제발넘어와 : " + com);
+		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			return "false";
 		}
 		
 		com.setCommunity_writer(sId);
+		if(com.getCommunity_category() == null) {
+			com.setCommunity_category("0");
+		}
 		
 		int insertCount = communityService.registTempCommunity(com);
 		
@@ -802,6 +813,32 @@ public class CommunityController {
 		return jo.toString();
 	}
 	
+	// 임시저장 등록 취소 시 삭제 AJAX
+	@ResponseBody
+	@PostMapping("TempDelete")
+	public String tempDelete(CommunityVO com, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "false";
+		}
+		com.setCommunity_writer(sId);
+		
+		int deleteCount = communityService.removeTempCommunity(com);
+		
+		if(deleteCount > 0) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
+	
+	@ResponseBody
+	@PostMapping("ImageTest")
+	public String ImageTest(CommunityVO com) {
+		System.out.println("내가 받은 파일은 : " + com);
+		
+		return "true";
+	}
 	
 	
 	

@@ -17,13 +17,13 @@
 	color: #000;
 }
 
-.form-group .btn, #reviewBtn{
+.form-group .btn, .btn-primary, #reviewBtn{
     color: #fff;
     background-color: #39d274;
     border-color: #39d274;
 }
 
-.btn-group .btn-outline-primary:hover, .form-group .btn:hover, .modal .btn:hover:not(#reviewClose), .btn-primary:hover {
+.btn-group .btn-outline-primary:hover, .form-group .btn:hover, .modal .btn:hover:not(#reviewClose), .btn-primary:hover, .page-item.active .page-link {
     color: #fff;
     background-color: #43c073 !important;
     border-color: #43c073 !important;
@@ -60,14 +60,20 @@
 	max-width: 450px;
 }
 
+/* 제목 행 검은색 */
+.contentList a {
+	color: #000;
+}
+
+#subject:hover a, .mobileArea:hover .title {
+	color: #39d274;
+}
+
 /* 제목 td 클릭 시 상세페이지 이동 */
 #subject {
 	cursor: pointer;
 }
 
-#subject:hover a {
-	color: #39d274;
-}
 
 /* ============== 페이징 ============== */
 .pagination {
@@ -192,12 +198,12 @@
 }
 
 /* 신고 버튼 */
-#reportBtn {
+.reportBtn {
 	cursor: pointer;
 	transition: 0.5s;
 }
 
-#reportBtn:hover {
+.reportBtn:hover {
 	color: #f00;
 	transform: scale(1.2);
 	transition: 0.5s;
@@ -223,26 +229,76 @@ textarea.form-control {
     overflow-wrap: break-word; /* 단어 단위로 줄바꿈 */
 }
 
+/* 대댓글 버튼 */
+.replyBtn {
+	cursor: pointer;
+	transition: 0.5s;
+}
+
+.replyBtn:hover {
+	color: #39d274;
+	transform: scale(1.2);
+	transition: 0.5s;
+}
+
 /* 삭제 버튼 */
+.reDelBtn {
+	cursor: pointer;
+	transition: 0.5s;
+}
+
+.reDelBtn a {
+	color: #000;
+}
+
 .reDelBtn a:hover {
 	color: #f00;
+	transform: scale(1.2);
+	transition: 0.5s;
 }
+
+
+
 /* ========= 등록 페이지 ============ */
 
+#fileArea {
+	cursor: pointer;
+	transition: 0.5s;
+}
+#fileArea:hover {
+	color: #39d274;
+	transition: 0.5s;
+}
 
+
+    .scrolling-wrapper{
+        overflow-x: auto;
+    }
+    
+    
+    .scrolling-wrapper::-webkit-scrollbar {
+/*       width: 1px; */
+      height: 5px;
+    }
+   .scrolling-wrapper::-webkit-scrollbar-track {
+      background: #f1f1f1; 
+    }
+    .scrolling-wrapper::-webkit-scrollbar-thumb {
+      background: #888; 
+    }
+    .scrolling-wrapper::-webkit-scrollbar-thumb:hover {
+      background: #555; 
+    }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
 	.communityForm, .communityDetail, .post, .reply, #commandCell {
-		width: 70% !important; 
+		width: 100% !important; 
 	} 
 	
 	.formCategory {
 		width: 200px !important; 
 	}
 	
-	
-	
-		
 }
 
 @media only screen and (max-width: 767px) {

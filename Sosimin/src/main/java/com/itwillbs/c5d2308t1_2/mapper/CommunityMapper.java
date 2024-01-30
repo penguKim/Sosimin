@@ -78,5 +78,8 @@ public interface CommunityMapper {
 
 	// 임시저장한 게시글 업데이트
 	int updateTempCommunity(CommunityVO com);
+
+	// 임시저장 게시글 삭제
+	int deleteTempCommunity(CommunityVO com);
 	
 }

@@ -392,6 +392,12 @@
 			, temp_datetime = now()
 		WHERE temp_writer = #{community_writer}
 	</update>
+	
+	<!-- 임시저장 게시글 삭제 -->
+	<delete id="deleteTempCommunity">
+		DELETE FROM TempCommunity
+		WHERE temp_writer = #{community_writer}
+	</delete>
 </mapper>
 
 

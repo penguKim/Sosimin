@@ -364,7 +364,7 @@
 											</span>
 <!-- 											</div> -->
 <!-- 											<div class="col text-start"> -->
-												<span class="col text-start px-0 ellipsis">${com.community_subject }</span>
+												<span class="title col text-start px-0 ellipsis">${com.community_subject }</span>
 <!-- 											</div> -->
 										</div>
 										<div class="row">
@@ -391,15 +391,11 @@
 							<td id="subject" class="text-start d-none d-md-table-cell" onclick="location.href='CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}'">
 								<a href="CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}">
 									<div class="row">
-<!-- 										<div class="col-10"> -->
-											<span class="col ellipsis pe-0">${com.community_subject }
-											</span>
-<!-- 										</div> -->
-<!-- 										<div class="col-1"> -->
-											<c:if test="${com.community_image1 ne ''}">
-												<i class="fa fa-image col-1"></i>
-											</c:if>
-<!-- 										</div> -->
+										<span class="col ellipsis pe-1">${com.community_subject }
+										</span>
+										<c:if test="${com.community_image1 ne ''}">
+											<i class="fa fa-image col-1 px-0 py-1"></i>
+										</c:if>
 									</div>
 								</a>
 							</td>
