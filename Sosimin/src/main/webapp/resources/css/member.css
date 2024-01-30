@@ -353,17 +353,17 @@
 	margin-bottom: 14.5% !important;
 }
 
-#modyfyMyInfo img {
+#modifyMyInfo img {
 	width: 100px;
 	height: 100px;
 }
 
-#modyfyMyInfo .form-control {
+#modifyMyInfo .form-control {
 	font-size: 0.7rem;
 	
 }
 
-#modyfyMyInfo .form-group {
+#modifyMyInfo .form-group {
 	width: 900px !important;
 }
 
@@ -855,3 +855,87 @@
 
 /* ========================================================================================== */
 /* ============================ 관리자페이지 회원관리 CSS =================================== */
+#adminMemberTableArea {
+	width: auto !important;
+}
+
+#adminMemberTdArea {
+	vertical-align: middle !important;
+}
+
+#adminMemberTdArea button {
+	width: auto !important;
+}
+
+/* =================== */
+/* 회원 정보 수정 모달 */
+#memberModifyInfoModal .modal-content {
+	width: 180%;
+}
+
+#formGroupForMemberProfilePic {
+	margin-bottom: 14.5% !important;
+}
+
+#modifyMemberInfo img {
+	width: 100px;
+	height: 100px;
+}
+
+#modifyMemberInfo .form-control {
+	font-size: 1rem;
+    margin-right: 2%;
+}
+
+#modifyMemberInfo .form-group {
+	width: 900px !important;
+	vertical-align: middle !important;
+}
+
+#modifyMemberInfo .btn {
+	width: auto !important;
+	margin-top: -3px;
+}
+
+#memberProfilePicModifyButtonArea {
+	padding: 5px 10px;
+    margin-top: -1px !important;
+    margin-right: 0.75%;
+}
+
+#memberProfilePicFile {
+	display: none !important;
+}
+
+#memberProfilePicResetButtonArea {
+	margin-top: -3px;
+	
+}
+
+#mgForTwoMemberMod {
+	margin-right: 99px;
+}
+
+#mgForThreeMemberMod {
+	margin-right: 82px;
+}
+
+#mgForFourMemberMod {
+	margin-right: 66px;
+}
+
+#mgForFiveMemberMod {
+	margin-right: 49px;
+}
+
+#mgForFiveOneMemberMod {
+	margin-right: 48px;
+}
+
+#mgForSevenTwoMemberMod {
+	margin-right: 12px;
+}
+
+#modifyMemberInfo select {
+    padding: 3px 9px;
+}

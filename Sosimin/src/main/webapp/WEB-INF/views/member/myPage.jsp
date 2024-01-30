@@ -562,7 +562,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div id="modyfyMyInfo" class="mx-auto my-5 w-75">
+					<div id="modifyMyInfo" class="mx-auto my-5 w-75">
 						<form action="" class="row" method="post">
 							<div class="form-group" id="formGroupForProfilePic">
 								<label for="reg-fn" id="mgForFiveMod">프로필사진</label>
