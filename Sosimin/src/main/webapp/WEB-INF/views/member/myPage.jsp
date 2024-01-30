@@ -23,28 +23,106 @@
 <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
+
+	// 받은 후기 버튼 클릭 시 모달 띄우는 함수 정의
 	function openReceivedReviewModal() {
 		$("#staticBackdropLabel").text("받은 후기");
 		$(".modal-body input[type='radio']").attr("disabled", false);
-		$(".modal-body input[type='radio']").eq(0).prop("selected", true);
+		$(".modal-body input[type='radio']").eq(0).prop("checked", true); // 기본옵션 별로에요 선택
 		
 		$("#reviewCheck").empty();
 		$("#reviewCheck").html(
-				'<ul class="list-group list-group-flush">'
-					+'<li class="list-group-item">후기입니다1.</li>'
-					+'<li class="list-group-item">후기입니다1.</li>'
-					+'<li class="list-group-item">후기입니다1.</li>'
-					+'<li class="list-group-item">후기입니다1.</li>'
-				+'</ul>'
+			// 별로에요 옵션 표시(디폴트)
+			'<ul class="list-group">'
+				+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+					+ '약속 장소에 나타나지 않아요'
+				+ '</li>'
+				+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+					+ '상품 상태가 설명과 달라요'
+				+ '</li>'
+				+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+					+ '시간 약속을 안 지켜요'
+				+ '</li>'
+				+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+					+ '응답이 없어요'
+				+ '</li>'
+			+ '</ul>'
 		);
+		
+		// 별로에요 버튼 클릭 이벤트
+		$("#option1").on("click", function() {
+			$("#reviewCheck").empty();
+			$("#reviewCheck").html(
+					'<ul class="list-group">'
+					+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+						+ '약속 장소에 나타나지 않아요'
+					+ '</li>'
+					+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+						+ '상품 상태가 설명과 달라요'
+					+ '</li>'
+					+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+						+ '시간 약속을 안 지켜요'
+					+ '</li>'
+					+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+						+ '응답이 없어요'
+					+ '</li>'
+				+ '</ul>'
+			);
+		});
+
+		// 최고에요 버튼 클릭 이벤트
+		$("#option2").on("click", function() {
+			$("#reviewCheck").empty();
+			$("#reviewCheck").html(
+				'<ul class="list-group">'
+					+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+						+ '제가 있는곳까지 와서 거래했어요'
+					+ '</li>'
+					+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+						+ '친절하고 매너가 좋아요'
+					+ '</li>'
+					+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+						+ '시간 약속을 잘 지켜요'
+					+ '</li>'
+					+ '<li class="list-group-item">'
+					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+					+ '<h6>' + 'n개' + '</h6>'
+						+ '응답이 빨라요'
+					+ '</li>'
+				+ '</ul>'
+			);
+			
+		});
+		
 		$(".modal-footer").html(
-				'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
-				+ '<button type="button" class="btn btn-primary" id="reviewBtn" onclick="reviewDelete()">'
-				+'후기 삭제</button>'	
+			'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
 		);
 	}
 	
 	$(function(){
+		// 받은 후기 버튼 클릭 이벤트
 		$("#reviewViewFrom").on("click", function() {
 			openReceivedReviewModal();
 		});
@@ -53,7 +131,11 @@
         $(".heart").on("click", function () {
             $(this).toggleClass("is-active");
         });
-	});
+		
+		
+		
+		
+	}); // document.ready 끝
 </script>
 </head>
 
@@ -80,13 +162,13 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">내 상점</h1>
+                        <h1 class="page-title">마이페이지</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
-                        <li>내 상점</li>
+                        <li>마이페이지</li>
                     </ul>
                 </div>
             </div>
@@ -431,7 +513,7 @@
 	<!-- 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
 				</div>
 				<div class="modal-body">
-					<div class="d-flex justify-content-center">
+					<div class="d-flex justify-content-center" id="reviewModalButtonArea">
 						<input type="radio" class="btn-check" name="options" id="option1" value="bad" autocomplete="off">
 						<label class="btn btn-outline-primary mx-4" for="option1">별로예요</label>
 						<input type="radio" class="btn-check" name="options" id="option2" value="good" autocomplete="off" checked>

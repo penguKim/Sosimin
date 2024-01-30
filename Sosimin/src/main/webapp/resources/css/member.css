@@ -320,7 +320,28 @@
 #profileRightBottom p {
 	margin-top: 18px;
 }
+/* ============== */
+/* 받은 후기 모달 */
+#reviewCheck li {
+	border: none !important;
+	margin-left: 12%;
+}
 
+#reviewCheck img {
+	width: 14px;
+	height: 14px;
+	margin-right: 1.5%;
+}
+
+#reviewCheck h6 {
+	display: inline-block;
+	margin-right: 1.5%;
+}
+
+#reviewModalButtonArea {
+	margin-bottom: -5%;
+    margin-top: 3%;
+}
 
 /* ========================= */
 /* 카테고리 영역(라디오버튼) */
@@ -329,8 +350,8 @@
     max-width: 100%;
     padding-right: calc(var(--bs-gutter-x)/ 2);
     padding-left: calc(var(--bs-gutter-x)/ 2);
-/*     margin-left: 354px; */
-    margin-left: 75px;
+    margin-left: 354px;
+/*     margin-left: 75px; */
     margin-top: 20px;
 }
 
