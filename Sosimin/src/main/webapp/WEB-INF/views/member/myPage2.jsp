@@ -22,9 +22,12 @@
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<%-- sweetalert --%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script type="text/javascript">
 
-	// 받은 후기 버튼 클릭 시 모달 띄우는 함수 정의
+	// 받은 후기 클릭 시 모달 띄우는 함수 정의
 	function openReceivedReviewModal() {
 		$("#staticBackdropLabel").text("받은 후기");
 		$(".modal-body input[type='radio']").attr("disabled", false);
@@ -122,20 +125,40 @@
 	}
 	
 	$(function(){
-		// 받은 후기 버튼 클릭 이벤트
+		// 받은 후기 클릭 이벤트
 		$("#reviewViewFrom").on("click", function() {
 			openReceivedReviewModal();
 		});
+
+		// 내 정보 수정 클릭 이벤트
+		$("#myPageModifyInfoFrom").on("click", function() {
+			openModifyMyInfoModal();
+		});
 			
-		// 좋아요 버튼 클릭 이벤트
+		// 찜 버튼 클릭 이벤트
         $(".heart").on("click", function () {
             $(this).toggleClass("is-active");
+    	    Swal.fire({
+    			title: '찜했습니다!',         // Alert 제목
+    			text: "감사합니다!",  // Alert 내용
+    			icon:'success',                         // Alert 타입
+    		});
         });
+		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
+		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
+		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
+		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
 		
 		
 		
 		
 	}); // document.ready 끝
+	
+	// 내 정보 수정 클릭 시 모달 띄우는 함수 정의
+	function openModifyMyInfoModal() {
+		$("#myPageModifyInfoModal").modal("show");
+	}
+	
 </script>
 </head>
 
@@ -203,7 +226,7 @@
 							<img src="${pageContext.request.contextPath}/resources/images/member/reviewicon.png">
 							받은 후기
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="" data-bs-toggle="modal" data-bs-target="" id="">
+						<a href="#myPageModifyInfoModal" data-bs-toggle="modal" id="myPageModifyInfoFrom">
 							<img src="${pageContext.request.contextPath}/resources/images/member/usericon.png">
 							내 정보 수정
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -378,35 +401,98 @@
 						<label class="btn btn-outline-primary mx-4" for="option2">최고예요</label>
 					</div>
 					<div id="reviewCheck" class="mx-auto my-5 w-75">
-	<!-- 					<div class="form-check"> -->
-	<!-- 						<input class="form-check-input" type="checkbox" name="hugi1" id="hugi1"> -->
-	<!-- 						<label class="form-check-label" for="hugi1" id="hugiLabel1"> -->
-	<!-- 							제가 있는곳까지 와서 거래했어요 -->
-	<!-- 						</label> -->
-	<!-- 					</div> -->
-	<!-- 					<div class="form-check"> -->
-	<!-- 						<input class="form-check-input" type="checkbox" name="hugi2" id="hugi2"> -->
-	<!-- 						<label class="form-check-label" for="hugi2" id="hugiLabel2"> -->
-	<!-- 							친절하고 매너가 좋아요 -->
-	<!-- 						</label> -->
-	<!-- 					</div> -->
-	<!-- 					<div class="form-check"> -->
-	<!-- 						<input class="form-check-input" type="checkbox" name="hugi3" id="hugi3"> -->
-	<!-- 						<label class="form-check-label" for="hugi3" id="hugiLabel3"> -->
-	<!-- 							시간 약속을 잘 지켜요 -->
-	<!-- 						</label> -->
-	<!-- 					</div> -->
-	<!-- 					<div class="form-check"> -->
-	<!-- 						<input class="form-check-input" type="checkbox" name="hugi4" id="hugi4"> -->
-	<!-- 						<label class="form-check-label" for="hugi4" id="hugiLabel4"> -->
-	<!-- 							응답이 빨라요 -->
-	<!-- 						</label> -->
-	<!-- 					</div> -->
 					</div>
 				</div>
 				<div class="modal-footer">
 	<!-- 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button> -->
 	<!-- 				<button type="submit" class="btn btn-primary" id="reviewRegist">후기 등록</button> -->
+				</div>
+			</div>
+		</div>
+	</div>		
+    <%-- 회원정보 수정 모달 설정 --%>
+	<div class="modal" id="myPageModifyInfoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="staticBackdropLabel">내 정보 수정</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="modyfyMyInfo" class="mx-auto my-5 w-75">
+						<form action="" class="row" method="post">
+							<div class="form-group" id="formGroupForProfilePic">
+								<label for="reg-fn" id="mgForFiveMod">프로필사진</label>
+								<img alt="" src=""><%-- 썸네일 처리!!!! --%>
+								<label for="profilePicFile">
+<!-- 										<input type="button" class="btnProfilePicModify" value="사진 변경"> -->
+									<div class="btnProfilePicModify">사진 변경</div>
+								</label>
+								<input type="file" name="file" id="profilePicFile">
+								<div class="btnProfilePicModify">삭제</div>
+							</div>
+
+							<div class="form-group">
+								<label for="reg-fn" id="mgForTwoMod">이름</label> 
+								<input class="form-control" placeholder="기존이름" maxlength="5" type="text" name="member_name" id="name" readonly>
+							</div>
+							<div class="form-group" >
+								<label for="reg-ln" id="mgForThreeMod">아이디</label> 
+								<input class="form-control" placeholder="기존아이디" maxlength="20" type="text"  name="member_id" id="id" readonly>
+							</div>
+							<div class="form-group">
+								<label for="reg-pass" id="mgForFiveOneMod">새 비밀번호</label> 
+								<input class="form-control" maxlength="16" placeholder="비밀번호를 수정할 경우에만 입력해주세요" type="password"  name="member_password" id="password">
+								<div id="checkPasswordResult" class="resultArea"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
+							</div>
+							<div class="form-group">
+								<label for="reg-pass-confirm" id="mgForSevenTwoMod">새 비밀번호 확인</label> 
+								<input class="form-control" maxlength="16" placeholder="비밀번호를 한 번 더 입력해주세요" type="password" id="passwordConfirm">
+								<div id="checkPasswordConfirmResult" class="resultArea"></div>
+							</div>
+							<div class="form-group">
+								<label for="reg-ln" id="mgForThreeMod">닉네임</label> 
+								<input class="form-control" type="text" placeholder="기존닉네임" name="member_nickname" id="nickname" required>
+								<input type="button" value="중복확인" id="checkNicknameDupButton">
+<!-- 								<input type="button" value="닉네임만들기" id="generateNicknameButton"> -->
+								<%-- 입력값이 비어있을 경우 DB에서 임의로 난수발생해 insert 처리 --%>
+								<div id="checkNicknameResult" class="resultArea"></div><%--2~10글자의 한글, 숫자(선택입력) --%>
+							</div>
+
+							<div class="form-group">
+								<label for="reg-ln" id="mgForFourMod">생년월일</label> 
+								<input class="form-control" type="date" name="member_birth" id="birthdate" required>
+								<%--회원가입과 동일하게 범위제한하고 기존 생년월일 placeholder --%>
+								<div id="checkBirthdateResult" class="resultArea"></div>
+							</div>
+							<div class="form-group">
+								<label for="reg-ln" id="mgForTwoMod">주소</label> 
+								<input type="hidden" id="map">
+								<input class="form-control" type="text" placeholder="기존주소" name="member_address" id="myMap" required readonly>
+								<%--회원가입과 동일. 기존 주소 placeholder --%>
+								<input type="button" value="동네인증" id="myMapButton" onclick="AddressMap()">
+								<div id="checkAddressResult" class="resultArea"></div>
+							</div>
+							<div class="form-group">
+								<label for="reg-email" id="mgForThreeMod">이메일</label> 
+								<input class="form-control" type="email" placeholder="기존이메일" name="member_email" id="email" required>
+								<%--회원가입과 동일하게 정규표현식 검증 및 중복확인. 기존 이메일 placeholder --%>
+								<input type="button" value="중복확인" id="checkEmailDupButton">
+								<div id="checkEmailResult" class="resultArea"></div>
+							</div>
+							<div class="form-group">
+								<label for="reg-phone" id="mgForFiveMod">휴대폰번호</label> 
+								<input class="form-control" placeholder="기존휴대폰번호" type="tel" name="member_phone" id="phone" required>
+								<%--회원가입과 동일하게 인증, 정규표현식 검증, 중복확인(회원아이디 일치하고 휴대폰 번호 동일한 경우 자바스크립트 처리?). 기존 폰번호 placeholder --%>
+								<input type="button" value="인증">
+								<div id="checkPhoneResult" class="resultArea"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modifyInfoClose">창닫기</button>
+					<button type="submit" class="btn btn-primary" onclick="location.reload()">수정</button>
 				</div>
 			</div>
 		</div>

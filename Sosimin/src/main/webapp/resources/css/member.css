@@ -343,14 +343,98 @@
     margin-top: 3%;
 }
 
+/* ================= */
+/* 내 정보 수정 모달 */
+#myPageModifyInfoModal .modal-content {
+	width: 150%;
+}
+
+#formGroupForProfilePic {
+	margin-bottom: 14.5% !important;
+}
+
+#modyfyMyInfo img {
+	width: 100px;
+	height: 100px;
+}
+
+#modyfyMyInfo .form-control {
+	font-size: 0.7rem;
+	
+}
+
+#modyfyMyInfo .form-group {
+	width: 900px !important;
+}
+
+.btnProfilePicModify {
+	margin-top: 0px;
+    text-transform: capitalize;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 10px;
+    background-color: #39d274;
+    color: #fff;
+    border: none;
+    transition: 0.2s;
+    border-radius: 3px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-appearance: button;
+    appearance: auto;
+    text-align: center;
+    display: inline-block;
+    margin-right: 1%;
+    vertical-align: middle;
+}
+
+.btnProfilePicModify:hover {
+	background-color: #081828;
+}
+
+#profilePicFile {
+	display: none !important;
+}
+
+/* 한글 한글자당 13px 차이 */
+/* 공백 하나 당 4px 차이 */
+#mgForTwoMod {
+	margin-right: 88px;
+}
+
+#mgForThreeMod {
+	margin-right: 75px;
+}
+
+#mgForFourMod {
+	margin-right: 61px;
+}
+
+#mgForFiveMod {
+	margin-right: 47px;
+}
+
+#mgForFiveOneMod {
+	margin-right: 44px;
+}
+
+#mgForSevenTwoMod {
+	margin-right: 13px;
+	
+}
+
+
+
 /* ========================= */
 /* 카테고리 영역(라디오버튼) */
 #categoryArea {
-	width: 1198px;
+	width: 62%;
     max-width: 100%;
     padding-right: calc(var(--bs-gutter-x)/ 2);
     padding-left: calc(var(--bs-gutter-x)/ 2);
-    margin-left: 354px;
+    margin-left: 19%;
 /*     margin-left: 75px; */
     margin-top: 20px;
 }
@@ -402,9 +486,9 @@
 	width: 290px;
 	height: 400px;
 	display: inline-block;
-	margin-bottom: 10px !important;
-	margin-left: 2px !important;
-	margin-right: 2px !important;
+	margin-bottom: 1.5% !important;
+    margin-left: 0.246% !important;
+    margin-right: 0.246% !important;
 	box-sizing: content-box !important;
 	padding: 0 !important;
 	position: relative;
