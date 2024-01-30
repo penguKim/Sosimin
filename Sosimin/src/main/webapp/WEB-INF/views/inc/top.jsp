@@ -73,7 +73,7 @@
 		
 		function hideHandler() {
 			$("#Recent").hide();
-			$("#Popular").hide();
+			$("#Popular").addClass("hidden");
 		}
 		
 		//엔터키 누를 경우 텍스트 가지고 주소 이동
@@ -84,7 +84,7 @@
 		    }
 	  	});
 	
-		$(".recentWordColor").css("color","red");
+		$(".recentWordColor").css("color","#39d274");
 		$(".popularWordColor").css("color","black");
 	});// document.ready function END
 	
@@ -130,17 +130,17 @@
 	
 	function RecentSearchs(){
 		$("#Recent").show();
-		$("#Popular").hide();
-		$(".recentWordColor").css("color","red");
+		$("#Popular").addClass("hidden");
+		$(".recentWordColor").css("color","#39d274");
 		$(".popularWordColor").css("color","black");
 		
 	}
 	
 	function PopularSearches(){
 		$("#Recent").hide();
-		$("#Popular").show();
+		$("#Popular").removeClass("hidden");
 		$(".recentWordColor").css("color","black");
-		$(".popularWordColor").css("color","red");
+		$(".popularWordColor").css("color","#39d274");
 	}
 	
 	function searchKeywordChange(keyWord){
@@ -166,10 +166,10 @@
 		let tableHTML = '<table>';
 		tableHTML += 
 			'<tr>'
-			+'	<td>'
+			+'	<td class="SelRecentborderBottom">'
 			+'		<a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
 			+'	</td>'
-			+'	<td>'
+			+'	<td class="PopularborderBottom">'
 			+'		<a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
 			+'	</td>'
 			+'</tr>';
@@ -207,10 +207,10 @@
 		let tableHTML = '<table>';
 		tableHTML +=
 			'<tr>'
-			+ '  <td>'
+			+ '  <td class="SelRecentborderBottom">'
 		    + '    <a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
 		    + '  </td>'
-		    + '  <td>'
+		    + '  <td class="PopularborderBottom">'
 		    + '    <a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
 		    + '  </td>'
 		    + '</tr>';
@@ -287,27 +287,20 @@
 
 
 </script>
+<style>
+.hidden{
+	display: none;
+}
+</style>
+
+
 
 <!-- Start Topbar -->
 <div class="topbar">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-4 col-md-4 col-12">
-                <div class="top-left">
-                    <ul class="menu-top-link">
-                        <li>
-                        	<!-- 나라별 언어 선택 -->
-                            <div class="select-position">
-                                <select id="select5">
-                                    <option value="ko" selected>한국어</option>
-                                    <option value="en" >영어</option>
-                                    <option value="ja">일본어</option>
-                                    <option value="ch">중국어</option>
-                                </select>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+<!--               기본으로 언어 선택이 있던 영역 -->
             </div>
             <div class="col-lg-4 col-md-4 col-12">
                 <div class="top-middle">
@@ -345,6 +338,17 @@
 		                        </li>
                     		</c:otherwise>
                     	</c:choose>
+                    	<li>
+                        	<!-- 나라별 언어 선택 -->
+                            <div class="select-position">
+                                <select id="select5">
+                                    <option value="ko" selected>한국어</option>
+                                    <option value="en" >영어</option>
+                                    <option value="ja">일본어</option>
+                                    <option value="ch">중국어</option>
+                                </select>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -383,54 +387,55 @@
                     <!-- navbar search Ends -->
                 </div>
                 <!-- End Main Menu Search -->
+                <div class="searchBoxBlock">
                 <div id="Recent" >
                 	<!-- 최근검색어 테이블이 표시될 영역 -->
                 </div>
-                <div id="Popular">
+                <div id="Popular" class="hidden">
                 	<table id="PopularTableBoarder">
                 		<tr class="PopularCenter">
-                			<td><a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a></td>
-                			<td><a onclick="PopularSearches()" class="popularWordColor">인기검색어</a></td>
+                			<td class="RecentborderBottom"><a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a></td>
+                			<td class="SelPopularborderBottom"><a onclick="PopularSearches()" class="popularWordColor">인기검색어</a></td>
                 		</tr>
 						<tr>
-						    <td><a class="popularWordColor">1</a> <a onclick="sendKeyword(this)">Zara</a></td>
-						    <td><a class="popularWordColor">11</a> <a onclick="sendKeyword(this)">H&M</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">1</a> <a onclick="sendKeyword(this)">Zara</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">11</a> <a onclick="sendKeyword(this)">H&M</a></td>
 						</tr>
 						<tr>
-						    <td><a class="popularWordColor">2</a> <a onclick="sendKeyword(this)">Gucci</a></td>
-						    <td><a class="popularWordColor">12</a> <a onclick="sendKeyword(this)">Nike</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">2</a> <a onclick="sendKeyword(this)">Gucci</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">12</a> <a onclick="sendKeyword(this)">Nike</a></td>
 						</tr>
 						<tr>
-						    <td><a class="popularWordColor">3</a> <a onclick="sendKeyword(this)">Adidas</a></td>
-						    <td><a class="popularWordColor">13</a> <a onclick="sendKeyword(this)">Louis Vuitton</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">3</a> <a onclick="sendKeyword(this)">Adidas</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">13</a> <a onclick="sendKeyword(this)">Louis Vuitton</a></td>
 						</tr>
 						<tr>
-						    <td><a class="popularWordColor">4</a> <a onclick="sendKeyword(this)">Chanel</a></td>
-						    <td><a class="popularWordColor">14</a> <a onclick="sendKeyword(this)">Burberry</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">4</a> <a onclick="sendKeyword(this)">Chanel</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">14</a> <a onclick="sendKeyword(this)">Burberry</a></td>
 						</tr>
 						<tr>
-						    <td><a class="popularWordColor">5</a> <a onclick="sendKeyword(this)">Prada</a></td>
-						    <td><a class="popularWordColor">15</a> <a onclick="sendKeyword(this)">Versace</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">5</a> <a onclick="sendKeyword(this)">Prada</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">15</a> <a onclick="sendKeyword(this)">Versace</a></td>
 						</tr>
 						<tr>
-						    <td><a class="popularWordColor">6</a> <a onclick="sendKeyword(this)">Tommy Hilfiger</a></td>
-						    <td><a class="popularWordColor">16</a> <a onclick="sendKeyword(this)">Calvin Klein</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">6</a> <a onclick="sendKeyword(this)">Tommy Hilfiger</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">16</a> <a onclick="sendKeyword(this)">Calvin Klein</a></td>
 						</tr>
 						<tr>
-						    <td><a class="popularWordColor">7</a> <a onclick="sendKeyword(this)">Ralph Lauren</a></td>
-						    <td><a class="popularWordColor">17</a> <a onclick="sendKeyword(this)">Armani</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">7</a> <a onclick="sendKeyword(this)">Ralph Lauren</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">17</a> <a onclick="sendKeyword(this)">Armani</a></td>
 						</tr>
 						<tr>
-						    <td><a class="popularWordColor">8</a> <a onclick="sendKeyword(this)">Givenchy</a></td>
-						    <td><a class="popularWordColor">18</a> <a onclick="sendKeyword(this)">Fendi</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">8</a> <a onclick="sendKeyword(this)">Givenchy</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">18</a> <a onclick="sendKeyword(this)">Fendi</a></td>
 						</tr>
 						<tr>
-						    <td><a class="popularWordColor">9</a> <a onclick="sendKeyword(this)">Balenciaga</a></td>
-						    <td><a class="popularWordColor">19</a> <a onclick="sendKeyword(this)">Alexander McQueen</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">9</a> <a onclick="sendKeyword(this)">Balenciaga</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">19</a> <a onclick="sendKeyword(this)">Alexander McQueen</a></td>
 						</tr>
 						<tr>
-						    <td><a class="popularWordColor">10</a> <a onclick="sendKeyword(this)">Dior</a></td>
-						    <td><a class="popularWordColor">20</a> <a onclick="sendKeyword(this)">Prabal Gurung</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">10</a> <a onclick="sendKeyword(this)">Dior</a></td>
+						    <td><a class="popularWordColorTd marginLeftRank">20</a> <a onclick="sendKeyword(this)">Prabal Gurung</a></td>
 						</tr>
 
                 		<tr class="PopularCenter">
@@ -439,13 +444,23 @@
                 		</tr>
                 	</table>
                 </div>
+                </div>
             </div>
             <div class="col-lg-4 col-md-2 col-5">
                 <div class="middle-right-area">
-                	<a href="ProductRegist">판매하기  </a>
+                	<a href="ProductRegist">
+	                	<img src="https://m.bunjang.co.kr/pc-static/resource/bcc7abb5d531bcf26033.png" width="23" height="26" alt="판매하기버튼 이미지">
+	                	판매하기  
+                	</a>
 
-                	<a href="./">관심  </a>
-                	<a href="Chat">채팅톡</a>
+                	<a href="./">
+	                	<img src="https://m.bunjang.co.kr/pc-static/resource/31370b164bc5b7cc4fef.png" width="23" height="24" alt="내상점버튼 이미지">
+	                	관심  
+                	</a>
+                	<a href="Chat">
+	                	<img src="https://m.bunjang.co.kr/pc-static/resource/32554a59cf002b3def10.png" width="23" height="24" alt="번개톡버튼 이미지">
+	                	채팅톡
+                	</a>
 
                 </div>
             </div>
@@ -487,7 +502,7 @@
                             <li class="nav-item">
 								<a href="Community">커뮤니티</a>
                                 <ul class="sub-menu collapse" id="submenu-1-2">
-                                    <li class="nav-item"><a href="about-us.html">About Us</a></li>
+                                    <li class="nav-item"><a href="AboutUs">About Us</a></li>
                                     <li class="nav-item"><a href="Community?category=hot">인기글</a></li>
                                     <li class="nav-item"><a href="Community?category=info">동네소식</a></li>
                                     <li class="nav-item"><a href="Community?category=question">동네질문</a></li>

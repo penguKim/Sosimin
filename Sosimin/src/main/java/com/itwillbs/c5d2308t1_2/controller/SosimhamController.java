@@ -26,7 +26,7 @@ public class SosimhamController {
 	SosimhamService SosimService;
 	
 	@GetMapping("SosimLocker")
-	public String SosimLocker(Model model) {
+	public String sosimLocker(Model model) {
 		List<Map<String,Object>> LockerList = SosimService.getLocationLocker();
 		System.out.println("LockerList : " + LockerList);
 		
@@ -56,6 +56,11 @@ public class SosimhamController {
 		 
 		return "sosimham/sosimLocker2";
 		
+	}
+	
+	@GetMapping("AboutUs")
+	public String aboutUs() {
+		return"AboutUs";
 	}
 }
 

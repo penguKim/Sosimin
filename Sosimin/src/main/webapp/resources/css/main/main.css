@@ -2008,8 +2008,79 @@ ol {
 }
 
 /* 이민석 작업 start*/
+
+
+
+
+/* 24-01-30 작업 내용시작 입니다.*/
+.header .main-menu-search .search-btn button:hover,
+.header .main-menu-search .search-btn button,
+.header .main-menu-search .search-input input{
+	border: 1px solid #39d274!important;
+}
+
+.header .main-menu-search .search-btn button{
+	border-left: none!important;
+}
+
+.middle-right-area a{
+	color:black!important;
+}
+.middle-right-area a:hover{
+	color:#39d274!important;
+}
+
+#Recent table tr td a:hover, #Popular table tr td a:hover{
+	cursor: pointer;
+}
+
+.PopularborderBottom, .RecentborderBottom{
+	border-bottom: 2px solid #F2F2F2;
+	padding:10px;
+	font-size: 18px;
+}
+
+.SelPopularborderBottom{
+	border-bottom: 3px solid #39d274!important;
+	padding:10px;
+	font-size: 18px;
+}
+.SelRecentborderBottom{
+	border-bottom: 3px solid #39d274!important;
+	padding:10px;
+	font-size: 18px;
+}
+
+#Recent table, #Popular table{
+	border: 1px solid #F2F2F2;
+	margin-top: 5px;
+}
+
+.recentWordColor{
+	margin-left: 10px;
+}
+
+.marginLeftRank{
+	margin: 0 20px;
+}
+
+#Recent table tr:nth-child(n+2) td,
+#Popular table tr:nth-child(n+2) td {
+	padding: 10px;
+}
+#Recent table tr:last-child td,
+#Popular table tr:last-child td {
+	background-color: #F2F2F2;
+}
+
+/* 24-01-30 작업 내용 끝입니다.*/
+
+
+
+
 #Recent,#Popular{
 	position:fixed;
+	z-index: 9999;
 }
 .fixTopBar{
 /* 	position:fixed; */
@@ -2035,12 +2106,16 @@ ol {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding:10px;
 }
 
 .recentWordColor,.popularWordColor{
-/* 	border-bottom: 1px solid black; */
+	font-weight: bold;
 }
 
+.padding10px{
+	padding:10px;
+}
 
 /* 이민석 작업 end */
 

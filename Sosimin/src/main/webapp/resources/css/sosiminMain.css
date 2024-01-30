@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+/*메인화면 포스터 글자 색상 하얀색으로 바꾸기*/
+.colorWhite h2 span,
+.colorWhite p,
+.colorWhite h3 span, 
+.colorWhite div a { 
+	color:#fff !important;
+}
+
+
