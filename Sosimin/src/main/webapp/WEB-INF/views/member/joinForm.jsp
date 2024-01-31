@@ -48,7 +48,7 @@
 		  var markerPosition = marker.getPosition(); // 마커의 위치 좌표(위에서 찍힌 마커 위치 좌표를 가져옴)
 		  var latitude = markerPosition.getLat(); // 마커의 위도(내가 가져온 현재 위치의 위도)
 		  var longitude = markerPosition.getLng(); // 마커의 경도(내가 가져온 현재 위치의 경도)
-	
+
 		  geocoder.coord2Address(longitude, latitude, function(result, status) {
 		   if (status === kakao.maps.services.Status.OK) { // 주소-좌표 변환 성공 시
 			// 도로명 주소가 있을 경우 도로명 주소를, 없을 경우 지번 주소를 표시
@@ -57,10 +57,20 @@
 	          
 	          var address = result[0].address.address_name; // 지번 주소
 	          
-	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          
+// 	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          
+	          if(address.split(' ')[0] == "부산" || address.split(' ')[0] == "대구" || address.split(' ')[0] == "인천" || address.split(' ')[0] == "광주" || address.split(' ')[0] == "대전" || address.split(' ')[0] == "울산"  ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else if(address.split(' ')[0] == "서울" ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "특별시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else {
+	        	  var modifiedAddress = address.split(' ')[0]  + " " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          }
+		      
 	          
 	          $("#myMap").val(modifiedAddress);
-	          
+	          localStorage.setItem("tradePlace", modifiedAddress);
 	          
 		    } else {
 		      alert("주소를 가져오지 못했습니다.");
@@ -562,7 +572,7 @@
 <!-- 							<input type="text" name="test" placeholder="파라미터확인"> -->
 							
 							<div class="form-group">
-								<label for="reg-fn" id="mgForTwo">이름</label> 
+								<label for="name" id="mgForTwo">이름</label> 
 								<input class="form-control" placeholder="2~5글자의 한글" maxlength="5" type="text" name="member_name" id="name" required>
 								<div id="checkNameResult" class="resultArea"></div>
 							</div>
@@ -606,7 +616,7 @@
 								<div id="checkAddressResult" class="resultArea"></div>
 							</div>
 							<div class="form-group">
-								<label for="reg-email" id="mgForThree">이메일</label> 
+								<label for="email" id="mgForThree">이메일</label> 
 								<input class="form-control" type="email" name="member_email" id="email" required>
 								<input type="button" value="중복확인" id="checkEmailDupButton">
 								<div id="checkEmailResult" class="resultArea"></div>

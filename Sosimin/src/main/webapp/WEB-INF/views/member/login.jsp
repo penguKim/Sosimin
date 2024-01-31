@@ -96,7 +96,7 @@
                                 <label for="reg-ln" id="mgForThree">아이디</label>
                                 <c:choose>
                                 	<c:when test="${not empty param.member_id }">
-		                                <input class="form-control" type="text" name="member_id" value=""${param.member_id } required>
+		                                <input class="form-control" type="text" name="member_id" value="${param.member_id }" required>
                                 	</c:when>
                                 	<c:otherwise>
 		                                <input class="form-control" type="text" name="member_id" value="${cookie.cookieId.value }" required>
@@ -111,8 +111,6 @@
                             <div class="d-flex flex-wrap justify-content-between bottom-content">
                                 <div class="form-check" id="rememberIdArea">
                                     <input type="checkbox" class="form-check-input width-auto" id="exampleCheck1" name="rememberId"<c:if test="${not empty cookie.cookieId.value}">checked</c:if>>
-                                    
-                                    
                                     <label class="form-check-label">아이디 기억하기</label>
                                 </div>
                                 <div id="findArea">

@@ -27,4 +27,14 @@ public class MemberService {
 	public MemberVO getDupMemberInfo(MemberVO member) {
 		return mapper.selectDupMemberInfo(member);
 	}
+
+	// 아이디 찾기
+	public MemberVO findMember(MemberVO member) {
+		MemberVO dbMember = null;
+		if(member.getMember_id() == null) {
+			dbMember = mapper.selectMemberForId(member); 
+		}
+		
+		return dbMember;
+	}
 }

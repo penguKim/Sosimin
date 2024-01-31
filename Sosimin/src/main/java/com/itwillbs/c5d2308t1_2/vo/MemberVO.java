@@ -23,6 +23,7 @@ public class MemberVO {
 	private Date neighbor_time;
 	private int pay_auth;
 	private int member_level;
+	private int member_exp;
 	private String dong;
 	private int report_real_count;
 	

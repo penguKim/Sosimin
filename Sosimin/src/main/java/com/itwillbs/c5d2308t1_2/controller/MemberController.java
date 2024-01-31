@@ -193,9 +193,15 @@ public class MemberController {
 	}
 
 	// 로그인 아이디 찾기 작업
+	@ResponseBody
 	@PostMapping("MemberFindIdPro")
-	public String MemberFindIdPro() {
-		return "";
+	public MemberVO MemberFindIdPro(MemberVO member, Model model) {
+//	public String MemberFindIdPro(MemberVO member, Model model) {
+//		System.out.println("넘어온 폼 파라미터 확인 : " + member); // 잘 넘어옴
+//		System.out.println("현재 가지고있는 아이디는? : " + member.getMember_id()); // null
+		MemberVO dbMember = service.findMember(member);
+		return dbMember;
+//		return "";
 	}
 
 	// 로그인 비밀번호 찾기 페이지로 이동

@@ -31,12 +31,14 @@
 		)
 	</insert>
 	
+	<!-- 회원정보조회 SELECT -->
 	<select id="selectMember" resultType="member">
 		SELECT *
 		FROM Member
 		WHERE Member.member_id = #{member_id} 
 	</select>
-
+	
+	<!-- 중복 체크 위한 회원정보조회 SELECT -->
 	<select id="selectDupMemberInfo" resultType="member">
 		SELECT * 
 		FROM Member
@@ -47,4 +49,12 @@
 		<!-- OR member_email = #{member_email} OR member_phone = #{member_phone} --> 
 	</select>
 
+	<!-- 아이디 찾기를 위한 회원정보 조회 SELECT -->
+	<select id="selectMemberForId" resultType="member">
+		SELECT *
+		FROM Member
+		WHERE member_name = #{member_name}
+			AND member_email = #{member_email}
+			AND member_birth = #{member_birth}
+	</select>
 </mapper>
