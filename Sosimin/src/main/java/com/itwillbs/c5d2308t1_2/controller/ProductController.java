@@ -63,7 +63,7 @@ public class ProductController {
 		// 미로그인 시 상품 목록 날짜 최신순으로 나열
 		
 		// ====================페이징 처리 ===============================================================
-		PageDTO page = new PageDTO(pageNum, 20);
+		PageDTO page = new PageDTO(pageNum, 16);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 맵 페이지" + page);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 맵 페이지" + map.get("pageNum"));
 		int listCount = service.getProductListCount(map); // 상품 목록 갯수조회

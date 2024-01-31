@@ -30,6 +30,8 @@
 <script type="text/javascript">
 $(function() {
 	let pageNum = "";
+	let category = "${param.product_category}";
+	let keyword = "${param.keyword}";
 	
 	if("${param.pageNum}" > 1) {
 		pageNum = "${param.pageNum}";
@@ -44,6 +46,8 @@ $(function() {
 		url: "StoreProductList",
 		data: {
 			pageNum: pageNum,
+			category: category,
+			keyword:keyword
 		},
 		dataType: 'json',
 		success: function(data) {
