@@ -81,5 +81,11 @@ public interface CommunityMapper {
 
 	// 임시저장 게시글 삭제
 	int deleteTempCommunity(CommunityVO com);
+
+	// 이미지 등록 AJAX
+	int insertTempImage(CommunityVO com);
+
+	// 이미지 업데이트 AJAX
+	int updateTempImage(CommunityVO com);
 	
 }

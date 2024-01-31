@@ -27,7 +27,6 @@
 #fileArea {
     width: 100px;
     height: 100px;
-/*     border: 1px solid #000; */
 }
 
 </style>
@@ -36,8 +35,8 @@
 		let width = $(window).width();
 		console.log(width);
 		
-		// 10초마다 게시글 임시저장
-		let tempSave = setInterval(tempToast, 10000);
+		// 30초마다 게시글 임시저장
+		let tempSave = setInterval(tempToast, 30000);
 		
 		// 임시저장한 게시글 불러오기
 		$.ajax({
@@ -46,7 +45,7 @@
 			dataType: "json",
 			success: function(temp) {
 				if(temp.length != 0) {
-					
+					// 인터벌 중지
 					clearInterval(tempSave);
 					
 					Swal.fire({
@@ -62,14 +61,19 @@
 				        allowOutsideClick: false
 				    }).then((result) => {
 				        if (result.isConfirmed) {
-				        	$(".formCategory option:selected").prop("selected", false);
-				        	$(".formCategory option[value='" + temp.temp_category + "']").prop("selected", true);
+				        	// 카테고리 등록
+				        	if(temp.temp_category != 0) { // 미선택이 아닌 경우
+					        	$(".formCategory option:selected").prop("selected", false);
+					        	$(".formCategory option[value='" + temp.temp_category + "']").prop("selected", true);
+				        	}
+				        	// 제목 등록
 				        	$("#title").val(temp.temp_subject);
 				        	$('#titleLenth').text('제목 (' + temp.temp_subject.length + '/40)');
+				        	// 내용 등록
 				        	$("#content").val(temp.temp_content);
 				        	$('#contentLength').text('내용 (' + temp.temp_content.length + '/1000)');
-				        	
-				        	tempSave = setInterval(tempToast, 10000);
+				        	// 인터벌 시작
+				        	tempSave = setInterval(tempToast, 30000);
 				        } else {
 				        	$.ajax({
 				        		type: "POST",
@@ -85,7 +89,8 @@
 				        					toast: true
 				        				});
 				        			}
-				        			tempSave = setInterval(tempToast, 10000);
+				        			// 인터벌 시작
+				        			tempSave = setInterval(tempToast, 30000);
 								}
 				        	});
 				        }
@@ -95,6 +100,7 @@
 			}
 		});
 		
+		// 제목 글자수 제한
 	    $('#title').on('keyup', function() {
 	        var text = $(this).val();
 	        
@@ -121,6 +127,7 @@
 	        };
 	    });
 	    
+		// 내용 글자수 제한
 	    $('#content').on('keyup', function() {
 	        var text = $(this).val();
 	        
@@ -146,40 +153,63 @@
 				});
 	        };
 	    });
-	        
-		
 		
 		// 게시글 등록하기
 		$('#writeBtn').on('click', function(event) {
-				event.preventDefault();
-				clearInterval(tempSave);
-			if (!$(".needs-validation")[0].checkValidity()) {
+				event.preventDefault(); // 서브밋 중지
+				clearInterval(tempSave); // 인터벌 중지
+			if (!$(".needs-validation")[0].checkValidity()) { // 유효성 검사
 				event.stopPropagation();
+				// 유효성 실패 추가
 				$(".needs-validation").addClass('was-validated');
-				Swal.fire({
-					position: 'center',
-					icon: 'error',
-					title: '항목을 입력해주세요.',
-					showConfirmButton: false,
-					timer: 2000,
-					toast: true
-				})
+
+				// 항목 검사
 				$(".needs-validation").find('.formFocus').each(function() {
 					
-				    if ($(this).is('select')) {
-				        // 셀렉트 박스인 경우
-				        if ($(this).find('option:selected').val() == '') {
-				            // 선택된 옵션의 값이 빈 문자열인 경우
+				    if ($(this).is('select')) { // 셀렉트 박스인 경우
+				        
+				        if ($(this).find('option:selected').val() == "") {
+				            // 선택된 옵션의 값이 없는 경우
 				            $(this).focus();
+							Swal.fire({
+								position: 'center',
+								icon: 'warning',
+								title: '게시글의 주제를 선택해주세요.',
+								showConfirmButton: false,
+								timer: 2000,
+								toast: true
+							});
 				            $('#writeBtn').blur();
-				            tempSave = setInterval(tempToast, 10000);
+				            tempSave = setInterval(tempToast, 30000);
 				            return false;
 				        }
-				    } else if ($(this).val() == '') {
-				        // 셀렉트 박스가 아니고, 값이 없는 경우
+				    } else if ($(".formFocus#title").val() == '') {
+				        // 제목이 없는 경우
 				        $(this).focus();
+						Swal.fire({
+							position: 'center',
+							icon: 'warning',
+							title: '게시글의 제목을 입력해주세요.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});
 				        $('#writeBtn').blur();
-				        tempSave = setInterval(tempToast, 10000);
+				        tempSave = setInterval(tempToast, 30000);
+				        return false;
+				    } else if ($(".formFocus#content").val() == '') {
+				        // 내용이 없는 경우
+				        $(this).focus();
+						Swal.fire({
+							position: 'center',
+							icon: 'warning',
+							title: '게시글의 내용을 입력해주세요.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});
+				        $('#writeBtn').blur();
+				        tempSave = setInterval(tempToast, 30000);
 				        return false;
 				    }
 					
@@ -201,7 +231,7 @@
 			            $(".needs-validation")[0].submit();
 			        } else {
 			        	$("#writeBtn").blur();
-			        	tempSave = setInterval(tempToast, 10000);
+			        	tempSave = setInterval(tempToast, 30000);
 			        }
 			    });
 			}
@@ -210,7 +240,7 @@
 		// 게시글 임시저장
 		$('#tempBtn').on('click', function(event) {
 			clearInterval(tempSave);
-			
+			// form을 가져와 form 객체로 저장
 			var form = $('#writeForm')[0];
 			var data = new FormData(form);
 			
@@ -233,9 +263,9 @@
 						showConfirmButton: false,
 						timer: 2000,
 						toast: true
-					})
+					});
 					$(this).blur();
-					tempSave = setInterval(tempToast, 10000);
+					tempSave = setInterval(tempToast, 30000);
 				}
 				
 			});
@@ -267,36 +297,16 @@
 					showConfirmButton: false,
 					timer: 2000,
 					toast: true
-				})
+				});
 				$(this).blur();
 			}
 		});
 	}
 	
-	$(document).ready(function() {
-		$('#asd').on('click', function(e) {
-		    e.preventDefault(); // form의 기본 submit 이벤트를 막습니다.
-
-		    $.ajax({
-		        url: 'ImageTest',
-		        type: 'POST',
-		        data: formData,
-		        processData: false, // 필수
-		        contentType: false, // 필수
-		        success: function(response) {
-		            console.log('File uploaded successfully');
-		        },
-		        error: function(err) {
-		            console.log('Error in file upload', err);
-		        }
-		    });
-		});
-	});
-
-	
 	// ---- 이미지 파일 처리
 	var formData = new FormData();
 	
+	// 폼데이터에 없는 파일 인덱스 판별
 	function clickFile() {
 	    for (var i = 1; i <= 5; i++) {
 	        if (!formData.get('file' + i)) {
@@ -306,39 +316,110 @@
 	    }
 	}
 	
+	// 파일 업로드하여 썸네일 생성
+// 	function showThumbnail(input) {
+		
+// 	    if (input.files && input.files[0]) { // 각 input에 첫번째 파일이 있는 경우
+// 	        var reader = new FileReader();
+// 	        var fileId = input.id; // input의 id 요소
+	
+// 	        reader.onload = function (e) { // reader 객체의 onload 이벤트 설정
+// 	            var thumbnail = $('<div class="thumbnail col-auto mx-2 pt-3 px-1">').html('<div class="imageArea position-relative"><img class="border rounded-3" src="' + e.target.result + '" style=\"width: 80px; height: 80px;\"><i class="delBtn material-icons position-absolute translate-middle">cancel</i></div>');
+// 	            thumbnail.find('i').click(function() { // thumnail 안의 i 태그에 클릭 이벤트 추가
+// 	                removeThumbnail($(this).parent(), fileId); // imageArea 요소, fileId를 지정
+// 	            });
+// 	            $('#thumbnailArea > div').append(thumbnail);
+// 	            formData.append(fileId, input.files[0]); // input의 아이디명으로 formdata 객체에 추가
+	            
+// 	        }
+	
+// 	        reader.readAsDataURL(input.files[0]); // url 형태로 파일을 반환
+// 	    }
+// 	}
+
+	
 	function showThumbnail(input) {
 		
-	    if (input.files && input.files[0]) {
-	        var reader = new FileReader();
-	        var fileId = input.id;
+	    if (input.files && input.files[0]) { // 각 input에 첫번째 파일이 있는 경우
+	        var fileId = input.id; // input의 id 요소
+            formData.append(fileId, input.files[0]); // input의 아이디명으로 formdata 객체에 추가
+            
+			var data = new FormData();
+			data.append(fileId, input.files[0]);
+	        console.log("파일아이디 알려줘 ㅣ " + fileId);
+	        
+            $.ajax({
+    			type: "POST",
+    			url: "ImageTest",
+    			enctype: 'multipart/form-data',
+    			data: data,
+    			<%-- multipart/form-data로 전송 --%>
+    			contentType: false, 
+    			<%-- formData가 String이 되지않음 --%>
+    			processData: false, 
+    			success: function(result) {
+    				console.log(result);
+    				if(result != 'false') {
+	   	 	            var thumbnail = $(
+  	 	            		'<div class="thumbnail col-auto mx-2 pt-3 px-1">').html(
+  	 	            				'<div class="imageArea position-relative">'
+  	 	            			   +'<img class="border rounded-3" src="${pageContext.request.contextPath}/resources/upload/' 
+  	 	            			   + result + '" style=\"width: 80px; height: 80px;\">'
+  	 	            			   +'<i class="delBtn material-icons position-absolute translate-middle">cancel</i>'
+	 	            			   +'</div>'
+  	 	            			   );
+	   	 	            thumbnail.find('i').click(function() { // thumnail 안의 i 태그에 클릭 이벤트 추가
+	   	 	                removeThumbnail($(this).parent(), fileId); // imageArea 요소, fileId를 지정
+	   	 	            });
+	   	 	            $('#thumbnailArea > div').append(thumbnail);
+    				}
+    				
+//     				formData.delete(fileId, input.files[0]);
+    				Swal.fire({
+    					position: 'center',
+    					icon: 'success',
+    					title: '사진 업로드함 ㅅㄱ.',
+    					showConfirmButton: false,
+    					timer: 2000,
+    					toast: true
+    				});
+    				$(this).blur();
+    			}
+    		});
+	            
+// 	        reader.onload = function (e) { // reader 객체의 onload 이벤트 설정
+// 	            var thumbnail = $('<div class="thumbnail col-auto mx-2 pt-3 px-1">').html('<div class="imageArea position-relative"><img class="border rounded-3" src="' + e.target.result + '" style=\"width: 80px; height: 80px;\"><i class="delBtn material-icons position-absolute translate-middle">cancel</i></div>');
+// 	            thumbnail.find('i').click(function() { // thumnail 안의 i 태그에 클릭 이벤트 추가
+// 	                removeThumbnail($(this).parent(), fileId); // imageArea 요소, fileId를 지정
+// 	            });
+// 	            $('#thumbnailArea > div').append(thumbnail);
+	            
+// 	        }
 	
-	        reader.onload = function (e) {
-	            var thumbnail = $('<div class="col-auto rounded-3 overflow-hidden mx-2 p-0 position-releative">').html('<img src="' + e.target.result + '" style=\"width: 80px; height: 80px;\"><i class="material-icons position-absolute translate-middle">cancel</i>');
-	            thumbnail.find('i').click(function() {
-	                removeThumbnail(this, fileId);
-	            });
-	            $('#thumbnailArea > div').append(thumbnail);
-	            formData.append(fileId, input.files[0]); // 파일을 formData에 추가합니다.
-	        }
-	
-	        reader.readAsDataURL(input.files[0]);
+// 	        reader.readAsDataURL(input.files[0]); // url 형태로 파일을 반환
 	    }
 	}
 	
+	// 썸네일 제거하여 파일 제거
 	function removeThumbnail(del, fileId) {
-	    var thumbnail = $(del).parent();
+	    var thumbnail = $(del).parent(); // imageArea의 부모인 thumnail 클래스 지정
 	
-	    formData.delete(fileId); // 파일을 formData에서 제거합니다.
+	    formData.delete(fileId); // key가 fileId인 값을 formdata에서 제거
 	
 	    // 파일 입력 필드의 값을 조정합니다.
-	    var nextFileId = Number(fileId.replace('file', '')) + 1;
-	    while (formData.get('file' + nextFileId)) {
+	    var nextFileId = Number(fileId.replace('file', '')) + 1; // 삭제 파일Id의 인덱스 + 1
+	    while (formData.get('file' + nextFileId)) { // 다음 인덱스부터 마지막까지 반복
+	    	// 삭제된 순번의 자리에 다음 순번 파일을 넣기
 	        formData.set('file' + (nextFileId - 1), formData.get('file' + nextFileId));
 	        nextFileId++;
 	    }
-	    formData.delete('file' + (nextFileId - 1));
+	    formData.delete('file' + (nextFileId - 1)); // 마지막 파일 제거
 	
-	    thumbnail.remove();
+	    // 인풋 태그의 파일 제거(동일 파일 제거 후 재업로드시 onchange를 위함)
+	    $("#" + fileId).val('');
+	    
+	    thumbnail.remove(); // 썸네일 영역 삭제
+	    
 	}
 	// ---- 이미지 파일 처리 ----
 </script>
@@ -403,7 +484,7 @@
 				    	<div class="row">
 					    	<div class="col-xl-4 col-md-6 col-sm-6 col-6">
 								<select class="formCategory form-select mb-3 formFocus" name="community_category" required>
-										<option selected disabled value="0">카테고리</option>
+										<option selected disabled value="">카테고리</option>
 										<option value="1">동네소식</option>
 										<option value="2">동네질문</option>
 										<option value="3">일상</option>
@@ -416,12 +497,6 @@
 									<input type="text" class="form-control form-control-lg formFocus" id="title" name="community_subject" required>
 									<label id="titleLenth" for="title">제목 (0/40)</label>
 								</div>
-<!-- 								<div class="input-group"> -->
-<!-- 									<input type="text" name="name" class="form-control form-control-lg" placeholder="제목을 입력하세요"> -->
-<!-- 								</div> -->
-<!-- 								<div class="form-text" id="tBottom"> -->
-<!-- 									(0/40) -->
-<!-- 								</div> -->
 							</div>
 						</div>
 				   	</div>
@@ -431,20 +506,13 @@
 							<label id="contentLength" for="content">내용 (0/1000)</label>
 						</div>
 				    </div>
-<!-- 				    <div class="post-file mt-3"> -->
-<!-- 				    	<input type="file" name="file1"> -->
-<!-- 				    	<input type="file" name="file2"> -->
-<!-- 				    	<input type="file" name="file3"> -->
-<!-- 				    	<input type="file" name="file4"> -->
-<!-- 				    	<input type="file" name="file5"> -->
-<!-- 				    </div> -->
 				    <div class="post-file mt-3" id="uploadArea">
 				    	<div class="row mx-auto" style="height:110px;">
 							<div class="col-2 border rounded-3 h-100 me-2" id="fileArea" onclick="clickFile()">
 							<i class="material-icons d-flex justify-content-center" style="font-size:110px;">image</i>
 							</div>
-							<div class="col border rounded-3 d-flex align-items-center" id="thumbnailArea">
-								<div class="scrolling-wrapper row flex-nowrap mx-auto">
+							<div class="col border rounded-3 d-flex align-items-center h-100" id="thumbnailArea">
+								<div class="scrolling-wrapper row flex-nowrap mx-auto h-100">
 								</div>
 							</div>
 							<input type="file" id="file1" name="file1" style="display:none" onchange="showThumbnail(this)">

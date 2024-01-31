@@ -215,12 +215,15 @@ textarea.form-control {
 }
 
 /* 작성자 표시 */
-.writerInfo {
-	font-size: 12px;
-	padding-left: 0.1rem;
-	padding-right: 0.1rem;
-	background-color: #eee;
-	color: #000;
+/* .writerInfo { */
+/* 	font-size: 12px; */
+/* 	padding-left: 0.1rem; */
+/* 	padding-right: 0.1rem; */
+/* 	background-color: #eee; */
+/* 	color: #000; */
+/* } */
+.badge {
+	background-color: #39d274;
 }
 
 /* 댓글 줄바꿈 설정 */
@@ -289,6 +292,19 @@ textarea.form-control {
     .scrolling-wrapper::-webkit-scrollbar-thumb:hover {
       background: #555; 
     }
+    
+.imageArea .delBtn {
+	cursor: pointer;
+	transition: 0.5s;
+}
+
+.imageArea .delBtn:hover {
+	color: #f00;
+	transition: 0.5s;
+}
+    
+    
+/* ==================== 반응형 설정 ====================== */    
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
 	.communityForm, .communityDetail, .post, .reply, #commandCell {
@@ -325,5 +341,10 @@ textarea.form-control {
 	
 	.likeCount {
 		padding-left: 0.25rem !important;
+	}
+	
+	/* 댓글버튼 */
+	#replySubmit {
+		width: 20% !important;
 	}
 }

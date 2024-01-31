@@ -398,6 +398,44 @@
 		DELETE FROM TempCommunity
 		WHERE temp_writer = #{community_writer}
 	</delete>
+	
+	<!-- 이미지 등록 ajax -->
+	<insert id="insertTempImage">
+		INSERT INTO TempCommunity (temp_id, temp_writer, temp_image1, temp_image2, temp_image3, temp_image4, temp_image5, temp_datetime)
+		VALUES(
+			null
+			, #{community_writer}
+			, CASE WHEN #{community_image1} = "" then "" ELSE #{community_image1} END
+			, CASE WHEN #{community_image2} = "" then "" ELSE #{community_image2} END
+			, CASE WHEN #{community_image3} = "" then "" ELSE #{community_image3} END
+			, CASE WHEN #{community_image4} = "" then "" ELSE #{community_image4} END
+			, CASE WHEN #{community_image5} = "" then "" ELSE #{community_image5} END
+			, now()
+		)
+	</insert>
+	<!-- 이미지 등록 ajax -->
+	<update id="updateTempImage">
+		UPDATE TempCommunity
+		SET
+			<choose>
+				<when test="!community_image1.equals('')">
+					temp_image1 = #{community_image1}
+				</when>
+				<when test="!community_image2.equals('')">
+					temp_image2 = #{community_image2}
+				</when>
+				<when test="!community_image3.equals('')">
+					temp_image3 = #{community_image3}
+				</when>
+				<when test="!community_image4.equals('')">
+					temp_image4 = #{community_image4}
+				</when>
+				<when test="!community_image5.equals('')">
+					temp_image5 = #{community_image5}
+				</when>
+			</choose>
+		WHERE temp_writer = #{community_writer}
+	</update>
 </mapper>
 
 

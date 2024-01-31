@@ -1,8 +1,14 @@
 package com.itwillbs.c5d2308t1_2.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +46,7 @@ public class CommunityService {
 		map = mapper.selectCommunity(com);
 		
 		// 조회 결과가 존재하고 isIncreaseReadcount 가 true 일 경우 조회수 증가 작업 요청
-		if(com != null && isIncreaseReadcount) {
+		if(map != null && isIncreaseReadcount) {
 			mapper.updateReadcount(com);
 			map.put("community_readcount", (int)map.get("community_readcount") + 1);
 		}
@@ -141,8 +147,40 @@ public class CommunityService {
 	}
 
 	// 임시저장 게시글 삭제
-	public int removeTempCommunity(CommunityVO com) {
+	public int removeTempCommunity(CommunityVO com, HttpSession session) {
+		Map<String, Object> map = mapper.selectTempCommunity(com);
+		
+		try {
+			String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+			String saveDir = session.getServletContext().getRealPath(uploadDir);
+			
+			// 파일명이 널스트링이 아닐 경우에만 삭제 작업 수행
+			if(!map.get("temp_image1").equals("")) {
+				Path path = Paths.get(saveDir + "/" + com.getCommunity_image1());
+				Files.deleteIfExists(path);
+				
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return mapper.deleteTempCommunity(com);
+	}
+	
+	// 사진 업로드 ajax 처리
+	public int registTempImage(CommunityVO com) {
+		int count = 0;
+		
+		// 임시저장한 게시글 조회
+		Map<String, Object> map = mapper.selectTempCommunity(com);
+		
+		if(map == null) {
+			count = mapper.insertTempImage(com);
+		} else {
+			count = mapper.updateTempImage(com);
+		}
+		
+		return count;
 	}
 
 

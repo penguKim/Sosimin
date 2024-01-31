@@ -120,36 +120,31 @@
 			}
 		});
         
-	    $('#reReplyTextarea').on('keyup', function() {
-	    	console.log(asd);
+        // 댓글 글자수 제한
+	    $('#replyTextarea').on('keyup', function() {
 	        var text = $(this).val();
 	        
 	        // 텍스트 제한
 	        if(text.length == 0 || text == "") {
-		        $('#reReLenth').text('(0/40)자');
+		        $('#reLenth').text('(0/100)자까지 입력이 가능합니다.');
 	        } else {
-		        $('#reReLenth').text('(' + text.length + '/40)자까지 입력');
+		        $('#reLenth').text('(' + text.length + '/100)자까지 입력이 가능합니다.');
 	        }
-// 	        if(text.length == 0 || text == "") {
-// 		        $('#reReLenth').text('(0/40)자까지 입력이 가능합니다.');
-// 	        } else {
-// 		        $('#reReLenth').text('(' + text.length + '/40)자까지 입력이 가능합니다.');
-// 	        }
 	        
 	        // 글자수 제한
-	        if (text.length > 40) {
+	        if (text.length > 100) {
 	        	// 제한수 넘으면 자르기
-	            $(this).val($(this).val().substring(0, 40));
+	            $(this).val($(this).val().substring(0, 100));
 	            
 				Swal.fire({
 					position: 'center',
 					icon: 'warning',
-					title: '글자수는 40자까지 입력 가능합니다.',
+					title: '글자수는 100자까지 입력 가능합니다.',
 					showConfirmButton: false,
 					timer: 2000,
 					toast: true
 				});
-	        };
+	        }
 	    });
         
         // 게시글 수정
@@ -291,13 +286,40 @@
 				+ '<input type="hidden" name="reply_re_ref" value="' + reply_re_ref + '">'
 				+ '<input type="hidden" name="reply_re_lev" value="' + reply_re_lev + '">'
 				+ '<input type="hidden" name="reply_re_seq" value="' + reply_re_seq + '">'
-				+ '<textarea class="form-control" id="reReplyTextarea" name="reply_content" required></textarea>'
+				+ '<textarea class="form-control" id="reReplyTextarea" name="reply_content" required onkeyup="reReplyCheck()"></textarea>'
 				+ '<input type="submit" class="btn btn-primary" value="댓글쓰기" id="reReplySubmit" onclick="reReplyWrite()">'
 				+ '</form>'
 				+ '<label id="reReLenth" for="reReplyTextarea" style="color: #888;">(0/40)자까지 입력이 가능합니다.</label>'
 				+ '</div>'
 				+ '</div>'
 		);
+	}
+	
+	// 대댓글 글자수 제한
+	function reReplyCheck() {
+        var text = $("#reReplyTextarea").val();
+        
+        // 텍스트 제한
+        if(text.length == 0 || text == "") {
+	        $('#reReLenth').text('(0/100)자까지 입력이 가능합니다.');
+        } else {
+	        $('#reReLenth').text('(' + text.length + '/100)자까지 입력이 가능합니다.');
+        }
+        
+        // 글자수 제한
+        if (text.length > 100) {
+        	// 제한수 넘으면 자르기
+            $(this).val($(this).val().substring(0, 100));
+            
+			Swal.fire({
+				position: 'center',
+				icon: 'warning',
+				title: '글자수는 100자까지 입력 가능합니다.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+        }
 	}
 	
 	// 대댓글 작성
@@ -461,11 +483,11 @@
 						</c:when>
 						<c:otherwise>
 							<textarea class="form-control" id="replyTextarea" name="reply_content" required></textarea>
-							<input type="submit" class="btn btn-primary col-2" value="댓글쓰기" id="replySubmit" onclick="ReplyWrite()">
+							<input type="submit" class="btn btn-primary col-2 px-0" value="댓글쓰기" id="replySubmit" onclick="ReplyWrite()">
 						</c:otherwise>
 					</c:choose>
 				</form>
-				<label class="titleLenth" for="replyTextarea">(0/40)자까지 입력이 가능합니다.</label>
+				<label id="reLenth" for="replyTextarea">(0/100)자까지 입력이 가능합니다.</label>
 				<div id="replyListArea">
 					<table class="table">
 					<c:forEach var="reply" items="${replyList }">
@@ -480,7 +502,8 @@
 											<div class="col">
 												<span class="me-2 mb-2">${reply.reply_writer }</span>
 												<c:if test="${reply.reply_writer eq sessionScope.sId }"> <%-- 댓글 작성자 표시 --%>
-													<span class="writerInfo border rounded-3 me-3 align-middle">작성자</span>
+													<span class="badge rounded-pill text-bg-secondary">작성자</span>
+<!-- 													<span class="writerInfo border rounded-3 me-3 align-middle">작성자</span> -->
 												</c:if>
 <%-- 												<span class="float-end">${reply.reply_datetime }</span> --%>
 											</div>
