@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,24 +33,29 @@ $(function() {
 	$.ajax({
 		url: "StoreProductList",
 		dataType: 'json',
-		success: function(result) {
-			for(let i = 0; i < result.length; i++) {
+		success: function(data) {
+		    let productList = data[0]; 
+		    let pageInfo = data[1];
+		    let pageNum = data[2];
+		    
+		    
+			for(let i = 0; i < productList.length; i++) {
 				$(".productList").append(
 					'<div class="col-lg-4-1 col-md-6 col-12" >'
 						+ ' <div class="single-product" >'
 							+ ' <a href="ProductDetail" class="product-image">'
-								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + result[i].product_image1 + '" alt="#">'
+								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#">'
 							+ ' </a>'
 							+ ' <div class="product-info">'
-								+ '<h6>' + result[i].productList.product_name + '</h6>'
+								+ '<h6>' + productList[i].product_name + '</h6>'
 							+ ' <div class="heart position-absolute bottom-0 start-0"></div>'
 									+ ' <ul class="review">'
-										+ ' <li><span>' +  result[i].productList.dong + '</span></li>'
+										+ ' <li><span>' +  productList[i].dong + '</span></li>'
 										+ ' <li><span>|</span></li>'
-										+ ' <li><span>' + result[i].productList.product_datetime + '</span></li>'
+										+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
 									+ ' </ul>'
 								+ ' <div class="price">'
-									+ ' <span>' + result[i].productList.product_price + '원</span>'
+									+ ' <span>' + productList[i].product_price + '원</span>'
 								+ ' </div>'
 								+ ' <div>'
 									+ '	<span>Pay</span>' 
@@ -58,9 +65,40 @@ $(function() {
 					+ ' </div>'
 				);
 			}
+			
+			
+			<%-- 페이징 처리 --%>
+			$(".productList").after(
+				    '<nav aria-label="Page navigation">'
+				    + '<ul class="pagination justify-content-center">'
+				    
+				    + '<li class="page-item" id="prevPage">'
+				    + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + '" class="page-link">&laquo;</a>'
+				    + '</li>'
+				    + (function() {
+				        let pages = '';
+				        for (let i = pageInfo.startPage; i < pageInfo.endPage; i++) {
+				            if (pageNum === 1) {
+				                pages += '<li class="page-item active"><span class="page-link">' + i + '</span></li>';
+				            } else {
+				                pages += '<li class="page-item">'
+				                    + '<a href="SearchProduct?pageNum=' + i + '" class="page-link">' + i + '</a>'
+				                    + '</li>';
+				            }
+				        }
+				        return pages;
+				    })()
+				    + '<li class="page-item" id="nextPage">'
+				    + '<a href="SearchProduct?pageNum=' + (pageNum + 1) +'" class="page-link">&raquo;</a>'
+				    + '</li>'
+				    + '</ul>'
+				    + '</nav>'
+				);
+			
+			
 		},
 		error: function() {
-			alert("안되나");
+			alert("오류");
 		}
 		
 	});
@@ -87,7 +125,8 @@ $(function() {
 // 필터링 옵션 처리 후 ajax
 function filtering() {
 	price = $("input[name='priceRadio']:checked").val();
-
+	pageNum = 
+	
 	let productStatus = "";  
     $("input[name=productStatus]:checked").each(function(index) {  
     	productStatus += $(this).val() + ",";  
@@ -118,6 +157,11 @@ function filtering() {
 
 </script>
 <body>
+	<%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1 로 저장) --%>
+	<c:set var="pageNum" value="1" />
+	<c:if test="${not empty param.pageNum }">
+		<c:set var="pageNum" value="${param.pageNum }" />
+	</c:if>
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
@@ -334,28 +378,27 @@ function filtering() {
                                         <!-- End Single Product -->
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <!-- Pagination -->
-                                        <div class="pagination left">
-                                            <ul class="pagination-list">
-                                                <li><a href="javascript:void(0)">1</a></li>
-                                                <li class="active"><a href="javascript:void(0)">2</a></li>
-                                                <li><a href="javascript:void(0)">3</a></li>
-                                                <li><a href="javascript:void(0)">4</a></li>
-                                                <li><a href="javascript:void(0)"><i
-                                                            class="lni lni-chevron-right"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <!--/ End Pagination -->
-                                    </div>
-                                </div>
+<!--                                 <div class="row"> -->
+<!--                                     <div class="col-12"> -->
+<!--                                         Pagination -->
+<!--                                         <div class="pagination left"> -->
+<!--                                             <ul class="pagination-list"> -->
+<!--                                                 <li><a href="javascript:void(0)">1</a></li> -->
+<!--                                                 <li class="active"><a href="javascript:void(0)">2</a></li> -->
+<!--                                                 <li><a href="javascript:void(0)">3</a></li> -->
+<!--                                                 <li><a href="javascript:void(0)">4</a></li> -->
+<!--                                                 <li><a href="javascript:void(0)"><i -->
+<!--                                                             class="lni lni-chevron-right"></i></a></li> -->
+<!--                                             </ul> -->
+<!--                                         </div> -->
+<!--                                         / End Pagination -->
+<!--                                     </div> -->
+<!--                                 </div> -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
     <!-- End Product Grids -->
     <footer class="footer">

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -107,8 +108,14 @@ public class ProductController {
 		// ===============================================================================================
 		JSONArray jsonArray = new JSONArray();
 		jsonArray.put(productList);
-		jsonArray.put(pageInfo);
 		
+		JSONObject jPage = new JSONObject(pageInfo); 
+		jsonArray.put(jPage);
+		jsonArray.put(pageNum);
+		
+		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>> 리스트" + productList);
+		System.out.println(">>>>>>>>>>>>>>>>>>>> 페이징" + jPage);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> : " + jsonArray);
 		
 		// 로그인 시 사용자 지역, 날짜 최신순으로 나열

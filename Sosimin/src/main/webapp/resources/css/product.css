@@ -137,3 +137,12 @@
 	cursor: pointer;
 }
 
+/* 페이징 */
+.pagination {
+    display: flex;
+}
+
+.page-link {
+	color: #39d274;
+}
+
