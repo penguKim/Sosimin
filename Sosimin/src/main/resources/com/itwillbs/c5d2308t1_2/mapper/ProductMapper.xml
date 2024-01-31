@@ -91,8 +91,8 @@
 		WHERE product_id = 190;
 	</select>
 
-	<select id="RelatedProducts" resultType="String">
-		SELECT product_name, tag_name, member_id
-		FROM Product
-	</select>
+<!-- 	<select id="RelatedProducts" resultType="String"> -->
+<!-- 		SELECT product_name, tag_name, member_id -->
+<!-- 		FROM Product -->
+<!-- 	</select> -->
 </mapper>

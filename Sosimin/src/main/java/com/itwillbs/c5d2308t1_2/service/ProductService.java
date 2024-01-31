@@ -54,10 +54,10 @@ public class ProductService {
 		return mapper.productBoardInsert();
 	}
 
-	public List<String> selectRelatedProducts(MemberVO member, String sId) {
-		
-		return mapper.RelatedProducts(member, sId);
-	}
+//	public List<String> selectRelatedProducts(MemberVO member, String sId) {
+//		
+//		return mapper.RelatedProducts(member, sId);
+//	}
 
 
 	
