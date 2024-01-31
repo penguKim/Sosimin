@@ -159,6 +159,16 @@ function openModal() {
 			toast: true
 		});
 		$('#pay-amount').focus();
+	} else if($('#pay-amount').val() < 1000) {
+		Swal.fire({
+			position: 'center',
+			icon: 'error',
+			title: '최소 환급 금액은 1,000원입니다.',
+			showConfirmButton: false,
+			timer: 2000,
+			toast: true
+		});
+		$('#pay-amount').focus();
 	} else {
 	    $('#password-modal').modal('show');
     	$('#pay-password').val(''); // 입력 필드를 초기 값으로 설정

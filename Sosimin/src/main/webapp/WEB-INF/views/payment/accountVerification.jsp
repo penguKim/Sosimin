@@ -52,6 +52,65 @@ $(function() {
 		    location.reload(); <%-- 페이지 새로고침 --%>
 		}
 	});
+	
+    $("#agreeAll").on("change", function() {
+        if ($("#agreeAll").prop("checked")) {
+            $(":checkbox").prop("checked", true);
+        } else {
+            $(":checkbox").prop("checked", false);
+        }
+    });
+
+    $(":checkbox[name=agree]").on("change", function() {
+        var allChecked = true;
+        $(":checkbox[name=agree]").each(function() {
+            if (!$(this).prop("checked")) {
+                allChecked = false;
+                return false; // 반복문 종료
+            }
+        });
+
+        $("#agreeAll").prop("checked", allChecked);
+    });
+
+    // 필수 약관에 동의해야 계좌인증 가능
+    $(".btn").on("click", function() {
+        if (!$("input:checkbox[name=agree]").eq(0).prop("checked")) {
+        	Swal.fire({
+    			position: 'center',
+    			icon: 'error',
+    			title: '소심페이 서비스 약관에 동의를 해주세요.',
+    			showConfirmButton: false,
+    			timer: 2000,
+    			toast: true
+    		});
+        } else if (!$("input:checkbox[name=agree]").eq(1).prop("checked")) {
+        	Swal.fire({
+    			position: 'center',
+    			icon: 'error',
+    			title: '고유식별정보처리 동의를 해주세요.',
+    			showConfirmButton: false,
+    			timer: 2000,
+    			toast: true
+    		});
+        } else if (!$("input:checkbox[name=agree]").eq(2).prop("checked")) {
+        	Swal.fire({
+    			position: 'center',
+    			icon: 'error',
+    			title: '개인정보 제3자 동의를 해주세요.',
+    			showConfirmButton: false,
+    			timer: 2000,
+    			toast: true
+    		});
+        } else {
+        	authAccount();
+        }
+    });
+	
+	
+	
+	
+	
 });
 </script>
 </head>
@@ -108,9 +167,20 @@ $(function() {
                             </div>
 <%--                             <c:choose> --%>
 <%--                             	<c:when test="${empty sessionScope.access_token}"> --%>
-		                           	<div class="msg">계좌를 인증해주세요</div>
+		                           	<div class="msg">소심페이 가입하기</div>
+		                           	<p>소심페이에 가입하기 위해 계좌를 인증해주세요</p>
+		                           	<br>
+		                           	<input type="checkbox" class="form-check-input" id="agreeAll">
+		                           	<label for="agreeAll"> 약관 모두 동의</label><br>
+		                           	<hr>
+		                           	<input type="checkbox" class="form-check-input" name="agree" id="required1">
+		                           	<label for="required1"> (필수) 소심페이 서비스 약관</label> <a href="">(전문보기)</a> <br>
+		                           	<input type="checkbox" class="form-check-input" name="agree" id="required2">
+		                           	<label for="required2"> (필수) 고유식별정보처리 동의</label> <a href="">(전문보기)</a> <br>
+		                           	<input type="checkbox" class="form-check-input" name="agree" id="required3">
+		                           	<label for="required3"> (필수) 개인정보 제3자 동의</label> <a href="">(전문보기)</a> <br>
 		                            <div class="button">
-		                                <button class="btn" onclick="authAccount()">계좌인증하기</button>
+		                                <button class="btn">계좌인증하기</button>
 		                            </div>
 <%--                             	</c:when> --%>
 <%--                             	<c:otherwise> --%>

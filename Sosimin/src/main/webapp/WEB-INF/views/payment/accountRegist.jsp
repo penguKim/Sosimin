@@ -151,10 +151,10 @@ $(function() {
 	                            <!-- 계좌리스트 한 줄 시작 -->
 				                <div class="cart-single-list">
 				                    <div class="row align-items-center">
-				                        <div class="col-lg-2 col-md-2 col-12">
+				                        <div class="col-lg-3 col-md-3 col-12">
 				                           <p class="pay-info-sub">${userInfo.user_name}</p>
 				                        </div>
-				                        <div class="col-lg-6 col-md-6 col-12">
+				                        <div class="col-lg-5 col-md-5 col-12">
 				                            <h5 class="bank-name">${account.bank_name}</h5>
 				                            <p class="account-no">
 				                               ${account.account_num_masked}

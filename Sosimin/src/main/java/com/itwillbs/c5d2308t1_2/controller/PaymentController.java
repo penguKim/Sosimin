@@ -117,8 +117,9 @@ public class PaymentController {
 		session.setAttribute("access_token", responseToken.getAccess_token());
 		session.setAttribute("user_seq_no", responseToken.getUser_seq_no());
 		
-		// 인증창을 닫고 계좌 등록 페이지로 이동
+		// 인증창을 닫고 페이 정보 페이지로 이동
 		model.addAttribute("msg", "계좌 인증이 완료되었습니다!");
+		model.addAttribute("msg3", "success");
 		model.addAttribute("isClose", true); // 현재 창(서브 윈도우) 닫도록 명령
 		model.addAttribute("targetURL", "PayInfo"); 
 		return "forward";
@@ -193,7 +194,11 @@ public class PaymentController {
 		int count = service.registPay(map);
 		
 		if(count > 0) { // 페이 가입이 되면
-			return "redirect:/PayInfo";
+			model.addAttribute("msg", "계좌 등록을 성공했습니다!");
+			model.addAttribute("msg2", "소심페이로 편리한 거래를 해보세요!");
+			model.addAttribute("msg3", "success");
+			model.addAttribute("targetURL", "PayInfo");	 // 로그인 페이지로 이동
+			return "forward";
 		} else {
 			model.addAttribute("msg", "계좌 등록을 실패하였습니다!");
 			model.addAttribute("msg2", "계좌 목록으로 돌아갑니다.");
