@@ -16,7 +16,7 @@
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 	<!-- >>>>>>>> 트랜잭션 설정 추가 <<<<<<<< -->
-	<tx:annotation-driven/>
+<!-- 	<tx:annotation-driven/> -->
 	
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
@@ -47,5 +47,7 @@
 <!-- 			</websocket:handshake-interceptors> -->
 <!-- 		</websocket:handlers> -->
 <!-- 	</beans:bean> -->
+
+	<context:property-placeholder location="classpath:/config/appdata.properties"/>
 	
 </beans:beans>

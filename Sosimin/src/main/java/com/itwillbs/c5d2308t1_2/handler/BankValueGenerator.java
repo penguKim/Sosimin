@@ -4,12 +4,17 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 // 핀테크 요청 작업에 사용할 다양한 값을 생성하는 클래스
 // => 스프링 빈으로 관리하기 위해 @Component 어노테이션 적용
 @Component
 public class BankValueGenerator {
+	
+	@Value("${cntr_num}")
+	private String cntr_num;
+	
 	// 거래고유번호 자동생성할 getBankTranId() 메서드 정의
 	// => 파라미터 : 없음    리턴타입 : String
 	// => 생성규칙(3.11. 거래고유번호(참가기관) 생성 안내)
@@ -19,7 +24,7 @@ public class BankValueGenerator {
 		
 		// GenerateRandomCode - getRandomCode() 메서드 사용 => 파라미터로 난수 길이 전달
 		// => 리턴받은 알파벳숫자 난수를 모두 대문자로 변환 시 toUpperCase() 메서드 활용
-		bank_tran_id = "M202113854" + "U" + GenerateRandomCode.getRandomCode(9).toUpperCase();
+		bank_tran_id = cntr_num + "U" + GenerateRandomCode.getRandomCode(9).toUpperCase();
 		
 		return bank_tran_id;
 	}
