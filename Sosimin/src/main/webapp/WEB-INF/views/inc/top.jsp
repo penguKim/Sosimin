@@ -462,14 +462,16 @@
 	                	판매하기  
                 	</a>
 
+
                 	<a href="./">
 	                	<img src="https://m.bunjang.co.kr/pc-static/resource/31370b164bc5b7cc4fef.png" width="23" height="24" alt="내상점버튼 이미지">
 	                	관심  
                 	</a>
-                	<a href="Chat">
+                	<a href="Chat2">
 	                	<img src="https://m.bunjang.co.kr/pc-static/resource/32554a59cf002b3def10.png" width="23" height="24" alt="번개톡버튼 이미지">
 	                	채팅톡
                 	</a>
+
 
                 </div>
             </div>

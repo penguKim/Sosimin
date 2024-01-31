@@ -48,6 +48,13 @@
 <!-- 		</websocket:handlers> -->
 <!-- 	</beans:bean> -->
 
+
 	<context:property-placeholder location="classpath:/config/appdata.properties"/>
+
+	<websocket:handlers allowed-origins="*">
+		<websocket:mapping handler="websocketHandler" path="echo"/>
+	</websocket:handlers>
+	<beans:bean id="websocketHandler" class="com.itwillbs.c5d2308t1_2.handler.ChatHandler"></beans:bean>
+
 	
 </beans:beans>

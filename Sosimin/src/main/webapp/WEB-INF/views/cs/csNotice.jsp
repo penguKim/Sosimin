@@ -43,20 +43,20 @@
 
 	
 	// 게시시간 변환
-	function timeAgo() {
-		let timeStamp = new Date("${cs.cs_datetime}".replace(" ", "T")).getTime(); // 비교 대상 시간
-	    let now = new Date();
-        secondsPast = (now.getTime() - timeStamp) / 1000;
+// 	function timeAgo() {
+// 		let timeStamp = new Date("${cs.cs_datetime}".replace(" ", "T")).getTime(); // 비교 대상 시간
+// 	    let now = new Date();
+//         secondsPast = (now.getTime() - timeStamp) / 1000;
 	    
-	    if(secondsPast < 60){
-	    	 $("#csDate").text("방금전");
-	    } else if(secondsPast < 60 * 60){
-	    	 $("#csDate").text(parseInt(secondsPast/60) + '분전');
-	    } else if(secondsPast <= 60 * 60 * 24){
-	    	 $("#csDate").text(parseInt(secondsPast/60 * 60) + '시간전');
-	    }
-	}
-	
+// 	    if(secondsPast < 60){
+// 	    	 $("#csDate").text("방금전");
+// 	    } else if(secondsPast < 60 * 60){
+// 	    	 $("#csDate").text(parseInt(secondsPast/60) + '분전');
+// 	    } else if(secondsPast <= 60 * 60 * 24){
+// 	    	 $("#csDate").text(parseInt(secondsPast/60 * 60) + '시간전');
+// 	    }
+// 	}
+});
 
 </script>
 </head>
