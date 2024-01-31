@@ -67,6 +67,9 @@
     z-index: 1;
     overflow: hidden;
 }
+.form-group input[type="button"]:focus {
+	border: 2px solid #081828;
+}
 
 .form-control {
 	width: 58% !important;
@@ -112,6 +115,18 @@
 .btn {
 	width: 20% !important;
 }
+
+.form-group #myMap {
+	padding: 0 18px !important;
+    transition: color .25s, background-color .25s, border-color .25s !important;
+    border: 1px solid #e0e0e0 !important;
+    color: #505050 !important;
+    font-size: 14px !important;
+    height: 46px !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+}
+
 /* =============== */
 /* 가입완료 페이지 */
 .card {

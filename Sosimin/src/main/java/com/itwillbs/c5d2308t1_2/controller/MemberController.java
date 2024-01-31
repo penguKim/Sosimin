@@ -1,6 +1,7 @@
 package com.itwillbs.c5d2308t1_2.controller;
 
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -56,6 +57,28 @@ public class MemberController {
 		}
 	}
 	
+	// 휴대폰번호 인증코드 발급 요청 AJAX
+	@ResponseBody
+	@GetMapping("requestPhoneAuthCode")
+	public String requestPhoneAuthCode(String member_phone) {
+		System.out.println("raw param from ajax call : " + member_phone); // 잘넘어옴
+		member_phone = member_phone.replace("-", "");
+		System.out.println("하이픈이 사라졌나요? : " + member_phone);
+		
+		Random rand = new Random();
+		String numStr = "";
+		for(int i = 0; i < 4; i++) {
+			String ran = Integer.toString(rand.nextInt(10));
+			numStr += ran;
+		}
+		
+		System.out.println("수신자 번호 : " + member_phone);
+		System.out.println("인증코드 : " + numStr);
+		
+		service.certifyPhoneNumber(member_phone, numStr);
+		
+		return numStr;
+	}
 	
 	// 회원가입 폼의 정보를 DB에 저장 후 가입 완료/축하 페이지로 이동
 	@PostMapping("MemberJoinPro")

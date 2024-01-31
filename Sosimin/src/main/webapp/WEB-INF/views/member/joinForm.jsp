@@ -118,6 +118,7 @@
 		let isDuplicateEmail = false; <%-- 이메일 중복 여부를 저장할 변수 선언 --%>
 		let iscorrectPhone = false; <%-- 휴대폰번호입력 여부 저장할 변수 선언 --%>
 		let isDuplicatePhone = false; <%-- 휴대폰번호 중복 여부를 저장할 변수 선언 --%>
+		let iscorrectPhoneAuthCode = false; <%-- 휴대폰번호 인증코드 입력 여부 저장할 변수 선언 --%>
 		
 		<%-- 이름 정규표현식 검증 --%>
 		$("#name").on("blur", function() {		
@@ -140,7 +141,8 @@
 				$("#checkIdResult").text("5~20자의 영문 소문자, 숫자를 조합해 입력해주세요").css("color", "red");
 				iscorrectId = false;
 			} else {
-				$("#checkIdResult").text("오른쪽의 버튼을 눌러 중복확인을 진행해주세요").css("color", "black");
+				$("#checkIdResult").text("오른쪽 버튼을 눌러 중복 확인을 진행해주세요").css("color", "black");
+				$("#checkIdDupButton").focus();
 				$("#checkIdDupButton").on("click", function() {
 					
 					<%-- AJAX를 통해 아이디 중복값 확인 --%>
@@ -152,26 +154,36 @@
 						dataType: "json",
 						success: function(result) {
 							if(result) { // 중복
-	 							$("#checkIdResult").text("이미 사용중인 아이디입니다").css("color", "red");
+	 							$("#checkIdResult").text("이미 사용 중인 아이디입니다").css("color", "red");
 	 							iscorrectId = false;
 	 							isDuplicateId = true;
 							} else { // 사용가능
 								$("#checkIdResult").text("사용 가능한 아이디입니다").css("color", "green");
+								$("#checkIdDupButton").blur();
 								iscorrectId = true;
 	 							isDuplicateId = false;
 							}
 								
 						},
-						error: function(request,status,error) {
+						error: function(xhr,textStatus,errorThrown) {
 						    // 요청이 실패한 경우 처리할 로직
-						    alert("AJAX 요청 실패!");
+						    alert("아이디 중복 판별 AJAX 요청 실패!");
 							console.log(xhr + ", " + textStatus + ", " + errorThrown);
 
 						}
 					}); // 중복 판별 ajax 요청 끝
 				}); // 중복확인 버튼 클릭 이벤트 끝
+				
 			}
 		});	// 아이디 blur 이벤트 끝
+
+		// 아이디 입력 값이 없는데 중복 확인 버튼을 클릭했을 경우
+		$("#checkIdDupButton").on("click", function() {
+			if($("#id").val() == "") {
+				alert("아이디를 입력해야 중복 확인이 가능합니다!");
+				$("#id").focus();
+			}
+		});
 
 		
 		<%-- 닉네임 정규표현식 검증 및 중복 확인 --%>
@@ -185,7 +197,8 @@
 					$("#checkNicknameResult").text("2~10자의 한글, 숫자를 입력해주세요").css("color", "red");
 					iscorrectNickname = false;
 				} else {
-					$("#checkNicknameResult").text("오른쪽의 버튼을 눌러 중복확인을 진행해주세요").css("color", "black");
+					$("#checkNicknameResult").text("오른쪽 버튼을 눌러 중복확인을 진행해주세요").css("color", "black");
+					$("#checkNicknameDupButton").focus();
 					$("#checkNicknameDupButton").on("click", function() {
 						
 						<%-- AJAX를 통해 아이디 중복값 확인 --%>
@@ -197,19 +210,20 @@
 							dataType: "json",
 							success: function(result) {
 								if(result) { // 중복
-		 							$("#checkNicknameResult").text("이미 사용중인 닉네임입니다").css("color", "red");
+		 							$("#checkNicknameResult").text("이미 사용 중인 닉네임입니다").css("color", "red");
 		 							iscorrectNickname = false;
 		 							isDuplicateNickname = true;
 								} else { // 사용가능
 									$("#checkNicknameResult").text("사용 가능한 닉네임입니다").css("color", "green");
+									$("#checkNicknameDupButton").blur();
 									iscorrectNickname = true;
 									isDuplicateNickname = false;
 								}
 									
 							},
-							error: function(request,status,error) {
+							error: function(xhr,textStatus,errorThrown) {
 							    // 요청이 실패한 경우 처리할 로직
-							    alert("AJAX 요청 실패!");
+							    alert("닉네임 중복 판별 AJAX 요청 실패!");
 								console.log(xhr + ", " + textStatus + ", " + errorThrown);
 	
 							}
@@ -224,6 +238,15 @@
 				// 아무튼 처리 후에 iscorrectNickname = true; isDuplicateNickname = false; 설정해줘야함 
 			//}
 		});	// 닉네임 blur 이벤트 끝
+		
+		// 닉네임 입력 값이 없는데 중복 확인 버튼을 클릭했을 경우
+		$("#checkNicknameDupButton").on("click", function() {
+			if($("#nickname").val() == "") {
+				alert("닉네임을 입력해야 중복 확인이 가능합니다!");
+				$("#nickname").focus();
+			}
+		});
+		
 		
 		
 		<%-- 비밀번호 정규표현식 검증 --%>
@@ -282,10 +305,10 @@
 		    	$("#checkPasswordConfirmResult").text("비밀번호가 일치합니다").css("color", "green");
 		    	isSamePassword = true;
 		    } else if(!iscorrectPassword && $("#password").val() == $("#passwordConfirm").val()) { // 불일치
-		    	$("#checkPasswordConfirmResult").text("비밀번호가 올바른지 확인해주세요").css("color", "red");		     	
+		    	$("#checkPasswordConfirmResult").text("비밀번호가 올바른지 확인해주세요").css("color", "red");
 		    	isSamePassword = false;
 		    } else { // 불일치
-		    	$("#checkPasswordConfirmResult").text("비밀번호가 일치하지 않습니다").css("color", "red");		     	
+		    	$("#checkPasswordConfirmResult").text("비밀번호가 일치하지 않습니다").css("color", "red");
 		    	isSamePassword = false;
 		    }
 			
@@ -296,7 +319,7 @@
 		    	$("#checkPasswordConfirmResult").text("비밀번호가 일치합니다").css("color", "green");
 		    	isSamePassword = true;
 		    } else if(!iscorrectPassword && $("#password").val() == $("#passwordConfirm").val()) { // 불일치
-		    	$("#checkPasswordConfirmResult").text("비밀번호가 올바른지 확인해주세요").css("color", "red");		     	
+		    	$("#checkPasswordConfirmResult").text("비밀번호가 올바른지 확인해주세요").css("color", "red");	
 		    	isSamePassword = false;
 		    }  else { // 불일치
 		    	$("#checkPasswordConfirmResult").text("비밀번호가 일치하지 않습니다").css("color", "red");		     	
@@ -309,7 +332,6 @@
 		$("#birthdate").on("click", function() {
 			if(!$(this).hasClass("clicked")) {
 				if(confirm("만 14세 이상만 가입할 수 있습니다. 동의하십니까?")) {
-					$(this).focus();
 					$(this).addClass("clicked");
 					<%-- 만 14세 미만은 가입하지 못하도록 날짜 선택 범위 제한  --%>
 					// 현재 날짜를 가져옵니다.
@@ -356,7 +378,8 @@
 				$("#checkEmailResult").text("이메일 주소가 올바른지 확인해주세요").css("color", "red");
 				iscorrectEmail = false;
 			} else {
-				$("#checkEmailResult").text("오른쪽의 버튼을 눌러 중복확인을 진행해주세요").css("color", "black");
+				$("#checkEmailResult").text("오른쪽 버튼을 눌러 중복 확인을 진행해주세요").css("color", "black");
+				$("#checkEmailDupButton").focus();
 				$("#checkEmailDupButton").on("click", function() {
 					
 					<%-- AJAX를 통해 이메일 중복값 확인 --%>
@@ -368,19 +391,20 @@
 						dataType: "json",
 						success: function(result) {
 							if(result) { // 중복
-	 							$("#checkEmailResult").text("이미 사용중인 이메일입니다").css("color", "red");
+	 							$("#checkEmailResult").text("이미 사용 중인 이메일입니다").css("color", "red");
 	 							iscorrectEmail = false;
 	 							isDuplicateEmail = true;
 							} else { // 사용가능
 								$("#checkEmailResult").text("사용 가능한 이메일입니다").css("color", "green");
+								$("#checkEmailDupButton").blur();
 								iscorrectEmail = true;
 	 							isDuplicateEmail = false;
 							}
 								
 						},
-						error: function(request,status,error) {
+						error: function(xhr,textStatus,errorThrown) {
 						    // 요청이 실패한 경우 처리할 로직
-						    alert("AJAX 요청 실패!");
+						    alert("이메일 중복 판별 AJAX 요청 실패!");
 							console.log(xhr + ", " + textStatus + ", " + errorThrown);
 
 						}
@@ -388,6 +412,14 @@
 				}); // 중복확인 버튼 클릭 이벤트 끝
 			}
 		});	// 이메일 blur 이벤트 끝
+		
+		// 이메일 입력 값이 없는데 중복 확인 버튼을 클릭했을 경우
+		$("#checkEmailDupButton").on("click", function() {
+			if($("#email").val() == "") {
+				alert("이메일을 입력해야 중복 확인이 가능합니다!");
+				$("#email").focus();
+			}
+		});
 		
 		<%-- 전화번호에 자동 "-" 입력 --%>
 		$("#phone").keyup(function(){
@@ -400,22 +432,16 @@
 		});
 		
 		
-		<%-- 전화번호 본인인증 기능 구현 후 중복확인 필수!!!! --%>
-		<%-- 전화번호 본인인증 기능 구현 후 중복확인 필수!!!! --%>
-		<%-- 전화번호 본인인증 기능 구현 후 중복확인 필수!!!! --%>
-		<%-- 전화번호 본인인증 기능 구현 후 중복확인 필수!!!! --%>
-		<%-- 전화번호 본인인증 기능 구현 후 중복확인 필수!!!! --%>
-		<%-- 전화번호 본인인증 기능 구현 후 중복확인 필수!!!! --%>
-		<%-- 전화번호 본인인증 기능 구현 후 중복확인 필수!!!! --%>
 		$("#phone").on("blur", function() {		
 			var member_phone = $("#phone").val();
-			
-			if(member_phone == "") {
-				$("#checkPhoneResult").text("휴대폰 번호를 입력해주세요").css("color", "red");
+			let regPhone = /^010-\d{4}-\d{4}$/; <%-- 010으로 시작하는 11자리 숫자 --%>
+
+			if(!regPhone.test(member_phone)) {
+				$("#checkPhoneResult").text("휴대폰 번호를 확인해주세요").css("color", "red");
 				iscorrectPhone = false;
 			} else {
 				iscorrectPhone = true;
-				<%-- AJAX를 통해 휴대폰번호 중복값 확인 --%>
+				<%-- 인증 코드 발송 전 AJAX를 통해 휴대폰번호 중복 여부 확인 --%>
 				$.ajax({
 					url: "checkDupMemberInfo",
 					data: {
@@ -428,22 +454,81 @@
  							iscorrectPhone = false;
  							isDuplicatePhone = true;
 						} else { // 사용가능
-							$("#checkPhoneResult").text("사용 가능한 휴대폰 번호입니다").css("color", "green");
+							$("#checkPhoneResult").text("사용 가능한 번호입니다. 버튼을 눌러 인증코드를 받아주세요.").css("color", "green");
+							$("#requestPhoneAuthCodeButton").focus();
 							iscorrectPhone = true;
 							isDuplicatePhone = false;
+							
+							// 인증코드발급 버튼 클릭 시 이벤트 처리
+							$("#requestPhoneAuthCodeButton").on("click", function() {
+								alert("인증코드 발송 완료");	
+// 								$("#requestPhoneAuthCodeButton").blur();
+								$.ajax({
+									url: "requestPhoneAuthCode",
+									data: {
+										"member_phone": member_phone
+									},
+									dataType: "json",
+									success: function(result) {
+										console.log("result : " + result);
+										
+										// 인증 버튼 클릭 시 코드값 비교해 인증 완료 처리해야함
+										$("#completePhoneAuthButton").on("click", function() {
+											let phone_auth_code = $("#phoneAuthCode").val(); 	
+										
+											if(phone_auth_code == "") {
+												$("#checkPhoneAuthCodeResult").text("인증코드를 입력해주세요").css("color", "red");
+												iscorrectPhoneAuthCode = false;
+											} else {
+												if($.trim(result) == phone_auth_code) {
+													alert("휴대폰 인증이 정상적으로 완료되었습니다!");
+													iscorrectPhoneAuthCode = true;
+												} else {
+													alert("인증 코드가 올바르지 않습니다. 다시 인증해주세요!");
+												}
+											}
+										});
+										
+										
+									},
+									error: function(xhr,textStatus,errorThrown) {
+									    // 요청이 실패한 경우 처리할 로직
+									    alert("휴대폰 인증 코드 발급 AJAX 요청 실패!");
+										console.log(xhr + ", " + textStatus + ", " + errorThrown);
+									}
+								}); // 인증코드 발급 ajax 끝			
+								
+							
+							
+							});
+							
 						}
 							
-					},
-					error: function(request,status,error) {
+					}, // 중복 체크 ajax success 끝
+					error: function(xhr,textStatus,errorThrown) {
 					    // 요청이 실패한 경우 처리할 로직
-					    alert("AJAX 요청 실패!");
+					    alert("휴대폰 번호 중복 판별 AJAX 요청 실패!");
 						console.log(xhr + ", " + textStatus + ", " + errorThrown);
 					}
-				});
+				});// 중복 체크 ajax 끝
 	        }
 		});	// 휴대폰번호 blur 이벤트 끝
 		
+		// 휴대폰번호 입력 값이 없는데 인증코드발급 버튼을 클릭했을 경우
+		$("#requestPhoneAuthCodeButton").on("click", function() {
+			if($("#phone").val() == "") {
+				alert("휴대폰번호를 입력해야 인증코드 발급이 가능합니다!");
+				$("#phone").focus();
+			}
+		});
 		
+		// 인증코드 입력 값이 없는데 인증 버튼을 클릭했을 경우
+		$("#completePhoneAuthButton").on("click", function() {
+			if($("#phoneAuthCode").val() == "") {
+				alert("인증코드를 입력해야 인증 확인이 가능합니다!");
+				$("#phoneAuthCode").focus();
+			}
+		});
 		
 		
 
@@ -458,14 +543,14 @@
 				$("#id").focus();
 				return false; // submit 동작 취소
 			} else if(isDuplicateId) { // 아이디 중복
-				$("#checkIdResult").text("아이디 중복 확인을 해주세요").css("color", "red");
+				$("#checkIdResult").text("이미 사용 중인 아이디입니다").css("color", "red");
 				$("#id").focus();
 				return false; // submit 동작 취소
 			} else if(!iscorrectNickname) { // 닉네임 미입력 또는 정규표현식 위배
 				$("#checkNicknameResult").text("2~10글자의 한글, 숫자를 입력해주세요").css("color", "red");
 				$("#nickname").focus();
 			} else if(isDuplicateNickname) { // 닉네임 중복
-				$("#checkNicknameResult").text("닉네임 중복 확인을 해주세요").css("color", "red");
+				$("#checkNicknameResult").text("이미 사용 중인 닉네임입니다").css("color", "red");
 				$("#nickname").focus();
 				return false; // submit 동작 취소
 			} else if(!iscorrectPassword) { // 비밀번호 미입력 또는 정규표현식 위배 
@@ -492,7 +577,7 @@
 				$("#email").focus();
 				return false; // submit 동작 취소
 			} else if(isDuplicateEmail) { // 이메일 중복
-				$("#checkEmailResult").text("이메일 중복 확인을 해주세요").css("color", "red");
+				$("#checkEmailResult").text("이미 사용 중인 이메일입니다").css("color", "red");
 				$("#email").focus();
 				return false; // submit 동작 취소
 			} else if(!iscorrectPhone) { // 휴대폰번호 미입력
@@ -500,15 +585,18 @@
 				$("#phone").focus();
 				return false; // submit 동작 취소
 			} else if(isDuplicatePhone) { // 휴대폰번호 중복
-				$("#checkPhoneResult").text("휴대폰번호 중복 확인을 해주세요").css("color", "red");
+				$("#checkPhoneResult").text("이미 사용 중인 휴대폰번호입니다").css("color", "red");
 				$("#phone").focus();
+				return false; // submit 동작 취소
+			} else if(!iscorrectPhoneAuthCode) { // 휴대폰 인증코드 미입력
+				$("#checkPhoneAuthCodeResult").text("인증 코드를 확인해주세요").css("color", "red");
+				$("#phoneAuthCode").focus();
 				return false; // submit 동작 취소
 			} else if(confirm("가입완료 버튼을 누르시면 회원으로 등록됩니다")) {
 				return true; 
 			} else {
 				return false;
 			}	
-			
 			return true; // submit 동작 수행(생략 가능)
 		});
 		
@@ -609,7 +697,7 @@
 							<div class="form-group">
 								<label for="reg-ln" id="mgForTwo">주소</label> 
 								<input type="hidden" id="map">
-								<input class="form-control" type="text" name="member_address" id="myMap" required readonly>
+								<input class="form-control" type="text" placeholder="버튼을 눌러 동네를 인증해주세요" name="member_address" id="myMap" required readonly>
 <!-- 								<input type="button" value="동네인증" id="myMapButton"> -->
 <!-- 								<input type="button" value="지도로찾기" id="myMapButton" onclick="AddressMap()"> -->
 								<input type="button" value="동네인증" id="myMapButton" onclick="AddressMap()">
@@ -622,10 +710,16 @@
 								<div id="checkEmailResult" class="resultArea"></div>
 							</div>
 							<div class="form-group">
-								<label for="reg-phone" id="mgForFive">휴대폰번호</label> 
-								<input class="form-control" placeholder="버튼을 클릭해 인증을 진행해주세요" type="tel" name="member_phone" id="phone" required>
-								<input type="button" value="인증">
+								<label for="phone" id="mgForFive">휴대폰번호</label> 
+								<input class="form-control" placeholder="숫자만 입력해주세요" type="tel" name="member_phone" id="phone" required>
+								<input type="button" value="인증코드발급" id="requestPhoneAuthCodeButton">
 								<div id="checkPhoneResult" class="resultArea"></div>
+							</div>
+							<div class="form-group">
+								<label for="phoneAuthCode" id="mgForFour">인증코드</label> 
+								<input class="form-control" placeholder="코드를 입력한 후 인증 버튼을 눌러주세요" type="text" name="phone_auth_code" id="phoneAuthCode" required>
+								<input type="button" value="인증" id="completePhoneAuthButton">
+								<div id="checkPhoneAuthCodeResult" class="resultArea"></div>
 							</div>
 								
 							<div class="button">
