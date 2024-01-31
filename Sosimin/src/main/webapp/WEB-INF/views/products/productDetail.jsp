@@ -442,14 +442,14 @@ window.onload = function() {
                         <div class="product-images">
                             <main id="gallery">
                                 <div class="main-img">
-                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
                                 </div>
                                 <div class="images">
-                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" class="img" alt="# " height="100px">
-                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#" height="100px">
-                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" class="img" alt="#" height="100px">
-                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/karina.jpg" class="img" alt="#" height="100px">
-                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/karina2.jpg" class="img" alt="#" height="100px">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" class="img" alt="# " height="100px">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image2 }" class="img" alt="# " height="100px">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image3 }" class="img" alt="# " height="100px">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image4 }" class="img" alt="# " height="100px">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image5 }" class="img" alt="# " height="100px">
                                 </div>
                             </main>
                         </div>

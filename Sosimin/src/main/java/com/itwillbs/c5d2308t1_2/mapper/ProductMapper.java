@@ -37,6 +37,8 @@ public interface ProductMapper {
 
 	int productBoardInsert(Map<String, String> map);
 
+	List<String> RelatedProducts(MemberVO member);
+
 
 	
 	

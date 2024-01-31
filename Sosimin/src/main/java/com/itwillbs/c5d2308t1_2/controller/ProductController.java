@@ -128,16 +128,23 @@ public class ProductController {
 	
 	
 	// 상품 등록 페이지로 이동
-	@GetMapping("ProductRegist")
-	public String productRegist(@RequestParam Map<String, String> map, HttpSession session, Model model ) {
-		
-		
-		
-		return "products/productRegist";
-	}
+		@GetMapping("ProductRegist")
+		public String productRegist(@RequestParam Map<String, String> map, HttpSession session, Model model ) {
+			
+			String sId = (String)session.getAttribute("sId");
+			if(sId == null) {
+				model.addAttribute("msg", "로그인이 필요합니다!");
+				model.addAttribute("msg2", "로그인 후 판매하기 페이지로 이동합니다");
+				model.addAttribute("msg3", "warning");
+				// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+				model.addAttribute("targetURL", "MemberLogin");
+				return "forward";
+			}
+			
+			return "products/productRegist";
+		}
 	
 
-		
 		
 	@PostMapping("ProductRegistSuccess")
 	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, 
@@ -244,58 +251,68 @@ public class ProductController {
 	
 	
 	// 상품 상세페이지
-	@GetMapping("ProductDetail")
-	public String productDetail(@RequestParam Map<String, String> map , MemberVO member, Model model) {
-		
-		System.out.println(">>>>>>>>>>> 무엇이 넘어 왔는가!! : " + map);
-		
-		
-		Map<String, String> Product = service.selectProduct(member);
-		List<Map<String,Object>> Product2 = service.selectProduct2(member);
-		
+		@GetMapping("ProductDetail")
+		public String productDetail(@RequestParam Map<String, String> map , MemberVO member, Model model, HttpSession session) {
+			
+			System.out.println(">>>>>>>>>>> 무엇이 넘어 왔는가!! : " + map);
+			
+			String sId = (String)session.getAttribute("sId");
+			
+			member.setMember_id(sId);
+			
+			// 상품정보 조회를 위한 조회
+			Map<String, String> Product = service.selectProduct(member);
+			
+			// 날짜를 뿌리기 위한 조회
+			List<Map<String,Object>> Product2 = service.selectProduct2(member);
+			
+			// 연관상품을 뿌리기 위한 조회
+			List<String> RelatedProducts = service.selectRelatedProducts(member);
 
 
-        
-		LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+	        
+			LocalDateTime now = LocalDateTime.now();
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+			
+			for(Map<String, Object> datetime : Product2) {
+				LocalDateTime comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter);
+	        	
+	            long minutes = Duration.between(comDateTime, now).toMinutes();
+	            long hours = minutes / 60;
+	            long days = hours / 24;
+	            hours %= 24;
+	            minutes %= 60;
+	            String timeAgo = "";
+	            if (days > 0) { // 하루이상 차이날 때
+	                if (comDateTime.getYear() == now.getYear()) {
+	                    timeAgo = comDateTime.format(formatterMonthDay);
+	                } else {
+	                    timeAgo = comDateTime.format(formatterDate);
+	                }
+	            } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+	                timeAgo = hours + "시간 전";
+	            } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+	                timeAgo = minutes + "분 전";
+	            } else {
+	                timeAgo = "방금 전";
+	            }
+	            // 계산한 시간 목록
+	            datetime.put("product_datetime", timeAgo);
+			}
+			
+			
+			System.out.println(RelatedProducts);
+			System.out.println(">>>>>>>>>>>>> 잘넘어왔는가 : " + Product);
+			System.out.println(">>>>>>>>>>>>> 이건 잘잘넘어왔는가 : " + Product2);
+			model.addAttribute("Product", Product);
+			model.addAttribute("Product2", Product2);
+			System.out.println(Product);
 		
-		for(Map<String, Object> datetime : Product2) {
-			LocalDateTime comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter);
-        	
-            long minutes = Duration.between(comDateTime, now).toMinutes();
-            long hours = minutes / 60;
-            long days = hours / 24;
-            hours %= 24;
-            minutes %= 60;
-            String timeAgo = "";
-            if (days > 0) { // 하루이상 차이날 때
-                if (comDateTime.getYear() == now.getYear()) {
-                    timeAgo = comDateTime.format(formatterMonthDay);
-                } else {
-                    timeAgo = comDateTime.format(formatterDate);
-                }
-            } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
-                timeAgo = hours + "시간 전";
-            } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
-                timeAgo = minutes + "분 전";
-            } else {
-                timeAgo = "방금 전";
-            }
-            // 계산한 시간 목록
-            datetime.put("product_datetime", timeAgo);
+			return "products/productDetail";
 		}
 		
-		
-		
-		System.out.println(">>>>>>>>>>>>> 잘넘어왔는가 : " + Product);
-		System.out.println(">>>>>>>>>>>>> 이건 잘잘넘어왔는가 : " + Product2);
-		model.addAttribute("Product", Product);
-		model.addAttribute("Product2", Product2);
-	
-		return "products/productDetail";
-	}
 	
 	
 	// 상품 제안하기 

@@ -54,6 +54,11 @@ public class ProductService {
 		return mapper.productBoardInsert();
 	}
 
+	public List<String> selectRelatedProducts(MemberVO member) {
+		
+		return mapper.RelatedProducts(member);
+	}
+
 
 	
 
