@@ -4,6 +4,19 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.c5d2308t1_2.mapper.ProductMapper">
+	<!-- 상품 목록 갯수 -->
+	<select id="productListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM Product
+<!-- 		<if test="id != null"> -->
+<!-- 			WHERE  -->
+<!-- 			gu = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(member_address, ' ', -2), ' ', 1) AS member_address -->
+<!-- 			FROM Member -->
+<!-- 			WHERE member_id = #{id})		 -->
+<!-- 		</if>  -->
+		
+		
+	</select>
 	
 	
 	
@@ -26,10 +39,6 @@
 		LIMIT #{page.startRow}, #{page.listLimit}
 	</select>
 	
-	<select id="productListCount" resultType="int">
-		SELECT COUNT(*)
-		FROM Product
-	</select>
 	
 	
 	<!-- ================================================================================= -->

@@ -29,15 +29,27 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 $(function() {
+	let pageNum = "";
+	
+	if("${param.pageNum}" > 1) {
+		pageNum = "${param.pageNum}";
+	} else {
+		pageNum = $("#pageNum").val();
+	}
+	
+	
+	
 	<%-- 기본 상품 목록 최신순으로 출력 --%> 
 	$.ajax({
 		url: "StoreProductList",
+		data: {
+			pageNum: pageNum,
+		},
 		dataType: 'json',
 		success: function(data) {
 		    let productList = data[0]; 
 		    let pageInfo = data[1];
 		    let pageNum = data[2];
-		    
 		    
 			for(let i = 0; i < productList.length; i++) {
 				$(".productList").append(
@@ -66,35 +78,39 @@ $(function() {
 				);
 			}
 			
+			let pages = '';
+			pages += '<nav aria-label="Page navigation">'
+			    + '<ul class="pagination justify-content-center">'
+			    + '<li class="page-item" id="prevPage">'
+			   		 + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + '" class="page-link">&laquo;</a>'
+			    + '</li>';
+			   
+	        for (let i = pageInfo.startPage; i < pageInfo.endPage+1; i++) {
+	            if (pageNum == i) {
+	                pages += '<li class="page-item active"><span class="page-link">' + i + '</span></li>';
+	            } else {
+	                pages += '<li class="page-item">'
+	                    + '<a href="SearchProduct?pageNum=' + i + '" class="page-link">' + i + '</a>'
+	                    + '</li>';
+	            }
+	        }
+	        
+		    pages += '<li class="page-item" id="nextPage">'
+			    + '<a href="SearchProduct?pageNum=' + (pageNum + 1) +'" class="page-link">&raquo;</a>'
+			    + '</li>'
+			    + '</ul>'
+			    + '</nav>';
 			
 			<%-- 페이징 처리 --%>
-			$(".productList").after(
-				    '<nav aria-label="Page navigation">'
-				    + '<ul class="pagination justify-content-center">'
-				    
-				    + '<li class="page-item" id="prevPage">'
-				    + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + '" class="page-link">&laquo;</a>'
-				    + '</li>'
-				    + (function() {
-				        let pages = '';
-				        for (let i = pageInfo.startPage; i < pageInfo.endPage; i++) {
-				            if (pageNum === 1) {
-				                pages += '<li class="page-item active"><span class="page-link">' + i + '</span></li>';
-				            } else {
-				                pages += '<li class="page-item">'
-				                    + '<a href="SearchProduct?pageNum=' + i + '" class="page-link">' + i + '</a>'
-				                    + '</li>';
-				            }
-				        }
-				        return pages;
-				    })()
-				    + '<li class="page-item" id="nextPage">'
-				    + '<a href="SearchProduct?pageNum=' + (pageNum + 1) +'" class="page-link">&raquo;</a>'
-				    + '</li>'
-				    + '</ul>'
-				    + '</nav>'
-				);
+			$(".productList").after(pages);	
 			
+			<%-- pageNum 버튼 최소 최대 제한--%> 
+			if(pageNum <= 1) {
+				$("#prevPage").addClass("disabled");
+			}
+			if(pageNum >= pageInfo.maxPage) {
+				$("#nextPage").addClass("disabled");
+			}
 			
 		},
 		error: function() {
@@ -120,12 +136,10 @@ $(function() {
 	let category = "${param.category}";
 	let keyword = "${param.keyword}";
 	let price = "";
-	
 
 // 필터링 옵션 처리 후 ajax
 function filtering() {
 	price = $("input[name='priceRadio']:checked").val();
-	pageNum = 
 	
 	let productStatus = "";  
     $("input[name=productStatus]:checked").each(function(index) {  
@@ -158,10 +172,7 @@ function filtering() {
 </script>
 <body>
 	<%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1 로 저장) --%>
-	<c:set var="pageNum" value="1" />
-	<c:if test="${not empty param.pageNum }">
-		<c:set var="pageNum" value="${param.pageNum }" />
-	</c:if>
+	<input type="hidden" id="pageNum" value="1">
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>

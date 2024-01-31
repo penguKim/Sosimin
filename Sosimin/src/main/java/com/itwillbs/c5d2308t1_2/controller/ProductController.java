@@ -53,20 +53,22 @@ public class ProductController {
 	@GetMapping("StoreProductList")
 	public String productList(@RequestParam(defaultValue = "") Map<String, Object> map, HttpSession session,  Model model
 			, @RequestParam(defaultValue = "1") int pageNum) {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 전" + map);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
 		String id = (String)session.getAttribute("sId");
-		System.out.println(">>>>>>>>>>>>>>>>>>>> : " + id);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 전" + map);
+		map.put("sId", id);
+		map.put("pageNum", pageNum);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>페이지 넘버 : " + pageNum);
 		List<Map<String, Object>> productList = null;
 		// 미로그인 시 상품 목록 날짜 최신순으로 나열
-		map.put("sId", id);
 		
 		// ====================페이징 처리 ===============================================================
 		PageDTO page = new PageDTO(pageNum, 20);
-		map.put("pageNum", pageNum);
-		int listCount = service.getProductListCount(map);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 맵 페이지" + page);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 맵 페이지" + map.get("pageNum"));
+		int listCount = service.getProductListCount(map); // 상품 목록 갯수조회
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>" + listCount);
-		PageInfo pageInfo = new PageInfo(page, listCount, 3);
+		PageInfo pageInfo = new PageInfo(page, listCount, 5);
 		map.put("page", page);
 		// ===============================================================================================
 		
@@ -104,7 +106,7 @@ public class ProductController {
             // 계산한 시간 목록
             datetime.put("product_datetime", timeAgo);
 		}
-		
+		System.out.println(">>>>>>>>>>>>>>>>>>> 페이지넘 라스트" + pageNum);
 		// ===============================================================================================
 		JSONArray jsonArray = new JSONArray();
 		jsonArray.put(productList);
@@ -114,9 +116,9 @@ public class ProductController {
 		jsonArray.put(pageNum);
 		
 		
-		System.out.println(">>>>>>>>>>>>>>>>>>>>> 리스트" + productList);
-		System.out.println(">>>>>>>>>>>>>>>>>>>> 페이징" + jPage);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> : " + jsonArray);
+//		System.out.println(">>>>>>>>>>>>>>>>>>>>> 리스트" + productList);
+//		System.out.println(">>>>>>>>>>>>>>>>>>>> 페이징" + jPage);
+//		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> : " + jsonArray);
 		
 		// 로그인 시 사용자 지역, 날짜 최신순으로 나열
 		
