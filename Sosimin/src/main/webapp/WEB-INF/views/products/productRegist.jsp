@@ -762,13 +762,16 @@ $(document).on("click", ".close-button", function() {
 });
 
 // 썸네일 작업
-var formData = new FormData(); // 전역 변수로 FormData 객체 생성
-var files = []; // 사용자가 선택한 모든 파일을 저장할 배열
-var imageCounter = 1;
+// var formData = new FormData(); // 전역 변수로 FormData 객체 생성
+// var files = []; // 사용자가 선택한 모든 파일을 저장할 배열
+// var imageCounter = 1;
+
+var selectedFiles = [];  // 사용자가 선택한 파일을 저장할 배열
 
 function setThumbnail(event) {
   var newFiles = event.target.files;
-
+  var imageCounter = document.querySelectorAll(".imageItem").length + 1;
+  
   for (var i = 0; i < newFiles.length; i++) {
     var file = newFiles[i];
     var ext = file.name.split('.').pop().toLowerCase();
@@ -780,14 +783,14 @@ function setThumbnail(event) {
       return false;
     }
 
-    // 파일을 files 배열에 추가
-    files.push(file);
 
     var imageLength = parseInt(document.getElementById("imageLength").textContent);
     imageLength++;
-    document.getElementById("imageLength").textContent = imageLength;
 
     if (imageLength <= 5) {
+    selectedFiles.push(file);  // 사용자가 선택한 파일을 배열에 추가
+    document.getElementById("imageLength").textContent = imageLength;
+    
       var reader = new FileReader();
       reader.onload = (function(file) {
         return function(e) {
@@ -822,36 +825,75 @@ function setThumbnail(event) {
     }
   }
 }
-
-// 제출 버튼 클릭 시 서버로 모든 파일 전송
-document.getElementById("submit").addEventListener("click", function() {
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "/upload", true);
-  
-  var data = new FormData();
-  for (var i = 0; i < files.length; i++) {
-    data.append("product_image" + (i + 1), files[i]);
-  }
-  xhr.send(data);
-});
-
-// 제출 버튼 클릭 시 서버로 FormData 전송
-document.getElementById("submit").addEventListener("click", function() {
-  var xhr = new XMLHttpRequest();
-  xhr.open("POST", "/upload", true);
-  
-  var data = new FormData();
-  for (var i = 0; i < files.length; i++) {
-    data.append("product_image" + (i + 1), files[i]);
-  }
-  xhr.send(data);
-});
 //파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
 function addFileInput() {
 document.getElementById("product_image").click();
 }
 
-// 이미지 삭제
+	  
+function submitFiles(event) {
+	  // 폼의 모든 필드가 채워졌는지 확인
+		 if (checkInput() === false) {
+		    return;  // 함수 실행 종료
+		  }
+	
+	  var form = document.querySelector('form');
+	  
+// 	  // 폼의 모든 필드가 채워졌는지 확인
+// 	  var formElements = form.elements;
+// 	  for (var i = 0; i < formElements.length; i++) {
+// 	    var element = formElements[i];
+// 	    if (element.name && element.value.trim() == '') {  // 필드가 비어있는 경우
+// 	      alert('모든 필드를 채워주세요.');
+// 	      return;  // 함수 실행 종료
+// 	    }
+// 	  }
+	  
+	  var formData = new FormData();
+	  
+	  // Form의 각 필드를 개별적으로 FormData에 추가
+	  var formElements = form.elements;
+	  for (var i = 0; i < formElements.length; i++) {
+	    var element = formElements[i];
+	    if (element.name && element.name != 'product_image') {  // 'product_image' 필드 제외
+	      formData.append(element.name, element.value);
+	    }
+	  }
+
+	  for (var i = 0; i < selectedFiles.length; i++) {
+	    formData.append('product_image', selectedFiles[i]);
+	  }
+
+	  $.ajax({
+		    url: 'ProductRegistSuccess',
+		    type: 'POST',
+		    data: formData,
+		    processData: false,  // 필수
+		    contentType: false   // 필수
+		  }).done(function(data) {
+			 alert('성공');
+			 location.href="ProductDetail";
+		    // 서버로부터 응답을 받았을 때 실행되는 코드
+		    console.log('File upload successful!');
+		  }).fail(function(jqXHR, textStatus, errorThrown) {
+		    // 파일 업로드에 실패했을 때 실행되는 코드
+		    alert('실패');
+		    console.log(jqXHR, textStatus, errorThrown);
+		  });
+		}
+
+// // 제출 버튼 클릭 시 서버로 모든 파일 전송
+// document.getElementById("submit").addEventListener("click", function() {
+//   var xhr = new XMLHttpRequest();
+//   xhr.open("POST", "/upload", true);
+  
+//   var data = new FormData();
+//   for (var i = 0; i < files.length; i++) {
+//     data.append(files[i].name, files[i].file);
+//   }
+//   xhr.send(data);
+// });
+
 
 // 이미지 삭제
 function removeImage(button) {
@@ -967,6 +1009,7 @@ function checkInput() {
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
 <body>
+				
 	
 	
 	<header class="header navbar-area">
@@ -1036,6 +1079,7 @@ function checkInput() {
 						 <span id="productNameLength">0</span><span>/40</span>
 						 </div>
 				</div>
+				
 				
 				<hr>
 				<div id="categoryDiv">
@@ -1171,7 +1215,8 @@ function checkInput() {
 				<hr>
    				<div id="save">
 					<button type="button" id="temporarySaveButton">임시저장</button>
-					<input type="submit" id="buttonBox" value="상품등록">
+<!-- 					<input type="submit" id="buttonBox" value="상품등록"> -->
+					<input type="button" id="buttonBox" value="상품등록" onclick="submitFiles();">
 				</div>
 			</form>
 		</div>
