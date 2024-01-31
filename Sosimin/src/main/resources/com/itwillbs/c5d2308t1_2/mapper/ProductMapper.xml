@@ -67,6 +67,8 @@
 		)
 	</insert>	
 		
+		
+		
 	<insert id="productBoardInsert">
 		INSERT INTO Product_board
 		values (
@@ -82,17 +84,17 @@
 	<select id="selectProduct" resultType="hashMap">
 		SELECT *
 		FROM Product
-		WHERE product_id = 190;
+		WHERE product_id = #{product_id};
 	</select>
 	
 	<select id="selectProduct2" resultType="map">
 		SELECT *
 		FROM Product
-		WHERE product_id = 190;
+		WHERE product_id = #{product_id};
 	</select>
 
-<!-- 	<select id="RelatedProducts" resultType="String"> -->
-<!-- 		SELECT product_name, tag_name, member_id -->
-<!-- 		FROM Product -->
+<!-- 	<select id="RelatedProducts" resultType="hashMap"> -->
+<!-- 		SELECT tag_name, product_name -->
+<!-- 		FROM Product p -->
 <!-- 	</select> -->
 </mapper>

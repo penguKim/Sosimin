@@ -868,19 +868,20 @@ function submitFiles(event) {
 		    url: 'ProductRegistSuccess',
 		    type: 'POST',
 		    data: formData,
-		    processData: false,  // 필수
-		    contentType: false   // 필수
-		  }).done(function(data) {
-			 alert('성공');
-			 location.href="ProductDetail";
-		    // 서버로부터 응답을 받았을 때 실행되는 코드
-		    console.log('File upload successful!');
-		  }).fail(function(jqXHR, textStatus, errorThrown) {
-		    // 파일 업로드에 실패했을 때 실행되는 코드
-		    alert('실패');
-		    console.log(jqXHR, textStatus, errorThrown);
-		  });
-		}
+		    processData: false,
+		    contentType: false,
+		    success: function(data) {
+		        // 서버로부터 응답을 받았을 때 실행되는 코드
+		        console.log('File upload successful!');
+		        location.href =  "ProductDetail?product_id=";
+		    },
+		    error: function(jqXHR, textStatus, errorThrown) {
+		        // 파일 업로드에 실패했을 때 실행되는 코드
+		        alert('실패');
+		        console.log(jqXHR, textStatus, errorThrown);
+		    }
+		});
+	}
 
 // // 제출 버튼 클릭 시 서버로 모든 파일 전송
 // document.getElementById("submit").addEventListener("click", function() {

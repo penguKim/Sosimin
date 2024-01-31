@@ -53,11 +53,13 @@ public class ProductService {
 		
 		return mapper.productBoardInsert();
 	}
-
-//	public List<String> selectRelatedProducts(MemberVO member, String sId) {
+	// 연관상품을 조회하기 위한 select
+//	public List<Map<String, String>> selectRelatedProducts(Map<String, String> map, String sId) {
 //		
-//		return mapper.RelatedProducts(member, sId);
+//		return mapper.selectRelatedProducts(map, sId);
 //	}
+
+
 
 
 	

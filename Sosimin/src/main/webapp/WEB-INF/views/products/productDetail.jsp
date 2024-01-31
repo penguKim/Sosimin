@@ -445,11 +445,12 @@ window.onload = function() {
                                     <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
                                 </div>
                                 <div class="images">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" class="img" alt="# " height="100px">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image2 }" class="img" alt="# " height="100px">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image3 }" class="img" alt="# " height="100px">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image4 }" class="img" alt="# " height="100px">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image5 }" class="img" alt="# " height="100px">
+					             <c:forEach var="i" begin="1" end="5">
+									 <c:set var="i" value="product_image${i}" />
+									 <c:if test="${not empty Product[i]}">
+									    <img src="${pageContext.request.contextPath}/resources/upload/${Product[i]}" class="img" alt="# " height="100px">
+									 </c:if>
+								</c:forEach>
                                 </div>
                             </main>
                         </div>

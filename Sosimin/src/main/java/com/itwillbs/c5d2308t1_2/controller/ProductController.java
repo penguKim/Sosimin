@@ -9,17 +9,16 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.mybatis.spring.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -39,6 +38,13 @@ import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 @Controller
 public class ProductController {
 	
+//	private final SqlSessionTemplate sqlSessionTemplate;
+//
+//    @Autowired
+//    public ProductController(SqlSessionTemplate sqlSessionTemplate) {
+//        this.sqlSessionTemplate = sqlSessionTemplate;
+//    }
+    
 	@Autowired
 	ProductService service;
 	
@@ -150,6 +156,10 @@ public class ProductController {
 	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, 
 										HttpServletRequest request, @RequestParam("product_image") MultipartFile[] files) {
 		
+//		@PostMapping("ProductRegistSuccess")
+//		public ResponseEntity<Map<String, Object>> productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, 
+//											HttpServletRequest request, @RequestParam("product_image") MultipartFile[] files) {
+		
 		
 		
 		System.out.println(map);
@@ -193,28 +203,6 @@ public class ProductController {
 	        }
 	    }
 	    
-	    
-	    
-	    
-//	    for (int i = 0; i < files.length; i++) {
-//	        MultipartFile file = files[i];
-//	        String originalName = file.getOriginalFilename(); // 원래 파일명
-//	        String fileName = UUID.randomUUID().toString().substring(0,8) + "_" + originalName; // 고유한 파일명 생성
-//	        String filePath = saveDir + File.separator + fileName;
-//	        try {
-//	            file.transferTo(new File(filePath)); // 파일 저장
-//	            
-//	            // 파일 경로에서 'upload' 이후의 부분만 추출
-//	            int uploadIndex = filePath.indexOf("upload");
-//	            if (uploadIndex != -1) {
-//	                String relativePath = filePath.substring(uploadIndex + "upload".length() + 1);
-//	                map.put("product_image" + (i + 1), relativePath); // 파일 경로를 map에 추가
-//	            }
-//	        } catch (IllegalStateException | IOException e) {
-//	            e.printStackTrace();
-//	        }
-//	    }
-	    
 //	    product.setWriter_ip(request.getRemoteAddr());
 
 	    String product_price =  map.get("product_price").replace(",", ""); // 받아온 money값 ,때기
@@ -240,12 +228,25 @@ public class ProductController {
 	    map.put("gu", gu);
 	    map.put("dong", dong);
 	    
+	    
+//	    int productId = sqlSessionTemplate.insert("com.itwillbs.c5d2308t1_2.mapper.ProductMapper.productInsert", map);
+//	    if (productId > 0) {
+//	        System.out.println("성공");
+//	    }
+
+//		Map<String, Object> response = new HashMap<>();
+//		response.put("redirect", "ProductDetail");
+//		response.put("productId", productId);
+//
+//		return ResponseEntity.ok(response);
+	    
+	    
 	    int successInsert = service.productRegist(map);
 
 	    if (successInsert > 0) {
 	        System.out.println("성공");
 	    }
-
+	    
 	    return "products/productDetail";
 	}
 	
@@ -254,12 +255,10 @@ public class ProductController {
 		@GetMapping("ProductDetail")
 		public String productDetail(@RequestParam Map<String, String> map , MemberVO member, Model model, HttpSession session) {
 			
-			System.out.println(">>>>>>>>>>> 무엇이 넘어 왔는가!! : " + map);
 			
 			String sId = (String)session.getAttribute("sId");
 			
-			
-			System.out.println(sId);
+			member.setMember_id(sId);
 			// 상품정보 조회를 위한 조회
 			Map<String, String> Product = service.selectProduct(member);
 			
@@ -267,8 +266,9 @@ public class ProductController {
 			List<Map<String,Object>> Product2 = service.selectProduct2(member);
 			
 			// 연관상품을 뿌리기 위한 조회
-//			List<String> RelatedProducts = service.selectRelatedProducts(member, sId);
+//			List<Map<String,String>> RelatedProducts = service.selectRelatedProducts(Product);
 
+			
 
 	        
 			LocalDateTime now = LocalDateTime.now();

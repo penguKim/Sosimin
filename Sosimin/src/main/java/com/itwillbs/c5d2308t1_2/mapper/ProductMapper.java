@@ -37,7 +37,12 @@ public interface ProductMapper {
 
 	int productBoardInsert(Map<String, String> map);
 
-//	List<String> RelatedProducts(@Param("member") MemberVO member,@Param("sId") String sId);
+	int getLastInsertId();
+
+//	List<Map<String, String>> selectRelatedProducts(Map<String, String> product);
+
+	// 연관 상품 조회List
+//	List<Map<String, String>> selectRelatedProducts(@Param("map") Map<String, String> map,@Param("sId") String sId);
 
 
 	

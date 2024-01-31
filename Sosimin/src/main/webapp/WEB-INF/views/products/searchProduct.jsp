@@ -59,7 +59,7 @@ $(function() {
 				$(".productList").append(
 					'<div class="col-lg-4-1 col-md-6 col-12" >'
 						+ ' <div class="single-product" >'
-							+ ' <a href="ProductDetail" class="product-image">'
+							+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
 								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#">'
 							+ ' </a>'
 							+ ' <div class="product-info">'

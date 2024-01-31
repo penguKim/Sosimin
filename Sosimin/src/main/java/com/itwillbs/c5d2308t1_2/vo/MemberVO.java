@@ -26,6 +26,7 @@ public class MemberVO {
 	private int member_exp;
 	private String dong;
 	private int report_real_count;
+	private String product_id;
 	
 	
 	
