@@ -198,6 +198,7 @@
 		ON PayHistory.pay_id = Pay.pay_id
 		WHERE pay_history_type = 1
 			OR pay_history_type = 2
+		ORDER BY pay_history_id DESC
 	</select>
 	
 	<!-- 사용/수익 페이지 -->
@@ -207,6 +208,7 @@
 		ON PayHistory.pay_id = Pay.pay_id
 		WHERE pay_history_type = 3
 			OR pay_history_type = 4
+		ORDER BY pay_history_id DESC
 	</select>
 	
 </mapper>
