@@ -258,8 +258,8 @@ public class ProductController {
 			
 			String sId = (String)session.getAttribute("sId");
 			
-			member.setMember_id(sId);
 			
+			System.out.println(sId);
 			// 상품정보 조회를 위한 조회
 			Map<String, String> Product = service.selectProduct(member);
 			
@@ -267,7 +267,7 @@ public class ProductController {
 			List<Map<String,Object>> Product2 = service.selectProduct2(member);
 			
 			// 연관상품을 뿌리기 위한 조회
-			List<String> RelatedProducts = service.selectRelatedProducts(member);
+			List<String> RelatedProducts = service.selectRelatedProducts(member, sId);
 
 
 	        
@@ -303,13 +303,13 @@ public class ProductController {
 			}
 			
 			
-			System.out.println(RelatedProducts);
 			System.out.println(">>>>>>>>>>>>> 잘넘어왔는가 : " + Product);
 			System.out.println(">>>>>>>>>>>>> 이건 잘잘넘어왔는가 : " + Product2);
 			model.addAttribute("Product", Product);
 			model.addAttribute("Product2", Product2);
-			System.out.println(Product);
-		
+			model.addAttribute("RelatedProducts", RelatedProducts);
+			System.out.println("------------------ 여기 왜 아무것도없음 : " + RelatedProducts);
+			
 			return "products/productDetail";
 		}
 		

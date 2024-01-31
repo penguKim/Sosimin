@@ -8,41 +8,33 @@
 	<select id="productListCount" resultType="int">
 		SELECT COUNT(*)
 		FROM Product
-			<if test="id != ''">
-				WHERE 
-				gu = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(member_address, ' ', -2), ' ', 1) AS member_address
-				FROM Member
-				WHERE member_id = #{sId})		
-			</if>
+<!-- 		<if test="id != null"> -->
+<!-- 			WHERE  -->
+<!-- 			gu = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(member_address, ' ', -2), ' ', 1) AS member_address -->
+<!-- 			FROM Member -->
+<!-- 			WHERE member_id = #{id})		 -->
+<!-- 		</if>  -->
+		
+		
 	</select>
 	
 	
 	
 	<!-- 상품 목록 조회 -->
 	<select id="selectProductList" resultType="map"> 
-		SELECT p.product_id, product_category, p.member_id, product_board_id, product_name, product_price, gu, p.dong 
+		SELECT p.product_id, p.member_id, product_board_id, product_name, product_price, gu, p.dong 
 		, product_datetime, product_image1
 		FROM Product p JOIN Product_board pb
 		ON p.product_id = pb.product_id
 		JOIN Member m
 		ON p.member_id = m.member_id
-		WHERE 
-		<if test="sId != ''">
-			gu = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(member_address, ' ', -2), ' ', 1) AS member_address
-			FROM Member
-			WHERE member_id = #{sId})		
-		</if>
-		<choose>
-			<when test="category != ''">
-				AND product_category = #{category}	
-			</when>
-			<when test="keyword != ''" >
-				AND product_name LIKE '%${keyowrd}%' 
-			</when>
-			<otherwise>
-				1+1
-			</otherwise>
-		</choose>
+<!-- 		<choose> -->
+<!-- 			<when test="!sId.equals('')"> -->
+<!-- 				WHERE  -->
+<!-- 				m.member_address like '%${}%' AND gu = ''  -->
+<!-- 			</when> -->
+		
+<!-- 		</choose> -->
 		ORDER BY product_datetime DESC
 		LIMIT #{page.startRow}, #{page.listLimit}
 	</select>
@@ -90,13 +82,17 @@
 	<select id="selectProduct" resultType="hashMap">
 		SELECT *
 		FROM Product
-		WHERE product_id = 44;
+		WHERE product_id = 190;
 	</select>
 	
 	<select id="selectProduct2" resultType="map">
 		SELECT *
 		FROM Product
-		WHERE product_id = 44;
+		WHERE product_id = 190;
 	</select>
 
+	<select id="RelatedProducts" resultType="String">
+		SELECT product_name, tag_name, member_id
+		FROM Product
+	</select>
 </mapper>

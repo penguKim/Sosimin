@@ -54,9 +54,9 @@ public class ProductService {
 		return mapper.productBoardInsert();
 	}
 
-	public List<String> selectRelatedProducts(MemberVO member) {
+	public List<String> selectRelatedProducts(MemberVO member, String sId) {
 		
-		return mapper.RelatedProducts(member);
+		return mapper.RelatedProducts(member, sId);
 	}
 
 
