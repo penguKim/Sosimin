@@ -139,8 +139,10 @@ $(function() {
                             <div class="title paytitle">
                                 <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
                                 <h3 class="pay-name">
-                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
-                                	소심페이
+                                	<a href="PayInfo">
+	                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
+	                                	소심페이
+                                	</a>
                                 </h3>
                             </div>
                            	<div class="msg">소심페이에 등록할 계좌를 선택해주세요</div>

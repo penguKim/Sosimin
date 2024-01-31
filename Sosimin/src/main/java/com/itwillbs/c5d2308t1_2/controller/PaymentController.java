@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.c5d2308t1_2.handler.BankValueGenerator;
 import com.itwillbs.c5d2308t1_2.service.PaymentService;
 import com.itwillbs.c5d2308t1_2.vo.ResponseTokenVO;
 
@@ -27,6 +28,9 @@ public class PaymentController {
 	
 	@Autowired
 	private PaymentService service;
+	
+	@Autowired
+	BankValueGenerator bankValueGenerator;
 	
 	// 로그 출력을 위한 변수 선언
 	private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
@@ -140,7 +144,7 @@ public class PaymentController {
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		}
-
+		
 		// Map 객체에 엑세스토큰과 사용자번호 저장
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("access_token", session.getAttribute("access_token"));
@@ -349,6 +353,17 @@ public class PaymentController {
 		
 //		log.info("페이잔액 파라미터 : " + map.toString());
 		
+		// bank_tran_id 생성하여 map객체에 저장
+		// 파라미터로 사용할 난수 생성하여 리턴받기
+		String bank_tran_id = bankValueGenerator.getBankTranId();
+		log.info("은행거래고유번호 : " + bank_tran_id);
+				
+		String tran_dtime = bankValueGenerator.getTranDTime(); 
+		log.info("요청일시 : " + tran_dtime);
+		
+		map.put("bank_tran_id", bank_tran_id);
+		map.put("tran_dtime", tran_dtime);
+		
 		// Service - requestAccountDetail() 메서드 호출하여 계좌 상세정보 조회 요청
 		// => 파라미터 : Map 객체    리턴타입 : Map<String, Object>(accountDetail)
 		Map<String, Object> accountDetail = service.requestAccountDetail(map);
@@ -374,6 +389,28 @@ public class PaymentController {
 			System.out.println("출금가능");
 			map.put("tran_amt", pay_amount);
 			session.setAttribute("pay_amount", pay_amount);
+
+			// bank_tran_id 생성하여 map객체에 저장
+			// 파라미터로 사용할 난수 생성하여 리턴받기
+			bank_tran_id = bankValueGenerator.getBankTranId();
+			log.info("은행거래고유번호 : " + bank_tran_id);
+					
+			tran_dtime = bankValueGenerator.getTranDTime(); 
+			log.info("요청일시 : " + tran_dtime);
+			
+			map.put("bank_tran_id", bank_tran_id);
+			map.put("tran_dtime", tran_dtime);
+			
+			// 이체 용도(송금(TR), 결제(ST), 충전(RC) 등) 지정
+			map.put("transfer_purpose", "RC");
+			
+			// PayHistory에 있는 bank_tran_id 를 조회하여
+			// 이미 이루어진 거래면 거래 못하도록 막기
+			int tranIdCount = service.getTranIdCount(map);
+			
+			if(tranIdCount > 0) { // 해당 거래고유번호로 이루어진 거래가 있으면 거래 중단
+				return "redirect:/PayRefundRefused";
+			}
 			
 			// 2.5. 계좌이체 서비스 - 2.5.1. 출금이체 API
 			Map<String, Object> withdrawResult = service.requestWithdraw(map);
@@ -392,8 +429,11 @@ public class PaymentController {
 				// 페이 잔액을 업데이트
 				int updateCount = service.updatePayBalance(map);
 				
-				
 				if(updateCount > 0) {
+					session.setAttribute("complete", "complete" + member_id); // 세션에 거래 완료 정보를 추가
+					
+					log.info((String) session.getAttribute("complete"));
+					
 					return "redirect:/PayChargeComplete";					
 				} else {
 					return "redirect:/PayChargeRefused"; // 출금 실패 페이지로 이동				
@@ -413,6 +453,13 @@ public class PaymentController {
 	public String payChargeComplete(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
 		
+		if(!("complete" + member_id).equals((String)session.getAttribute("complete"))) { // 세션에 부여된 정보가 일치하지 않으면
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "./");	// 메인 페이지로 이동
+			return "forward";
+		}
+		
 		Map<String, Object> payInfo = service.getPayInfo(member_id);
 		log.info("payInfo = " + payInfo);
 		
@@ -420,6 +467,8 @@ public class PaymentController {
 		payInfo.put("result", "charge_success");
 		
 		model.addAttribute("payInfo", payInfo);
+		
+		session.removeAttribute("complete"); // 세션에 저장된 정보 삭제
 		
 		return "payment/payModifyComplete";
 	}
@@ -429,6 +478,13 @@ public class PaymentController {
 	public String payChargeRefused(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
 		
+		if(!("complete" + member_id).equals((String)session.getAttribute("complete"))) { // 세션에 부여된 정보가 일치하지 않으면
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "./");	// 메인 페이지로 이동
+			return "forward";
+		}
+		
 		Map<String, Object> payInfo = service.getPayInfo(member_id);
 		log.info("payInfo = " + payInfo);
 		
@@ -436,6 +492,8 @@ public class PaymentController {
 		payInfo.put("result", "charge_refused");
 		
 		model.addAttribute("payInfo", payInfo);
+		
+		session.removeAttribute("complete"); // 세션에 저장된 정보 삭제
 		
 		return "payment/payModifyComplete";
 	}
@@ -547,7 +605,31 @@ public class PaymentController {
 		
 		map.put("tran_amt", pay_amount);
 		session.setAttribute("pay_amount", pay_amount);
+		
+		// bank_tran_id 생성하여 map객체에 저장
+		// 파라미터로 사용할 난수 생성하여 리턴받기
+		String bank_tran_id = bankValueGenerator.getBankTranId();
+		log.info("은행거래고유번호 : " + bank_tran_id);
+				
+		String tran_dtime = bankValueGenerator.getTranDTime(); 
+		log.info("요청일시 : " + tran_dtime);
+		
+		map.put("bank_tran_id", bank_tran_id);
+		map.put("tran_dtime", tran_dtime);
+		
+		// 이체 용도(송금(TR), 결제(ST), 충전(RC) 등) 지정
+		map.put("transfer_purpose", "ST");
+				
 		log.info(">>>>>>>>>>>>> 입금이체 map 데이터 " + map);
+		
+		// PayHistory에 있는 bank_tran_id 를 조회하여
+		// 이미 이루어진 거래면 거래 못하도록 막기
+		int tranIdCount = service.getTranIdCount(map);
+		
+		if(tranIdCount > 0) { // 해당 거래고유번호로 이루어진 거래가 있으면 거래 중단
+			return "redirect:/PayRefundRefused";
+		}
+
 		
 		// BankService - requestDeposit() 메서드 호출하여 상품에 대한 환불(입금이체) 요청
 		// => 파라미터 : Map 객체   리턴타입 : Map<String, Object>(depositResult)
@@ -567,6 +649,8 @@ public class PaymentController {
 			int updateCount = service.updatePayBalance(map);
 			
 			if(updateCount > 0) {
+				session.setAttribute("complete", "complete" + member_id); // 세션에 거래 완료 정보를 추가
+				
 				return "redirect:/PayRefundComplete";					
 			} else {
 				return "redirect:/PayRefundRefused"; // 입금 실패 페이지로 이동				
@@ -585,6 +669,13 @@ public class PaymentController {
 	public String payRefundComplete(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
 		
+		if(!("complete" + member_id).equals((String)session.getAttribute("complete"))) { // 세션에 부여된 정보가 일치하지 않으면
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "./");	// 메인 페이지로 이동
+			return "forward";
+		}
+		
 		Map<String, Object> payInfo = service.getPayInfo(member_id);
 		log.info("payInfo = " + payInfo);
 		
@@ -600,6 +691,13 @@ public class PaymentController {
 	@GetMapping("PayRefundRefused")
 	public String payRefundRefused(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
+		
+		if(!("complete" + member_id).equals((String)session.getAttribute("complete"))) { // 세션에 부여된 정보가 일치하지 않으면
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "./");	// 메인 페이지로 이동
+			return "forward";
+		}
 		
 		Map<String, Object> payInfo = service.getPayInfo(member_id);
 		log.info("payInfo = " + payInfo);

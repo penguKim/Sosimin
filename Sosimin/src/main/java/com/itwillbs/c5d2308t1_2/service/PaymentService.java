@@ -128,6 +128,11 @@ public class PaymentService {
 		return bankApiClient.requestDeposit(map);
 	}
 
+	// 거래고유번호 조회 요청
+	public int getTranIdCount(Map<String, Object> map) {
+		return mapper.selectTranId(map);
+	}
+
 	
 	
 	// ============= 관리자 페이지 ======================

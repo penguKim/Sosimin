@@ -45,6 +45,8 @@ public interface PaymentMapper {
 	// 관리자 엑세스토큰 조회 요청
 	String selectAdminAccessToken();
 
+	// 거래고유번호 조회 요청
+	int selectTranId(Map<String, Object> map);
 
 	// ====================== 관리자페이지 ==================
 	
@@ -59,6 +61,7 @@ public interface PaymentMapper {
 
 	// 페이 사용 내역 불러오기(사용/수익)
 	List<Map<String, Object>> selectPaySpentRevenue();
+
 
 
 

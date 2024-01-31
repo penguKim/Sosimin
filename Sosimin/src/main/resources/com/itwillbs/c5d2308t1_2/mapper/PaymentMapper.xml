@@ -155,6 +155,7 @@
 			, now()
 			, 1 -- 완료
 			, null
+			, #{bank_tran_id}
 		)
 	</insert>
 	
@@ -163,6 +164,13 @@
 		SELECT access_token
 		FROM Token
 		WHERE member_id = 'admin'
+	</select>
+	
+	<!-- 거래고유번호 중복 확인 -->
+	<select id="selectTranId" resultType="int">
+		SELECT count(*)
+		FROM PayHistory
+		WHERE bank_tran_id = #{bank_tran_id}
 	</select>
 	
 	

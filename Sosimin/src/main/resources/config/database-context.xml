@@ -33,8 +33,8 @@
 		<!-- jdbc:mysql 사이에 log4jdbc: 추가 -->
 		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://itwillbs.com:3306/c5d2308t1_2"></property>
 <!-- 		<property name="jdbcUrl" value="jdbc:mysql://itwillbs.com:3306/c5d2308t1_2"></property> -->
-		<property name="username" value="c5d2308t1"></property>
-		<property name="password" value="1234"></property>
+		<property name="username" value="${db.username}"></property>
+		<property name="password" value="${db.password}"></property>
 	</bean>	
 	
 	<!-- 2. HikariCP 를 통해 커넥션을 관리하는 DataSource 객체(HikariDataSource) 설정 -->

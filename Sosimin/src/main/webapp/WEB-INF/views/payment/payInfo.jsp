@@ -287,12 +287,15 @@ function load_list(pay_history_type, start_date, end_date) {
 			// 그룹화된 데이터를 이용하여 각 연도별로 div 영역에 추가
 			let years = Object.keys(groupedData).reverse(); // 연도 속성을 반대로 순회할 배열 생성
 			for (let year of years) {
-				$("#payHistoryList").append(
-					'<div id="'+ year +'">'
-					+	'<span id="year">' + year + '</span>년'
-					+	'<div class="year_list" id="' + year + 'list"></div>'
-					+ '</div>'
-				);
+				
+				if($("#" + year).length === 0) {
+					$("#payHistoryList").append(
+						'<div id="'+ year +'">'
+						+	'<span id="year">' + year + '</span>년'
+						+	'<div class="year_list" id="' + year + 'list"></div>'
+						+ '</div>'
+					);
+				}
 				
 				const paymentArray = groupedData[year]; // 데이터 배열
 
@@ -436,8 +439,10 @@ function select_date() {
                             <div class="title paytitle">
                                 <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
                                 <h3 class="pay-name">
-                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
-                                	소심페이
+                                	<a href="PayInfo">
+	                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
+	                                	소심페이
+                                	</a>
                                 </h3>
                             </div>
                             <div class="row">

@@ -65,9 +65,7 @@ $(function() {
 		// 비밀번호 일치 여부 확인
 		let input_passwd = $('#pay-password').val();
 		let is_correct_passwd = false;
-		
-		console.log("input_passwd = " + input_passwd + ", is_correct_passwd = " + is_correct_passwd)
-		
+
 		$.ajax({
 			type: "GET",
 			url: "PasswdCheck",
@@ -136,7 +134,22 @@ $(function() {
 //모달 창을 열 때
 function openModal() {
 	event.preventDefault(); 
-	if($('#pay-amount').val() == null || $('#pay-amount').val() == 0) {
+	
+	let pay_balance = parseInt(${payInfo.pay_balance});
+	input_amount = parseInt($('#pay-amount').val().replace(/,/g, ''));
+	
+	console.log("pay_balance = " + pay_balance + ", input_amount = " + input_amount)
+	
+	if(pay_balance < input_amount) { // 입력금액이 페이잔액보다 크면
+		Swal.fire({
+			position: 'center',
+			icon: 'error',
+			title: '페이 잔액보다 많은 금액은 입력하실 수 없습니다.',
+			showConfirmButton: false,
+			timer: 2000,
+			toast: true
+		});
+	} else if($('#pay-amount').val() == null || $('#pay-amount').val() == 0) {
 		Swal.fire({
 			position: 'center',
 			icon: 'error',
@@ -199,8 +212,10 @@ function openModal() {
 	                            <div class="title paytitle">
 	                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
 	                                <h3 class="pay-name">
-	                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
-	                                	소심페이
+	                                	<a href="PayInfo">
+		                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
+		                                	소심페이
+	                                	</a>
 	                                </h3>
 	                            </div>
 	                            <div class="row">
@@ -234,7 +249,7 @@ function openModal() {
 				                       <div class="col-lg-2 col-md-2 col-12" style="text-align: center;">
 				                       		<img src="./resources/images/payment/${payInfo.bank_name}.png" alt="이미지" width="50px"/>
 				                        </div>
-				                        <div class="col-lg-10 col-md-10 col-12">
+				                        <div class="col-lg-6 col-md-6 col-12">
 					                        <h5 class="bank-name">${payInfo.bank_name}</h5>
 					                        <p class="account-no">
 					                                ${payInfo.account_num_masked}
@@ -242,6 +257,9 @@ function openModal() {
 					                         <input type="hidden" name="pay_id" value="${payInfo.pay_id}">
 					                         <input type="hidden" name="user_name" value="${payInfo.user_name}">
 					                         <input type="hidden" name="fintech_use_num" value="${payInfo.fintech_use_num}">
+				                   		</div>
+				                   		<div class="button col-lg-4 col-md-4 col-12" id="regist-btn" >
+				                   			<input type="button" class="btn" onclick="location.href='AccountRegist'" value="변경하기">
 				                   		</div>
 				                   	</div>
 	                            </div>

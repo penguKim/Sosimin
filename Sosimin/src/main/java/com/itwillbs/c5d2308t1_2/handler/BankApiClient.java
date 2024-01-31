@@ -126,10 +126,10 @@ public class BankApiClient {
 	// https://testapi.openbanking.or.kr/v2.0/account/balance/fin_num
 	public Map<String, Object> reqestAccountDetail(Map<String, Object> map) {
 		// 파라미터로 사용할 난수 생성하여 리턴받기
-		String bank_tran_id = bankValueGenerator.getBankTranId();
+//		String bank_tran_id = bankValueGenerator.getBankTranId();
 //		log.info("은행거래고유번호 : " + bank_tran_id);
 				
-		String tran_dtime = bankValueGenerator.getTranDTime(); 
+//		String tran_dtime = bankValueGenerator.getTranDTime(); 
 //		log.info("요청일시 : " + tran_dtime);
 
 		// GET 방식 요청에 대한 헤더 정보(엑세스 토큰)와 파라미터 설정
@@ -145,9 +145,9 @@ public class BankApiClient {
 		// 3. 요청에 필요한 URI 정보 생성
 		URI uri = UriComponentsBuilder
 				.fromUriString(base_url + "/v2.0/account/balance/fin_num")
-				.queryParam("bank_tran_id", bank_tran_id) // 거래고유번호
+				.queryParam("bank_tran_id", map.get("bank_tran_id")) // 거래고유번호
 				.queryParam("fintech_use_num", map.get("fintech_use_num")) // 사용자번호
-				.queryParam("tran_dtime", tran_dtime) // 요청일시
+				.queryParam("tran_dtime", map.get("tran_dtime")) // 요청일시
 				.encode() // 인코딩처리
 				.build() // UriComponents 객체 생성
 				.toUri(); // URI 타입 객체로 변환
@@ -178,7 +178,7 @@ public class BankApiClient {
 		// 출금정보 저장
 		JSONObject jo = new JSONObject();
 		// 요청 파라미터 저장
-		jo.put("bank_tran_id", bankValueGenerator.getBankTranId()); // 거래고유번호(자동생성)
+		jo.put("bank_tran_id", map.get("bank_tran_id")); // 거래고유번호(자동생성)
 		
 		// ----------------- 핀테크 이용기관 정보 ------------------
 		jo.put("cntr_account_type", "N"); // 약정 계좌/계정 구분("N" : 계좌, "C" : 계정 => N 고정)
@@ -189,13 +189,13 @@ public class BankApiClient {
 		jo.put("fintech_use_num", map.get("fintech_use_num")); // 출금계좌 핀테크이용번호
 		jo.put("wd_print_content", "소시민"); // 출금계좌인자내역 = 사용자 통장에 찍힐 이름
 		jo.put("tran_amt", map.get("tran_amt")); // 거래금액 
-		jo.put("tran_dtime", bankValueGenerator.getTranDTime()); // 요청일시(자동생성)
+		jo.put("tran_dtime", map.get("tran_dtime")); // 요청일시(자동생성)
 		jo.put("req_client_name", map.get("user_name")); // 요청고객 성명(출금계좌 예금주명)
 		jo.put("req_client_fintech_use_num", map.get("fintech_use_num")); // 요청고객 핀테크이용번호(출금계좌)
 		// => 주의! 은행기관코드&계좌번호 또는 핀테크이용번호 둘 중 하나만 설정
 		jo.put("req_client_num", map.get("member_id").toString().toUpperCase()); // 요청고객회원번호(아이디 활용) = AN이니까 영어랑 숫자로 된 아이디 사용하면 됨
 		// => 단, 영문자는 모두 대문자로 변환
-		jo.put("transfer_purpose", "ST"); // 이체용도(송금(TR), 결제(ST), 충전(RC) 등) 
+		jo.put("transfer_purpose", map.get("transfer_purpose")); // 이체용도(송금(TR), 결제(ST), 충전(RC) 등) 
 		
 		// --------------- 수취 고객(실제 최종 입금 대상) 정보 ------------
 		// 최종적으로 이 돈을 수신하는 계좌에 대한 정보
@@ -272,14 +272,14 @@ public class BankApiClient {
 		// 3-1) 단건이체(1건의 입금 이체) 정보를 저장할 JSONObject 객체 생성
 		JSONObject joReq = new JSONObject();
 		joReq.put("tran_no", "1"); // 거래순번(단건이므로 무조건 1, 과거에 다건이 가능했어서 남아있음)
-		joReq.put("bank_tran_id", bankValueGenerator.getBankTranId()); // 거래고유번호(자동생성)
+		joReq.put("bank_tran_id", map.get("bank_tran_id")); // 거래고유번호(자동생성)
 		joReq.put("fintech_use_num", map.get("fintech_use_num")); // 입금계좌 핀테크 이용번호
 		joReq.put("print_content", "소시민_환급"); // 입금계좌인자내역
 		joReq.put("tran_amt", map.get("tran_amt")); // 거래금액
 		joReq.put("req_client_name", map.get("user_name")); // 요청고객 성명(출금계좌 예금주명)
 		joReq.put("req_client_fintech_use_num",  map.get("fintech_use_num")); // 요청고객 핀테크이용번호(출금계좌)
 		joReq.put("req_client_num", map.get("member_id").toString().toUpperCase()); // 요청고객회원번호(아이디 활용)
-		joReq.put("transfer_purpose", "TR"); // 이체용도(송금(TR), 결제(ST), 충전(RC) 등) 
+		joReq.put("transfer_purpose", map.get("transfer_purpose")); // 이체용도(송금(TR), 결제(ST), 충전(RC) 등) 
 		
 		// 3-2) 입금 이체 1건의 정보를 배열(리스트)로 관리할 JSONArray 객체 생성
 		JSONArray jaReqList = new JSONArray();
@@ -296,7 +296,7 @@ public class BankApiClient {
 		jo.put("wd_pass_phrase", "NONE"); // 입금이체용 암호문구(테스트 시 "NONE" 설정)
 		jo.put("wd_print_content", map.get("member_id") + "_환급"); // 출금계좌인자내역(결제 요청 사용자 아이디 활용) = 우리 계좌에 찍힐 이름
 		jo.put("name_check_option", "on"); // 수취인 성명 검증 여부(on 또는 생략 : 검증, off : 미검증)
-		jo.put("tran_dtime", bankValueGenerator.getTranDTime()); // 요청일시(자동생성)
+		jo.put("tran_dtime", map.get("tran_dtime")); // 요청일시(자동생성)
 		jo.put("req_cnt", "1"); // 입금요청건수(단건이므로 무조건 1)
 		
 		// ----------------------- 기본 입금 이체 정보 () -----------------------

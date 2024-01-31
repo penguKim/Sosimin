@@ -188,8 +188,10 @@ function openModal() {
 	                            <div class="title paytitle">
 	                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
 	                                <h3 class="pay-name">
-	                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
-	                                	소심페이
+	                                	<a href="PayInfo">
+		                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
+		                                	소심페이
+	                                	</a>
 	                                </h3>
 	                            </div>
 	                           	<div class="complete-msg-center">거래정보</div>

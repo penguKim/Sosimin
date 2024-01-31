@@ -200,8 +200,10 @@ function openModal() {
 	                            <div class="title paytitle">
 	                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
 	                                <h3 class="pay-name">
-	                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
-	                                	소심페이
+	                                	<a href="PayInfo">
+		                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
+		                                	소심페이
+	                                	</a>
 		                            </div>
 	                           	 <div class="form-group input-group">
 	                                <label for="pay-amount">충전금액</label>
@@ -225,7 +227,7 @@ function openModal() {
 				                       <div class="col-lg-2 col-md-2 col-12" style="text-align: center;">
 				                       		<img src="./resources/images/payment/${payInfo.bank_name}.png" alt="이미지" width="50px"/>
 				                        </div>
-				                        <div class="col-lg-10 col-md-10 col-12">
+				                        <div class="col-lg-6 col-md-6 col-12">
 					                        <h5 class="bank-name">${payInfo.bank_name}</h5>
 					                        <p class="account-no">
 					                                ${payInfo.account_num_masked}
@@ -233,6 +235,9 @@ function openModal() {
 					                         <input type="hidden" name="pay_id" value="${payInfo.pay_id}">
 					                         <input type="hidden" name="user_name" value="${payInfo.user_name}">
 					                         <input type="hidden" name="fintech_use_num" value="${payInfo.fintech_use_num}">
+				                   		</div>
+				                   		<div class="button col-lg-4 col-md-4 col-12" id="regist-btn" >
+				                   			<input type="button" class="btn" onclick="location.href='AccountRegist'" value="변경하기">
 				                   		</div>
 				                   	</div>
 	                            </div>
