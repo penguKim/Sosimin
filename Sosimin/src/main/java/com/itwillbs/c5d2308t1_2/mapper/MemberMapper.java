@@ -3,6 +3,7 @@ package com.itwillbs.c5d2308t1_2.mapper;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
 
@@ -23,5 +24,8 @@ public interface MemberMapper {
 
 	// 비밀번호 찾기
 	MemberVO selectMemberForPassword(MemberVO member);
+
+	// 비밀번호 찾기 후 비밀번호 수정
+	int updateMemberPassword(@Param("member") MemberVO member, @Param("newPassword")String newPassword);
 
 }

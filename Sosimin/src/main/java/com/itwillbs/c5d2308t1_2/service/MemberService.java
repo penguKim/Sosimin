@@ -66,4 +66,9 @@ public class MemberService {
 				System.out.println(e.getCode());
 			}
 	}
+
+	// 비밀번호 찾기 후 비밀번호 수정
+	public int modifyMemberPassword(MemberVO member, String newPassword) {
+		return mapper.updateMemberPassword(member, newPassword);
+	}
 }

@@ -81,7 +81,7 @@
 				iscorrectPhone = true;
 			}
 		});	// 휴대폰번호 blur 이벤트 끝
-		
+ 	 	
 		// 인증코드발급 버튼 클릭 시
 		$("#requestPhoneAuthCodeButton").on("click", function() {
 			let member_phone = $("#phone").val();
@@ -197,7 +197,6 @@
 			return true;
 
 		});
-		
 		
 	}); // document.ready 끝	
 </script>

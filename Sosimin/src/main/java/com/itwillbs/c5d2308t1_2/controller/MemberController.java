@@ -260,14 +260,38 @@ public class MemberController {
 	
 	// 로그인 비밀번호 재설정 페이지로 이동
 	@PostMapping("MemberResetPasswd")
-	public String MemberResetPasswd() {
+	public String MemberResetPasswd(MemberVO member, HttpSession session, Model model) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId != null) { // 로그인한 경우
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("targetURL", "./");
+			return "forward";
+		}
+		model.addAttribute("member", member);
 		return "member/resetPasswd";
 	}
 	
 	// 로그인 비밀번호 재설정 작업
+	@ResponseBody
 	@PostMapping("MemberResetPasswdPro")
-	public String MemberResetPasswdPro() {
-		return "";
+	public boolean MemberResetPasswdPro(MemberVO member, String newPassword) {
+		System.out.println("새 비밀번호 확인 : " + newPassword);
+		
+		// 새 비밀번호 암호화 처리
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		if(newPassword != null && !newPassword.equals("")) {
+			newPassword = passwordEncoder.encode(newPassword);
+		}
+		
+		// 새 비밀번호로 회원 정보 업데이트
+		int updateCount = service.modifyMemberPassword(member, newPassword);
+		
+		if(updateCount > 0) {
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 	
 	// 로그아웃
