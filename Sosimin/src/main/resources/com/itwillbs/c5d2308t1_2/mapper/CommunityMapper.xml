@@ -436,6 +436,33 @@
 			</choose>
 		WHERE temp_writer = #{community_writer}
 	</update>
+	
+	<!-- 이미지 삭제 ajax의 널스트링 처리 -->
+	<update id="removeTempImage">
+		UPDATE TempCommunity
+		SET
+			<choose>
+				<when test="index == 1">temp_image1 = ""</when>
+				<when test="index == 2">temp_image2 = ""</when>
+				<when test="index == 3">temp_image3 = ""</when>
+				<when test="index == 4">temp_image4 = ""</when>
+				<when test="index == 5">temp_image5 = ""</when>
+			</choose>
+		WHERE temp_writer = #{temp_writer}
+	</update>
+	
+	<!-- 이미지 삭제 ajax의 삭제 이후 순서 옮기기 -->
+	<update id="moveTempImage">
+		UPDATE TempCommunity
+		SET
+			temp_image1 = #{temp_image1}
+			, temp_image2 = #{temp_image2}
+			, temp_image3 = #{temp_image3}
+			, temp_image4 = #{temp_image4}
+			, temp_image5 = #{temp_image5}
+			, temp_datetime = now()
+		WHERE temp_writer = #{temp_writer}
+	</update>
 </mapper>
 
 

@@ -405,7 +405,16 @@ public class CommunityController {
 			return "fail_back";
 		}
 		
+		// jstl 반복문을 위한 리스트 생성
+		List<String> imageList = new ArrayList<String>();
+		imageList.add((String)map.get("community_image1"));
+		imageList.add((String)map.get("community_image2"));
+		imageList.add((String)map.get("community_image3"));
+		imageList.add((String)map.get("community_image4"));
+		imageList.add((String)map.get("community_image5"));
+		
 		model.addAttribute("com", map);
+		model.addAttribute("imageList", imageList);
 		
 		return "community/communityModify";
 	}
@@ -544,7 +553,7 @@ public class CommunityController {
 		String sId = (String)session.getAttribute("sId");
 		
 		if(sId == null) {
-			return "login";
+			return "login"; // ajax의 리턴타입이 json이므로 해당 문자열 리턴시 error 발생
 		}
 		
 		like.put("member_id", sId);
@@ -647,13 +656,12 @@ public class CommunityController {
 		
 		System.out.println("대댓글 작성 시 넘어온 값은 : " + reply);
 		
-		// >>>>>>>>>>>>>>>> 로그인 처리
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			return "invalidSession";
 		}
 		
-		reply.setReply_writer("leess");
+		reply.setReply_writer(sId);
 		
 		int insertCount = communityService.registReReply(reply);
 		
@@ -838,12 +846,18 @@ public class CommunityController {
 	
 	@ResponseBody
 	@PostMapping("ImageUpload")
-	public String imageUpload(CommunityVO com, HttpSession session) {
+	public String imageUpload(CommunityVO com, HttpSession session, Model model) {
 		System.out.println("내가 받은 파일은 : " + com);
 		
 		String image = ""; // 리턴할 이미지 경로
 		
 		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "로그인이 필요합니다!");
+			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		}
 		com.setCommunity_writer(sId);
 		
 		String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
@@ -934,15 +948,25 @@ public class CommunityController {
 	
 	@ResponseBody
 	@PostMapping("ImageDelete")
-	public String imageDelete (CommunityVO com, HttpSession session) {
-		System.out.println("내가 받은 파일은 : " + com);
+	public String imageDelete (CommunityVO com, HttpSession session, Model model) {
+		System.out.println("내가 삭제하려는 파일은 : " + com);
 		
 		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			model.addAttribute("msg", "로그인이 필요합니다!");
+			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		}
 		com.setCommunity_writer(sId);
 		
-//		int removeCount = communityService.removeTempImage(com);
+		int removeCount = communityService.removeTempImage(com, session);
 		
-		return "true";
+		if(removeCount > 0) {
+			return "true";
+		} else {
+			return "false";
+		}
 	}
 	
 	@ResponseBody

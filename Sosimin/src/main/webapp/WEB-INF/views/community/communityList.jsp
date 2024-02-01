@@ -374,7 +374,7 @@
 										</div>
 									</div>
 									<div class="col-2">
-										<c:if test="${com.community_image1 ne ''}">
+										<c:if test="${com.community_image1 ne null and com.community_image1 ne ''}">
 											<img src="${pageContext.request.contextPath }/resources/upload/${com.community_image1}" style="max-height: 50px;">
 										</c:if>
 									</div>
@@ -393,7 +393,7 @@
 									<div class="row">
 										<span class="col ellipsis pe-1">${com.community_subject }
 										</span>
-										<c:if test="${com.community_image1 ne ''}">
+										<c:if test="${com.community_image1 ne null and com.community_image1 ne ''}">
 											<i class="fa fa-image col-1 px-0 py-1"></i>
 										</c:if>
 									</div>

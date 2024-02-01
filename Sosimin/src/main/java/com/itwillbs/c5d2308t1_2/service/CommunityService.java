@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +17,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.c5d2308t1_2.HomeController;
 import com.itwillbs.c5d2308t1_2.mapper.CommunityMapper;
 import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 @Service
 public class CommunityService {
@@ -45,22 +49,13 @@ public class CommunityService {
 	public int registCommunity(CommunityVO com) {
 		// 임시게시글 조회
 		Map<String, Object> map = mapper.selectTempCommunity(com);
+		System.out.println("임시게시글 조회 : " + map); 
 		
-		if(!map.get("temp_image1").equals("")) {
-			com.setCommunity_image1((String)map.get("temp_image1"));
-		}
-		if(!map.get("temp_image2").equals("")) {
-			com.setCommunity_image2((String)map.get("temp_image2"));
-		}
-		if(!map.get("temp_image3").equals("")) {
-			com.setCommunity_image3((String)map.get("temp_image3"));
-		}
-		if(!map.get("temp_image4").equals("")) {
-			com.setCommunity_image4((String)map.get("temp_image4"));
-		}
-		if(!map.get("temp_image5").equals("")) {
-			com.setCommunity_image5((String)map.get("temp_image5"));
-		}
+		com.setCommunity_image1((String)map.get("temp_image1"));
+		com.setCommunity_image2((String)map.get("temp_image2"));
+		com.setCommunity_image3((String)map.get("temp_image3"));
+		com.setCommunity_image4((String)map.get("temp_image4"));
+		com.setCommunity_image5((String)map.get("temp_image5"));
 		
 		// 임시게시글 삭제
 		mapper.deleteTempCommunity(com);
@@ -219,11 +214,60 @@ public class CommunityService {
 	}
 
 	// 사진 삭제 ajax 처리
-	public int removeTempImage(CommunityVO com) {
+	@Transactional
+	public int removeTempImage(CommunityVO com, HttpSession session) {
 		
 		int count = 0;
 		
-//		count = mapper.updateTempImage(com);
+		int index = 0;
+		
+		// 삭제하려는 파일 지정
+		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
+		mFiles.add(com.getFile1());
+		mFiles.add(com.getFile2());
+		mFiles.add(com.getFile3());
+		mFiles.add(com.getFile4());
+		mFiles.add(com.getFile5());
+		
+		for(MultipartFile file : mFiles) {
+			if(file != null) {
+				index = Integer.parseInt(file.getName().substring(4));
+			}
+		}
+		
+		// 임시저장한 게시글 조회
+		Map<String, Object> map = mapper.selectTempCommunity(com);
+		System.out.println("땡길려고 가져온 임시테이블 : " + map);
+		
+		String[] imageNames = {map.get("temp_image1").toString(), map.get("temp_image2").toString(), 
+				map.get("temp_image3").toString(), map.get("temp_image4").toString(), map.get("temp_image5").toString()}; 
+		
+		map.put("index", index);
+		
+		// 삭제 이미지 널스트링 처리
+		mapper.removeTempImage(map);
+		
+		try {
+			String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+			String saveDir = session.getServletContext().getRealPath(uploadDir);
+			
+			Path path = Paths.get(saveDir + "/" + imageNames[index-1]);
+			logger.info(saveDir + "/" + imageNames[index-1] + " : 삭제합니다.");
+			Files.deleteIfExists(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// 삭제 이미지 이후의 이미지 옮기기
+		for(int i = index; i < imageNames.length; i++) {
+			map.put("temp_image" + (i), imageNames[i]);
+			System.out.println("삭제할 파일 다음의 파일 : " + imageNames[i]);
+		}
+		map.put("temp_image5", "");
+		
+		System.out.println("삭제하고 난 이후의 임시테이블 : " + map);
+		
+		count = mapper.moveTempImage(map);
 		
 		return count;
 	}
