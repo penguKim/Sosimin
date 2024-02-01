@@ -155,8 +155,6 @@
 			, #{pay_history_type}
 			, null -- 상품관련아님
 			, now()
-			, 0 -- 완료
-			, null
 			, #{bank_tran_id}
 		)
 	</insert>
@@ -173,6 +171,13 @@
 		SELECT count(*)
 		FROM PayHistory
 		WHERE bank_tran_id = #{bank_tran_id}
+	</select>
+	
+	<!-- 구매하려는 상품 정보 조회 -->
+	<select id="selectProductInfo" resultType="map">
+		SELECT *
+		FROM Product
+		WHERE product_id = #{product_id}
 	</select>
 	
 	

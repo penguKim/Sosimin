@@ -216,7 +216,7 @@ function openModal() {
 		                                	소심페이
 	                                	</a>
 		                            </div>
-	                           	 <div class="form-group input-group">
+	                           	<div class="form-group input-group">
 	                                <label for="pay-amount">충전금액</label>
 	                                <input class="form-control" type="text" id="pay-amount" name="pay_amount"
 	                                	placeholder="충전을 원하시는 금액을 입력해주세요">

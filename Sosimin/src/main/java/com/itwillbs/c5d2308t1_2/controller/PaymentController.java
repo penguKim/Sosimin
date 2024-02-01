@@ -726,21 +726,64 @@ public class PaymentController {
 	
 	// ----------- 페이사용 ---------------
 	// 페이 사용 페이지로 이동
-	@GetMapping("PayUse")
-	public String payUse() {
+	@GetMapping("Payment")
+	public String payUse(@RequestParam Map<String, String> map, HttpSession session, Model model) {
+		String product_buyer = (String)session.getAttribute("sId"); // 구매자 정보
+		
+		// DB에서 페이 가입 여부 조회하고 정보 가져오기(페이 미가입자는 현금거래만 가능)
+		Map<String, Object> payInfo = service.getPayInfo(product_buyer);
+		if(product_buyer == null) {
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
+			return "forward";
+		} else if(session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "계좌 인증이 필요합니다");
+			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "AccountVerification");	
+			return "forward";
+		} else if(payInfo == null) {
+			model.addAttribute("msg", "계좌 등록이 필요합니다");
+			model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
+			return "forward";
+		}
+		
+		log.info(map.toString());
+		
+		// 해당 상품정보를 조회하여 현재 결제에 필요한 상품정보 가져오기
+		Map<String, Object> productInfo = service.getProductInfo(map);
+		
+		log.info(productInfo.toString());
+		model.addAttribute("productInfo", productInfo);
+		model.addAttribute("payInfo", payInfo);
+		
+		// 상품 상태가 거래중이 아니면 튕겨내기
+		if(!productInfo.get("trade_status").toString().equals("0")) {
+			model.addAttribute("msg", "거래 가능한 상품이 아닙니다.");
+			model.addAttribute("msg2", "상품 목록으로 이동합니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "SearchProduct"); // 계좌 등록 페이지로 이동
+			return "forward";
+		}
+		
+		
 		return "payment/use";
 	}
 	
 	// 페이 사용 처리
-	@PostMapping("PayUsePro")
+	@PostMapping("PaymentPro")
 	public String payUsePro(@RequestParam Map<String, String> map) {
 		log.info(map.toString());
 		
-		return "redirect:/PayUseComplete";
+		return "redirect:/PaymentComplete";
 	}
 	
 	// 페이 사용 완료 페이지로 이동
-	@GetMapping("PayUseComplete")
+	@GetMapping("PaymentComplete")
 	public String payUseComplete() {
 		return "payment/useComplete";
 	}

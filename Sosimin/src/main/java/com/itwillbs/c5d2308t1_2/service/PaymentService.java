@@ -132,6 +132,11 @@ public class PaymentService {
 	public int getTranIdCount(Map<String, Object> map) {
 		return mapper.selectTranId(map);
 	}
+	
+	// 결제하려는 상품 정보 조회
+	public Map<String, Object> getProductInfo(Map<String, String> map) {
+		return mapper.selectProductInfo(map);
+	}
 
 	
 	

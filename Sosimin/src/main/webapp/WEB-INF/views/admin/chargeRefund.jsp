@@ -165,30 +165,11 @@
 																			${date}
 																		</td>
 																	</tr>
-																	<tr>
-																		<th scope="row">거래상태</th>
-																		<td>
-																			<c:choose>
-																				<c:when test="${pay_list.pay_history_status eq '0'}">정상</c:when>
-																				<c:when test="${pay_list.pay_history_status eq '1'}">취소</c:when>
-																			</c:choose>
-																		</td>
-																	</tr>
-																	<c:if test="${pay_list.pay_history_status eq '2'}">
-																		<tr>
-																			<th scope="row">거래취소일</th>
-																			<td>
-																				<c:set var="datetime" value="${fn:split(pay_list.pay_cancel_date, 'T')}" />
-																				<c:set var="date" value="${datetime[0]}" />
-																				${date}
-																			</td>
-																		</tr>
-																	</c:if>
 																</table>
 															</div>
 															<div class="modal-footer">
 																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">뒤로가기</button>
-																<button type="button" class="btn btn-primary">거래취소</button>
+																<button type="button" class="btn btn-primary">취소하기</button>
 															</div>
 														</div>
 													</div>
