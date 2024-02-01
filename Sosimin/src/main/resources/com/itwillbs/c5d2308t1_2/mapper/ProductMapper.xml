@@ -16,7 +16,7 @@
 			FROM Member
 			WHERE member_id = #{sId})		
 		</if>
-		<if test="sId != null">
+		<if test="sId != null and category != '' or sId != null and keyword != ''">
 			AND
 		</if>
 		<choose>
@@ -26,9 +26,6 @@
 			<when test="keyword != ''" >
 				product_name LIKE CONCAT('%', #{keyword}, '%') 
 			</when>
-			<otherwise>
-				1+1
-			</otherwise>
 		</choose>
 	</select>
 	
@@ -50,7 +47,7 @@
 			FROM Member
 			WHERE member_id = #{sId})		
 		</if>
-		<if test="sId != null">
+		<if test="sId != null and category != '' or sId != null and keyword != ''">
 			AND
 		</if>
 		<choose>
@@ -60,9 +57,6 @@
 			<when test="keyword != ''" >
 				product_name LIKE CONCAT('%', #{keyword}, '%') 
 			</when>
-			<otherwise>
-				1+1
-			</otherwise>
 		</choose>
 		
 		ORDER BY product_datetime DESC

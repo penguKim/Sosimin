@@ -68,7 +68,7 @@ public class ProductController {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>페이지 넘버 : " + pageNum);
 		List<Map<String, Object>> productList = null;
-		
+		   
 		// ====================페이징 처리 ===============================================================
 		PageDTO page = new PageDTO(pageNum, 16);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 맵 페이지" + page);
