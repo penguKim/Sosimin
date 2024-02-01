@@ -39,19 +39,18 @@ $(function() {
 		pageNum = $("#pageNum").val();
 	}
 	
-	
-	
 	<%-- 기본 상품 목록 최신순으로 출력 --%> 
 	$.ajax({
 		url: "StoreProductList",
 		data: {
 			pageNum: pageNum,
-			category: category,
-			keyword:keyword
+			keyword: keyword,
+			category: category
+			
 		},
 		dataType: 'json',
 		success: function(data) {
-		    let productList = data[0]; 
+		    let productList = data[0];
 		    let pageInfo = data[1];
 		    let pageNum = data[2];
 		    

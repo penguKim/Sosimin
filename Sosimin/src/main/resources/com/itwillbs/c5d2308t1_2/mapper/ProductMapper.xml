@@ -8,33 +8,63 @@
 	<select id="productListCount" resultType="int">
 		SELECT COUNT(*)
 		FROM Product
-<!-- 		<if test="id != null"> -->
-<!-- 			WHERE  -->
-<!-- 			gu = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(member_address, ' ', -2), ' ', 1) AS member_address -->
-<!-- 			FROM Member -->
-<!-- 			WHERE member_id = #{id})		 -->
-<!-- 		</if>  -->
-		
-		
+		<if test="sId != null or category != '' or keyword != ''">
+			WHERE 
+		</if>
+		<if test="sId != null" >
+			gu = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(member_address, ' ', -2), ' ', 1) AS member_address
+			FROM Member
+			WHERE member_id = #{sId})		
+		</if>
+		<if test="sId != null">
+			AND
+		</if>
+		<choose>
+			<when test="category != ''">
+				product_category = #{category}	
+			</when>
+			<when test="keyword != ''" >
+				product_name LIKE CONCAT('%', #{keyword}, '%') 
+			</when>
+			<otherwise>
+				1+1
+			</otherwise>
+		</choose>
 	</select>
 	
 	
 	
 	<!-- 상품 목록 조회 -->
 	<select id="selectProductList" resultType="map"> 
-		SELECT p.product_id, p.member_id, product_board_id, product_name, product_price, gu, p.dong 
+		SELECT p.product_id, product_category, p.member_id, product_board_id, product_name, product_price, gu, p.dong  
 		, product_datetime, product_image1
 		FROM Product p JOIN Product_board pb
 		ON p.product_id = pb.product_id
 		JOIN Member m
 		ON p.member_id = m.member_id
-<!-- 		<choose> -->
-<!-- 			<when test="!sId.equals('')"> -->
-<!-- 				WHERE  -->
-<!-- 				m.member_address like '%${}%' AND gu = ''  -->
-<!-- 			</when> -->
+		<if test="sId != null or category != '' or keyword != ''">
+			WHERE 
+		</if>
+		<if test="sId != null" >
+			gu = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(member_address, ' ', -2), ' ', 1) AS member_address
+			FROM Member
+			WHERE member_id = #{sId})		
+		</if>
+		<if test="sId != null">
+			AND
+		</if>
+		<choose>
+			<when test="category != ''">
+				product_category = #{category}	
+			</when>
+			<when test="keyword != ''" >
+				product_name LIKE CONCAT('%', #{keyword}, '%') 
+			</when>
+			<otherwise>
+				1+1
+			</otherwise>
+		</choose>
 		
-<!-- 		</choose> -->
 		ORDER BY product_datetime DESC
 		LIMIT #{page.startRow}, #{page.listLimit}
 	</select>

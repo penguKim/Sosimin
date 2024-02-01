@@ -47,7 +47,7 @@ public class ProductController {
     
 	@Autowired
 	ProductService service;
-	
+	 
 	// 메인 상품 목록 페이지 이동
 	@GetMapping("SearchProduct")
 	public String searchProduct() {
@@ -66,7 +66,6 @@ public class ProductController {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>페이지 넘버 : " + pageNum);
 		List<Map<String, Object>> productList = null;
-		// 미로그인 시 상품 목록 날짜 최신순으로 나열
 		
 		// ====================페이징 처리 ===============================================================
 		PageDTO page = new PageDTO(pageNum, 16);

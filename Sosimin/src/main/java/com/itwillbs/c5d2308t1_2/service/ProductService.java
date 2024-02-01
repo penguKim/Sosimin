@@ -18,7 +18,7 @@ public class ProductService {
 	
 	// 미로그인 시 날짜 최신순으로 상목 목록 조회
 	public List<Map<String, Object>> selectProductList(Map<String, Object> map) {
-		
+		System.out.println(">>>>>>>>>>>>>>>>>아이유 나와줘" + map.get("keyword"));
 		return mapper.selectProductList(map);
 	}
 	
