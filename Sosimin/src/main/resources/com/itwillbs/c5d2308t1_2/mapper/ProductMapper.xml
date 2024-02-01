@@ -8,9 +8,10 @@
 	<select id="productListCount" resultType="int">
 		SELECT COUNT(*)
 		FROM Product
-		<if test="sId != null or category != '' or keyword != ''">
+		<if test="sId != null or category != '' or keyword != '' or price != '' or status != ''">
 			WHERE 
 		</if>
+		<!-- 로그인시 회원 구별 조회 -->
 		<if test="sId != null" >
 			gu = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(member_address, ' ', -2), ' ', 1) AS member_address
 			FROM Member
@@ -19,6 +20,7 @@
 		<if test="sId != null and category != '' or sId != null and keyword != ''">
 			AND
 		</if>
+		<!-- 카테고리 및 키워드 별 조회 -->
 		<choose>
 			<when test="category != ''">
 				product_category = #{category}	
@@ -27,6 +29,32 @@
 				product_name LIKE CONCAT('%', #{keyword}, '%') 
 			</when>
 		</choose>
+		<!-- 상품 가격별 조회 -->
+		<if test="sId != null and price != '' ">
+			AND
+		</if>
+		<if test="price != ''">product_price between #{minPrice} AND #{maxPrice}</if>
+		<!-- 상품 상태별 조회 -->
+		<if test="sId != null and status != '' ">
+			AND
+		</if>
+		<if test="status != ''">
+			<choose>
+				<when test="status3 != null">
+					product_status IN (#{status1}, #{status2}, #{status3})
+				</when>
+				<when test="status2 != null">
+					product_status IN (#{status1}, #{status2})
+				</when>
+				<when test="status1 != null">
+					product_status = #{status1}
+				</when>
+				<otherwise>
+					1 + 1
+				</otherwise>
+			</choose>
+		</if>
+		
 	</select>
 	
 	
@@ -39,7 +67,7 @@
 		ON p.product_id = pb.product_id
 		JOIN Member m
 		ON p.member_id = m.member_id
-		<if test="sId != null or category != '' or keyword != ''">
+		<if test="sId != null or category != '' or keyword != '' or price != '' or status != ''">
 			WHERE 
 		</if>
 		<if test="sId != null" >
@@ -47,6 +75,7 @@
 			FROM Member
 			WHERE member_id = #{sId})		
 		</if>
+		<!-- 카테고리 및 키워드 별 조회 -->
 		<if test="sId != null and category != '' or sId != null and keyword != ''">
 			AND
 		</if>
@@ -58,6 +87,31 @@
 				product_name LIKE CONCAT('%', #{keyword}, '%') 
 			</when>
 		</choose>
+		<!-- 상품 가격별 조회 -->
+		<if test="sId != null and price != '' ">
+			AND
+		</if>
+		<if test="price != ''">product_price between #{minPrice} AND #{maxPrice}</if>
+		<!-- 상품 상태별 조회 -->
+		<if test="sId != null and status != '' ">
+			AND
+		</if>
+		<if test="status != ''">
+			<choose>
+				<when test="status3 != null">
+					product_status IN (#{status1}, #{status2}, #{status3})
+				</when>
+				<when test="status2 != null">
+					product_status IN (#{status1}, #{status2})
+				</when>
+				<when test="status1 != null">
+					product_status = #{status1}
+				</when>
+				<otherwise>
+					1 + 1
+				</otherwise>
+			</choose>
+		</if>
 		
 		ORDER BY product_datetime DESC
 		LIMIT #{page.startRow}, #{page.listLimit}

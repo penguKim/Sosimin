@@ -10,13 +10,17 @@ $(function() {
 	$("#testBtn").on("click", function() {
 		let test = $("#testBtn").val();
 		
-		Swal.fire({
-			title: '테스트',         // Alert 제목
-			text: test,  // Alert 내용
-			icon:'info',                         // Alert 타입
-		});
-		
-		location.href="Test";
+		const Toast = Swal.mixin({
+		    toast: true,
+		    position: 'center-center',
+		    showConfirmButton: false,
+		    timer: 1000,
+		    timerProgressBar: false,
+		})
+		Toast.fire({
+		    icon: 'info',
+		    title: '테스트중입니다'
+		})
 		
 	});
 });
@@ -78,11 +82,31 @@ function reportRegist(index) {
 							report_content: "너굴맨이 해치웠으니 안심하라구!" // 신고 내용
 						},
 						success: function() {
-							Swal.fire('신고가 접수되었습니다!', '빠른시일내에 확인할게요!!', 'success');
+							const Toast = Swal.mixin({
+							    toast: true,
+							    position: 'center-center',
+							    showConfirmButton: false,
+							    timer: 2000,
+							    timerProgressBar: false,
+							})
+							Toast.fire({
+							    icon: 'success',
+							    title: '신고 감사합니다!'
+							})
 							
 						},
 						error: function() {
-							Swal.fire('신고 실패!', '죄송하지만 다시 부탁해요~!', 'error');
+							const Toast = Swal.mixin({
+							    toast: true,
+							    position: 'center-center',
+							    showConfirmButton: false,
+							    timer: 2000,
+							    timerProgressBar: false,
+							})
+							Toast.fire({
+							    icon: 'error',
+							    title: '죄송하지만 다시 시도해주세요 ㅠㅠ'
+							})
 						}
 				}); // 신고 등록 ajax 끝
 		   	}
@@ -206,7 +230,7 @@ function reportRegist(index) {
 	
 	<%-- 회원 모달 --%>
 	<div class="modal fade review-modal" id="memberModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
+		<div class="modal-dialog modal-dialog-scrollable" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="reportsubject">회원 신고하기</h1>

@@ -36,9 +36,13 @@
 </style>
 <script type="text/javascript">
 $(function() {
+	<%-- 필터링을 위한 변수 초기화 --%>
 	let pageNum = "";
-	let category = "${param.product_category}";
+	let price = "";
+	let status="";
+	<%-- 필터링을 위한 변수 초기화 --%>
 	let keyword = "${param.keyword}";
+	let category = "${param.product_category}";
 	
 	if("${param.pageNum}" > 1) {
 		pageNum = "${param.pageNum}";
@@ -52,8 +56,9 @@ $(function() {
 		data: {
 			pageNum: pageNum,
 			keyword: keyword,
-			category: category
-			
+			category: category,
+			price: price,
+			status: status
 		},
 		dataType: 'json',
 		success: function(data) {
@@ -141,35 +146,40 @@ $(function() {
 	});
 	
 });
+</script>
 
-	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
-	let category = "${param.category}";
-	let keyword = "${param.keyword}";
-	let price = "";
-
+<script type="text/javascript">
 // 필터링 옵션 처리 후 ajax
 function filtering() {
-	price = $("input[name='priceRadio']:checked").val();
+	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
+	let category = "${param.product_category}";
+	let keyword = "${param.keyword}";
+	let price = "";
 	
+	<%-- 가격 필터 선택 시 값 설정 --%>
+	$("input[name='priceRadio']").on("click", function() {
+		price = $("input[name='priceRadio']:checked").val();
+	});
+	
+	<%-- 상품 상태 버튼 선택시 내용 저장 --%> 
 	let productStatus = "";  
     $("input[name=productStatus]:checked").each(function(index) {  
     	productStatus += $(this).val() + ",";  
     });  
     productStatus = productStatus.slice(0, -1);
     
-    
-    
+	<%-- 상품 필터링을 위한 ajax --%>    
 	$.ajax({
 		url: "StoreProductList",
 		data: {
 			keyword:keyword,
-			product_category:category,
-			product_price: price,
-			product_status: productStatus
+			category:category,
+			price: price,
+			status: productStatus
 			
 		},
 		success: function() {
-			
+			alert("확인");
 		},
 		error: function() {
 			alert("실패");
@@ -333,7 +343,6 @@ function filtering() {
                         		data-bs-target="#memberModal">
 								회원 신고하기
 						</button>
-						<input type="file" value="이미지 등록" multiple="multiple">
 						
                         </div>
                    </div>

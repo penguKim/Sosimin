@@ -63,12 +63,35 @@ public class ProductController {
 			, @RequestParam(defaultValue = "1") int pageNum) {
 		String id = (String)session.getAttribute("sId");
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 전" + map);
+		
 		map.put("sId", id);
 		map.put("pageNum", pageNum);
+		// 가격 선택 별 조회
+		if(map.get("price").equals("500000") ) {
+			System.out.println("50000오십만원");
+			map.put("minPrice", map.get("price"));
+			map.put("maxPrice", "999999999");
+		} else if(map.get("price") != "") {
+			map.put("minPrice", ((String)map.get("price")).split("~")[0]); 
+			map.put("maxPrice", ((String)map.get("price")).split("~")[1]); 
+		}
+		
+		// 상품 상태 선택 시 배열 저장 후 status 에 각각 저장
+		String[] statusArr = null;
+		if(!map.get("status").equals("")) {
+			
+			statusArr = ((String)map.get("status")).split(",");
+			for(int i = 0; i < statusArr.length; i++) {
+				map.put("status" + (i + 1), i+1);
+			}
+		}
+		
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>페이지 넘버 : " + pageNum);
+		
+		
 		List<Map<String, Object>> productList = null;
-		   
+		 
 		// ====================페이징 처리 ===============================================================
 		PageDTO page = new PageDTO(pageNum, 16);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 맵 페이지" + page);
