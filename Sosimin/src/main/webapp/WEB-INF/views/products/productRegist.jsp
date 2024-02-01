@@ -27,6 +27,8 @@
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <style type="text/css">
 	article {
 		text-align: center;
@@ -957,39 +959,39 @@ function checkInput() {
       	}, 500); // 스크롤 애니메이션의 속도를 나타낸다.
       return false; // 제출 중단
     }else if($("#productName").val() === "") {
-    	alert("상품명 등록 필수!");
+    	alert("상품명 등록 필수입니다.");
     	$("#productName").focus();
     	$("html, body").animate({
    		  scrollTop: $("#productName").offset().top
    		}, 500);
     	return false;
     }else if($("#categoryName").val() === "default") {
-    	alert("카테고리 선택 필수!");
+    	alert("카테고리 선택 필수입니다.");
     	$("#categoryName").focus();
     	$("html, body").animate({
    		  scrollTop: $("#divPadding").offset().top
    		}, 500);
     	return false;
     }else if($("#myMap").val() === "") {
-    	alert("거래지역 등록 필수!");
+    	alert("거래지역 등록 필수입니다.");
     	$("#myMap").focus();
     	$("html, body").animate({
    		  scrollTop: $("#hr1").offset().top
    		}, 500);
     	return false;
     }else if(!$("input[name='product_status']:checked").val()) {
-    	alert("상품상태 선택 필수!");
+    	alert("상품상태 선택 필수입니다.");
     	$("#productStatus1").focus();
     	$("html, body").animate({
    		  scrollTop: $("#hr2").offset().top
    		}, 500);
     	return false;
     }else if(!$("input[name='trade_method']:checked").val()) {
-    	alert("거래방법 선택 필수!");
+    	alert("거래방법 선택 필수입니다.");
     	$("#productStatus1").focus();
     	return false;
     }else if($("#priceInput").val() === "") {
-    	alert("가격 입력 필수!");
+    	alert("가격 입력 필수입니다.");
     	$("#priceInput").focus();
     	return false;
     }else if($("#priceInput").val() < 1000) {
@@ -997,7 +999,7 @@ function checkInput() {
     	$("#priceInput").focus();
     	return false;
     }else if($("#ProductDescription").val() === "") {
-    	alert("설명 입력 필수!");
+    	alert("설명 입력 필수입니다.");
     	$("#ProductDescription").focus();
     	return false;
     }
@@ -1249,6 +1251,7 @@ function checkInput() {
     	<!-- Select2 -->
     	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 	</th:block>
 </body>
 </html>

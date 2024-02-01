@@ -38,7 +38,11 @@
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-
+    
+    
+    <%--  --%>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 </head>
 <style>
 .product-info{
@@ -361,7 +365,7 @@
 					}
 				});
 		 
-	 $("#likeText").on("click", function () {
+	 $("#likeButton").on("click", function () {
  		$.ajax({
  			type: "POST",
  			url: "interestCheck", 
@@ -371,14 +375,15 @@
  			},
  			dataType: "json",
  			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
- 				alert("성공");
  				if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
+	 				alert("관심ㄱㅅ");
 					$("#likeText").addClass("is-active");
  					$("#likeButtonSpan").text(result.intersetCount);
  					$("#Like").text(result.intersetCount);
  					$("#likeButton").css("background-color", "rgb(51, 51, 51)");
  					$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGNzJGMzMiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
  				} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
+ 				alert("관심ㄲㅈ");
 					$("#likeText").removeClass("is-active");
  					$("#likeButtonSpan").text(result.intersetCount);
  					$("#Like").text(result.intersetCount);
@@ -831,6 +836,7 @@ window.onload = function() {
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <script type="text/javascript">
         const current = document.getElementById("current");
         const opacity = 0.6;
