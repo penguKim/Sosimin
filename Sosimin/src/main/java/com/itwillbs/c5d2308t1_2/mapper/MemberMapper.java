@@ -21,4 +21,7 @@ public interface MemberMapper {
 	// 아이디 찾기
 	MemberVO selectMemberForId(MemberVO member);
 
+	// 비밀번호 찾기
+	MemberVO selectMemberForPassword(MemberVO member);
+
 }

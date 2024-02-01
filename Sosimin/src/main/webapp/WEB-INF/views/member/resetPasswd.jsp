@@ -87,17 +87,17 @@
                             </div>
                             <div class="form-group">
                                 <label for="reg-ln" id="mgForThreeReset">아이디</label>
-                                <input class="form-control" type="text" id="reg-ln" value="${member_real_id }" readonly>
+                                <input class="form-control" type="text" id="reg-ln" value="${param.member_id }" readonly>
                             </div>
                             <div class="form-group">
 								<label for="reg-pass" id="mgForFiveOneReset">새 비밀번호</label> 
-								<input class="form-control" placeholder="8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*)" id="passwd" type="password" required>
-								<div id="checkPasswdResult" class="resultArea"></div>
+								<input class="form-control" maxlength="16" placeholder="8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*)" type="password"  name="member_password" id="password" required>
+								<div id="checkPasswordResult" class="resultArea"></div>
 							</div>
 							<div class="form-group">
 								<label for="reg-pass-confirm" id="mgForSevenTwoReset">새 비밀번호 확인</label> 
-								<input class="form-control" placeholder="비밀번호를 다시 입력해주세요" type="password" id="passwdConfirm" required>
-								<div id="checkPasswd2Result" class="resultArea"></div>
+								<input class="form-control" maxlength="16" placeholder="비밀번호를 다시 입력해주세요" type="password" id="passwordConfirm" required>
+								<div id="checkPasswordConfirmResult" class="resultArea"></div>
 							</div>
 	                        <div class="button" id="resetButtonArea">
                                 <button class="btn" type="button" onclick='history.back();'>돌아가기</button>

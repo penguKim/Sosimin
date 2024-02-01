@@ -198,7 +198,7 @@ public class MemberController {
 		   
 		   
 		   // 이전 페이지 주소 판별 후 메인페이지로 리다이렉트
-		   if(prevPage == null || prevPage.equals("") || prevPage.equals("MemberFindId") || prevPage.equals("MemberJoinPro")) {
+		   if(prevPage == null || prevPage.equals("") || prevPage.equals("MemberFindId") || prevPage.equals("MemberResetPasswd") || prevPage.equals("MemberJoinPro")) {
 			   return "redirect:/";
 		   } else {
 			   // 메인 페이지로 이동할 필요가 없는 이전페이지인 경우 즉시 리다이렉트
@@ -211,7 +211,13 @@ public class MemberController {
 
 	// 로그인 아이디 찾기 페이지로 이동
 	@GetMapping("MemberFindId")
-	public String MemberFindId() {
+	public String MemberFindId(HttpSession session, Model model) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId != null) { // 로그인한 경우
+			model.addAttribute("msg", "이미 로그인된 계정입니다");
+			model.addAttribute("targetURL", "./");
+			return "forward";
+		}
 		return "member/findId";
 	}
 
@@ -229,18 +235,31 @@ public class MemberController {
 
 	// 로그인 비밀번호 찾기 페이지로 이동
 	@GetMapping("MemberFindPasswd")
-	public String MemberFindPasswd() {
+	public String MemberFindPasswd(HttpSession session, Model model) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId != null) { // 로그인한 경우
+			model.addAttribute("msg", "이미 로그인된 계정입니다");
+			model.addAttribute("targetURL", "./");
+			return "forward";
+		}
 		return "member/findPasswd";
 	}
 
-	// 로그인 비밀번호 찾기 작업
-	@PostMapping("MemberFindPasswdPro")
-	public String MemberFindPasswdPro() {
-		return "";
+	// 로그인 비밀번호 찾기를 위한 회원정보 조회 ajax 요청
+	@ResponseBody
+	@GetMapping("MemberCheck")
+	public boolean memberCheck(MemberVO member) {
+		System.out.println("파라미터 확인 : " + member);
+		MemberVO dbMember = service.findMember(member);
+		if(dbMember == null || !dbMember.getMember_name().equals(member.getMember_name())) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	// 로그인 비밀번호 재설정 페이지로 이동
-	@GetMapping("MemberResetPasswd")
+	@PostMapping("MemberResetPasswd")
 	public String MemberResetPasswd() {
 		return "member/resetPasswd";
 	}

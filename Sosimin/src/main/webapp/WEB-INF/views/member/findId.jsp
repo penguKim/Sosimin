@@ -123,13 +123,6 @@
 			}
 		}); // 아이디찾기 버튼 클릭 이벤트 끝
 		
-		// 모달 열기 버튼 클릭 이벤트
-// 		function eventModal(name, birth, email) {
-	<%-- 		$("body").addClass("not_scroll"); body 영역 스크롤바 삭제 --%>
-
-// 		}
-		
-		
 	}); // document.ready 끝
 </script>
 </head>
@@ -220,14 +213,6 @@
     </div>
     <!-- End Account Login Area -->
 
-	<!-- 모달 배경 -->
-<!-- 	<div id="myModal" class="modal"> -->
-<!-- 		<!-- 모달 컨텐츠 --> -->
-<!-- 		<div class="modal-content"> -->
-<!-- 			<div id="modal-subject"></div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
-	
     <%-- 아이디 출력 모달 설정 --%>
 	<div class="modal" id="showIdModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">

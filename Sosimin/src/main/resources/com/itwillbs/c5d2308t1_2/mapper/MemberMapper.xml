@@ -57,4 +57,13 @@
 			AND member_email = #{member_email}
 			AND member_birth = #{member_birth}
 	</select>
+
+	<!-- 비밀번호 찾기를 위한 회원정보 조회 SELECT -->
+	<select id="selectMemberForPassword" resultType="member">
+		SELECT *
+		FROM Member
+		WHERE member_id = #{member_id}
+			AND member_name = #{member_name}
+			AND member_phone = #{member_phone}
+	</select>
 </mapper>

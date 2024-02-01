@@ -1,4 +1,9 @@
 @charset "UTF-8";
+/* ============================ 전체 적용 =========================== */
+input[readonly] {
+	background-color: #e0e0e0 !important;
+}
+
 /* =================== 회원가입 & 로그인 CSS =======================  */
 /* ============== */
 /* 회원가입 메인 */
@@ -260,6 +265,11 @@
 }
 /* =========== */
 /* 프로필 영역 */
+#myPageProfileSectionArea {
+	 padding-top: 10ox !important;
+	 background-color: #ffffff !important;	
+}
+
 #profileArea {
 	width: 1200px !important;
 	height: 200px !important;
@@ -499,6 +509,10 @@
 
 /* ============================================================================= */
 /* ---------- 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 --------------- */
+#wholeProductSection {
+	 background-color: #ffffff !important;
+}
+
 #wholeProductArea {
 	width: 1200px;
 	margin: 0 auto 30px;

@@ -199,7 +199,7 @@
     </div>
     <!-- End Breadcrumbs -->
     
-	<section class="item-details section" style="padding: 10px 0px !important; background-color: #ffffff !important">
+	<section class="item-details section" id="myPageProfileSectionArea">
         <div class="container">
             <div class="top-area" id="profileArea">
 				<div id="profileLeft">
@@ -297,12 +297,12 @@
 	</div>
             
             
-	<section class="item-details section" style="padding: 10px 0px !important; background-color: #ffffff !important">
-            
-	    <div class="product-details-info" id="wholeProductArea">
+	<section class="item-details section" id="wholeProductSection">
+          
+	    <div class="product-details-info row" id="wholeProductArea">
 
 	    	<!-- 판매내역 옵션1-1 판매 중(끌올 불가) -->
-	        <div class="single-block" id="singleProductArea">
+	        <div class="single-block col-4" id="singleProductArea">
 				<img src="${pageContext.request.contextPath}/resources/images/products/product-1.jpg">
 
 				<span class="heart"></span>
@@ -327,7 +327,7 @@
 	        </div>
 	
 			<!-- 판매내역 옵션1-2 판매 중(끌올 가능) -->
-	        <div class="single-block" id="singleProductArea">
+	        <div class="single-block col-4" id="singleProductArea">
 				<img src="${pageContext.request.contextPath}/resources/images/products/product-2.jpg">
 				<span class="heart"></span>
 				<div id="singleProductTitleArea">
@@ -352,7 +352,7 @@
 	        </div>
 	
 			<!-- 판매내역 옵션2 거래중 -->
-	        <div class="single-block" id="singleProductArea">
+	        <div class="single-block col-4" id="singleProductArea">
 				<img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg">
 				<span class="heart"></span>
 				<span id="dealInProcess">거래중</span>
@@ -377,7 +377,7 @@
 	        </div>
 	
 			<!-- 판매내역 옵션3 판매완료(후기미작성) -->
-	        <div class="single-block" id="singleProductArea">
+	        <div class="single-block col-4" id="singleProductArea">
 		        <div class="single-block" id="singleProductAreaDealComplete">
 					<img src="${pageContext.request.contextPath}/resources/images/products/product-4.jpg">
 					<span id="dealComplete">
@@ -407,7 +407,7 @@
 	        </div>
 
 			<!-- 판매내역 옵션4 거래완료(후기작성완료) -->
-	        <div class="single-block" id="singleProductArea">
+	        <div class="single-block col-4" id="singleProductArea">
 		        <div class="single-block" id="singleProductAreaDealComplete">
 					<img src="${pageContext.request.contextPath}/resources/images/products/product-5.jpg">
 					<span id="dealComplete">
@@ -437,7 +437,7 @@
 	        </div>
 	        
 			<!-- 구매내역 옵션1 거래중 -->
-	        <div class="single-block" id="singleProductArea">
+	        <div class="single-block col-4" id="singleProductArea">
 				<img src="${pageContext.request.contextPath}/resources/images/products/product-6.jpg">
 				<span class="heart"></span>
 				<span id="dealInProcess">거래중</span>
@@ -462,7 +462,7 @@
 	        </div>
 
 			<!-- 구매내역 옵션2 구매완료(후기미작성) -->
-	        <div class="single-block" id="singleProductArea">
+	        <div class="single-block col-4" id="singleProductArea">
 		        <div class="single-block" id="singleProductAreaDealComplete">
 					<img src="${pageContext.request.contextPath}/resources/images/products/product-7.jpg">
 					<span id="dealComplete">
@@ -492,7 +492,7 @@
 	        </div>
 
 			<!-- 구매내역 옵션3 거래완료(후기작성완료) -->
-	        <div class="single-block" id="singleProductArea">
+	        <div class="single-block col-4" id="singleProductArea">
 		        <div class="single-block" id="singleProductAreaDealComplete">
 					<img src="${pageContext.request.contextPath}/resources/images/products/product-8.jpg">
 					<span id="dealComplete">

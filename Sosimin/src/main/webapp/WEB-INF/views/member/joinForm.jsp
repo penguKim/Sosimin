@@ -278,12 +278,12 @@
 						iscorrectPassword = true;
 						break;
 					case 3: 
-						$("#checkPasswordResult").text("사용할 수 있는 비밀번호입니다!(보통)").css("color", "yellow");
+						$("#checkPasswordResult").text("사용할 수 있는 비밀번호입니다!(보통)").css("color", "#FFB400");
 						isSafePassword = true;
 						iscorrectPassword = true;
 						break;
 					case 2: 
-						$("#checkPasswordResult").text("사용할 수 없는 비밀번호입니다!(주의)").css("color", "orange");
+						$("#checkPasswordResult").text("사용할 수 없는 비밀번호입니다!(주의)").css("color", "#E56D29");
 						isSafePassword = false;
 						iscorrectPassword = false;
 						break;
@@ -431,7 +431,7 @@
 			}
 		});
 		
-		
+		<%-- 휴대폰 번호 정규표현식 검증, 중복 확인 및 인증 처리 --%>
 		$("#phone").on("blur", function() {		
 			var member_phone = $("#phone").val();
 			let regPhone = /^010-\d{4}-\d{4}$/; <%-- 010으로 시작하는 11자리 숫자 --%>
@@ -580,7 +580,7 @@
 				$("#checkEmailResult").text("이미 사용 중인 이메일입니다").css("color", "red");
 				$("#email").focus();
 				return false; // submit 동작 취소
-			} else if(!iscorrectPhone) { // 휴대폰번호 미입력
+			} else if(!iscorrectPhone) { // 휴대폰번호 미입력 또는 정규표현식 위배
 				$("#checkPhoneResult").text("휴대폰번호를 확인해주세요").css("color", "red");
 				$("#phone").focus();
 				return false; // submit 동작 취소
@@ -717,7 +717,7 @@
 							</div>
 							<div class="form-group">
 								<label for="phoneAuthCode" id="mgForFour">인증코드</label> 
-								<input class="form-control" placeholder="코드를 입력한 후 인증 버튼을 눌러주세요" type="text" name="phone_auth_code" id="phoneAuthCode" required>
+								<input class="form-control" placeholder="코드를 입력한 후 인증 버튼을 눌러주세요" type="text" name="phone_auth_code" id="phoneAuthCode" maxlength="4" required>
 								<input type="button" value="인증" id="completePhoneAuthButton">
 								<div id="checkPhoneAuthCodeResult" class="resultArea"></div>
 							</div>

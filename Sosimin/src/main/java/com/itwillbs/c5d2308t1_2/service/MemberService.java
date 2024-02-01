@@ -33,11 +33,13 @@ public class MemberService {
 		return mapper.selectDupMemberInfo(member);
 	}
 
-	// 아이디 찾기
+	// 아이디, 비밀번호 찾기
 	public MemberVO findMember(MemberVO member) {
 		MemberVO dbMember = null;
 		if(member.getMember_id() == null) {
 			dbMember = mapper.selectMemberForId(member); 
+		} else if(member.getMember_id() != null && member.getMember_password() == null) {
+			dbMember = mapper.selectMemberForPassword(member); 
 		}
 		
 		return dbMember;
