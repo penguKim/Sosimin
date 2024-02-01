@@ -81,14 +81,14 @@ $(function() {
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">충전하기</h1>
+                        <h1 class="page-title">충전/환급결과</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="PayCharge">충전하기</a></li>
-                        <li>충전완료</li>
+                        <li><a href="PayCharge">소심페이정보</a></li>
+                        <li>충전/환급결과</li>
                     </ul>
                 </div>
             </div>

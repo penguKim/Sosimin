@@ -340,7 +340,10 @@
 		                           <a href="AdminMain">관리자페이지</a>
                     			</c:if>
 		                        <li>
-		                           <a href="MyPage">${sessionScope.sId }님의 상점</a>
+		                           <a href="MyPage">${sessionScope.sId }님의 마이페이지</a>
+		                        </li>
+		                        <li>
+		                           <a href="PayInfo">소심페이</a>
 		                        </li>
 		                        <li>
 		                           <a href="javascript:confirmLogout()">로그아웃</a>
@@ -463,7 +466,7 @@
                 	</a>
 
 
-                	<a href="./">
+                	<a href="MyPage">
 	                	<img src="https://m.bunjang.co.kr/pc-static/resource/31370b164bc5b7cc4fef.png" width="23" height="24" alt="내상점버튼 이미지">
 	                	관심  
                 	</a>
@@ -493,7 +496,7 @@
                                 <a href="./" class="active" aria-label="Toggle navigation">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a href="./">카테고리</a>
+                                <a href="SearchProduct">카테고리</a>
                                 <ul class="sub-menu collapse" id="submenu-1-3">
                                     <li><a href="javascript:void(0)" >상의</a></li>
 	                                <li><a href="javascript:void(0)" >하의</a></li>

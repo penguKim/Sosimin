@@ -415,13 +415,13 @@ function select_date() {
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">페이정보</h1>
+                        <h1 class="page-title">소심페이정보</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
-                        <li>페이정보</li>
+                        <li>소심페이정보</li>
                     </ul>
                 </div>
             </div>

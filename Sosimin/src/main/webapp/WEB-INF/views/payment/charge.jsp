@@ -185,13 +185,14 @@ function openModal() {
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">충전하기</h1>
+                        <h1 class="page-title">소심페이충전</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
-                        <li>충전하기</li>
+                        <li><a href="PayInfo">소심페이정보</a></li>
+                        <li>소심페이충전</li>
                     </ul>
                 </div>
             </div>
