@@ -51,7 +51,7 @@
 #payImage{
 	margin-bottom: 12px;
 }
-#Like{
+#Like , #LikeImage{
 	display: inline-block;
 }
 .police{
@@ -317,8 +317,97 @@
 	position: relative;
 }
 
+.idqEnN {
+    width: 100%;
+    height: 100%;
+    font-weight: 600;
+    color: rgb(255, 255, 255);
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    line-height: 1;
+    background: rgb(51, 51, 51);
+}
+
 </style>
 <script>
+
+
+		$(function() {
+			console.log("세션에 저장된 아이디 ; " + '${sessionScope.sId}');
+			// 찜정보 가져오기
+			$.ajax({
+				type: "POST",
+				url: "interestShow", <%-- 회원의 관심 정보 가져오기 --%>
+					data: {
+						product_id: ${param.product_id}
+					},
+					dataType: "json",
+					success: function(result) {
+						console.log(result);
+//		 				if(Object.keys(result) == 0) {
+							if(result.product_id == ${param.product_id}) {
+								$("#Like").text(result.intersetCount);
+								$("#likeButtonSpan").text(result.intersetCount);
+								$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGNzJGMzMiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
+								$("#likeButton").css("background-color", "rgb(51, 51, 51)");
+							}
+//		 				}
+					},
+					error: function(xhr, textStatus, errorThrown) {
+							alert("관심 불러오기를 실패했습니다.\n새로고침을 해주세요.");
+					}
+				});
+		 
+	 $("#likeText").on("click", function () {
+ 		$.ajax({
+ 			type: "POST",
+ 			url: "interestCheck", 
+ 			data: {
+//  				community_like_status: 0,
+ 				product_id: ${param.product_id}
+ 			},
+ 			dataType: "json",
+ 			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+ 				alert("성공");
+ 				if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
+					$("#likeText").addClass("is-active");
+ 					$("#likeButtonSpan").text(result.intersetCount);
+ 					$("#Like").text(result.intersetCount);
+ 					$("#likeButton").css("background-color", "rgb(51, 51, 51)");
+ 					$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGNzJGMzMiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
+ 				} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
+					$("#likeText").removeClass("is-active");
+ 					$("#likeButtonSpan").text(result.intersetCount);
+ 					$("#Like").text(result.intersetCount);
+ 					$("#likeButton").css("background-color", "rgb(204, 204, 204)");
+ 					$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
+ 				}
+ 			},
+ 			error: function(xhr, textStatus, errorThrown) {
+ 				Swal.fire({
+ 	    	        title: '회원만 사용가능합니다.',
+ 	    	        text: '로그인 페이지로 이동하시겠습니까?',
+ 	    	        icon: 'error',
+ 	    	        showCancelButton: true,
+ 	    	        confirmButtonColor: '#39d274',
+ 	    	        cancelButtonColor: '#d33',
+ 	    	        confirmButtonText: '이동',
+ 	    	        cancelButtonText: '취소',
+ 	    	        reverseButtons: true,
+ 	    	        allowOutsideClick: false
+ 	    	    }).then((result) => {
+ 	    	        if (result.isConfirmed) {
+ 	    	        	location.href="MemberLogin";
+ 	    	        }
+ 	    	    });
+ 			}
+ 		});
+     });
+});
+
 
 // 메인사진 클릭시 전체 사진 다 띄우기 <사용할지 안할지 모름> 
 
@@ -505,9 +594,9 @@ window.onload = function() {
                         <hr>
                         <div id="eyeLikeTime">
                         	<div>
-	                        	<div id="Like">
+	                        	<div id="LikeImage">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/하트모양.png" width="25" height="25">
-	                        		<div id="Like">516</div>
+	                        		<div id="Like">${intersetCount}</div>
 	                        	</div>
 	                        	<div id="eye">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/눈깔.png" width="25" height="25">
@@ -571,13 +660,17 @@ window.onload = function() {
                          <div class="bottom-content" id="threeButton">
                              <div class="row align-items-end">
                                  <div class="col-lg-4 col-md-4 col-12">
+<%--                                  <c:if test="${Product.member_id != sId }"> --%>
                                      <div class="button cart-button" id="likeButtonDiv">
-                                        <button class="btn" style="width: 100%; height: 60px;" id="likeButton">
+                                     	<button class="btn" style="width: 100%; height: 60px;" id="likeButton" >
+<!--                                         <button class="btn" style="width: 100%; height: 60px;" id="likeButton"  > -->
                                         <span id="likeText">관심</span>
-                                     		<img src="${pageContext.request.contextPath}/resources/images/product-details/찜하트모양.png" width="25" height="25" id="likeImage">
-                                        <span id="likeButtonSpan">516</span>
+                                     		<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K" width="20" height="20" id="likeImage">
+<%--                                      		<img src="${pageContext.request.contextPath}/resources/images/product-details/찜하트모양.png" width="25" height="25" id="likeImage"> --%>
+                                        <span id="likeButtonSpan">${intersetCount}</span>
                                         </button>
                                      </div>
+<%--                                 </c:if> --%>
                                  </div>
                                  <div class="col-lg-4 col-md-4 col-12">
                                      <div class="wish-button">
@@ -586,7 +679,7 @@ window.onload = function() {
                                  </div>
 	     						 <div class="col-lg-4 col-md-4 col-12">
 		                         <div class="wish-button" id="priceProposal">
-		                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; background-color: #39d274" onclick="Proposal()">가격제안</button>
+		                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="Proposal()">가격제안</button>
 		                         </div>
                          </div>
                              </div>

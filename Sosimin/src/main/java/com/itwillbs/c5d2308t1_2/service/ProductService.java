@@ -1,14 +1,13 @@
 package com.itwillbs.c5d2308t1_2.service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.c5d2308t1_2.mapper.ProductMapper;
-import com.itwillbs.c5d2308t1_2.vo.MemberVO;
+import com.itwillbs.c5d2308t1_2.vo.*;
 
 @Service
 public class ProductService {
@@ -61,22 +60,31 @@ public class ProductService {
 		return mapper.selectRelatedProducts(product);
 	}
 	
-	// 전체상품 조회
-//	public List<Map<String, String>> selectAllProduct() {
-//		
-//		return mapper.selectAllProduct();
-//	}
+	public String getInterst(Map<String, String> interest) {
+		Map<String,String> map = new HashMap<String, String>(); 
+		map = mapper.selectInterest(interest);
+		System.out.println("관심 갯수 : " + map);
+		
+		if(map != null) { // 관심 누른 경우
+			mapper.deleteInterest(interest); // 관심 삭제 수행
+			return "true";
+		} else {
+			mapper.insertInterest(interest); // 관심 등록 수행
+			return "false";
+		}
+	}
 
-//	public List<Map<String, String>> selectRelatedProducts(Map<String, String> map) {
-//		
-//		return mapper.selectRelatedProducts(map);
-//	}
+	// 관심 갯수 카운트
+	public int getInterestCount(ProductVO product) {
+		
+		return mapper.selectInterestCount(product);
+	}
 
-
-
-
-
-	
+	// 관심 가져오기
+	public Map<String, String> getMemberInterest(Map<String, String> interest) {
+		
+		return mapper.selectMemberInterset(interest);
+	}
 
 	
 }

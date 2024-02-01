@@ -43,9 +43,15 @@ public interface ProductMapper {
 	List<Map<String, Object>> selectRelatedProducts(Map<String, String> product);
 
 	Map<String, String> selectProduct();
+	// 관심 갯수 판별
+	Map<String, String> selectInterest(Map<String, String> interest);
+	// 관심 삭제
+	void deleteInterest(Map<String, String> interest);
+	// 관심 등록
+	void insertInterest(Map<String, String> interest);
 
-	// 전체 상품 조회
-//	List<Map<String, String>> selectAllProduct();
-	
+	int selectInterestCount(ProductVO product);
+
+	Map<String, String> selectMemberInterset(Map<String, String> interest);
 
 }

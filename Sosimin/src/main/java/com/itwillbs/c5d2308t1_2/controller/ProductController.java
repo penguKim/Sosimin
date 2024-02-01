@@ -340,27 +340,76 @@ public class ProductController {
 	            datetime.put("product_datetime", timeAgo);
 			}
 			
-			
-			System.out.println(Product.get("tag_name"));
-			System.out.println(Product.get("product_name"));
-			
-			System.out.println(">>>>>>>>>>>>> 잘넘어왔는가 : " + Product);
-			System.out.println(">>>>>>>>>>>>> 이건 잘잘넘어왔는가 : " + Product2);
-			model.addAttribute("Product", Product);
-			
-			model.addAttribute("Product2", Product2);
-			
-//			model.addAttribute("RelatedProducts", RelatedProducts);
+			// 관심 갯수 불러오기
+						ProductVO product = new ProductVO();
+						product.setProduct_id(Integer.parseInt(map.get("product_id")));
+						int intersetCount = service.getInterestCount(product);
+						
+						System.out.println(" 몇개가 들었는데ㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔㅔ " + intersetCount);
+						
+						System.out.println(Product.get("tag_name"));
+						System.out.println(Product.get("product_name"));
+						
+						System.out.println(">>>>>>>>>>>>> 잘넘어왔는가 : " + Product);
+						System.out.println(">>>>>>>>>>>>> 이건 잘잘넘어왔는가 : " + Product2);
+						model.addAttribute("Product", Product);
+						model.addAttribute("Product2", Product2);
+						model.addAttribute("RelatedProducts", RelatedProducts);
+						model.addAttribute("intersetCount", intersetCount);
 //			
 			return "products/productDetail";
 		}
+		// 상품 관심 불러오기 AJAX
+		@ResponseBody
+		@PostMapping("interestShow")
+		public String interestShow(@RequestParam Map<String,String> interest, HttpSession session) {
+			String sId = (String)session.getAttribute("sId");
+			
+			if(sId != null) {
+				interest.put("member_id", sId);
+				interest = service.getMemberInterest(interest);
+				System.out.println("회원의 관심은 : " + interest);
+				
+				JSONObject object = new JSONObject(interest);
+				System.out.println("오브젝트는 뭔가요 : " + object);
+				
+				return object.toString();
+			}
+			return "{}";
+		}
 		
-//	@ResponseBody
-//	@GetMapping(RelatedProducts)
-//	public String ("RelatedProducts") {
-//		
-//		return "";
-//	}
+		// 관심 체크를 위한 AJAX
+		@ResponseBody
+		@PostMapping("interestCheck")
+		public String interestCheck(@RequestParam Map<String, String> interest, HttpSession session) {
+			
+			
+			System.out.println("여기엔 뭐가 들었나?" + interest);
+			
+			String sId = (String)session.getAttribute("sId");
+			
+			if(sId == null) {
+				return "login";
+			}
+			interest.put("member_id", sId);
+			
+			// 관심 판별 수행 후 문자열 리턴
+			String isChecked = service.getInterst(interest);
+			
+			System.out.println("저장후엔 뭐가 들었나 : " + interest);
+			
+			// 관심 갯수 불러오기
+			ProductVO product = new ProductVO();
+			product.setProduct_id(Integer.parseInt(interest.get("product_id")));
+			int intersetCount = service.getInterestCount(product);
+			
+			System.out.println(" 몇개가 들었노 : " + intersetCount);
+			JSONObject object = new JSONObject();
+			object.put("isChecked", isChecked);
+			object.put("intersetCount", intersetCount);
+			
+			return object.toString();
+		}
 	
 	// 상품 제안하기 
 	@GetMapping("Proposal")

@@ -174,22 +174,68 @@
 		WHERE product_id = #{product_id};
 	</select>
 
-	<!-- 전체상품 조회 -->
-<!-- 		<select id="selectAllProduct" resultType="map"> -->
-<!-- 		SELECT * -->
-<!-- 		FROM Product -->
-<!-- 		</select> -->
 	<!-- 연관상품 조회 -->
 	<select id="selectRelatedProducts" resultType="map">
     SELECT *
     FROM Product
-    WHERE (tag_name1 LIKE CONCAT('%', #{tag_name1}, '%') OR product_name LIKE CONCAT('%', #{product_name}, '%')) AND product_id != #{product_id}
+    WHERE (tag_name1 LIKE CONCAT('%', #{tag_name1}, '%') 
+    OR tag_name1 LIKE CONCAT('%', #{tag_name2}, '%')
+    OR tag_name1 LIKE CONCAT('%', #{tag_name3}, '%')
+    OR tag_name1 LIKE CONCAT('%', #{tag_name4}, '%')
+    OR tag_name2 LIKE CONCAT('%', #{tag_name1}, '%')
+    OR tag_name2 LIKE CONCAT('%', #{tag_name2}, '%')
+    OR tag_name2 LIKE CONCAT('%', #{tag_name3}, '%')
+    OR tag_name2 LIKE CONCAT('%', #{tag_name4}, '%')
+    OR tag_name3 LIKE CONCAT('%', #{tag_name1}, '%')
+    OR tag_name3 LIKE CONCAT('%', #{tag_name2}, '%')
+    OR tag_name3 LIKE CONCAT('%', #{tag_name3}, '%')
+    OR tag_name3 LIKE CONCAT('%', #{tag_name4}, '%')
+    OR tag_name4 LIKE CONCAT('%', #{tag_name1}, '%')
+    OR tag_name4 LIKE CONCAT('%', #{tag_name2}, '%')
+    OR tag_name4 LIKE CONCAT('%', #{tag_name3}, '%')
+    OR tag_name4 LIKE CONCAT('%', #{tag_name4}, '%')
+    OR product_name LIKE CONCAT('%', #{product_name}, '%')) AND product_id != #{product_id}
 	</select>
 	
+	<!-- 관심 갯수 판별 -->
+	<select id="selectInterestCount" resultType="int">
+		SELECT IFNULL(COUNT(*),0)
+		FROM productLike
+		WHERE
+			product_id = #{product_id}
+	</select>
 	
-<!-- 	<select id="selectRelatedProducts" resultType="hashMap"> -->
-<!-- 		SELECT * -->
-<!-- 		FROM Product -->
-<!-- 		WHERE tag_name LIKE '%아이유%' OR product_name LIKE '%#{product_name}%'; -->
-<!-- 	</select> -->
+	<!-- 상품 관심 판별 -->
+	<select id="selectInterest" resultType="map">
+	SELECT *
+	FROM productLike
+	WHERE 
+		member_id = #{member_id}
+		AND product_id = #{product_id}
+	</select>
+	
+	<!-- 관심 삭제 -->
+	<delete id="deleteInterest">
+		DELETE FROM productLike
+		WHERE 
+			member_id = #{member_id}
+			AND product_id = #{product_id}
+	</delete>
+	<!-- 관심 등록 -->
+	<insert id="insertInterest">
+		INSERT INTO productLike
+		VALUES(
+			null
+			, #{product_id}
+			, #{member_id}
+		)
+	</insert>
+	<!-- 관심 가져오기 -->
+	<select id="selectMemberInterset" resultType="map">
+		SELECT *
+		FROM productLike
+		WHERE
+			member_id = #{member_id}
+			AND product_id = #{product_id}	
+	</select>
 </mapper>
