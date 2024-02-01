@@ -93,5 +93,11 @@ public interface CommunityMapper {
 
 	// 이미지 삭제 AJAX의 삭제 이미지 이후의 순서 옮기기
 	int moveTempImage(Map<String, Object> map);
+
+	// 글수정 삭제 이미지 널스트링 처리
+	void removeCommunityImage(Map<String, Object> map);
+
+	// 글수정 삭제 이미지 이후의 순서 옮기기
+	int moveCommunityImage(Map<String, Object> map);
 	
 }

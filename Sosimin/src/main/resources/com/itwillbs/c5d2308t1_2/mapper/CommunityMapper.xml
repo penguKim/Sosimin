@@ -463,6 +463,32 @@
 			, temp_datetime = now()
 		WHERE temp_writer = #{temp_writer}
 	</update>
+	
+	<!-- 글수정 삭제 이미지 널스트링 처리 -->
+	<update id="removeCommunityImage">
+		UPDATE Community
+		SET
+			<choose>
+				<when test="index == 1">community_image1 = ""</when>
+				<when test="index == 2">community_image2 = ""</when>
+				<when test="index == 3">community_image3 = ""</when>
+				<when test="index == 4">community_image4 = ""</when>
+				<when test="index == 5">community_image5 = ""</when>
+			</choose>
+		WHERE community_writer = #{community_writer}
+	</update>
+	
+	<!-- 글수정 삭제 이미지 이후의 순서 옮기기 -->
+	<update id="moveCommunityImage">
+		UPDATE Community
+		SET
+			community_image1 = #{community_image1}
+			, community_image2 = #{community_image2}
+			, community_image3 = #{community_image3}
+			, community_image4 = #{community_image4}
+			, community_image5 = #{community_image5}
+		WHERE community_id = #{community_id}
+	</update>
 </mapper>
 
 

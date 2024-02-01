@@ -853,10 +853,7 @@ public class CommunityController {
 		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "로그인이 필요합니다!");
-			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-			model.addAttribute("targetURL", "MemberLogin");
-			return "forward";
+			return "login";
 		}
 		com.setCommunity_writer(sId);
 		
@@ -949,15 +946,12 @@ public class CommunityController {
 	@ResponseBody
 	@PostMapping("ImageDelete")
 	public String imageDelete (CommunityVO com, HttpSession session, Model model) {
-		System.out.println("내가 삭제하려는 파일은 : " + com);
-		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "로그인이 필요합니다!");
-			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-			model.addAttribute("targetURL", "MemberLogin");
-			return "forward";
+			return "login";
 		}
+		System.out.println("내가 삭제하려는 파일은 : " + com);
+		
 		com.setCommunity_writer(sId);
 		
 		int removeCount = communityService.removeTempImage(com, session);
@@ -968,6 +962,29 @@ public class CommunityController {
 			return "false";
 		}
 	}
+	
+	@ResponseBody
+	@PostMapping("CommunityImageDelete")
+	public String communityImageDelete(CommunityVO com, HttpSession session, Model model) {
+		
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "login";
+		}
+		
+		com.setCommunity_writer(sId);
+		
+		System.out.println("내가 삭제하려는 파일은 : " + com);
+		
+		int removeCount = communityService.removeCommunityImage(com, session);
+		
+		if(removeCount > 0) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
+	
 	
 	@ResponseBody
 	@PostMapping("reviewRegist")

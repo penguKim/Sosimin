@@ -213,7 +213,7 @@ public class CommunityService {
 		return count;
 	}
 
-	// 사진 삭제 ajax 처리
+	// 임시저장 사진 삭제 ajax 처리
 	@Transactional
 	public int removeTempImage(CommunityVO com, HttpSession session) {
 		
@@ -270,6 +270,58 @@ public class CommunityService {
 		count = mapper.moveTempImage(map);
 		
 		return count;
+	}
+
+	// 게시글 파일 삭제 ajax
+	@Transactional
+	public int removeCommunityImage(CommunityVO com, HttpSession session) {
+		
+		int index = 0;
+		
+		List<String> imageList = new ArrayList<String>();
+		imageList.add(com.getCommunity_image1());
+		imageList.add(com.getCommunity_image2());
+		imageList.add(com.getCommunity_image3());
+		imageList.add(com.getCommunity_image4());
+		imageList.add(com.getCommunity_image5());
+		
+		for(int i = 0; i < imageList.size(); i++) {
+			if(imageList.get(i) != null) {
+				index = i + 1;
+			}
+		}
+		
+		// 게시글 조회
+		Map<String, Object> map = mapper.selectCommunity(com);
+		map.put("index", index);
+		
+		String[] imageNames = {map.get("community_image1").toString(), map.get("community_image2").toString(), 
+				map.get("community_image3").toString(), map.get("community_image4").toString(), map.get("community_image5").toString()};
+		
+		// 삭제 이미지 널스트링 처리
+		mapper.removeCommunityImage(map);
+		
+		try {
+			String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+			String saveDir = session.getServletContext().getRealPath(uploadDir);
+			
+			Path path = Paths.get(saveDir + "/" + imageNames[index-1]);
+			logger.info(saveDir + "/" + imageNames[index-1] + " : 삭제합니다.");
+			Files.deleteIfExists(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// 삭제 이미지 이후의 이미지 옮기기
+		for(int i = index; i < imageNames.length; i++) {
+			System.out.println("삭제한 파일 다음의 파일 : " + imageNames[i]);
+			map.put("community_image" + (i), imageNames[i]);
+		}
+		map.put("community_image5", "");
+		
+		System.out.println("삭제하고 난 이후의 게시글 : " + map);
+		
+		return mapper.moveCommunityImage(map);
 	}
 
 
