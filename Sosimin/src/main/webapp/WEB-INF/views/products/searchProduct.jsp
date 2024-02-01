@@ -150,11 +150,19 @@ $(function() {
 <script type="text/javascript">
 // 필터링 옵션 처리 후 ajax
 	
-function filtering() {
+function filtering(sortNum) {
 	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
 	let category = "${param.product_category}";
 	let keyword = "${param.keyword}";
 	let price = "";
+	let sort = 1;
+	if(sortNum > 1) {
+		sort = sortNum; 
+	} else {
+		sort = 1;
+	}
+	<%-- 정렬 방식 설정--%>
+	
 	
 	<%-- 가격 필터 선택 시 값 설정 --%>
 	price = $("input[name='priceRadio']:checked").val() || "";
@@ -173,8 +181,8 @@ function filtering() {
 			keyword:keyword,
 			category:category,
 			price: price,
-			status: productStatus
-			
+			status: productStatus,
+			sort: sort
 		},
 		dataType: 'json',
 		success: function(data) {
@@ -399,10 +407,10 @@ function filtering() {
                                 <div class="col-lg-5 col-md-4 col-12">
                                     <nav>
                                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        	<a href="javascript:void(0)" >추천순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span>  
-                                        	<a href="javascript:void(0)">최신순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span> 
-                                        	<a href="javascript:void(0)">낮은 가격순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span> 
-                                        	<a href="javascript:void(0)">높은 가격순</a>
+                                        	<a href="javascript:filtering(1)">최신순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span>  
+                                        	<a href="javascript:filtering(2)">인기순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span> 
+                                        	<a href="javascript:filtering(3)">낮은 가격순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span> 
+                                        	<a href="javascript:filtering(4)">높은 가격순</a>
                                         </div>
                                     </nav>
                                 </div>
