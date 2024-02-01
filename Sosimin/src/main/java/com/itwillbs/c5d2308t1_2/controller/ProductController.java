@@ -39,13 +39,6 @@ import lombok.ToString;
 
 @Controller
 public class ProductController {
-	
-//	private final SqlSessionTemplate sqlSessionTemplate;
-//
-//    @Autowired
-//    public ProductController(SqlSessionTemplate sqlSessionTemplate) {
-//        this.sqlSessionTemplate = sqlSessionTemplate;
-//    }
     
 	@Autowired
 	ProductService service;
@@ -76,6 +69,7 @@ public class ProductController {
 			map.put("maxPrice", ((String)map.get("price")).split("~")[1]); 
 		}
 		
+		
 		// 상품 상태 선택 시 배열 저장 후 status 에 각각 저장
 		String[] statusArr = null;
 		if(!map.get("status").equals("")) {
@@ -97,7 +91,7 @@ public class ProductController {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 맵 페이지" + page);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 맵 페이지" + map.get("pageNum"));
 		int listCount = service.getProductListCount(map); // 상품 목록 갯수조회
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>" + listCount);
+//		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>" + listCount);
 		PageInfo pageInfo = new PageInfo(page, listCount, 5);
 		map.put("page", page);
 		// ===============================================================================================
@@ -112,7 +106,7 @@ public class ProductController {
         DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
 		
 		for(Map<String, Object> datetime : productList) {
-			System.out.println(datetime);
+//			System.out.println(datetime);
 			LocalDateTime comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter);
         	
             long minutes = Duration.between(comDateTime, now).toMinutes();

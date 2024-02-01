@@ -150,6 +150,7 @@ $(function() {
 
 <script type="text/javascript">
 // 필터링 옵션 처리 후 ajax
+	
 function filtering() {
 	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
 	let category = "${param.product_category}";
@@ -157,9 +158,7 @@ function filtering() {
 	let price = "";
 	
 	<%-- 가격 필터 선택 시 값 설정 --%>
-	$("input[name='priceRadio']").on("click", function() {
-		price = $("input[name='priceRadio']:checked").val();
-	});
+	price = $("input[name='priceRadio']:checked").val() || "";
 	
 	<%-- 상품 상태 버튼 선택시 내용 저장 --%> 
 	let productStatus = "";  
@@ -209,9 +208,9 @@ function filtering() {
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="index.html">Shop</a></li>
-                        <li>Shop List</li>
+                        <li><a href="index.html"><i class="lni lni-home"></i> 홈</a></li>
+                        <li><a href="index.html">상품</a></li>
+                        <li>상품목록</li>
                     </ul>
                 </div>
             </div>
