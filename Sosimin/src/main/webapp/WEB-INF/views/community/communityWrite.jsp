@@ -350,7 +350,7 @@
 	        
             $.ajax({
     			type: "POST",
-    			url: "ImageTest",
+    			url: "ImageUpload",
     			enctype: 'multipart/form-data',
     			data: data,
     			<%-- multipart/form-data로 전송 --%>
@@ -373,8 +373,6 @@
 	   	 	            });
 	   	 	            $('#thumbnailArea > div').append(thumbnail);
     				}
-    				
-//     				formData.delete(fileId, input.files[0]);
     				Swal.fire({
     					position: 'center',
     					icon: 'success',
@@ -402,23 +400,70 @@
 	
 	// 썸네일 제거하여 파일 제거
 	function removeThumbnail(del, fileId) {
-	    var thumbnail = $(del).parent(); // imageArea의 부모인 thumnail 클래스 지정
+        console.log("파일아이디 알려줘 ㅣ " + fileId);
+		var data = new FormData();
+		data.append(fileId, $("#" + fileId)[0].files[0]);
+        
+        $.ajax({
+			type: "POST",
+			url: "ImageDelete",
+			enctype: 'multipart/form-data',
+			data: data,
+			<%-- multipart/form-data로 전송 --%>
+			contentType: false, 
+			<%-- formData가 String이 되지않음 --%>
+			processData: false, 
+			success: function(result) {
+				console.log(result);
+				if(result != 'false') {
+// 				    var thumbnail = $(del).parent(); // imageArea의 부모인 thumnail 클래스 지정
+					
+// 				    formData.delete(fileId); // key가 fileId인 값을 formdata에서 제거
+				
+// 				    // 파일 입력 필드의 값을 조정합니다.
+// 				    var nextFileId = Number(fileId.replace('file', '')) + 1; // 삭제 파일Id의 인덱스 + 1
+// 				    while (formData.get('file' + nextFileId)) { // 다음 인덱스부터 마지막까지 반복
+// 				    	// 삭제된 순번의 자리에 다음 순번 파일을 넣기
+// 				        formData.set('file' + (nextFileId - 1), formData.get('file' + nextFileId));
+// 				        nextFileId++;
+// 				    }
+// 				    formData.delete('file' + (nextFileId - 1)); // 마지막 파일 제거
+				
+// 				    // 인풋 태그의 파일 제거(동일 파일 제거 후 재업로드시 onchange를 위함)
+// 				    $("#" + fileId).val('');
+				    
+// 				    thumbnail.remove(); // 썸네일 영역 삭제
+// 				}
+// 				Swal.fire({
+// 					position: 'center',
+// 					icon: 'success',
+// 					title: '사진 업로드함 ㅅㄱ.',
+// 					showConfirmButton: false,
+// 					timer: 2000,
+// 					toast: true
+// 				});
+// 				$(this).blur();
+				}
+			}
+		});
+		
+// 	    var thumbnail = $(del).parent(); // imageArea의 부모인 thumnail 클래스 지정
 	
-	    formData.delete(fileId); // key가 fileId인 값을 formdata에서 제거
+// 	    formData.delete(fileId); // key가 fileId인 값을 formdata에서 제거
 	
-	    // 파일 입력 필드의 값을 조정합니다.
-	    var nextFileId = Number(fileId.replace('file', '')) + 1; // 삭제 파일Id의 인덱스 + 1
-	    while (formData.get('file' + nextFileId)) { // 다음 인덱스부터 마지막까지 반복
-	    	// 삭제된 순번의 자리에 다음 순번 파일을 넣기
-	        formData.set('file' + (nextFileId - 1), formData.get('file' + nextFileId));
-	        nextFileId++;
-	    }
-	    formData.delete('file' + (nextFileId - 1)); // 마지막 파일 제거
+// 	    // 파일 입력 필드의 값을 조정합니다.
+// 	    var nextFileId = Number(fileId.replace('file', '')) + 1; // 삭제 파일Id의 인덱스 + 1
+// 	    while (formData.get('file' + nextFileId)) { // 다음 인덱스부터 마지막까지 반복
+// 	    	// 삭제된 순번의 자리에 다음 순번 파일을 넣기
+// 	        formData.set('file' + (nextFileId - 1), formData.get('file' + nextFileId));
+// 	        nextFileId++;
+// 	    }
+// 	    formData.delete('file' + (nextFileId - 1)); // 마지막 파일 제거
 	
-	    // 인풋 태그의 파일 제거(동일 파일 제거 후 재업로드시 onchange를 위함)
-	    $("#" + fileId).val('');
+// 	    // 인풋 태그의 파일 제거(동일 파일 제거 후 재업로드시 onchange를 위함)
+// 	    $("#" + fileId).val('');
 	    
-	    thumbnail.remove(); // 썸네일 영역 삭제
+// 	    thumbnail.remove(); // 썸네일 영역 삭제
 	    
 	}
 	// ---- 이미지 파일 처리 ----

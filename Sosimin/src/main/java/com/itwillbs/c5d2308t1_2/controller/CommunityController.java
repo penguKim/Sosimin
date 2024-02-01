@@ -136,62 +136,62 @@ public class CommunityController {
 		
 		com.setCommunity_writer(sId);
 		
-		String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
-		String saveDir = session.getServletContext().getRealPath(uploadDir);
-		
-		// 서브 디렉토리
-		String subDir = "";
-		
-		LocalDate now = LocalDate.now();
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		subDir = now.format(dtf);
-		
-		saveDir += File.separator + subDir; // File.separator 대신 / 또는 \ 지정도 가능
-		System.out.println(saveDir);
-		try {
-			Path path = Paths.get(saveDir); // 파라미터로 업로드 경로 전달
-			Files.createDirectories(path); // 파라미터로 Path 객체 전달
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// -------------------
-		// BoardVO 객체에 전달(저장)된 실제 파일 정보가 관리되는 MultipartFile 타입 객체 꺼내기
-		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
-		mFiles.add(com.getFile1());
-		mFiles.add(com.getFile2());
-		mFiles.add(com.getFile3());
-		mFiles.add(com.getFile4());
-		mFiles.add(com.getFile5());
-		
-		List<String> fileNames = new ArrayList<String>();
-		fileNames.add("");
-		fileNames.add("");
-		fileNames.add("");
-		fileNames.add("");
-		fileNames.add("");
-		
-		// UUID 를 변수에 저장해서 똑같은 난수를 넣어주는것보다 매번 호출하여
-		// 다른 난수를 파일마다 붙여주면 한번에 파일명이 같은 파일이 업로드되도 중복되지 않는다.
-		for(int i = 0; i < 5; i++) {
-			MultipartFile mFile = mFiles.get(i);
-			if(mFile != null && !mFile.getOriginalFilename().equals("")) {
-				String fileName = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile.getOriginalFilename();
-				fileNames.set(i, subDir + "/" + fileName);
-			}
-		}
-		
-		// 서브디렉토리 + 파일명을 저장
-		com.setCommunity_image1(fileNames.get(0));
-		com.setCommunity_image2(fileNames.get(1));
-		com.setCommunity_image3(fileNames.get(2));
-		com.setCommunity_image4(fileNames.get(3));
-		com.setCommunity_image5(fileNames.get(4));
-		
-		System.out.println("실제 업로드 파일명1 : " + com.getCommunity_image1());
-		System.out.println("실제 업로드 파일명2 : " + com.getCommunity_image2());
-		System.out.println("실제 업로드 파일명3 : " + com.getCommunity_image3());
-		System.out.println("실제 업로드 파일명4 : " + com.getCommunity_image4());
-		System.out.println("실제 업로드 파일명5 : " + com.getCommunity_image5());
+//		String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+//		String saveDir = session.getServletContext().getRealPath(uploadDir);
+//		
+//		// 서브 디렉토리
+//		String subDir = "";
+//		
+//		LocalDate now = LocalDate.now();
+//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+//		subDir = now.format(dtf);
+//		
+//		saveDir += File.separator + subDir; // File.separator 대신 / 또는 \ 지정도 가능
+//		System.out.println(saveDir);
+//		try {
+//			Path path = Paths.get(saveDir); // 파라미터로 업로드 경로 전달
+//			Files.createDirectories(path); // 파라미터로 Path 객체 전달
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		// -------------------
+//		// BoardVO 객체에 전달(저장)된 실제 파일 정보가 관리되는 MultipartFile 타입 객체 꺼내기
+//		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
+//		mFiles.add(com.getFile1());
+//		mFiles.add(com.getFile2());
+//		mFiles.add(com.getFile3());
+//		mFiles.add(com.getFile4());
+//		mFiles.add(com.getFile5());
+//		
+//		List<String> fileNames = new ArrayList<String>();
+//		fileNames.add("");
+//		fileNames.add("");
+//		fileNames.add("");
+//		fileNames.add("");
+//		fileNames.add("");
+//		
+//		// UUID 를 변수에 저장해서 똑같은 난수를 넣어주는것보다 매번 호출하여
+//		// 다른 난수를 파일마다 붙여주면 한번에 파일명이 같은 파일이 업로드되도 중복되지 않는다.
+//		for(int i = 0; i < 5; i++) {
+//			MultipartFile mFile = mFiles.get(i);
+//			if(mFile != null && !mFile.getOriginalFilename().equals("")) {
+//				String fileName = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile.getOriginalFilename();
+//				fileNames.set(i, subDir + "/" + fileName);
+//			}
+//		}
+//		
+//		// 서브디렉토리 + 파일명을 저장
+//		com.setCommunity_image1(fileNames.get(0));
+//		com.setCommunity_image2(fileNames.get(1));
+//		com.setCommunity_image3(fileNames.get(2));
+//		com.setCommunity_image4(fileNames.get(3));
+//		com.setCommunity_image5(fileNames.get(4));
+//		
+//		System.out.println("실제 업로드 파일명1 : " + com.getCommunity_image1());
+//		System.out.println("실제 업로드 파일명2 : " + com.getCommunity_image2());
+//		System.out.println("실제 업로드 파일명3 : " + com.getCommunity_image3());
+//		System.out.println("실제 업로드 파일명4 : " + com.getCommunity_image4());
+//		System.out.println("실제 업로드 파일명5 : " + com.getCommunity_image5());
 		
 		// ----------------------------------------------------------------------
 
@@ -200,26 +200,26 @@ public class CommunityController {
 		
 		// 게시물 등록 작업 요철 결과 판별
 		if(insertCount > 0) {
-			try {
+//			try {
 				// 임시저장된 게시글 삭제
-				communityService.removeTempCommunity(com, session);
+//				communityService.removeTempCommunity(com, session);
 				
 				// 파일명이 존재하는 파일만 이동 처리 작업 수행
-				for(int i = 0; i < 5; i++) {
-					MultipartFile mFile = mFiles.get(i);
-					String fileName = fileNames.get(i);
-					if(!fileName.equals("")) {
-						// 년월일 다음의 '/'를 인덱스로 지정 
-						fileName = fileName.substring(fileName.indexOf("/", 9));
-						mFile.transferTo(new File(saveDir, fileName));
-					}
-					
-				}
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//				for(int i = 0; i < 5; i++) {
+//					MultipartFile mFile = mFiles.get(i);
+//					String fileName = fileNames.get(i);
+//					if(!fileName.equals("")) {
+//						// 년월일 다음의 '/'를 인덱스로 지정 
+//						fileName = fileName.substring(fileName.indexOf("/", 9));
+//						mFile.transferTo(new File(saveDir, fileName));
+//					}
+//					
+//				}
+//			} catch (IllegalStateException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 			
 			// 글목록(BoardList) 서블릿 리다이렉트
 			return "redirect:/Community";
@@ -773,8 +773,6 @@ public class CommunityController {
 	@PostMapping("TempRegist")
 	public String tempRegist(CommunityVO com, HttpSession session) {
 		System.out.println("ajax로 넘어온 데이터 제발넘어와 : " + com);
-		System.out.println("ddkdkdkdkdkdk : " + com.getFile1().getOriginalFilename());
-		System.out.println("ddkdkdkdkdkdkasfdasf : " + com.getFile2().getOriginalFilename());
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			return "false";
@@ -820,13 +818,14 @@ public class CommunityController {
 	@PostMapping("TempDelete")
 	public String tempDelete(CommunityVO com, HttpSession session) {
 		
+		System.out.println("임시저장 젤 처음 넘어온거 : " + com); 
+		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			return "false";
 		}
-		com.setCommunity_writer(sId);
 		
-		communityService.getTempCommunity(com);
+		com.setCommunity_writer(sId);
 		
 		int deleteCount = communityService.removeTempCommunity(com, session);
 		
@@ -838,8 +837,8 @@ public class CommunityController {
 	}
 	
 	@ResponseBody
-	@PostMapping("ImageTest")
-	public String ImageTest(CommunityVO com, HttpSession session) {
+	@PostMapping("ImageUpload")
+	public String imageUpload(CommunityVO com, HttpSession session) {
 		System.out.println("내가 받은 파일은 : " + com);
 		
 		String image = ""; // 리턴할 이미지 경로
@@ -933,7 +932,18 @@ public class CommunityController {
 		}
 	}
 	
-	
+	@ResponseBody
+	@PostMapping("ImageDelete")
+	public String imageDelete (CommunityVO com, HttpSession session) {
+		System.out.println("내가 받은 파일은 : " + com);
+		
+		String sId = (String)session.getAttribute("sId");
+		com.setCommunity_writer(sId);
+		
+//		int removeCount = communityService.removeTempImage(com);
+		
+		return "true";
+	}
 	
 	@ResponseBody
 	@PostMapping("reviewRegist")

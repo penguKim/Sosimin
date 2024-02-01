@@ -1,6 +1,7 @@
 package com.itwillbs.c5d2308t1_2.service;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,10 +11,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itwillbs.c5d2308t1_2.HomeController;
 import com.itwillbs.c5d2308t1_2.mapper.CommunityMapper;
 import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
@@ -21,6 +25,8 @@ import com.itwillbs.c5d2308t1_2.vo.PageDTO;
 
 @Service
 public class CommunityService {
+	private static final Logger logger = LoggerFactory.getLogger(CommunityService.class);
+	
 	@Autowired
 	CommunityMapper mapper;
 	
@@ -35,7 +41,31 @@ public class CommunityService {
 	}
 	
 	// 게시글 등록
+	@Transactional
 	public int registCommunity(CommunityVO com) {
+		// 임시게시글 조회
+		Map<String, Object> map = mapper.selectTempCommunity(com);
+		
+		if(!map.get("temp_image1").equals("")) {
+			com.setCommunity_image1((String)map.get("temp_image1"));
+		}
+		if(!map.get("temp_image2").equals("")) {
+			com.setCommunity_image2((String)map.get("temp_image2"));
+		}
+		if(!map.get("temp_image3").equals("")) {
+			com.setCommunity_image3((String)map.get("temp_image3"));
+		}
+		if(!map.get("temp_image4").equals("")) {
+			com.setCommunity_image4((String)map.get("temp_image4"));
+		}
+		if(!map.get("temp_image5").equals("")) {
+			com.setCommunity_image5((String)map.get("temp_image5"));
+		}
+		
+		// 임시게시글 삭제
+		mapper.deleteTempCommunity(com);
+		
+		// 게시글 등록
 		return mapper.insertCommunity(com);
 	}
 
@@ -149,19 +179,24 @@ public class CommunityService {
 	// 임시저장 게시글 삭제
 	public int removeTempCommunity(CommunityVO com, HttpSession session) {
 		Map<String, Object> map = mapper.selectTempCommunity(com);
-		
-		try {
-			String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
-			String saveDir = session.getServletContext().getRealPath(uploadDir);
-			
-			// 파일명이 널스트링이 아닐 경우에만 삭제 작업 수행
-			if(!map.get("temp_image1").equals("")) {
-				Path path = Paths.get(saveDir + "/" + com.getCommunity_image1());
-				Files.deleteIfExists(path);
+		// 임시저장 게시글이 있는 경우
+		if(map != null) {
+			try {
+				String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+				String saveDir = session.getServletContext().getRealPath(uploadDir);
 				
+				String[] imageKeys = {"temp_image1", "temp_image2", "temp_image3", "temp_image4", "temp_image5"};
+				
+				for(int i = 0; i < imageKeys.length; i++) {
+					if(!map.get(imageKeys[i]).equals("")) {
+						Path path = Paths.get(saveDir + "/" + map.get(imageKeys[i]));
+						logger.info(saveDir + "/" + map.get(imageKeys[i]) + " : 삭제합니다.");
+						Files.deleteIfExists(path);
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		
 		return mapper.deleteTempCommunity(com);
@@ -179,6 +214,16 @@ public class CommunityService {
 		} else {
 			count = mapper.updateTempImage(com);
 		}
+		
+		return count;
+	}
+
+	// 사진 삭제 ajax 처리
+	public int removeTempImage(CommunityVO com) {
+		
+		int count = 0;
+		
+//		count = mapper.updateTempImage(com);
 		
 		return count;
 	}

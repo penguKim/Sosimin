@@ -454,19 +454,39 @@
 					</div>
 <!-- 					<div class="d-flex justify-content-between" style="height: 80px;"> -->
 					<div class="row" style="height: 80px;">
-						<c:if test="${com.community_writer ne sessionScope.sId}">
-							<div class="col-1">
-								<div class="heart"></div>
-							</div>
-							<span class="likeCount col-1 align-self-end ps-0" style="font-size: 20px;">${likeCount }</span>
-						</c:if>
+						<c:choose>
+							<c:when test="${com.community_writer ne sessionScope.sId}">
+								<div class="col-1">
+									<div class="heart"></div>
+								</div>
+								<span class="likeCount col-1 align-self-end ps-0" style="font-size: 20px;">${likeCount }</span>
+							</c:when>
+							<c:otherwise>
+								<div class="col-1"></div>
+								<div class="col-1"></div>
+							</c:otherwise>
+						</c:choose>
+<%-- 						<c:if test="${com.community_writer ne sessionScope.sId}"> --%>
+<!-- 							<div class="col-1"> -->
+<!-- 								<div class="heart"></div> -->
+<!-- 							</div> -->
+<%-- 							<span class="likeCount col-1 align-self-end ps-0" style="font-size: 20px;">${likeCount }</span> --%>
+<%-- 						</c:if> --%>
 						<div class="col align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn">
 							댓글 숨기기
 						</div>
 <!-- 						  <button class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn" type="button" data-bs-toggle="collapse" data-bs-target="#replyArea" aria-expanded="false" aria-controls="collapseExample">댓글 숨기기</button> -->
-						<c:if test="${com.community_writer ne sessionScope.sId}">
-							<div class="col-1 align-self-end" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i></div>
-						</c:if>
+						<c:choose>
+							<c:when test="${com.community_writer ne sessionScope.sId and sessionScope.sId ne 'admin' }">
+								<div class="col-1 align-self-end" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i></div>
+							</c:when>
+							<c:otherwise>
+								<div class="col-2"></div>
+							</c:otherwise>
+						</c:choose>
+<%-- 						<c:if test="${com.community_writer ne sessionScope.sId and sessionScope.sId ne 'admin' }"> --%>
+<!-- 							<div class="col-1 align-self-end" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i></div> -->
+<%-- 						</c:if> --%>
 					</div>
 			    </div>
 			</div>

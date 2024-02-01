@@ -372,11 +372,11 @@
 			, #{community_writer}
 			, #{community_subject}
 			, #{community_content}
-			, #{community_image1}
-			, #{community_image2}
-			, #{community_image3}
-			, #{community_image4}
-			, #{community_image5}
+			, IFNULL(#{community_image1}, "")
+			, IFNULL(#{community_image2}, "")
+			, IFNULL(#{community_image3}, "")
+			, IFNULL(#{community_image4}, "")
+			, IFNULL(#{community_image5}, "")
 			, now()
 		)
 	</insert>
