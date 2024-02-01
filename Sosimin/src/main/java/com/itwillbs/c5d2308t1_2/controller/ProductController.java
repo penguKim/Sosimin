@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -107,20 +108,29 @@ public class ProductController {
 		
 		for(Map<String, Object> datetime : productList) {
 //			System.out.println(datetime);
+			
 			LocalDateTime comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter);
-        	
-            long minutes = Duration.between(comDateTime, now).toMinutes();
-            long hours = minutes / 60;
-            long days = hours / 24;
-            hours %= 24;
-            minutes %= 60;
+			Duration duration = Duration.between(comDateTime, now);
+			
+			Period period = Period.between(comDateTime.toLocalDate(), now.toLocalDate());
+
+			
+            long minutes = duration.toMinutes() % 60;
+            long hours = duration.toHours() % 24;
+            long days = duration.toDays() % 7;
+            long weeks = duration.toDays() / 7;
+            long months = period.getMonths();
+            long years = period.getYears();
+            
             String timeAgo = "";
-            if (days > 0) { // 하루이상 차이날 때
-                if (comDateTime.getYear() == now.getYear()) {
-                    timeAgo = comDateTime.format(formatterMonthDay);
-                } else {
-                    timeAgo = comDateTime.format(formatterDate);
-                }
+            if(years > 0) {
+            	timeAgo = years + "년 전";
+            } else if(months > 0) {
+            	timeAgo = months + "개월 전";
+            } else if(weeks > 0 && weeks <= 4) {
+            	timeAgo = weeks + "주전";
+			} else if (days > 0 && days < 7) { // 1 ~ 7 차이날 때
+                timeAgo = days + "일전";
             } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
                 timeAgo = hours + "시간 전";
             } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
@@ -139,13 +149,9 @@ public class ProductController {
 		JSONObject jPage = new JSONObject(pageInfo); 
 		jsonArray.put(jPage);
 		jsonArray.put(pageNum);
-		
-		
 //		System.out.println(">>>>>>>>>>>>>>>>>>>>> 리스트" + productList);
 //		System.out.println(">>>>>>>>>>>>>>>>>>>> 페이징" + jPage);
 //		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> : " + jsonArray);
-		
-		// 로그인 시 사용자 지역, 날짜 최신순으로 나열
 		
 		return jsonArray.toString();
 	}

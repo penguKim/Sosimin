@@ -126,7 +126,6 @@ $(function() {
 			if(pageNum >= pageInfo.maxPage) {
 				$("#nextPage").addClass("disabled");
 			}
-			
 		},
 		error: function() {
 			alert("오류");
@@ -177,8 +176,42 @@ function filtering() {
 			status: productStatus
 			
 		},
-		success: function() {
+		dataType: 'json',
+		success: function(data) {
 			alert("확인");
+			let productList = data[0];
+		    let pageInfo = data[1];
+		    let pageNum = data[2];
+		    $(".productList").empty();
+		    
+		    for(let i = 0; i < productList.length; i++) {
+				$(".productList").append(
+					'<div class="col-lg-4-1 col-md-6 col-12" >'
+						+ ' <div class="single-product" >'
+							+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+							+ ' </a>'
+							+ ' <div class="product-info">'
+								+ '<h6>' + productList[i].product_name + '</h6>'
+							+ ' <div class="heart position-absolute bottom-0 start-0"></div>'
+									+ ' <ul class="review">'
+										+ ' <li><span>' +  productList[i].dong + '</span></li>'
+										+ ' <li><span>|</span></li>'
+										+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
+									+ ' </ul>'
+								+ ' <div class="price">'
+									+ ' <span>' + productList[i].product_price + '원</span>'
+								+ ' </div>'
+								+ ' <div>'
+									+ '	<span>Pay</span>' 
+								+ ' </div>'
+							+ ' </div>'
+						+ ' </div>'
+					+ ' </div>'
+				);
+			}
+		
+		
 		},
 		error: function() {
 			alert("실패");
