@@ -21,6 +21,7 @@
 			, #{token.refresh_token} 
 			, #{token.user_seq_no} 
 			, null
+			, #{token.admin_access_token}
 		)
 	</insert>
 
@@ -31,6 +32,7 @@
 			access_token = #{token.access_token}
 			, refresh_token = #{token.refresh_token}
 			, user_seq_no = #{token.user_seq_no}
+			, admin_access_token = #{token.admin_access_token}
 		WHERE member_id = #{member_id}
 	</update>
 	
@@ -53,7 +55,7 @@
 			, #{account_num_masked}
 			, 0
 			, now()
-			, 1
+			, 0
 			, null
 			, #{pay_password}
 		)
@@ -76,7 +78,7 @@
 		SELECT *
 		FROM Pay
 		WHERE member_id = #{member_id}
-			AND pay_status = 1
+			AND pay_status = 0
 	</select>
 	
 	<!-- 페이 내역 불러오기 -->
@@ -153,7 +155,7 @@
 			, #{pay_history_type}
 			, null -- 상품관련아님
 			, now()
-			, 1 -- 완료
+			, 0 -- 완료
 			, null
 			, #{bank_tran_id}
 		)
@@ -161,7 +163,7 @@
 	
 	<!-- 출금을 위해 관리자 토큰 조회(oob) -->
 	<select id="selectAdminAccessToken" resultType="string">
-		SELECT access_token
+		SELECT admin_access_token
 		FROM Token
 		WHERE member_id = 'admin'
 	</select>

@@ -44,7 +44,7 @@ public class PaymentController {
 		if(session.getAttribute("sId") == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "MemberLogin");	
 			return "forward";
 		}
@@ -70,7 +70,7 @@ public class PaymentController {
 			// "fail_back.jsp" 페이지로 포워딩 시 "isClose" 값을 true 로 설정하여 전달
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("isClose", "true"); // 현재 창(서브 윈도우) 닫도록 명령
 			model.addAttribute("targetURL", "MemberLogin"); // 로그인 페이지로 이동
 			return "forward";
@@ -135,13 +135,13 @@ public class PaymentController {
 		if(session.getAttribute("sId") == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
 			return "forward";
 		} else if(session.getAttribute("access_token") == null) {
-			model.addAttribute("msg", "계좌 인증이 필요합니다!");
-			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg", "소심페이 가입이 필요합니다!");
+			model.addAttribute("msg2", "가입을 위해 계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		}
@@ -168,13 +168,13 @@ public class PaymentController {
 		if(session.getAttribute("sId") == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
 			return "forward";
 		} else if(session.getAttribute("access_token") == null) {
-			model.addAttribute("msg", "계좌 인증이 필요합니다");
-			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg", "소심페이 가입이 필요합니다!");
+			model.addAttribute("msg2", "가입을 위해 계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
 			return "forward";
 		}
 		
@@ -220,7 +220,7 @@ public class PaymentController {
 		if(member_id == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
 			return "forward";
 		}
@@ -230,15 +230,15 @@ public class PaymentController {
 		log.info("payInfo = " + payInfo);
 		
 		if(session.getAttribute("access_token") == null) {
-			model.addAttribute("msg", "계좌 인증이 필요합니다");
-			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg", "소심페이 가입이 필요합니다!");
+			model.addAttribute("msg2", "가입을 위해 계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		} else if(payInfo == null) {
 			model.addAttribute("msg", "계좌 등록이 필요합니다");
 			model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
 			return "forward";
 		}
@@ -306,19 +306,19 @@ public class PaymentController {
 		if(member_id == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
 			return "forward";
 		} else if(session.getAttribute("access_token") == null) {
-			model.addAttribute("msg", "계좌 인증이 필요합니다");
-			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg", "소심페이 가입이 필요합니다!");
+			model.addAttribute("msg2", "가입을 위해 계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		} else if(payInfo == null) {
 			model.addAttribute("msg", "계좌 등록이 필요합니다");
 			model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
 			return "forward";
 		}
@@ -338,13 +338,13 @@ public class PaymentController {
 		if(member_id == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "MemberLogin");	// 로그인 페이지로 이동
 			return "forward";
 		} else if(session.getAttribute("access_token") == null) {
-			model.addAttribute("msg", "계좌 인증이 필요합니다");
-			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg", "소심페이 가입이 필요합니다!");
+			model.addAttribute("msg2", "가입을 위해 계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		}
@@ -355,6 +355,8 @@ public class PaymentController {
 		// 충전 = 잔액 인출 후 성공 뷰페이지, 거절 = 거절페이지
 		map.put("access_token", (String)session.getAttribute("access_token"));
 		map.put("member_id", (String)session.getAttribute("sId"));
+		
+		log.info(map.toString());
 		
 //		log.info("페이잔액 파라미터 : " + map.toString());
 		
@@ -428,6 +430,8 @@ public class PaymentController {
 			// pay_history_type을 충전으로 지정
 			map.put("pay_history_type", 1);
 			
+			session.setAttribute("complete", "complete" + member_id); // 세션에 거래 완료 정보를 추가
+			
 			if(withdrawResult.get("rsp_code").equals("A0000")) {
 				log.info("이거임 >>>>>>>>>>>>>>>" + map.toString());
 //				System.out.println("출금됨");
@@ -435,7 +439,6 @@ public class PaymentController {
 				int updateCount = service.updatePayBalance(map);
 				
 				if(updateCount > 0) {
-					session.setAttribute("complete", "complete" + member_id); // 세션에 거래 완료 정보를 추가
 					
 					log.info((String) session.getAttribute("complete"));
 					
@@ -514,7 +517,7 @@ public class PaymentController {
 		if(id == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "MemberLogin");		
 			return "forward";
 		} else if(!id.equals("admin")) {
@@ -529,6 +532,9 @@ public class PaymentController {
 		log.info("관리자 엑세스토큰 : " + responseToken);
 		
 		// refresh_token 과 user_seq_no 값은 널스트링("")으로 설정
+		String admin_access_token = responseToken.getAccess_token();
+		responseToken.setAdmin_access_token(admin_access_token);
+		responseToken.setAccess_token("");
 		responseToken.setRefresh_token("");
 		responseToken.setUser_seq_no("");
 		
@@ -557,19 +563,19 @@ public class PaymentController {
 		if(member_id == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
 			return "forward";
 		} else if(session.getAttribute("access_token") == null) {
 			model.addAttribute("msg", "계좌 인증이 필요합니다");
 			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		} else if(payInfo == null) {
 			model.addAttribute("msg", "계좌 등록이 필요합니다");
 			model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
 			return "forward";
 		}
@@ -588,13 +594,13 @@ public class PaymentController {
 		if(member_id == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "MemberLogin");	// 로그인 페이지로 이동
 			return "forward";
 		} else if(session.getAttribute("access_token") == null) {
-			model.addAttribute("msg", "계좌 인증이 필요합니다");
-			model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg", "소심페이 가입이 필요합니다!");
+			model.addAttribute("msg2", "가입을 위해 계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
 		}
@@ -623,7 +629,7 @@ public class PaymentController {
 		map.put("tran_dtime", tran_dtime);
 		
 		// 이체 용도(송금(TR), 결제(ST), 충전(RC) 등) 지정
-		map.put("transfer_purpose", "ST");
+		map.put("transfer_purpose", "TR");
 				
 		log.info(">>>>>>>>>>>>> 입금이체 map 데이터 " + map);
 		
@@ -647,6 +653,8 @@ public class PaymentController {
 		// pay_history_type을 환급으로 지정
 		map.put("pay_history_type", 2);
 		
+		session.setAttribute("complete", "complete" + member_id); // 세션에 거래 완료 정보를 추가
+		
 		if(depositResult.get("rsp_code").equals("A0000")) {
 //			log.info("이거임 >>>>>>>>>>>>>>>" + map.toString());
 //			System.out.println("입금됨");
@@ -654,7 +662,6 @@ public class PaymentController {
 			int updateCount = service.updatePayBalance(map);
 			
 			if(updateCount > 0) {
-				session.setAttribute("complete", "complete" + member_id); // 세션에 거래 완료 정보를 추가
 				
 				return "redirect:/PayRefundComplete";					
 			} else {

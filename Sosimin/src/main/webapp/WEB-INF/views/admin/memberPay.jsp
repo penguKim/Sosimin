@@ -110,8 +110,8 @@ function MemberAccountDetail(pay_id) {
 											</td>
 											<td>
 												<c:choose>
-													<c:when test="${pay_list.pay_status eq '1'}">정상</c:when>
-													<c:when test="${pay_list.pay_status eq '2'}">취소</c:when>
+													<c:when test="${pay_list.pay_status eq '0'}">정상</c:when>
+													<c:when test="${pay_list.pay_status eq '1'}">탈퇴</c:when>
 												</c:choose>
 											</td>
 											<td class="green">

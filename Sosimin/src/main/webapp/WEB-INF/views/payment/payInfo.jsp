@@ -322,6 +322,9 @@ function load_list(pay_history_type, start_date, end_date) {
 						pay_history_type = "수익";
 						subject = '<a href="#">' + history.order_id + ' ></a>';
 					}
+					
+					let pay_amount = history.pay_amount.toLocaleString();
+					let pay_history_balance = history.pay_history_balance.toLocaleString();
 			    	  
 			    	  $("#" + year + "list").append(
 	 						'<div class="row content_list">'
@@ -336,9 +339,9 @@ function load_list(pay_history_type, start_date, end_date) {
 	  				        +         '</p>'
 	  				        +     '</div>'
 	  				        +     '<div class="col-lg-3 col-md-3 col-12">'
-	  				        +          '<h5 class="pay-amount">' + history.pay_amount + '</h5>'
+	  				        +          '<h5 class="pay-amount">' + pay_amount + '</h5>'
 	  				        +          '<p class="pay-balance-sub">'
-	  				        +				history.pay_history_balance
+	  				        +				pay_history_balance
 	  				        +         '</p>'
 	  				        +     '</div>'
 	  				        +'</div>'
@@ -420,7 +423,7 @@ function select_date() {
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="index.html"><i class="lni lni-home"></i> 홈</a></li>
                         <li>소심페이정보</li>
                     </ul>
                 </div>
@@ -450,7 +453,8 @@ function select_date() {
 									페이잔액
 								</div>
 	                           	<div class="pay-balance col-lg-6 col-md-6 col-12">
-									${payInfo.pay_balance} 원
+	                           		<c:set var="payBalance" value="${payInfo.pay_balance}" />
+									<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원
 								</div>
 								<input type="hidden" value="${payInfo.pay_id}" id="pay_id">
 	                            <div class="button col-lg-6 col-md-6 col-12">

@@ -173,8 +173,8 @@
 																		<th scope="row">거래상태</th>
 																		<td>
 																			<c:choose>
-																				<c:when test="${pay_list.pay_history_status eq '1'}">정상</c:when>
-																				<c:when test="${pay_list.pay_history_status eq '2'}">취소</c:when>
+																				<c:when test="${pay_list.pay_history_status eq '0'}">정상</c:when>
+																				<c:when test="${pay_list.pay_history_status eq '1'}">취소</c:when>
 																			</c:choose>
 																		</td>
 																	</tr>

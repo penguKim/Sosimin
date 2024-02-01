@@ -82,11 +82,11 @@
 									<td>${payList.pay_id}</td>
 									<th>회원아이디</th>
 									<td>${payList.member_id}</td>
-									<th>가입상태</td>
+									<th>가입상태</th>
 									<td>
 										<c:choose>
-											<c:when test="${payList.pay_status eq '1'}">정상</c:when>
-											<c:when test="${payList.pay_status eq '2'}">취소</c:when>
+											<c:when test="${payList.pay_status eq '0'}">정상</c:when>
+											<c:when test="${payList.pay_status eq '1'}">탈퇴</c:when>
 										</c:choose>
 									</td>
 									<td class="green">
@@ -114,8 +114,8 @@
 																<th scope="row">소심페이상태</th>
 																<td>
 																	<select>
-																		<option <c:if test="${payList.pay_status eq '1'}">selected</c:if>>정상</option>
-																		<option <c:if test="${payList.pay_status eq '2'}">selected</c:if>>탈퇴</option>
+																		<option <c:if test="${payList.pay_status eq '0'}">selected</c:if>>정상</option>
+																		<option <c:if test="${payList.pay_status eq '1'}">selected</c:if>>탈퇴</option>
 																	</select>
 																</td>
 															</tr>

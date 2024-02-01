@@ -140,7 +140,7 @@ $(function() {
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
                         <li>계좌인증</li>
                     </ul>
                 </div>

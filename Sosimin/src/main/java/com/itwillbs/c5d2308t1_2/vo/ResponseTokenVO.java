@@ -12,4 +12,5 @@ public class ResponseTokenVO {
 	private String refresh_token;
 	private String scope;
 	private String user_seq_no;
+	private String admin_access_token;
 }

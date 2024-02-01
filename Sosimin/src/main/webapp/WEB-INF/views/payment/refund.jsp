@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -202,7 +204,7 @@ function openModal() {
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
                         <li><a href="PayInfo">소심페이정보</a></li>
                         <li>소심페이환급</li>
                     </ul>
@@ -234,7 +236,8 @@ function openModal() {
 										페이잔액
 									</div>
 		                           	<div class="pay-balance col-lg-6 col-md-6 col-12">
-										${payInfo.pay_balance} 원
+			                           	<c:set var="payBalance" value="${payInfo.pay_balance}" />
+										<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원
 									</div>
 	                            </div>
 	                            <br>

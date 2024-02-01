@@ -86,7 +86,7 @@ $(function() {
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
                         <li><a href="PayCharge">소심페이정보</a></li>
                         <li>충전/환급결과</li>
                     </ul>

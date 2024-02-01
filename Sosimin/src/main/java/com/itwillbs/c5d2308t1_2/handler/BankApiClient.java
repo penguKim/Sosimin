@@ -151,7 +151,10 @@ public class BankApiClient {
 				.encode() // 인코딩처리
 				.build() // UriComponents 객체 생성
 				.toUri(); // URI 타입 객체로 변환
-				
+		
+		log.info(httpEntity.toString());
+		log.info(uri.toString());
+		
 		// 4. RestTemplate 객체 생성
 		RestTemplate restTemplate = new RestTemplate();
 		
@@ -187,7 +190,7 @@ public class BankApiClient {
 		
 		// ----------------- 요청 고객(출금 대상) 정보 ------------------
 		jo.put("fintech_use_num", map.get("fintech_use_num")); // 출금계좌 핀테크이용번호
-		jo.put("wd_print_content", "소시민"); // 출금계좌인자내역 = 사용자 통장에 찍힐 이름
+		jo.put("wd_print_content", "소시민_충전"); // 출금계좌인자내역 = 사용자 통장에 찍힐 이름
 		jo.put("tran_amt", map.get("tran_amt")); // 거래금액 
 		jo.put("tran_dtime", map.get("tran_dtime")); // 요청일시(자동생성)
 		jo.put("req_client_name", map.get("user_name")); // 요청고객 성명(출금계좌 예금주명)
@@ -201,9 +204,9 @@ public class BankApiClient {
 		// 최종적으로 이 돈을 수신하는 계좌에 대한 정보
 		// 이 정보(3개)는 피싱 등의 사고가 발생 시 지금 정지를 위한 정보(현재 검증 수행은 X)
 		// => 일단 값 비워놓음
-		jo.put("recv_client_name", "박가영");
-		jo.put("recv_client_bank_code", "002");
-		jo.put("recv_client_account_num", "23082100001");
+		jo.put("recv_client_name", "이연태");
+		jo.put("recv_client_bank_code", "004");
+		jo.put("recv_client_account_num", "23062003999");
 		
 		log.info("출금 이체 요청 json 데이터 : " + jo.toString());
 		
