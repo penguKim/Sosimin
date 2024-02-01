@@ -37,15 +37,15 @@ public interface ProductMapper {
 
 	int productBoardInsert(Map<String, String> map);
 
-	int getLastInsertId();
+	int selectProductId();
 
-//	List<Map<String, String>> selectRelatedProducts(Map<String, String> product);
+	// 연관 상품 조회
+	List<Map<String, Object>> selectRelatedProducts(Map<String, String> product);
 
-	// 연관 상품 조회List
-//	List<Map<String, String>> selectRelatedProducts(@Param("map") Map<String, String> map,@Param("sId") String sId);
+	Map<String, String> selectProduct();
 
-
-	
+	// 전체 상품 조회
+//	List<Map<String, String>> selectAllProduct();
 	
 
 }

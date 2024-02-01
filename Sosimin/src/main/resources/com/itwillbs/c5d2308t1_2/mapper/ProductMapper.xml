@@ -82,7 +82,6 @@
 			, #{product_price}
 			, #{product_txt}
 			, #{product_category}
-			, #{tag_name}
 			, #{product_image1} 
 	        , <if test="product_image2 != null">#{product_image2}</if><if test="product_image2 == null">NULL</if> 
 	        , <if test="product_image3 != null">#{product_image3}</if><if test="product_image3 == null">NULL</if>
@@ -94,11 +93,12 @@
 			, #{gu}
 			, #{dong}
 			, 0
+			, #{tag_name1}
+			, #{tag_name2}
+			, #{tag_name3}
+			, #{tag_name4}
 		)
 	</insert>	
-		
-		
-		
 	<insert id="productBoardInsert">
 		INSERT INTO Product_board
 		values (
@@ -110,21 +110,41 @@
 			,0
 		);
 	</insert>
+	<select id="selectProductId" resultType="int">
+		SELECT max(product_id)
+		 FROM Product
+	</select>
 		
+	<!-- Map으로 받은 상품 -->
 	<select id="selectProduct" resultType="hashMap">
 		SELECT *
 		FROM Product
 		WHERE product_id = #{product_id};
 	</select>
-	
+
+	<!-- 날짜 데이터 가공을 위해 LIST로 받은 상품목록 -->	
 	<select id="selectProduct2" resultType="map">
 		SELECT *
 		FROM Product
 		WHERE product_id = #{product_id};
 	</select>
 
-<!-- 	<select id="RelatedProducts" resultType="hashMap"> -->
-<!-- 		SELECT tag_name, product_name -->
-<!-- 		FROM Product p -->
+	<!-- 전체상품 조회 -->
+<!-- 		<select id="selectAllProduct" resultType="map"> -->
+<!-- 		SELECT * -->
+<!-- 		FROM Product -->
+<!-- 		</select> -->
+	<!-- 연관상품 조회 -->
+	<select id="selectRelatedProducts" resultType="map">
+    SELECT *
+    FROM Product
+    WHERE (tag_name1 LIKE CONCAT('%', #{tag_name1}, '%') OR product_name LIKE CONCAT('%', #{product_name}, '%')) AND product_id != #{product_id}
+	</select>
+	
+	
+<!-- 	<select id="selectRelatedProducts" resultType="hashMap"> -->
+<!-- 		SELECT * -->
+<!-- 		FROM Product -->
+<!-- 		WHERE tag_name LIKE '%아이유%' OR product_name LIKE '%#{product_name}%'; -->
 <!-- 	</select> -->
 </mapper>

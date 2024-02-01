@@ -150,7 +150,11 @@
 }
 #productName{
 	text-align: center;
+	color:black;
+	font-size: 15px;
+	font-weight: bold;
 }
+
 #productNameContent{
 	width: 900px;
 	border-width: thin thin thin thin;
@@ -312,6 +316,7 @@
 	display:inline-block;
 	position: relative;
 }
+
 </style>
 <script>
 
@@ -385,6 +390,34 @@ window.onload = function() {
 	  var whatTimeSpan = document.getElementById("whatTime");
 	  whatTimeSpan.innerText = timeAgo;
 	}
+	
+// 	$(function() {
+		
+// 		var tag_name = "${Product2[0].tag_name}";
+// 		var product_name = "${Product2[0].product_name}";
+		
+// 		$.ajax({
+// 		    url: 'RelatedProducts',
+// 		    type: 'GET',
+// 		    data: {
+// 		    	tag_name : tag_name,
+// 		    	product_name : product_name
+// 		    },
+// 		    success: function(data) {
+// 		        // 서버로부터 응답을 받았을 때 실행되는 코드
+// 		        alert("성공")
+// 		        alert(tag_name)
+// 		        alert(product_name)
+// 		    },
+// 		    error: function(jqXHR, textStatus, errorThrown) {
+// 		        // 파일 업로드에 실패했을 때 실행되는 코드
+// 		        alert('실패');
+// 		        console.log(jqXHR, textStatus, errorThrown);
+// 		    }
+// 		});
+// 	});
+	
+	
 </script>
 <body>
 
@@ -585,10 +618,14 @@ window.onload = function() {
 	                         		<img src="${pageContext.request.contextPath}/resources/images/product-details/상품태그이미지.png" width="25" height="25" id="tradeImage">
                          		</div>
                          		<div id="tagDiv">
-                         			<c:forEach var="Product2" items="${Product2 }">
-	                         			<a href="" id="addressDetailA">
-	                         				<span id="tagDetail">${Product2.tag_name}</span></a>
-                         			</c:forEach>
+                         		<c:forEach var="i" begin="1" end="4">
+								  <c:set var="tagName" value="tag_name${i}" />
+								  <c:if test="${not empty Product[tagName] and Product[tagName] ne '#null' }">
+								    <a href="SearchProduct?tag_name=${Product[tagName]}" id="addressDetailA">
+								      <span id="tagDetail">${Product[tagName]}</span>
+								    </a>
+								  </c:if>
+								</c:forEach>
                          		</div>
                          	</div>
                          </div>
@@ -602,35 +639,18 @@ window.onload = function() {
             		<span id="relatedProducts"><b>연관상품</b></span>
 	            	<div id="relatedProductsImage">
 	            		<div id="productImageName">
-	            			<a href="">
-		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="250px" width=250px;" >
-		            	 	</a>
-		            	 	<div id="productName">상품 이름 뿌릴곳</div>
+	            			<c:forEach var="product" items="${RelatedProducts }" varStatus="status">
+	            				 <c:if test="${status.count <= 5 && product != null && !empty product.product_image1}">
+		            			<a href="ProductDetail?product_id=${product.product_id}">
+	            				   <img src="${pageContext.request.contextPath}/resources/upload/${product.product_image1}" id="current" alt="#" height="250px" width=250px;>
+			            	 	<div id="productName">${product.product_name}</div>
+			            	 	</a>
+            				   </c:if>
+	            			</c:forEach>
 	            	 	</div>
-	            		<div id="productImageName">
-	            			<a href="">
-		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" id="current" alt="#" height="250px" width=250px;">
-		            	 	</a>
-		            	 	<div id="productName">상품 이름 뿌릴곳</div>
-	            	 	</div>
-	            		<div id="productImageName">
-     	 	    			<a href="">
-		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" id="current" alt="#" height="250px" width=250px;">
-		            	 	</a>
-		            	 	<div id="productName">상품 이름 뿌릴곳</div>
-	            	 	</div>
-	            		<div id="productImageName">
-	            			<a href="">
-		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/karina.jpg" id="current" alt="#" height="250px" width=250px;">
-		            	 	</a>
-		            	 	<div id="productName">상품 이름 뿌릴곳</div>
-	            	 	</div>
-	            		<div id="productImageName">
-		            	 	<a href="">
-		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/karina2.jpg" id="current" alt="#" height="250px" width=250px;">
-		            	 	</a>
-		            	 	<div id="productName">상품 이름 뿌릴곳</div>
-	            	 	</div>
+<!-- 	            		<div id="productImageName"> -->
+<%-- 		            	 		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" id="current" alt="#" height="250px" width=250px;> --%>
+<!-- 	            	 	</div> -->
 	            	</div>
             	</div>
             </div>
@@ -641,7 +661,7 @@ window.onload = function() {
                         <div id="productNameContent">
                             <div class="info-body custom-responsive-margin">
                                 <b><span style="font-size: 20px; padding-top: 30px;">상품정보</span></b><hr>
-                                <p style="font-size: 15px;">존나좋은 상품 훌륭함</p>
+                                <p style="font-size: 15px;">${Product.product_txt }</p>
                             </div>
                         </div>
                         <div class="col-lg-6 col-12" style="width: 350px;">

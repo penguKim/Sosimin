@@ -873,7 +873,7 @@ function submitFiles(event) {
 		    success: function(data) {
 		        // 서버로부터 응답을 받았을 때 실행되는 코드
 		        console.log('File upload successful!');
-		        location.href =  "ProductDetail?product_id=";
+		        location.href =  "ProductDetail?product_id=" + data;
 		    },
 		    error: function(jqXHR, textStatus, errorThrown) {
 		        // 파일 업로드에 실패했을 때 실행되는 코드

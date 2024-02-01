@@ -35,6 +35,8 @@ import com.itwillbs.c5d2308t1_2.vo.PageDTO;
 import com.itwillbs.c5d2308t1_2.vo.PageInfo;
 import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 
+import lombok.ToString;
+
 @Controller
 public class ProductController {
 	
@@ -77,7 +79,7 @@ public class ProductController {
 		map.put("page", page);
 		// ===============================================================================================
 		
-		productList = service.selectProductList(map); 
+		productList = service.selectProductList(map);
 		
 		// 상품 등록 시간 계산 처리 
 		// ===============================================================================================
@@ -87,6 +89,7 @@ public class ProductController {
         DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
 		
 		for(Map<String, Object> datetime : productList) {
+			System.out.println(datetime);
 			LocalDateTime comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter);
         	
             long minutes = Duration.between(comDateTime, now).toMinutes();
@@ -150,7 +153,7 @@ public class ProductController {
 		}
 	
 
-		
+	@ResponseBody
 	@PostMapping("ProductRegistSuccess")
 	public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, 
 										HttpServletRequest request, @RequestParam("product_image") MultipartFile[] files) {
@@ -158,6 +161,7 @@ public class ProductController {
 //		@PostMapping("ProductRegistSuccess")
 //		public ResponseEntity<Map<String, Object>> productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, 
 //											HttpServletRequest request, @RequestParam("product_image") MultipartFile[] files) {
+		
 		
 		
 		
@@ -203,26 +207,36 @@ public class ProductController {
 	    }
 	    
 //	    product.setWriter_ip(request.getRemoteAddr());
-
+	    
+	    map.put("tag_name1", "#" + map.get("tag_name1"));
+	    map.put("tag_name2", "#" + map.get("tag_name2"));
+	    map.put("tag_name3", "#" + map.get("tag_name3"));
+	    map.put("tag_name4", "#" + map.get("tag_name4"));
+	    
+	    
+	    
 	    String product_price =  map.get("product_price").replace(",", ""); // 받아온 money값 ,때기
+//	    
+//	    StringBuilder tagNameBuilder = new StringBuilder(); // 태그 이름을 저장할 StringBuilder 객체 생성
+//	    for (int i = 1; i <= 4; i++) {
+//	        String tagNameKey = "tag_name" + i; // 태그 이름을 가져올 맵의 키 생성 (예: "tag_name1")
+//	        String tagNameValue = map.get(tagNameKey); // 맵에서 태그 이름 값 가져오기
+//
+//	        if (tagNameValue != null) {
+//	            tagNameBuilder.append("#" + tagNameValue + " "); // 태그 이름이 null이 아닐때 추가 (문자열 결합사용)
+//	        }
+//	    }
+//	    
+//	    String tag_name = tagNameBuilder.toString(); // null이 아닐시 받아온 태그값 tag_name에 저장
 
-	    StringBuilder tagNameBuilder = new StringBuilder(); // 태그 이름을 저장할 StringBuilder 객체 생성
-	    for (int i = 1; i <= 4; i++) {
-	        String tagNameKey = "tag_name" + i; // 태그 이름을 가져올 맵의 키 생성 (예: "tag_name1")
-	        String tagNameValue = map.get(tagNameKey); // 맵에서 태그 이름 값 가져오기
-
-	        if (tagNameValue != null) {
-	            tagNameBuilder.append("#" + tagNameValue + " "); // 태그 이름이 null이 아닐때 추가 (문자열 결합사용)
-	        }
-	    }
-	    String tag_name = tagNameBuilder.toString(); // null이 아닐시 받아온 태그값 tag_name에 저장
-
+	    
+	    
 	    String address = map.get("trade_place"); // 가져온 주소값 
 	    String[] addressSplit = address.split(" "); // 공백으로 나눈다
 	    String gu = addressSplit[1]; // 구 가져오기
 	    String dong = addressSplit[2]; // 동 가져오기
 
-	    map.put("tag_name", tag_name); 
+//	    map.put("tag_name", tag_name); 
 	    map.put("product_price" , product_price);
 	    map.put("gu", gu);
 	    map.put("dong", dong);
@@ -241,34 +255,36 @@ public class ProductController {
 	    
 	    
 	    int successInsert = service.productRegist(map);
-
-	    if (successInsert > 0) {
-	        System.out.println("성공");
-	    }
 	    
-	    return "products/productDetail";
+	    System.out.println("너는 ㅜㅁ가 들엇어어어어어어어어어엉 : "  + successInsert);
+	    
+	    return String.valueOf(successInsert);
 	}
 	
 	
 	// 상품 상세페이지
 		@GetMapping("ProductDetail")
-		public String productDetail(@RequestParam Map<String, String> map , MemberVO member, Model model, HttpSession session) {
+		public String productDetail(@RequestParam Map<String, String> map , MemberVO member, Model model, HttpSession session, String tag_name, String product_name) {
 			
 			
 			String sId = (String)session.getAttribute("sId");
 			
-			member.setMember_id(sId);
-			// 상품정보 조회를 위한 조회
-			Map<String, String> Product = service.selectProduct(member);
 			
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>너 프로덕트아이디임?: " + map);
+			
+			member.setMember_id(sId);
+			// 전체상품 조회
+//			List<Map<String, String>> allProduct = service.selectAllProduct();
+			
+//			System.out.println("전체상품엔 뭐가 들었을까: " + allProduct);
+			
+			// 상품정보 위한 조회
+			Map<String, String> Product = service.selectProduct(member);
 			// 날짜를 뿌리기 위한 조회
 			List<Map<String,Object>> Product2 = service.selectProduct2(member);
-			
-			// 연관상품을 뿌리기 위한 조회
-//			List<Map<String,String>> RelatedProducts = service.selectRelatedProducts(Product);
-
-			
-
+//			 연관상품을 뿌리기 위한 조회
+			List<Map<String,Object>> RelatedProducts = service.selectRelatedProducts(Product);
+			System.out.println("------------------연관상품 : " + RelatedProducts);
 	        
 			LocalDateTime now = LocalDateTime.now();
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -302,17 +318,26 @@ public class ProductController {
 			}
 			
 			
+			System.out.println(Product.get("tag_name"));
+			System.out.println(Product.get("product_name"));
+			
 			System.out.println(">>>>>>>>>>>>> 잘넘어왔는가 : " + Product);
 			System.out.println(">>>>>>>>>>>>> 이건 잘잘넘어왔는가 : " + Product2);
 			model.addAttribute("Product", Product);
-			model.addAttribute("Product2", Product2);
-//			model.addAttribute("RelatedProducts", RelatedProducts);
-//			System.out.println("------------------ 여기 왜 아무것도없음 : " + RelatedProducts);
 			
+			model.addAttribute("Product2", Product2);
+			
+//			model.addAttribute("RelatedProducts", RelatedProducts);
+//			
 			return "products/productDetail";
 		}
 		
-	
+//	@ResponseBody
+//	@GetMapping(RelatedProducts)
+//	public String ("RelatedProducts") {
+//		
+//		return "";
+//	}
 	
 	// 상품 제안하기 
 	@GetMapping("Proposal")

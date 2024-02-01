@@ -49,15 +49,30 @@ public class ProductService {
 		
 		int product_id = mapper.productInsert(map);
 		
+		mapper.productBoardInsert();
 		// 상품 게시물 테이블
+		return mapper.selectProductId();
 		
-		return mapper.productBoardInsert();
 	}
-	// 연관상품을 조회하기 위한 select
-//	public List<Map<String, String>> selectRelatedProducts(Map<String, String> map, String sId) {
+
+	// 연관상품 조회
+
+	public List<Map<String, Object>> selectRelatedProducts(Map<String, String> product) {
+		
+		return mapper.selectRelatedProducts(product);
+	}
+	
+	// 전체상품 조회
+//	public List<Map<String, String>> selectAllProduct() {
 //		
-//		return mapper.selectRelatedProducts(map, sId);
+//		return mapper.selectAllProduct();
 //	}
+
+//	public List<Map<String, String>> selectRelatedProducts(Map<String, String> map) {
+//		
+//		return mapper.selectRelatedProducts(map);
+//	}
+
 
 
 

@@ -27,6 +27,13 @@
 </head>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+
+<style>
+#ok{
+	height: 200px;
+	width: 200px;
+}
+</style>
 <script type="text/javascript">
 $(function() {
 	let pageNum = "";
@@ -59,7 +66,7 @@ $(function() {
 					'<div class="col-lg-4-1 col-md-6 col-12" >'
 						+ ' <div class="single-product" >'
 							+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
-								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#">'
+								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
 							+ ' </a>'
 							+ ' <div class="product-info">'
 								+ '<h6>' + productList[i].product_name + '</h6>'
