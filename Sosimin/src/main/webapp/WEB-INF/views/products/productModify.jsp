@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -341,7 +344,7 @@ padding-top: 21px;
 	position:relative;
     height: 3.5rem;
     width: 10rem;
-    color: white;
+    color: rgb(255, 255, 255);
     font-size: 20px;
     font-weight: 700;
     border-radius: 2px;
@@ -353,7 +356,7 @@ padding-top: 21px;
     justify-content: center;
     margin-top: 15px;
     margin-bottom: 50px;
-    border:none;
+    border: none;
 }
 
 #temporarySaveButton{
@@ -689,6 +692,7 @@ function price(input) {
 	  // 숫자 이외의 값을 입력 못하게한다.
 // 	  input.value = input.value.replace(/[^0-9]/g, '');
 	  
+	  
 var priceInput = $("#priceInput");
 
 	
@@ -764,6 +768,65 @@ $(document).on("click", ".close-button", function() {
   $("#tagName").prop("disabled", false);
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+	  var tags = ['${productModify.tag_name1}', '${productModify.tag_name2}', '${productModify.tag_name3}', '${productModify.tag_name4}'];
+	  var tagCount = 0; // 태그 개수를 세는 변수
+
+	  tags.forEach(function(tagName) {
+	    if (tagName !== "" && tagName !== "#null") { // tagName이 빈 문자열 또는 'null'일 경우 생성하지 않음
+	      var tagElement = document.createElement("span");
+	      tagElement.innerText = tagName;
+	      tagElement.classList.add("tag");
+
+	      var closeButton = document.createElement("button");
+	      closeButton.innerText = "";
+	      closeButton.classList.add("close-button");
+	      tagElement.appendChild(closeButton);
+
+	      var tagContainer = document.getElementById("tagContainer");
+	      tagContainer.appendChild(tagElement);
+
+	      tagCount++; // 태그가 생성되면 태그 개수 증가
+	    }
+	  });
+
+	  if (tagCount >= 4) { // 태그 개수가 4개 이상이면 태그 입력 필드를 비활성화
+	    document.getElementById("tagName").disabled = true;
+	  }
+	});
+
+
+// ------------------------------------
+
+window.onload = function() {
+  var imageUrls = ['${productModify.product_image1}', '${productModify.product_image2}', '${productModify.product_image3}', '${productModify.product_image4}', '${productModify.product_image5}'];
+  var imageLength = 0;  // 이미지 개수를 저장할 변수
+  imageUrls.forEach(function(filename) {
+    if (filename && filename.trim() !== '') { // filename이 빈 문자열이 아닐 때만 이미지 생성
+      var url = '${pageContext.request.contextPath}/resources/upload/' + filename; // 이미지의 URL 생성
+      var img = document.createElement("img");
+      img.setAttribute("src", url);
+      img.setAttribute("class", "imageSize");
+
+      var closeButton = document.createElement("button");
+      closeButton.setAttribute("type", "button");
+      closeButton.setAttribute("class", "imageClose");
+      closeButton.setAttribute("onclick", "removeImage(this)");
+
+      var imageItem = document.createElement("span");
+      imageItem.classList.add("imageItem");
+
+      imageItem.appendChild(img);
+      imageItem.appendChild(closeButton);
+      document.getElementById("image_container").appendChild(imageItem);
+      imageLength++;  // 이미지 개수 증가
+    }
+  });
+  document.getElementById("imageLength").textContent = imageLength;  // 이미지 개수를 화면에 표시
+}
+
+
+// ------------------------------------
 // 썸네일 작업
 // var formData = new FormData(); // 전역 변수로 FormData 객체 생성
 // var files = []; // 사용자가 선택한 모든 파일을 저장할 배열
@@ -853,10 +916,7 @@ function submitFiles(event) {
 // 	  }
 	  
 	  var formData = new FormData();
-	  var productStatus = document.querySelector('input[name="product_status"]:checked').value;
-	  var tradeMethod = document.querySelector('input[name="trade_method"]:checked').value;
-	  formData.append('product_status', productStatus);
-	  formData.append('trade_method', tradeMethod);
+	  
 	  // Form의 각 필드를 개별적으로 FormData에 추가
 	  var formElements = form.elements;
 	  for (var i = 0; i < formElements.length; i++) {
@@ -865,20 +925,20 @@ function submitFiles(event) {
 	      formData.append(element.name, element.value);
 	    }
 	  }
-		
-	  
+
 	  for (var i = 0; i < selectedFiles.length; i++) {
 	    formData.append('product_image', selectedFiles[i]);
 	  }
 
 	  $.ajax({
-		    url: 'ProductRegistSuccess',
+		    url: 'ProductModifySuccess',
 		    type: 'POST',
 		    data: formData,
 		    processData: false,
 		    contentType: false,
 		    success: function(data) {
 		        // 서버로부터 응답을 받았을 때 실행되는 코드
+		        alert("상품이 수정되었습니다.");
 		        console.log('File upload successful!');
 		        location.href =  "ProductDetail?product_id=" + data;
 		    },
@@ -901,6 +961,19 @@ function submitFiles(event) {
 //   }
 //   xhr.send(data);
 // });
+
+// function removeImage(element) {
+//   var imageItem = element.parentNode;
+//   var imageContainer = document.getElementById("image_container");
+//   imageContainer.removeChild(imageItem);
+
+//   var imageLength = parseInt(document.getElementById("imageLength").textContent);
+//   imageLength--;
+//   document.getElementById("imageLength").textContent = imageLength;
+
+//   var imageIndex = Array.from(imageContainer.children).indexOf(imageItem);
+//   selectedFiles.splice(imageIndex, 1);  // 선택된 이미지 목록에서 해당 이미지 제거
+// }
 
 
 // 이미지 삭제
@@ -956,7 +1029,8 @@ function setAddress(address) {
 
 function checkInput() {
     var fileInput = document.getElementById('product_image');
-    if (fileInput.files.length === 0) {
+    var loadedImages = document.querySelectorAll(".imageItem").length;
+    if (fileInput.files.length + loadedImages === 0) {
       alert('이미지파일 1개 이상 등록하셔야 됩니다.');
       	$("#product_image").focus();
       	$("html, body").animate({ // 페이지를 이동시켜준다.
@@ -1011,7 +1085,18 @@ function checkInput() {
     localStorage.clear();
     return true;
   }
-  
+  // 넘어온 카테고리 셀렉트박스 선택해놓기
+document.addEventListener("DOMContentLoaded", function() {
+    var category = '${productModify.product_category}';
+    var selectElement = document.getElementById('categoryName');
+    selectElement.value = category;
+    if (category !== 'default') {
+        selectElement.removeChild(selectElement.querySelector('[value="default"]'));
+    }
+});
+  // 넘어온 상품상태 라디오버튼 체크해놓기
+  var status = '${productModify.product_status}';
+    document.querySelector(`input[name="product_status"][value="${status}"]`).checked = true;
   
   // 상품등록이 성공적으로 됐을 시 로컬스토리지 초기화
 </script>
@@ -1029,14 +1114,14 @@ function checkInput() {
             <div class="row align-items-center" id="maxWidth">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title" style="text-align: left;">상품등록</h1>
+                        <h1 class="page-title" style="text-align: left;">상품수정</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="index.html">Shop</a></li>
-                        <li>Single Product</li>
+                        <li><a href="index.html"><i class="lni lni-home"></i> 홈</a></li>
+                        <li><a href="index.html">상품</a></li>
+                        <li>상품수정</li>
                     </ul>
                 </div>
             </div>
@@ -1068,6 +1153,16 @@ function checkInput() {
 					  <div id="image_container">
 					    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span>
 					  </div>
+<!-- 					  	<span class="imageItem"> -->
+<%-- 					  		<img src="${pageContext.request.contextPath}/resources/upload/${productModify.product_image1}" class="imageSize"> --%>
+<!-- 								<button type="button" class="imageClose" onclick="removeImage(this)"> -->
+<!-- 								</button> -->
+<!-- 					  	</span> -->
+<!-- 					  	<span class="imageItem"> -->
+<%-- 					  		<img src="${pageContext.request.contextPath}/resources/upload/${productModify.product_image2}" class="imageSize"> --%>
+<!-- 								<button type="button" class="imageClose" onclick="removeImage(this)"> -->
+<!-- 								</button> -->
+<!-- 					  	</span> -->
 					</div>
 				</div>						
 				<hr>
@@ -1079,8 +1174,9 @@ function checkInput() {
 							<li><p id="divPadding">상품명<span>*</span></p></li>
 						</ul>
 					</div>
+					<input type="hidden" name="product_id" value="${param.product_id }">
 						<input type="text" id="productName" name="product_name" onkeyup="productKey()" maxlength="40" oninput="limitInputLength(this, 40)"
-						placeholder="상품명을 입력해 주세요." class="text-box">
+						placeholder="상품명을 입력해 주세요." class="text-box" value="${productModify.product_name }">
 						<a href="https://help.bunjang.co.kr/faq/2/220" target="_blank" id="tradeX">
 						 <span id="tradeXText">거래금지 품목 보기</span></a>
 						 <div id="textLength">
@@ -1111,7 +1207,7 @@ function checkInput() {
 							</select>
 							<div id="Category">
 							선택한 카테고리 : 
-							<b id="selectCategory"></b>
+							<b id="selectCategory">${productModify.product_category}</b>
 							</div>
 						</li>
 					</ul>
@@ -1129,7 +1225,7 @@ function checkInput() {
 								<input type="hidden" id="map">
 									<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="내 위치"></div>
 									<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="지도로 찾기" onclick="AddressMap()"></div>
-								<input type="text" id="myMap" name="trade_place"  size="64" required readonly placeholder="지역을 설정해 주세요">
+								<input type="text" id="myMap" name="trade_place"  size="64" required readonly placeholder="지역을 설정해 주세요" value="부산광역시 ${productModify.gu} ${productModify.dong}">
 							</li>
 						</ul>
 				</div>
@@ -1137,38 +1233,38 @@ function checkInput() {
 					<hr id="hr2">
 				<div>
 					<div id="divLine" class="productStatus">
-						<p>상품 상태<span>*</span></p>
+					    <p>상품 상태<span>*</span></p>
 					</div>
 					<ul id="ulLine">
-						<li class="productsStatusRadio">
-							<label id="radioChoise">
-								<input type="radio" id="productStatus1" name="product_status" value="0"> 보통
-							</label><br>
-							<label id="radioChoise">
-								<input type="radio" id="productStatus2" name="product_status" value="1"> 좋은상태
-							</label><br>
-							<label id="radioChoise">
-								<input type="radio" id="productStatus3" name="product_status" value="2"> 새상품<br>
-							</label>
-						</li>
+					    <li class="productsStatusRadio">
+					        <label id="radioChoise">
+					            <input type="radio" id="productStatus1" name="product_status" value="0" ${productModify.product_status == 0 ? 'checked' : ''}> 보통
+					        </label><br>
+					        <label id="radioChoise">
+					            <input type="radio" id="productStatus2" name="product_status" value="1" ${productModify.product_status == 1 ? 'checked' : ''}> 좋은상태
+					        </label><br>
+					        <label id="radioChoise">
+					            <input type="radio" id="productStatus3" name="product_status" value="2" ${productModify.product_status == 2 ? 'checked' : ''}> 새상품<br>
+					        </label>
+					    </li>
 					</ul>
 				</div>
 				<hr id="hr3">
 				<div>
-					<div id="divLine" class="trade_methodDiv">
-						<p>거래방법<span>*</span></p>
-					</div>
-					<ul id="ulLine">
-						<li class="trade_methodRadio">
-						  <label id="radioChoise1">
-						    <input type="radio" id="trade_method1" name="trade_method" value="0"> 대면거래
-						  </label><br>
-						  <label id="radioChoise2">
-						    <input type="radio" id="trade_method2" name="trade_method" value="1"> 소심거래
-						  </label><br>
-						</li>
-					</ul>
-				</div>
+			    <div id="divLine" class="trade_methodDiv">
+			        <p>거래방법<span>*</span></p>
+			    </div>
+			    <ul id="ulLine">
+			        <li class="trade_methodRadio">
+			            <label id="radioChoise1">
+			                <input type="radio" id="trade_method1" name="trade_method" value="0" ${productModify.trade_method == 0 ? 'checked' : ''}> 대면거래
+			            </label><br>
+			            <label id="radioChoise2">
+			                <input type="radio" id="trade_method2" name="trade_method" value="1" ${productModify.trade_method == 1 ? 'checked' : ''}> 소심거래
+			            </label><br>
+			        </li>
+			    </ul>
+			</div>
 				
 				<hr>
 				<div>
@@ -1179,7 +1275,8 @@ function checkInput() {
 					</div>
 						<ul id="ulLine">
 							<li>
-								<input type="text" id="priceInput" name="product_price" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11">원
+								<input type="text" id="priceInput" name="product_price" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11"
+								value="<fmt:formatNumber value='${productModify.product_price}' pattern='#,###' />" >원
 								<div id="priceProposal">
 								</div>
 							</li>
@@ -1197,7 +1294,7 @@ function checkInput() {
 					</div>
 					<div id="ulLine">
 						<textarea rows="6" cols="100" style="resize: none;" id="ProductDescription" name="product_txt" maxlength="2000" onkeyup="ProductDescriptionKey()" 
-							oninput="limitInputLength2(this, 2000)" placeholder="구매시기,브랜드/모델명,제품의 상태(사용감,하자 유무) 등을 입력해 주세요"></textarea>
+							oninput="limitInputLength2(this, 2000)" placeholder="구매시기,브랜드/모델명,제품의 상태(사용감,하자 유무) 등을 입력해 주세요" >${productModify.product_txt}</textarea>
 					</div>
 					<div id="explanationLength">
 						<span id="ProductDescriptionLength">0</span><span>/2000</span>
@@ -1224,7 +1321,7 @@ function checkInput() {
    				<div id="save">
 					<button type="button" id="temporarySaveButton">임시저장</button>
 <!-- 					<input type="submit" id="buttonBox" value="상품등록"> -->
-					<input type="button" id="buttonBox" value="상품등록" onclick="submitFiles();">
+					<input type="button" id="buttonBox" value="수정" onclick="submitFiles();">
 				</div>
 			</form>
 		</div>

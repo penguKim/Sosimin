@@ -54,4 +54,9 @@ public interface ProductMapper {
 
 	Map<String, String> selectMemberInterset(Map<String, String> interest);
 
+	Map<String, String> selectSellerInfo(Map<String, String> map);
+
+	Map<String, String> selectProductModify(Map<String, String> map);
+	// 상품 수정
+	int updateProduct(Map<String, String> map);
 }

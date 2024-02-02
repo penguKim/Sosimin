@@ -184,6 +184,7 @@
 #nicknameA , #aTag{
   color: inherit !important;
   text-decoration: none !important;
+  font-weight: bolder;
 }
 
 #info_body{
@@ -335,6 +336,12 @@
     background: rgb(51, 51, 51);
 }
 
+#productModify{
+	width: 600px;
+	background-color: rgb(255, 164, 37);
+	font-size: 20px;
+	color:white;
+}
 </style>
 <script>
 
@@ -629,10 +636,10 @@ window.onload = function() {
                         	 </div>
                         	 <div id="productStatusData">
                         	 	<c:choose>
-                        	 		<c:when test="${Product.product_status eq 1}">
+                        	 		<c:when test="${Product.product_status eq 0}">
                         	 			보통
                         	 		</c:when>
-                        	 		<c:when test="${Product.product_status eq 2}">
+                        	 		<c:when test="${Product.product_status eq 1}">
                         	 			좋은상품
                         	 		</c:when>
                         	 		<c:otherwise>
@@ -654,16 +661,20 @@ window.onload = function() {
 	                        		<span style="font-size: 6px;">●</span>
 	                        			<div id="productStatus">거래방법</div>
 	                        	 </div>
-	                        	 <div id="productStatusData">
-	                        	 	<c:if test="${Product.trade_method eq 0 } ">
-	                        	 		대면거래
-	                        	 	</c:if>
-	                        	 		비대면거래
-	                        	 </div>
+									<div id="productStatusData">
+									  <c:if test="${Product.trade_method eq 0 }">
+									    대면거래
+									  </c:if>
+									  <c:if test="${Product.trade_method eq 1 }">
+									    소심거래
+									  </c:if>
+									</div>
                         	 </div>
                         </div>
                          <div class="bottom-content" id="threeButton">
                              <div class="row align-items-end">
+                             <c:choose>
+                             	<c:when test="${Product.member_id ne sessionScope.sId}">
                                  <div class="col-lg-4 col-md-4 col-12">
 <%--                                  <c:if test="${Product.member_id != sId }"> --%>
                                      <div class="button cart-button" id="likeButtonDiv">
@@ -685,9 +696,21 @@ window.onload = function() {
 	     						 <div class="col-lg-4 col-md-4 col-12">
 		                         <div class="wish-button" id="priceProposal">
 		                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="Proposal()">가격제안</button>
-		                         </div>
-                         </div>
-                             </div>
+	                            </div>
+                              </div>
+                           	</c:when>
+                           	<c:otherwise>
+                                 <div class="col-lg-4 col-md-4 col-12">
+                                     <div class="wish-button">
+                                     	<a href="productModify?product_id=${Product.product_id }">
+                                         <button class="btn" style="height: 60px;" id="productModify"> 상품수정</button>
+                                         </a>
+<%--                                          <input type="hidden" name="product_id" value="${Product.product_id }"> --%>
+                                     </div>
+                                 </div>
+                           	</c:otherwise>
+                           	</c:choose>
+                           </div>
                          </div>
                          <hr>
                          <div id="tradeAddressTag">
@@ -771,7 +794,7 @@ window.onload = function() {
                                 		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#">
                                 	</a>
                                 	<div id="nickname">
-                                		<a href="" id="nicknameA">닉네임자리</a>
+                                		<a href="" id="nicknameA">${SellerInfo.member_nickname }</a>
                                 	</div>
                                 </div>
                                 <div id="myProductDiv">

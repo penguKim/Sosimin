@@ -85,6 +85,23 @@ public class ProductService {
 		
 		return mapper.selectMemberInterset(interest);
 	}
+	
+	// 판매자 정보 조회
+	public Map<String, String> selectSellerInfo(Map<String, String> map) {
+		
+		return mapper.selectSellerInfo(map);
+	}
+	
+	// 상품 수정을 위한 조회
+	public Map<String, String> selectProductModify(Map<String, String> map) {
+		
+		return mapper.selectProductModify(map);
+	}
+	// 상품 업데이트
+	public int updateProduct(Map<String, String> map) {
+		
+		return mapper.updateProduct(map);
+	}
 
 	
 }
