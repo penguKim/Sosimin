@@ -34,7 +34,9 @@
 		});
 		
 		$("#btnSend").click(function() {
-			sendMessage();	
+			if($("#chatMsg").val() != "") {
+				sendMessage();
+			}
 		});
 		
 		// 채팅메세지 입력창 키 누를때마다 이벤트 처리
