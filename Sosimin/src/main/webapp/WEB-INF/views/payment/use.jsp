@@ -214,14 +214,24 @@ function openModal() {
 	                           	<div class="msg">거래 정보 확인</div>
 	                           	<div class="account-info">    
 		                           	<div class="row">
-					                	<div class="col-lg-2 col-md-2 col-12" style="text-align: center;">
+					                	<div class="col-lg-3 col-md-3 col-12" style="text-align: center;">
 					                    	${productInfo.product_image1} <!-- 썸네일 뿌리기 -->
 					                	</div>
-					                	<div class="col-lg-10 col-md-10 col-12">
-					      					<p class="bank-name">판매자 : ${productInfo.member_id}</p>
-				                           	<p class="bank-name">상품명 : ${productInfo.product_name}</p>
-				                           	<p class="bank-name">가격 : ${productInfo.product_price} 원</p>
-				                           	<p class="bank-name">거래방법 : ${productInfo.trade_method}</p>
+					                	<div class="col-lg-9 col-md-9 col-12">
+					      					<p class="product-info row"><span class="name_span col-4">판&nbsp;&nbsp;&nbsp;매&nbsp;&nbsp;&nbsp;자 :</span> <span class="value_span col-8">${productInfo.member_id}</span></p>
+				                           	<p class="product-info row"><span class="name_span col-4">상&nbsp;&nbsp;&nbsp;품&nbsp;&nbsp;&nbsp;명 :</span> <span class="value_span col-8">${productInfo.product_name}</span></p>
+				                           	<p class="product-info row"><span class="name_span col-4">가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;격 :</span> 
+				                           		<span class="value_span col-8">
+				                           			<c:set var="product_price" value="${productInfo.product_price}" />
+													<fmt:formatNumber value="${product_price}" pattern="#,##0" />원
+												</span>
+				                           	</p>
+				                           	<p class="product-info row"><span class="name_span col-4">거래방법 :</span> 
+				                           		<span class="value_span col-8">
+				                           			<c:if test="${productInfo.trade_method eq 0}">대면거래</c:if>
+				                           			<c:if test="${productInfo.trade_method eq 1}">소심거래</c:if>
+				                           		</span>
+				                           	</p>
 					                   	</div>
 					                 </div>
 		                        </div>
