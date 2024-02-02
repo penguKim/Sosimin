@@ -362,19 +362,18 @@
 		}); // 비밀번호 확인 keyup 이벤트 끝
 		
 		<%-- 생년월일 선택 범위 제한 --%>
-		$("#birthdate").on("click", function() {
+		$("#birthdate").on("click", function(event) {
 			// 모달창 가림	
 			// 모달창 가림	
 			// 모달창 가림	
 			// 모달창 가림	
 			// 모달창 가림	
-		
+// 			event.preventDefault();
 			if(!$(this).hasClass("clicked")) {
 				Swal.fire({
 					title: '만 14세 이상인가요?',
 					text: '만 14세 이상만 가입할 수 있습니다. 동의하십니까?',
 					icon: 'warning',
-					
 					showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
 					confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
 					cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
@@ -653,9 +652,7 @@
 		
 
 		<%-- submit 동작을 수행할 때 값을 올바르게 입력했는지 확인 --%>
-		$("form").on("submit", function() {
-			
-		
+		$("form").on("submit", function(event) {
 			if(!iscorrectName) { // 이름 미입력 또는 정규표현식 위배
 				$("#checkNameResult").text("2~5글자의 한글만 사용 가능합니다").css("color", "red");
 				$("#name").focus();
@@ -716,11 +713,11 @@
 				return false; // submit 동작 취소
 			}  else {
 // 				confirm("가입 완료 버튼을 누르면 회원가입이 완료됩니다");
+	 			event.preventDefault();
 				Swal.fire({
 					title: '가입 완료하시겠어요?',
 					text: '확인을 누르면 회원가입이 완료됩니다',
 					icon: 'info',
-					
 					showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
 					confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
 					cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
@@ -728,14 +725,18 @@
 					cancelButtonText: '취소', // cancel 버튼 텍스트 지정
 					reverseButtons: true, // 버튼 순서 거꾸로
 				}).then(result => {
+					
+					// true 리턴을 안받아도 바로 넘어감
+					// true 리턴을 안받아도 바로 넘어감
+					// true 리턴을 안받아도 바로 넘어감
+					// true 리턴을 안받아도 바로 넘어감
+					// true 리턴을 안받아도 바로 넘어감
 					// 만약 Promise리턴을 받으면,
 					if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+						
+						$("form").off("submit");
+						$("form").submit();
 						return true;
-						// true 리턴을 안받아도 바로 넘어감
-						// true 리턴을 안받아도 바로 넘어감
-						// true 리턴을 안받아도 바로 넘어감
-						// true 리턴을 안받아도 바로 넘어감
-						// true 리턴을 안받아도 바로 넘어감
 					} else {
 						return false;
 					} // else 문 끝
