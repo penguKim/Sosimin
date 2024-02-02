@@ -489,6 +489,19 @@
 			, community_image5 = #{community_image5}
 		WHERE community_id = #{community_id}
 	</update>
+	
+	<!-- 스케쥴러의 임시저장글 조회 -->
+	<select id="selectTempList" resultType="map">
+		SELECT *
+		FROM TempCommunity
+		WHERE DATE(temp_datetime) = #{yesterday}
+	</select>
+	
+	<!-- 스케쥴러가 판별한 임시저장글 삭제 -->
+	<delete id="removeTempCommunity">
+		DELETE FROM TempCommunity
+		WHERE temp_id = #{temp_id}
+	</delete>
 </mapper>
 
 

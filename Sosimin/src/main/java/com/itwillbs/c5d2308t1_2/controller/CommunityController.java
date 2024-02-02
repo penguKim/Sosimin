@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,24 +66,32 @@ public class CommunityController {
 		
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+//        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
         
         for(CommunityVO com : communityList) {
         	LocalDateTime comDateTime = LocalDateTime.parse(com.getCommunity_datetime().toString(), formatter);
-        	
-            long minutes = Duration.between(comDateTime, now).toMinutes();
-            long hours = minutes / 60;
-            long days = hours / 24;
-            hours %= 24;
-            minutes %= 60;
+        	// 시분초 차이 계산
+    		Duration duration = Duration.between(comDateTime, now);
+    		// 년월일 차이 계산
+    		Period period = Period.between(comDateTime.toLocalDate(), now.toLocalDate());
+    		
+            long minutes = duration.toMinutes() % 60;
+            long hours = duration.toHours() % 24;
+            long days = duration.toDays() % 7;
+            long weeks = duration.toDays() / 7;
+            long months = period.getMonths();
+            long years = period.getYears();
+            
             String timeAgo = "";
-            if (days > 0) { // 하루이상 차이날 때
-                if (comDateTime.getYear() == now.getYear()) {
-                    timeAgo = comDateTime.format(formatterMonthDay);
-                } else {
-                    timeAgo = comDateTime.format(formatterDate);
-                }
+            if(years > 0) {
+            	timeAgo = years + "년 전";
+            } else if(months > 0) {
+            	timeAgo = months + "개월 전";
+            } else if(weeks > 0 && weeks <= 4) {
+            	timeAgo = weeks + "주전";
+    		} else if (days > 0 && days < 7) { // 1 ~ 7 차이날 때
+                timeAgo = days + "일전";
             } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
                 timeAgo = hours + "시간 전";
             } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
@@ -120,7 +129,7 @@ public class CommunityController {
 		return "community/communityWrite";
 	}
 	
-	// 커뮤니니 글쓰기 비즈니스 로직
+	// 커뮤니티 글쓰기 비즈니스 로직
 	@PostMapping("CommunityWritePro")
 	public String communityWritePro(CommunityVO com, HttpSession session, Model model) {
 
@@ -253,29 +262,34 @@ public class CommunityController {
         
         // 게시시간 가져오기
     	LocalDateTime comDateTime = LocalDateTime.parse(map.get("community_datetime").toString(), formatter);
-    	
-        long minutes = Duration.between(comDateTime, now).toMinutes();
-		System.out.println("처음 분계산 : " + minutes);
-		long hours = minutes / 60;
-		System.out.println("처음 시계산 : " + hours);
-		hours %= 24;
-		System.out.println("나머지 시계산 : " + hours);
-		minutes %= 60;
-		System.out.println("나머지 분계산 : " + minutes);
-		String timeAgo = "";
-		if (hours >= 24) { // 하루이상 차이날 때
-		    if (comDateTime.getYear() == now.getYear()) {
-		        timeAgo = comDateTime.format(formatterMonthDay);
-		    } else {
-		        timeAgo = comDateTime.format(formatterDate);
-		    }
-		} else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
-		    timeAgo = hours + "시간 전";
-		} else if (minutes > 0) { // 1 ~ 59분이 차이날 때
-		    timeAgo = minutes + "분 전";
-		} else {
-		    timeAgo = "방금 전";
-		}
+    	// 시분초 차이 계산
+		Duration duration = Duration.between(comDateTime, now);
+		// 년월일 차이 계산
+		Period period = Period.between(comDateTime.toLocalDate(), now.toLocalDate());
+		
+        long minutes = duration.toMinutes() % 60;
+        long hours = duration.toHours() % 24;
+        long days = duration.toDays() % 7;
+        long weeks = duration.toDays() / 7;
+        long months = period.getMonths();
+        long years = period.getYears();
+        
+        String timeAgo = "";
+        if(years > 0) {
+        	timeAgo = years + "년 전";
+        } else if(months > 0) {
+        	timeAgo = months + "개월 전";
+        } else if(weeks > 0 && weeks <= 4) {
+        	timeAgo = weeks + "주전";
+		} else if (days > 0 && days < 7) { // 1 ~ 7 차이날 때
+            timeAgo = days + "일전";
+        } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+            timeAgo = hours + "시간 전";
+        } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+            timeAgo = minutes + "분 전";
+        } else {
+            timeAgo = "방금 전";
+        }
 
         map.put("community_datetime", timeAgo);
         
@@ -289,26 +303,32 @@ public class CommunityController {
         
         for(CommunityReplyVO datetime : replyList) {
         	LocalDateTime reDateTime = LocalDateTime.parse(datetime.getReply_datetime().toString(), formatter);
+        	duration = Duration.between(reDateTime, now);
+    		period = Period.between(reDateTime.toLocalDate(), now.toLocalDate());
         	
-            minutes = Duration.between(reDateTime, now).toMinutes();
-    		hours = minutes / 60;
-    		hours %= 24;
-    		minutes %= 60;
-    		timeAgo = "";
-    		
-    		if (hours >= 24) { // 하루이상 차이날 때
-    		    if (comDateTime.getYear() == now.getYear()) {
-    		        timeAgo = comDateTime.format(formatterMonthDay);
-    		    } else {
-    		        timeAgo = comDateTime.format(formatterDate);
-    		    }
-    		} else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
-    		    timeAgo = hours + "시간 전";
-    		} else if (minutes > 0) { // 1 ~ 59분이 차이날 때
-    		    timeAgo = minutes + "분 전";
-    		} else {
-    		    timeAgo = "방금 전";
-    		}
+            minutes = duration.toMinutes() % 60;
+            hours = duration.toHours() % 24;
+            days = duration.toDays() % 7;
+            weeks = duration.toDays() / 7;
+            months = period.getMonths();
+            years = period.getYears();
+            
+            timeAgo = "";
+            if(years > 0) {
+            	timeAgo = years + "년 전";
+            } else if(months > 0) {
+            	timeAgo = months + "개월 전";
+            } else if(weeks > 0 && weeks <= 4) {
+            	timeAgo = weeks + "주전";
+    		} else if (days > 0 && days < 7) { // 1 ~ 7 차이날 때
+                timeAgo = days + "일전";
+            } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+                timeAgo = hours + "시간 전";
+            } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+                timeAgo = minutes + "분 전";
+            } else {
+                timeAgo = "방금 전";
+            }
 
             datetime.setReply_datetime(timeAgo);
             

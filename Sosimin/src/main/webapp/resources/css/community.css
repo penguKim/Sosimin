@@ -265,9 +265,12 @@ textarea.form-control {
 /* ========= 등록 페이지 ============ */
 
 #fileArea {
+    width: 100px;
+    height: 100px;
 	cursor: pointer;
 	transition: 0.5s;
 }
+
 #fileArea:hover {
 	color: #39d274;
 	transition: 0.5s;

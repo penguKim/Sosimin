@@ -1,5 +1,6 @@
 package com.itwillbs.c5d2308t1_2.mapper;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -99,5 +100,11 @@ public interface CommunityMapper {
 
 	// 글수정 삭제 이미지 이후의 순서 옮기기
 	int moveCommunityImage(Map<String, Object> map);
+
+	// 스케쥴러의 임시저장글 조회
+	List<Map<String, String>> selectTempList(String yesterday);
+
+	// 스케쥴러가 판별한 임시저장글 삭제
+	int removeTempCommunity(String temp_id);
 	
 }
