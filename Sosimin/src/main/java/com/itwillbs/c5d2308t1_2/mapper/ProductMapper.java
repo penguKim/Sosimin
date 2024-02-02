@@ -59,4 +59,10 @@ public interface ProductMapper {
 	Map<String, String> selectProductModify(Map<String, String> map);
 	// 상품 수정
 	int updateProduct(Map<String, String> map);
+	
+	// 판매자판매 상품 조회
+	List<Map<String, String>> selectSellerProductInfo(Map<String, String> sellerInfo);
+
+	// 판매자판매 상품 카운트
+	int selectSellerProductCount(String member_id);
 }

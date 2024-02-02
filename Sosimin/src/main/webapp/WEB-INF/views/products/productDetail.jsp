@@ -338,7 +338,7 @@
 
 #productModify{
 	width: 600px;
-	background-color: rgb(255, 164, 37);
+	background-color: #39d274;
 	font-size: 20px;
 	color:white;
 }
@@ -555,9 +555,9 @@ window.onload = function() {
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="index.html">Shop</a></li>
-                        <li>Single Product</li>
+                        <li><a href="index.html"><i class="lni lni-home"></i> 홈</a></li>
+                        <li><a href="index.html">상품</a></li>
+                        <li>상품상세</li>
                     </ul>
                 </div>
             </div>
@@ -790,17 +790,17 @@ window.onload = function() {
                                 <b><span style="font-size: 20px; padding-top: 30px;">판매자정보</span></b>
                                 <hr>
                                 <div>
-                                	<a href=""  id="profileImage">
+                                	<a href="MyPage?member_id=${SellerInfo.member_id }"  id="profileImage">
                                 		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#">
                                 	</a>
                                 	<div id="nickname">
-                                		<a href="" id="nicknameA">${SellerInfo.member_nickname }</a>
+                                		<a href="MyPage?member_id=${SellerInfo.member_id }" id="nicknameA">${SellerInfo.member_nickname }</a>
                                 	</div>
                                 </div>
                                 <div id="myProductDiv">
                                 	<div id="myProducts">
-                                		<a href="" id="aTag">
-                                			<span style="font-size: 17px;">상품 30</span>
+                                		<a href="MyPage?member_id=${SellerInfo.member_id }" id="aTag">
+                                			<span style="font-size: 17px;">상품 ${SellerProductCount}</span>
                                 		</a>
                                 		<span id="after"></span>
                                 	</div>
@@ -812,25 +812,27 @@ window.onload = function() {
                                 </div>
                                 <div style="height: 150px">
                                 	<div id="myProductImage">
-	                                	<a href="" style="height: 150px;">
-	                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" class="img" alt="#" height="150px" width="150px">
+                                		<c:forEach var="SellerProductInfo" items="${SellerProductInfo }" begin="0" end="2" >
+	                                	<a href="ProductDetail?product_id=${SellerProductInfo.product_id}" style="height: 150px;">
+	                                		<img src="${pageContext.request.contextPath}/resources/upload/${SellerProductInfo.product_image1 }" class="img" alt="#" height="150px" width="150px">
 	                                		<div id="imgPrice">
-	                                			<span>40,000</span>원
+	                                			<span>${SellerProductInfo.product_price }</span>원
 	                                		</div>
 	                                	</a>
+                                		</c:forEach>
                                 	</div>
-                                	<div id="myProductImage">
-	                                	<a href="" style="height: 150px;">
-	                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#" height="150px" width="150px">
-                    						<div id="imgPrice">
-	                                			<span>160,000</span>원
-	                                		</div>
-	                                	</a>
-                                	</div>
+<!--                                 	<div id="myProductImage"> -->
+<!-- 	                                	<a href="" style="height: 150px;"> -->
+<%-- 	                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#" height="150px" width="150px"> --%>
+<!--                     						<div id="imgPrice"> -->
+<!-- 	                                			<span>160,000</span>원 -->
+<!-- 	                                		</div> -->
+<!-- 	                                	</a> -->
+<!--                                 	</div> -->
                                 </div>
                                 <div style="text-align: center; margin-top: 20px;">
-                                	<a href="" id="productPlus">
-                                		<span id="productCount">30개</span>
+                                	<a href="MyPage?member_id=${SellerInfo.member_id }" id="productPlus">
+                                		<span id="productCount">${SellerProductCount }개</span>
 	                                	<span style="color: black;">상품 더보기 ></span>
                                 	</a>
                                 </div>

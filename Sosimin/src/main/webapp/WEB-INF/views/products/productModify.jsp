@@ -484,131 +484,6 @@ $(function() {
 			});
 			// 임시저장 버튼이 클릭되었을 때 askForTemporarySave 함수를 호출합니다.
 		
-$(document).ready(() => {
-	
-  function showConfirmMessage() {
-    if (localStorage.getItem("isTempSaved") === "1") {
-      if (confirm("최근 작성한 글을 불러오시겠습니까?")) {
-        $("#productName").val(localStorage.getItem("productName"));
-        var categoryName = localStorage.getItem("categoryName");
-        if (categoryName) {
-          $("#categoryName").val(categoryName);
-          $('#selectCategory').text(categoryName); 
-
-          var selectElement = document.getElementById("categoryName");
-          var defaultOption = selectElement.querySelector("option[value='default']");
-          if (defaultOption) {
-            selectElement.removeChild(defaultOption);
-          }
-        }
-        $("#myMap").val(localStorage.getItem("tradePlace"));
-        $("#priceInput").val(localStorage.getItem("product_price"));
-        $("#ProductDescription").val(localStorage.getItem("ProductDescription"));
-        $("input[name=product_status][value=" + localStorage.getItem("productStatus") + "]").prop('checked', true);
-        $("input[name=trade_method][value=" + localStorage.getItem("trade_method") + "]").prop('checked', true);
-        loadTagsFromLocalStorage();
-      } else {
-          localStorage.removeItem("isTempSaved");  // '아니오'를 선택하면 플래그를 삭제합니다.
-          localStorage.clear();
-      }
-    }
-  }
-  $('#temporarySaveButton').click(askForTemporarySave);
-  showConfirmMessage();
-
-  $("#productName").keyup(() => {
-    localStorage.setItem("productName", $("#productName").val());
-  });
-
-  $("#categoryName").change(() => {
-    var categoryName = $("#categoryName").val();
-    localStorage.setItem("categoryName", categoryName);
-    $('#selectCategory').text(categoryName); 
-
-    var selectElement = document.getElementById("categoryName");
-    var defaultOption = selectElement.querySelector("option[value='default']");
-    if (defaultOption) {
-      selectElement.removeChild(defaultOption);
-    }
-  });
-
-  $("#myMap").change(() => {
-    localStorage.setItem("tradePlace", $("#myMap").val());
-  });
-
-  $("input[name=product_status]").change(() => {
-    localStorage.setItem("productStatus", $("input[name=product_status]:checked").val());
-  });
-
-  $("input[name=trade_method]").change(() => {
-    localStorage.setItem("trade_method", $("input[name=trade_method]:checked").val());
-  });
-
-  $("#priceInput").change(() => {
-    localStorage.setItem("product_price", $("#priceInput").val());
-  });
-
-  $("#ProductDescription").change(() => {
-    localStorage.setItem("ProductDescription", $("#ProductDescription").val());
-  });
-
-  $("#tagName").keypress(function(e) {
-    if (e.which == 13) {
-      $("#tagName2").click();
-      e.preventDefault();
-    }
-  });
-
-  $("#tagName2").click(() => {
-    var tagName = $("#tagName").val();
-    if (tagName) {
-      addTag(tagName);
-      $("#tagName").val("");
-      saveTagsToLocalStorage();
-    }
-  });
-
-  $(document).on("click", ".close-button", function() {
-    $(this).closest(".tag").remove();
-    $("#tagName").prop("disabled", false);
-    saveTagsToLocalStorage();
-  });
-});
-
-function saveTagsToLocalStorage() {
-  var tags = [];
-  $("#tagContainer .tag").each(function() {
-    tags.push($(this).text().substring(1));  // '#' 제거
-  });
-  localStorage.setItem("tag_names", JSON.stringify(tags));
-}
-
-function loadTagsFromLocalStorage() {
-  var tags = JSON.parse(localStorage.getItem("tag_names"));
-  if (tags) {
-    for (var i = 0; i < tags.length; i++) {
-      addTag(tags[i]);
-    }
-  }
-}
-
-function addTag(tagName) {
-  var tagElement = document.createElement("span");
-  tagElement.innerText = "#" + tagName;
-  tagElement.classList.add("tag");
-
-  var closeButton = document.createElement("button");
-  closeButton.innerText = "";
-  closeButton.classList.add("close-button");
-  tagElement.appendChild(closeButton);
-
-  var tagContainer = document.getElementById("tagContainer");
-  tagContainer.appendChild(tagElement);
-
-  if (tagContainer.querySelectorAll(".tag").length >= 4) {
-    document.getElementById("tagName").disabled = true;
-  }
-}
 		
 //이미지 파일 선택 시 실행되는 함수
 function handleImageUpload(event) {
@@ -905,16 +780,6 @@ function submitFiles(event) {
 	
 	  var form = document.querySelector('form');
 	  
-// 	  // 폼의 모든 필드가 채워졌는지 확인
-// 	  var formElements = form.elements;
-// 	  for (var i = 0; i < formElements.length; i++) {
-// 	    var element = formElements[i];
-// 	    if (element.name && element.value.trim() == '') {  // 필드가 비어있는 경우
-// 	      alert('모든 필드를 채워주세요.');
-// 	      return;  // 함수 실행 종료
-// 	    }
-// 	  }
-	  
 	  var formData = new FormData();
 	  
 	  // Form의 각 필드를 개별적으로 FormData에 추가
@@ -949,6 +814,43 @@ function submitFiles(event) {
 		    }
 		});
 	}
+	
+function ProductDelete(event) {
+	
+	var form = document.querySelector('form');
+	var formData = new FormData();
+	var formElements = form.elements;
+	  for (var i = 0; i < formElements.length; i++) {
+	    var element = formElements[i];
+	    if (element.name && element.name != 'product_image') {  // 'product_image' 필드 제외
+	      formData.append(element.name, element.value);
+	    }
+	  }
+
+	  for (var i = 0; i < selectedFiles.length; i++) {
+	    formData.append('product_image', selectedFiles[i]);
+	  }
+	
+	  $.ajax({
+		    url: 'ProductDelete',
+		    type: 'POST',
+		    data: formData,
+		    processData: false,
+		    contentType: false,
+		    success: function(data) {
+		        alert("성공");
+		        console.log('File upload successful!');
+		        location.href =  "ProductDetail?product_id=" + data;
+		    },
+		    error: function(jqXHR, textStatus, errorThrown) {
+		        // 파일 업로드에 실패했을 때 실행되는 코드
+		        alert('실패');
+		        console.log(jqXHR, textStatus, errorThrown);
+		    }
+		});
+	}
+	
+	
 
 // // 제출 버튼 클릭 시 서버로 모든 파일 전송
 // document.getElementById("submit").addEventListener("click", function() {
@@ -1319,9 +1221,9 @@ document.addEventListener("DOMContentLoaded", function() {
 				</div>
 				<hr>
    				<div id="save">
-					<button type="button" id="temporarySaveButton">임시저장</button>
+					<input type="button" id="temporarySaveButton" value="삭제" onclick="ProductDelete()">
 <!-- 					<input type="submit" id="buttonBox" value="상품등록"> -->
-					<input type="button" id="buttonBox" value="수정" onclick="submitFiles();">
+					<input type="button" id="buttonBox" value="수정" onclick="submitFiles()">
 				</div>
 			</form>
 		</div>

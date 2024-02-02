@@ -103,5 +103,15 @@ public class ProductService {
 		return mapper.updateProduct(map);
 	}
 
+	public List<Map<String, String>> selectSellerProductInfo(Map<String, String> sellerInfo) {
+		
+		return mapper.selectSellerProductInfo(sellerInfo);
+	}
+
+	public int selectSellerProductCount(String member_id) {
+		
+		return mapper.selectSellerProductCount(member_id);
+	}
+
 	
 }
