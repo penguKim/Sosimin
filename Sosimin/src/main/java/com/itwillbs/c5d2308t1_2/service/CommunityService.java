@@ -216,24 +216,26 @@ public class CommunityService {
 	// 임시저장 사진 삭제 ajax 처리
 	@Transactional
 	public int removeTempImage(CommunityVO com, HttpSession session) {
+//	public int removeTempImage(String imageNum, String sId, HttpSession session) {
 		
 		int count = 0;
 		
-		int index = 0;
+		int index = com.getCommunity_readcount();
+		System.out.println("삭제하려는 인덱스는 : " + index);
 		
 		// 삭제하려는 파일 지정
-		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
-		mFiles.add(com.getFile1());
-		mFiles.add(com.getFile2());
-		mFiles.add(com.getFile3());
-		mFiles.add(com.getFile4());
-		mFiles.add(com.getFile5());
-		
-		for(MultipartFile file : mFiles) {
-			if(file != null) {
-				index = Integer.parseInt(file.getName().substring(4));
-			}
-		}
+//		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
+//		mFiles.add(com.getFile1());
+//		mFiles.add(com.getFile2());
+//		mFiles.add(com.getFile3());
+//		mFiles.add(com.getFile4());
+//		mFiles.add(com.getFile5());
+//		
+//		for(MultipartFile file : mFiles) {
+//			if(file != null) {
+//				index = Integer.parseInt(file.getName().substring(4));
+//			}
+//		}
 		
 		// 임시저장한 게시글 조회
 		Map<String, Object> map = mapper.selectTempCommunity(com);
@@ -323,6 +325,7 @@ public class CommunityService {
 		
 		return mapper.moveCommunityImage(map);
 	}
+
 
 
 }

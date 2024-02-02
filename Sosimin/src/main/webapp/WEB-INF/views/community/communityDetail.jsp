@@ -75,9 +75,25 @@
     				if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
 						$(".heart").addClass("is-active");
     					$(".likeCount").text(result.likeCount);
+        				Swal.fire({
+        					position: 'center',
+        					icon: 'success',
+        					title: '게시글을 추천했습니다.',
+        					showConfirmButton: false,
+        					timer: 2000,
+        					toast: true
+        				});
     				} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
 						$(".heart").removeClass("is-active");
     					$(".likeCount").text(result.likeCount);
+        				Swal.fire({
+        					position: 'center',
+        					icon: 'success',
+        					title: '게시글 추천을 삭제했습니다.',
+        					showConfirmButton: false,
+        					timer: 2000,
+        					toast: true
+        				});
     				}
     			},
     			error: function(xhr, textStatus, errorThrown) {
@@ -134,7 +150,7 @@
 	        // 글자수 제한
 	        if (text.length > 100) {
 	        	// 제한수 넘으면 자르기
-	            $(this).val($(this).val().substring(0, 100));
+	            $(this).val($(this).val().substring(0, 99));
 	            
 				Swal.fire({
 					position: 'center',
@@ -287,16 +303,16 @@
 				+ '<input type="hidden" name="reply_re_lev" value="' + reply_re_lev + '">'
 				+ '<input type="hidden" name="reply_re_seq" value="' + reply_re_seq + '">'
 				+ '<textarea class="form-control" id="reReplyTextarea" name="reply_content" required onkeyup="reReplyCheck()"></textarea>'
-				+ '<input type="submit" class="btn btn-primary" value="댓글쓰기" id="reReplySubmit" onclick="reReplyWrite()">'
+				+ '<input type="submit" class="btn btn-primary" value="댓글쓰기" id="reReplySubmit" onclick="reReplyWrite(this)">'
 				+ '</form>'
-				+ '<label id="reReLenth" for="reReplyTextarea" style="color: #888;">(0/40)자까지 입력이 가능합니다.</label>'
+				+ '<label id="reReLenth" for="reReplyTextarea" style="color: #888;">(0/100)자까지 입력이 가능합니다.</label>'
 				+ '</div>'
 				+ '</div>'
 		);
 	}
 	
 	// 대댓글 글자수 제한
-	function reReplyCheck() {
+	function reReplyCheck(reReply) {
         var text = $("#reReplyTextarea").val();
         
         // 텍스트 제한
@@ -309,7 +325,7 @@
         // 글자수 제한
         if (text.length > 100) {
         	// 제한수 넘으면 자르기
-            $(this).val($(this).val().substring(0, 100));
+            $("#reReplyTextarea").val(text.substring(0, 99));
             
 			Swal.fire({
 				position: 'center',
@@ -550,7 +566,7 @@
 										</div>							
 										<div class="row">
 											<c:choose>
-												<c:when test="${sessionScope.sId eq '' }">
+												<c:when test="${empty sessionScope.sId or sessionScope.sId ne reply.reply_writer and sessionScope.sId ne 'admin' }">
 													<span class="text-end">
 														<i class="reportBtn fa fa-warning" style="font-size:18px"></i>
 													</span>

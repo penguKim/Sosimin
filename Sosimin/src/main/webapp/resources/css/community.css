@@ -199,6 +199,7 @@
 
 /* 신고 버튼 */
 .reportBtn {
+	color: #888;
 	cursor: pointer;
 	transition: 0.5s;
 }

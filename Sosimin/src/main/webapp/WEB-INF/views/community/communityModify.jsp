@@ -117,60 +117,27 @@
 	}
 	
 	
-	// ---- 이미지 파일 처리
-	var formData = new FormData();
-	// 폼데이터에 없는 파일 인덱스 판별
-// 	function clickFile() {
-// 		var fileCount = 0; // 업로드 횟수 카운트
-		
-// 		for(var i = 1; i <= 5; i++) { // 파일이 업로드되었으면 카운트 추가
-// 			if(formData.get('file' + i)) {
-// 				fileCount++;
-// 			}
-// 		}
-		
-// 		// 카운트가 5이상일 경우 리턴
-// 		if(fileCount >= 5) {
-// 			Swal.fire({
-// 				position: 'center',
-// 				icon: 'error',
-// 				title: '최대 5장만 등록가능합니다.',
-// 				showConfirmButton: false,
-// 				timer: 2000,
-// 				toast: true
-// 			});
-// 			$("#fileArea i").css("color", "red");
-// 			return;
-// 		}
-		
-// 		// 업로드가 안된 input 클릭
-// 	    for (var i = 1; i <= 5; i++) {
-// 	        if (!formData.get('file' + i)) {
-// 	            $('#file' + i).click();
-// 	            break;
-// 	        }
-// 	    }
-// 	}
-	
-	function clickFile() {
-    var existCount = $('.thumbnail').length;  // 이미 존재하는 썸네일 수
-    var uploadableCount = 5 - existCount;  // 업로드 가능한 이미지 수
 
-    if (uploadableCount <= 0) {
-		Swal.fire({
-			position: 'center',
-			icon: 'error',
-			title: '최대 5장만 등록가능합니다.',
-			showConfirmButton: false,
-			timer: 2000,
-			toast: true
-		});
-		$("#fileArea i").css("color", "red");
-        return false;
-    } else {
-        $("#file" + (existCount + 1)).click();
-    }
-}
+	// 5장의 이미지 판별
+	function clickFile() {
+	    var existCount = $('.thumbnail').length;  // 이미 존재하는 썸네일 수
+	    var uploadableCount = 5 - existCount;  // 업로드 가능한 이미지 수
+	
+	    if (uploadableCount <= 0) {
+			Swal.fire({
+				position: 'center',
+				icon: 'error',
+				title: '최대 5장만 등록가능합니다.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+			$("#fileArea i").css("color", "red");
+	        return false;
+	    } else {
+	        $("#file" + (existCount + 1)).click();
+	    }
+	}
 	
 	// 파일 업로드하여 썸네일 생성
 	function showThumbnail(input) {
@@ -189,43 +156,39 @@
 					timer: 2000,
 					toast: true
 				});
-// 	    		$(input).val(""); // 해당 input태그의 파일 삭제
 				$(input).replaceWith($(input).clone(true)); // clone()으로 복제후 replaceWith()로 교체
 	    		return;
 	    	}
-	    	 
+	    	
+	    	var reader = new FileReader();
 	        var fileId = input.id; // input의 id 요소
-            formData.append(fileId, input.files[0]); // input의 아이디명으로 formdata 객체에 추가
             
 			var data = new FormData();
 			data.append(fileId, input.files[0]);
 	        console.log("파일아이디 알려줘 ㅣ " + fileId);
 	        
-            $.ajax({
-    			type: "POST",
-    			url: "ImageUpload",
-    			enctype: 'multipart/form-data',
-    			data: data,
-    			<%-- multipart/form-data로 전송 --%>
-    			contentType: false, 
-    			<%-- formData가 String이 되지않음 --%>
-    			processData: false, 
-    			success: function(result) {
-    				if(result != 'false') {
-	   	 	            var thumbnail = $(
-  	 	            		'<div class="thumbnail col-auto mx-2 pt-3 px-1">').html(
-  	 	            				'<div class="imageArea ' + fileId + ' position-relative">'
-  	 	            			   +'	<img class="border rounded-3" src="${pageContext.request.contextPath}/resources/upload/' 
-  	 	            			  		 + result + '" style=\"width: 80px; height: 80px;\">'
+			reader.onload = function (e) {
+ 	            var thumbnail = $(
+	 	            		'<div class="thumbnail col-auto mx-2 pt-3 px-1">').html(
+ 	 	            				'<div class="imageArea ' + fileId + ' position-relative">'
+  	 	            			   +'	<img class="border rounded-3" src="' 
+  	 	            			  		 + e.target.result + '" style=\"width: 80px; height: 80px;\">'
   	 	            			   +'	<i class="delBtn material-icons position-absolute translate-middle"'
-  	 	            			   +"onclick='removeThumbnail(this, \"" + fileId + "\", \"\")'>cancel</i>"
+  	 	            			   +"onclick='removeThumbnail(this, \"" + fileId + "\", \"false\" )'>cancel</i>"
 	 	            			   +'</div>'
   	 	            			   );
-	   	 	            $('#thumbnailArea > div').append(thumbnail);
-    				}
-    				$(this).blur();
-    			}
-    		});
+  	 	        thumbnail.find('i').click(function() { // thumnail 안의 i 태그에 클릭 이벤트 추가
+	   	 	    removeThumbnail($(this).parent(), fileId); // imageArea 요소, fileId를 지정
+		   	 	});
+		   	 	$('#thumbnailArea > div').append(thumbnail);
+   						
+   			}
+			
+			reader.readAsDataURL(input.files[0]);
+  					
+  			$(".scrolling-wrapper").scrollLeft($(".scrolling-wrapper").width());
+  			$(this).blur();
+	            
 	    }
 	}
 	
@@ -234,113 +197,102 @@
         console.log("파일아이디 알려줘 ㅣ " + fileId);
         console.log("파일아이디 숫자만 알려줘 ㅣ " + fileId.substring(4));
         
-        if(path == "") {
-	        
-			var data = new FormData();
-			data.append(fileId, $("#" + fileId)[0].files[0]);
-	        
-	        $.ajax({
-				type: "POST",
-				url: "ImageDelete",
-				enctype: 'multipart/form-data',
-				data: data,
-				contentType: false, // multipart/form-data로 전송
-				processData: false, // formData가 String이 되지않음
-				success: function(result) {
-					console.log(result);
-					if(result != 'false') {
-					    var imageArea = $(del).parent(); // x버튼의 부모인 imageArea 클래스 지정
-					    var thumbnail = imageArea.parent(); // imageArea의 부모인 thumnail 클래스 지정
-						
-					    formData.delete(fileId); // key가 fileId인 값을 formdata에서 제거
-					    $("#" + fileId).replaceWith($("#" + fileId).clone(true)); // input 태그에서 제거
-					    // 파일 입력 필드의 값을 조정합니다.
-					    var nextFileId = Number(fileId.replace('file', '')) + 1; // 삭제 파일Id의 인덱스 + 1
-					    while (formData.get('file' + nextFileId)) { // 다음 인덱스부터 마지막까지 반복
-					        // 삭제된 순번의 자리에 다음 순번 파일을 넣기
-					        formData.set('file' + (nextFileId - 1), formData.get('file' + nextFileId));
-					        // 다음 순번의 파일 함수 파라미터로 fileId값 1빼기
-					        $(".file" + nextFileId + " i").attr("onclick", "removeThumbnail(this, 'file" + (nextFileId - 1) + "')");
-					        // 다음 순번의 파일 영역 클래스로 1빼기
-					        $(".file" + nextFileId).addClass('file' + (nextFileId - 1)).removeClass("file" + nextFileId);
-					        nextFileId++;
-					    }
-					    formData.delete('file' + (nextFileId - 1)); // 마지막 파일 제거
-					    // 인풋 태그의 파일 제거(동일 파일 제거 후 재업로드시 onchange를 위함)
-	// 				    $("#" + fileId).val('');
-					    $("#file" + (nextFileId - 1)).replaceWith($("#file" + (nextFileId - 1)).clone(true));
-					    
-					    thumbnail.remove(); // 썸네일 영역 삭제
-					    $("#fileArea i").css("color", ""); // 업로드 아이콘 정상 색상
-					}
+   	    var imageArea = $(del).parent(); // x버튼의 부모인 imageArea 클래스 지정
+   	    var thumbnail = imageArea.parent(); // imageArea의 부모인 thumnail 클래스 지정
+		var currentFileIndex = Number(fileId.replace('file', ''));
+		var nextFileIndex = currentFileIndex + 1; 
+		var newIdAndName;
+		if(path == "false") {
+			while ($("#file" + nextFileIndex).length) { 
+				// id 및 name 변경
+				var nextFile = $("#file" + nextFileIndex);
+				let src = $(".file" + nextFileIndex + " img").attr("src");
+				console.log(src);
+				if(src.startsWith("data:image/")) {
+					$(".file" + nextFileIndex + " i").attr("onclick", "removeThumbnail(this, 'file" + currentFileIndex + "', 'false')");
+				} else {
+					$(".file" + nextFileIndex + " i").attr("onclick", "removeThumbnail(this, 'file" + currentFileIndex + "')");
 				}
-			});
-        	
-        } else {
-        	console.log("파일의 경로는? : " + path);
-        	
-        	$.ajax({
-                type: "POST",
-                url: "CommunityImageDelete",
-                data: {
-                	community_id: ${param.community_id},
-                	['community_image' + fileId.substring(4)]: path 
-               	},
-                success: function(result) {
-                	console.log(result);
-//                     $('#' + fileId).val('');
-                    $('.' + fileId).parent().remove();
-                    $("#fileArea i").css("color", ""); // 업로드 아이콘 정상 색상
-                }
-            });
-        }
-        
+				$(".file" + nextFileIndex).addClass('file' + currentFileIndex).removeClass("file" + nextFileIndex);
+				                
+				newIdAndName = 'file' + currentFileIndex;
+				nextFile.attr({"id": newIdAndName, "name": newIdAndName});
+				
+				currentFileIndex++;
+				nextFileIndex++;
+			}
+			
+			let thisIndex = Number(fileId.replace('file', ''));
+			
+			// 인풋 태그의 파일 제거(동일 파일 제거 후 재업로드시 onchange를 위함)
+			var oldFileInput = $("#file" + thisIndex);
+			var newFileInput = oldFileInput.clone(true);
+			oldFileInput.replaceWith(newFileInput);
+			newFileInput.attr({"id": 'file5', "name": 'file5'});
+
+			thumbnail.remove(); // 썸네일 영역 삭제
+			$("#fileArea i").css("color", ""); // 업로드 아이콘 정상 색상
+           	
+		} else {
+			console.log("파일의 경로는? : " + path);
+			Swal.fire({
+				title: '사진을 삭제하시겠습니까?',
+				text: "삭제한 사진은 복구하지 못합니다.",
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#d33',
+				cancelButtonColor: '#6c757d',
+				confirmButtonText: '삭제',
+				cancelButtonText: '취소',
+				reverseButtons: true,
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						type: "POST",
+						url: "CommunityImageDelete",
+						data: {
+							community_id: ${param.community_id},
+							['community_image' + fileId.substring(4)]: path 
+						},
+						success: function(result) {
+							console.log(result);
+				        	
+							while ($("#file" + nextFileIndex).length) { 
+								// id 및 name 변경
+								var nextFile = $("#file" + nextFileIndex);
+								let src = $(".file" + nextFileIndex + " img").attr("src");
+								console.log(src);
+								if(src.startsWith("data:image/")) {
+									$(".file" + nextFileIndex + " i").attr("onclick", "removeThumbnail(this, 'file" + currentFileIndex + "', 'false')");
+								} else {
+									$(".file" + nextFileIndex).addClass('file' + currentFileIndex).removeClass("file" + nextFileIndex);
+								}
+								                
+								newIdAndName = 'file' + currentFileIndex;
+								nextFile.attr({"id": newIdAndName, "name": newIdAndName});
+								
+								currentFileIndex++;
+								nextFileIndex++;
+							}
+				             
+							let thisIndex = Number(fileId.replace('file', ''));
+				
+							// 인풋 태그의 파일 제거(동일 파일 제거 후 재업로드시 onchange를 위함)
+							var oldFileInput = $("#file" + thisIndex);
+							var newFileInput = oldFileInput.clone(true);
+							oldFileInput.replaceWith(newFileInput);
+							newFileInput.attr({"id": 'file5', "name": 'file5'});
+					   
+							thumbnail.remove(); // 썸네일 영역 삭제
+							$("#fileArea i").css("color", ""); // 업로드 아이콘 정상 색상
+						}
+					}); // ajax
+				} else {
+					$(this).blur();
+				}
+			}); // alert 콜백
+		} // path 판별
 	}
-	
-// 	function removeThumbnail(del, fileId) {
-//         console.log("파일아이디 알려줘 ㅣ " + fileId);
-// 		var data = new FormData();
-// 		data.append(fileId, $("#" + fileId)[0].files[0]);
-        
-//         $.ajax({
-// 			type: "POST",
-// 			url: "ImageDelete",
-// 			enctype: 'multipart/form-data',
-// 			data: data,
-			<%-- multipart/form-data로 전송 --%>
-// 			contentType: false, 
-			<%-- formData가 String이 되지않음 --%>
-// 			processData: false, 
-// 			success: function(result) {
-// 				console.log(result);
-// 				if(result != 'false') {
-// 				    var imageArea = $(del).parent(); // x버튼의 부모인 imageArea 클래스 지정
-// 				    var thumbnail = imageArea.parent(); // imageArea의 부모인 thumnail 클래스 지정
-					
-// 				    formData.delete(fileId); // key가 fileId인 값을 formdata에서 제거
-// 				    $("#" + fileId).replaceWith($("#" + fileId).clone(true)); // input 태그에서 제거
-// 				    // 파일 입력 필드의 값을 조정합니다.
-// 				    var nextFileId = Number(fileId.replace('file', '')) + 1; // 삭제 파일Id의 인덱스 + 1
-// 				    while (formData.get('file' + nextFileId)) { // 다음 인덱스부터 마지막까지 반복
-// 				        // 삭제된 순번의 자리에 다음 순번 파일을 넣기
-// 				        formData.set('file' + (nextFileId - 1), formData.get('file' + nextFileId));
-// 				        // 다음 순번의 파일 함수 파라미터로 fileId값 1빼기
-// 				        $(".file" + nextFileId + " i").attr("onclick", "removeThumbnail(this, 'file" + (nextFileId - 1) + "')");
-// 				        // 다음 순번의 파일 영역 클래스로 1빼기
-// 				        $(".file" + nextFileId).addClass('file' + (nextFileId - 1)).removeClass("file" + nextFileId);
-// 				        nextFileId++;
-// 				    }
-// 				    formData.delete('file' + (nextFileId - 1)); // 마지막 파일 제거
-// 				    // 인풋 태그의 파일 제거(동일 파일 제거 후 재업로드시 onchange를 위함)
-// // 				    $("#" + fileId).val('');
-// 				    $("#file" + (nextFileId - 1)).replaceWith($("#file" + (nextFileId - 1)).clone(true));
-				    
-// 				    thumbnail.remove(); // 썸네일 영역 삭제
-// 				    $("#fileArea i").css("color", ""); // 업로드 아이콘 정상 색상
-// 				}
-// 			}
-// 		});
-// 	}
 	// ---- 이미지 파일 처리 ----
 	
 </script>
@@ -394,7 +346,7 @@
 		<div class="container">
 			<h1>게시글 수정</h1>
 			<form action="CommunityModifyPro" name="modifyForm" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
-				<div class="communityForm post p-4 w-50 mx-auto">
+				<div class="communityForm post p-4 mx-auto" style="width: 65%;">
 				    <div class="post-header border-bottom">
 				    	<div class="row">
 				    	<div class="col-xl-4 col-md-6 col-sm-6 col-6">
@@ -472,7 +424,7 @@
 						</div>
 				    </div>
 				</div>
-				<div class="mx-auto w-50 mt-2 row d-flex justify-content-between" id="commandCell">
+				<div class="mx-auto mt-2 row d-flex justify-content-between" id="commandCell" style="width: 65%;">
 					<input type="button" class="btn btn-secondary col-xl-2 col-md-3 col-12 me-2" value="돌아가기" onclick="history.back()">
 					<input type="submit" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" id="modifyBtn" value="수정하기">
 				</div>
