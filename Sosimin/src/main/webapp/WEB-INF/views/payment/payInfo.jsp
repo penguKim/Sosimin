@@ -317,10 +317,10 @@ function load_list(pay_history_type, start_date, end_date) {
 						subject = "페이환급";
 					} else if(history.pay_history_type == "3") {
 						pay_history_type = "사용";
-						subject = '<a href="#">' + history.order_id + ' ></a>';
+						subject = '<a href="ProductDetail?product_id=' + history.product_id +'">' + history.product_name + '</a><i class="fa fa-angle-right"></i>';
 					} else if(history.pay_history_type == "4") {
 						pay_history_type = "수익";
-						subject = '<a href="#">' + history.order_id + ' ></a>';
+						subject = '<a href="ProductDetail?product_id=' + history.product_id +'">' + history.product_name + ' </a>';
 					}
 					
 					let pay_amount = history.pay_amount.toLocaleString();
@@ -331,8 +331,10 @@ function load_list(pay_history_type, start_date, end_date) {
 	  				        +     '<div class="col-lg-2 col-md-2 col-12">'
 	  				        +         '<h5 class="pay_date">' + date + '</h5>'
 	  				        +     '</div>'
-	  				        +     '<div class="col-lg-7 col-md-7 col-12">'
-	  				        +         '<h5 class="product-name">' + subject + '</h5>'
+	  				        +     '<div class="col-lg-7 col-md-7 col-12 subject-area">'
+	  				        +         '<h5 class="product-name">' 
+	  				        + 				subject 
+	  				        +		  '</h5>'
 	  				        +         '<p class="pay-info-sub">'
 	  				        +        		time + ' | '
 	  				        +               pay_history_type
@@ -399,7 +401,7 @@ function select_date() {
 function payment() {
 	// 채팅방에서 produtct_id 들고오기
 	// 지금은 임의로 128번 상품 들고와서 작업
-	location.href="Payment?product_id=274";
+	location.href="Payment?product_id=303";
 }
 
 

@@ -116,7 +116,7 @@ function MemberAccountDetail(pay_id) {
 											</td>
 											<td class="green">
 												<button type="button" class="btn btn-primary" onclick="MemberAccountDetail('${pay_list.pay_id}')">
-													상세보기
+													내역보기
 												</button>
 											</td>
 										</tr>

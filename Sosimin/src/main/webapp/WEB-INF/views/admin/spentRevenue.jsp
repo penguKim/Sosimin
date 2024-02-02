@@ -80,8 +80,10 @@
 								<thead>
 									<tr>
 										<th>페이내역번호</th>
+										<th>페이번호</th>
 										<th>회원아이디</th>
 										<th>거래유형</th>
+										<th>거래번호</th>
 										<th>거래금액</th>
 										<th>거래일</th>
 										<th>상세보기</th>
@@ -91,13 +93,20 @@
 									<c:forEach var="pay_list" items="${payHistoryList}">
 										<tr>
 											<td>${pay_list.pay_history_id}</td>
-											<td>${pay_list.member_id}</td>
+											<td>${pay_list.pay_id}</td>
+											<td>
+												<c:choose>
+													<c:when test="${pay_list.pay_history_type eq '3'}">${pay_list.product_buyer}</c:when>
+													<c:when test="${pay_list.pay_history_type eq '4'}">${pay_list.product_seller}</c:when>
+												</c:choose>
+											</td>
 											<td>
 												<c:choose>
 													<c:when test="${pay_list.pay_history_type eq '3'}">사용</c:when>
 													<c:when test="${pay_list.pay_history_type eq '4'}">수익</c:when>
 												</c:choose>
 											</td>
+											<td>${pay_list.order_id}</td>
 											<td>
 												<c:set var="payAmount" value="${pay_list.pay_amount}" />
 												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
@@ -109,77 +118,8 @@
 											</td>
 											<td class="green">
 												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${pay_list.pay_history_id}">
-													상세보기
+													거래보기
 												</button>
-												<!-- Basic Modal -->
-												<div class="modal fade" id="modal-${pay_list.pay_history_id}" tabindex="-1">
-													<div class="modal-dialog">
-														<div class="modal-content">
-															<div class="modal-header">
-																<h5 class="modal-title">사용/수익 상세보기</h5><!-- 모달 제목 -->
-																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-															</div>
-															<div class="modal-body">
-																<!-- 모달 내용이 들어가는 부분 -->
-																<table class="table modal_table">
-																	<tr>
-																		<th scope="row">페이내역번호</th>
-																		<td>${pay_list.pay_history_id}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">pay번호</th>
-																		<td>${pay_list.pay_id}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">회원아이디</th>
-																		<td>${pay_list.member_id}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">거래유형</th>
-																		<td>
-																			<c:choose>
-																				<c:when test="${pay_list.pay_history_type eq '3'}">사용</c:when>
-																				<c:when test="${pay_list.pay_history_type eq '4'}">수익</c:when>
-																			</c:choose>
-																		</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">거래번호</th>
-																		<td>${pay_list.order_id}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">거래금액</th>
-																		<td>
-																			<c:set var="payAmount" value="${pay_list.pay_amount}" />
-																			<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
-																		</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">소심페이잔액</th>
-																		<td>
-																			<c:set var="payBalance" value="${pay_list.pay_history_balance}" />
-																			<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원
-																		</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">거래일</th>
-																		<td>
-																			<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
-																			<c:set var="date" value="${datetime[0]}" />
-																			${date}
-																		</td>
-																	</tr>
-																</table>
-															</div>
-															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">뒤로가기</button>
-																<button type="button" class="btn btn-primary">거래보기</button>
-																<!-- 클릭하면 거래번호를 검색하여 해당 거래 조회 -->
-															</div>
-														</div>
-													</div>
-												</div>
-												<!-- End Basic Modal-->
 											</td>
 										</tr>
 									</c:forEach>

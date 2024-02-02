@@ -89,30 +89,16 @@ $(function() {
 		});
 		
 		let regPw = /^\d{6}$/; // 6자리의 숫자를 표현한 정규표현식
-		
-		// 단순 결제와 충전+결제 구분
-		let title = ""; // 타이틀을 저장할 변수 선언
-		let text = "";
-		let confirmButtonText = "";
-		if($('#pay-amount').val() == "" || $('#pay-amount').val() == "0") {
-			title = "결제하시겠습니까?"
-			text = "확인을 누르시면 결제가 완료됩니다";
-			confirmButtonText = "결제";
-		} else {
-			title = "소심페이를 충전하고<br>결제하시겠습니까?"		
-			text = "등록된 계좌에서 출금 후 결제됩니다.";
-			confirmButtonText = "충전 및 결제";
-		}
 			
 		event.preventDefault();
 		Swal.fire({
-	        title: title,
-	        text: text,
+	        title: "결제하시겠습니까?",
+	        text: "확인을 누르시면 결제가 완료됩니다.",
 	        icon: 'question',
 	        showCancelButton: true,
 	        confirmButtonColor: '#39d274',
 	        cancelButtonColor: '#d33',
-	        confirmButtonText: confirmButtonText,
+	        confirmButtonText: "결제",
 	        cancelButtonText: '취소',
 	        reverseButtons: true,
 	    }).then((result) => {
@@ -140,7 +126,7 @@ $(function() {
 						toast: true
 					});
 				} else {
-					$("#pay-charge").submit();
+					$("#pay-use").submit();
 				}
 	        } else {
 	        	$('#password-modal').modal('hide'); // 모달창 닫기
@@ -153,9 +139,20 @@ $(function() {
 // 모달 창을 열 때
 function openModal() {
 	event.preventDefault(); 
-	
-    $('#password-modal').modal('show');
-   	$('#pay-password').val(''); // 입력 필드를 초기 값으로 설정
+	if($('#pay-amount').val() == null || $('#pay-amount').val() == 0) {
+		Swal.fire({
+			position: 'center',
+			icon: 'error',
+			title: '금액을 입력해주세요.',
+			showConfirmButton: false,
+			timer: 2000,
+			toast: true
+		});
+		$('#pay-amount').focus();
+	} else {
+	    $('#password-modal').modal('show');
+    	$('#pay-password').val(''); // 입력 필드를 초기 값으로 설정
+	}
 } 
 </script>
 </head>
@@ -195,14 +192,14 @@ function openModal() {
     <!-- End Breadcrumbs -->
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
-	<form action="PayUsePro" method="post" id="pay-use">	
+	<form action="PaymentPro" method="post" id="pay-use">	
 		<div class="account-login section">
 	        <div class="container">
 	            <div class="row">
 	                <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
 	                    <div class="card login-form pay-card">
 	                        <div class="card-body">
-	                            <div class="title paytitle">
+	                            <div class="title paytitle" id="payment-title">
 	                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
 	                                <h3 class="pay-name">
 	                                	<a href="PayInfo">
@@ -211,27 +208,37 @@ function openModal() {
 	                                	</a>
 	                                </h3>
 	                            </div>
-	                           	<div class="msg">거래 정보 확인</div>
+	                           	<div class="msg">상품 정보</div>
 	                           	<div class="account-info">    
 		                           	<div class="row">
-					                	<div class="col-lg-3 col-md-3 col-12" style="text-align: center;">
-					                    	${productInfo.product_image1} <!-- 썸네일 뿌리기 -->
+					                	<div class="col-lg-3 col-md-3 col-12 product-img">
+					                		<img src="${pageContext.request.contextPath}/resources/upload/${productInfo.product_image1}">
 					                	</div>
 					                	<div class="col-lg-9 col-md-9 col-12">
-					      					<p class="product-info row"><span class="name_span col-4">판&nbsp;&nbsp;&nbsp;매&nbsp;&nbsp;&nbsp;자 :</span> <span class="value_span col-8">${productInfo.member_id}</span></p>
-				                           	<p class="product-info row"><span class="name_span col-4">상&nbsp;&nbsp;&nbsp;품&nbsp;&nbsp;&nbsp;명 :</span> <span class="value_span col-8">${productInfo.product_name}</span></p>
-				                           	<p class="product-info row"><span class="name_span col-4">가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;격 :</span> 
-				                           		<span class="value_span col-8">
+					      					<p class="product-info row">
+					      						<span class="name_span col-lg-4 col-md-4 col-12">판 매 자</span> 
+					      						<span class="value_span col-lg-8 col-md-8 col-12">:&nbsp;&nbsp;${productInfo.member_id}</span>
+					      					</p>
+				                           	<p class="product-info row">
+				                           		<span class="name_span col-lg-4 col-md-4 col-12">상 품 명</span>
+												<span class="value_span col-lg-8 col-md-8 col-12">:&nbsp;&nbsp;${productInfo.product_name}</span>
+											</p>
+				                           	<p class="product-info row">
+				                           		<span class="name_span col-lg-4 col-md-4 col-12">가 격</span> 
+				                           		<span class="value_span col-lg-8 col-md-8 col-12">:&nbsp;&nbsp;
 				                           			<c:set var="product_price" value="${productInfo.product_price}" />
 													<fmt:formatNumber value="${product_price}" pattern="#,##0" />원
 												</span>
 				                           	</p>
-				                           	<p class="product-info row"><span class="name_span col-4">거래방법 :</span> 
-				                           		<span class="value_span col-8">
+				                           	<p class="product-info row">
+				                           		<span class="name_span col-lg-4 col-md-4 col-12">거 래 방 법</span> 
+				                           		<span class="value_span col-lg-8 col-md-8 col-12">:&nbsp;&nbsp;
 				                           			<c:if test="${productInfo.trade_method eq 0}">대면거래</c:if>
 				                           			<c:if test="${productInfo.trade_method eq 1}">소심거래</c:if>
 				                           		</span>
 				                           	</p>
+				                           	<input type="hidden" value="${productInfo.product_id}" name="product_id">
+				                           	<input type="hidden" value="${productInfo.product_price}" name="product_price">
 					                   	</div>
 					                 </div>
 		                        </div>
@@ -257,9 +264,9 @@ function openModal() {
 	                            </div>
 	                            <br>
 	                            <div class="form-group input-group">
-	                                <label for="pay-amount">충전금액</label>
-	                                <input class="form-control" type="text" id="pay-amount" name="pay_amount"
-	                                	placeholder="충전을 원하시는 금액을 입력해주세요">
+	                                <label for="pay-amount">결제금액</label>
+	                                <input class="form-control" type="text" id="pay-amount" name="order_amount"
+	                                	value="${productInfo.product_price}">
 	                            </div>
 	                            <div class="btn-group">
 							        <input type="button" class="btn-check" id="btn-check1" value="10000" autocomplete="off">
@@ -271,7 +278,9 @@ function openModal() {
 							        <input type="button" class="btn-check" id="btn-check4" value="100000" autocomplete="off">
 								    <label class="btn btn-outline-primary" for="btn-check4">+10만원</label>
 								</div>
-	                            <div class="msg">출금 계좌 확인</div>
+								<hr>
+								<p class="info-msg">페이 잔액이 부족하면 다음 계좌에서 출금이 진행됩니다.</p>
+								<br>
 	                            <!-- 계좌리스트 한 줄 시작 -->
 	                            <div class="account-info">    
 				                    <div class="row">
@@ -318,7 +327,7 @@ function openModal() {
 	                        <div class="col-sm-12">
 	                            <div class="form-group">
 	                                <label for="pay-password">비밀번호</label>
-	                              	<input class="form-control" type="password" id="pay-password" name="pay_password"
+	                              	<input class="form-control" type="password" id="pay-password"
 	                                	placeholder="6자리 숫자를 입력해주세요" maxlength="6">
 	                            </div>
 	                        </div>

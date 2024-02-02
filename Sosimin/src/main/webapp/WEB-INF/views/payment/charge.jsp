@@ -278,7 +278,7 @@ function openModal() {
 	                        <div class="col-sm-12">
 	                            <div class="form-group">
 	                                <label for="pay-password">비밀번호</label>
-	                              	<input class="form-control" type="password" id="pay-password" name="pay_password"
+	                              	<input class="form-control" type="password" id="pay-password"
 	                                	placeholder="6자리 숫자를 입력해주세요" maxlength="6">
 	                            </div>
 	                        </div>

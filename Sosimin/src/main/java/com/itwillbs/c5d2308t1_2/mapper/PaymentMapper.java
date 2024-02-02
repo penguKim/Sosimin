@@ -49,8 +49,14 @@ public interface PaymentMapper {
 	int selectTranId(Map<String, Object> map);
 	
 	// 구매하려는 상품 정보 조회
-	Map<String, Object> selectProductInfo(Map<String, String> map);
+	Map<String, Object> selectProductInfo(Map<String, Object> map);
 
+	// 페이 사용/수익 내역
+	void insertOrderHistory(Map<String, Object> map);
+	
+	// 상품 구매 기록 요청
+	int insertOrder(Map<String, Object> map);
+	
 	// ====================== 관리자페이지 ==================
 	
 	// 페이 가입 내역 불러오기
@@ -64,6 +70,10 @@ public interface PaymentMapper {
 
 	// 페이 사용 내역 불러오기(사용/수익)
 	List<Map<String, Object>> selectPaySpentRevenue();
+
+	List<Map<String, Object>> selectOrderList();
+
+
 
 
 

@@ -83,8 +83,21 @@
 	
 	<!-- 페이 내역 불러오기 -->
 	<select id="selectPayHistory" resultType="map">
+<!-- 		SELECT * -->
+<!-- 		FROM PayHistory -->
+<!-- 		WHERE pay_id = #{pay_id} -->
+<!-- 		<if test="pay_history_type != null and !pay_history_type.equals('')"> -->
+<!-- 			AND pay_history_type = #{pay_history_type} -->
+<!-- 		</if> -->
+<!-- 		<if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')"> -->
+<!-- 			AND DATE(pay_history_date) BETWEEN #{start_date} AND #{end_date} -->
+<!-- 		</if> -->
+<!-- 		ORDER BY pay_history_date DESC -->
+<!-- 		<if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')"> -->
+<!-- 			LIMIT #{startRow}, #{listLimit} -->
+<!-- 		</if> -->
 		SELECT *
-		FROM PayHistory
+		FROM PayHistoryList
 		WHERE pay_id = #{pay_id}
 		<if test="pay_history_type != null and !pay_history_type.equals('')">
 			AND pay_history_type = #{pay_history_type}
@@ -122,6 +135,12 @@
 			<when test="pay_history_type == 2">
 				pay_balance = pay_balance - CAST(#{tran_amt} AS SIGNED)
 			</when>
+			<when test="pay_history_type == 3">
+				pay_balance = pay_balance - CAST(#{order_amount} AS SIGNED)
+			</when>
+			<when test="pay_history_type == 4">
+				pay_balance = pay_balance + CAST(#{order_amount} AS SIGNED)
+			</when>
 			<otherwise>
 				pay_balance = pay_balance
 			</otherwise>
@@ -129,7 +148,7 @@
 		WHERE fintech_use_num = #{fintech_use_num}	
 	</update>
 	
-	<!-- 페이 이용 내역 -->
+	<!-- 페이 충전/환급 내역 -->
 	<insert id="insertPayHistory">
 		<selectKey keyProperty="pay_history_balance" resultType="INT" order="BEFORE">
 			SELECT pay_balance
@@ -180,7 +199,52 @@
 		WHERE product_id = #{product_id}
 	</select>
 	
+	<!-- 구매 기록 저장 -->
+	<insert id="insertOrder">
+		<selectKey keyProperty="order_id" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO Orders
+		VALUE (
+			null
+			, #{product_id}
+			, #{member_id}
+			, #{order_amount}
+			, now()
+			, 0
+			, null
+		)
+	</insert>
 	
+	<!-- 페이 사용/수익 내역 -->
+	<insert id="insertOrderHistory">
+		<selectKey keyProperty="history_balance" resultType="INT" order="BEFORE">
+			SELECT pay_balance
+			FROM Pay
+			WHERE pay_id = #{pay_id}
+		</selectKey>
+		INSERT INTO PayHistory
+		VALUE (
+			null
+			, #{pay_id}
+			, #{order_amount}
+			<choose>
+				<when test="pay_history_type == 3">
+					, #{history_balance} - CAST(#{order_amount} AS SIGNED)
+				</when>
+				<when test="pay_history_type == 4">
+					, #{history_balance} + CAST(#{order_amount} AS SIGNED)
+				</when>
+				<otherwise>
+					, #{history_balance}
+				</otherwise>
+			</choose>
+			, #{pay_history_type}
+			, #{order_id}
+			, now()
+			, null
+		)
+	</insert>
 	
 	
 	<!-- ================ 관리자페이지 ====================== -->	
@@ -216,6 +280,15 @@
 		WHERE pay_history_type = 3
 			OR pay_history_type = 4
 		ORDER BY pay_history_id DESC
+	</select>
+	
+	<!-- 거래 내역 페이지 -->
+	<select id="selectOrderList">
+		SELECT *
+		FROM PayHistoryList
+		WHERE pay_history_type = 3
+			OR pay_history_type = 4
+		ORDER BY order_id DESC
 	</select>
 	
 </mapper>

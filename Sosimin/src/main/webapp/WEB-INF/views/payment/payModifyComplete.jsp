@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -117,32 +119,45 @@ $(function() {
                             	<c:choose>
                             		<c:when test="${payInfo.result eq 'charge_success'}">
 			                            <div class="material-icons effect1" style="font-size:40px;">check_circle</div>
-		    	                        <div class="complete-msg">${payInfo.pay_amount} 원 충전 완료</div>
+		    	                        <div class="complete-msg">
+		    	                        	<c:set var="payAmount" value="${pay_amount}" />
+											<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원 충전 완료
+		    	                        </div>
                             		</c:when>
                             		<c:when test="${payInfo.result eq 'charge_refused'}">
 			                            <div class="material-icons effect2" style="font-size:40px;">check_circle</div>
-    	                    		    <div class="complete-msg">${payInfo.pay_amount} 원 충전 실패</div>
+    	                    		    <div class="complete-msg">
+		    	                        	<c:set var="payAmount" value="${pay_amount}" />
+											<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원 충전 실패
+    	                    		    </div>
                             		</c:when>
                             		<c:when test="${payInfo.result eq 'refund_success'}">
 			                            <div class="material-icons effect1" style="font-size:40px;">check_circle</div>
-		    	                        <div class="complete-msg">${payInfo.pay_amount} 원 환급 완료</div>
+		    	                        <div class="complete-msg">
+		    	                        	<c:set var="payAmount" value="${pay_amount}" />
+											<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원 환급 완료
+		    	                        </div>
                             		</c:when>
                             		<c:when test="${payInfo.result eq 'refund_refused'}">
 			                            <div class="material-icons effect2" style="font-size:40px;">check_circle</div>
-    	                    		    <div class="complete-msg">${payInfo.pay_amount} 원 환급 실패</div>
+    	                    		    <div class="complete-msg">
+		    	                        	<c:set var="payAmount" value="${pay_amount}" />
+											<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원 환급 실패
+    	                    		    </div>
                             		</c:when>
                             		<c:otherwise></c:otherwise>
                             	</c:choose>
                             </div>
                             <hr>
                             <div class="row">
-	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
+	                           	<div class="complete-msg-left col-lg-4 col-md-4 col-12">
 									페이잔액
 								</div>
-	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
-									${payInfo.pay_balance} 원
+	                           	<div class="complete-msg-right col-lg-8 col-md-8 col-12">
+									<c:set var="payBalance" value="${payInfo.pay_balance}" />
+									<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원
 								</div>
-	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
+	                           	<div class="complete-msg-left col-lg-4 col-md-4 col-12">
 									<c:choose>
 										<c:when test="${payInfo.result eq 'charge_success' or payInfo.result eq 'refund_refused'}">
 				                            출금계좌
@@ -153,7 +168,7 @@ $(function() {
 	                            		<c:otherwise></c:otherwise>
 	                            	</c:choose>
 								</div>
-	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
+	                           	<div class="complete-msg-right col-lg-8 col-md-8 col-12">
 									${payInfo.bank_name} ${payInfo.account_num_masked}
 								</div>
 								<hr id="hr">
@@ -177,7 +192,7 @@ $(function() {
 								</div>
 	                            <div class="button col-lg-6 col-md-6 col-12">
 	                                <button class="btn" onclick="location.href='PayInfo'">내역보기</button>
-	                            </div>  
+	                            </div>
                             </div>
                         </div>
                      </div>   

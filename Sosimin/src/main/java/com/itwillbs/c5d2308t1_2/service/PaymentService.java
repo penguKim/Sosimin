@@ -134,8 +134,17 @@ public class PaymentService {
 	}
 	
 	// 결제하려는 상품 정보 조회
-	public Map<String, Object> getProductInfo(Map<String, String> map) {
+	public Map<String, Object> getProductInfo(Map<String, Object> map) {
 		return mapper.selectProductInfo(map);
+	}
+
+	// 구매하고 구매 기록 저장
+	@Transactional
+	public int orderProduct(Map<String, Object> map) {
+		mapper.insertOrder(map);
+		mapper.insertOrderHistory(map);
+		
+		return mapper.updatePayBalance(map);
 	}
 
 	
@@ -160,6 +169,11 @@ public class PaymentService {
 	// 페이 이용 내역 불러오기(사용/수익)
 	public List<Map<String, Object>> getPayHistorySpentRevenue() {
 		return mapper.selectPaySpentRevenue();
+	}
+
+	// 거래 내역 불러오기
+	public List<Map<String, Object>> getOrderList() {
+		return mapper.selectOrderList();
 	}
 
 

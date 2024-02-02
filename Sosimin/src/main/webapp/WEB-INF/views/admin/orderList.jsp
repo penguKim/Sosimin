@@ -29,6 +29,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/admin/quill.bubble.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/admin/remixicon.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/admin/style2.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 
 <!-- Template Main CSS File -->
 <link href="${pageContext.request.contextPath}/resources/css/admin/style.css" rel="stylesheet">
@@ -78,24 +79,27 @@
 								<thead>
 									<tr>
 										<th>거래내역번호</th>
+										<th>상품명</th>
+										<th>거래금액</th>
 										<th>판매자</th>
 										<th>구매자</th>
-										<th>거래금액</th>
-										<th>거래유형</th>
 										<th>거래일</th>
 										<th>상세보기</th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="pay_list" items="${payHistoryList}">
+									<c:forEach var="order_list" items="${orderList}">
 										<tr>
-											<td>${pay_list.pay_history_id}</td>
-											<td>${pay_list.pay_id}</td>
-											<td>${pay_list.pay_id}</td>
-											<td>${pay_list.pay_amount}</td>
-											<td>${pay_list.pay_history_type}</td>
+											<td>${order_list.order_id}</td>
+											<td>${order_list.product_name}</td>
 											<td>
-												<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
+												<c:set var="payAmount" value="${order_list.pay_amount}" />
+												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+											</td>
+											<td>${order_list.product_seller}</td>
+											<td>${order_list.product_buyer}</td>
+											<td>
+												<c:set var="datetime" value="${fn:split(order_list.pay_history_date, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
 												${date}
 											</td>
@@ -113,44 +117,64 @@
 															</div>
 															<div class="modal-body">
 																<!-- 모달 내용이 들어가는 부분 -->
-																<table border="1">
+																<table class="table modal_table">
 																	<tr>
-																		<th>거래내역번호</th>
-																		<td>${pay_list.pay_history_id}</td>
+																		<th scope="row">거래내역번호</th>
+																		<td>${order_list.order_id}</td>
 																	</tr>
 																	<tr>
-																		<th>pay번호</th>
-																		<td>${pay_list.pay_id}</td>
+																		<th scope="row">상품번호</th>
+																		<td>${order_list.product_id}</td>
 																	</tr>
 																	<tr>
-																		<th>회원아이디</th>
-																		<td></td>
+																		<th scope="row">상품명</th>
+																		<td>${order_list.product_name}</td>
 																	</tr>
 																	<tr>
-																		<th>거래금액</th>
-																		<td>${pay_list.pay_amount}</td>
+																		<th scope="row">상품품목</th>
+																		<td>${order_list.product_category}</td>
 																	</tr>
 																	<tr>
-																		<th>거래유형</th>
-																		<td>${pay_list.pay_history_type}</td>
+																		<th scope="row">판매자</th>
+																		<td>${order_list.product_seller}</td>
 																	</tr>
 																	<tr>
-																		<th>pay잔액</th>
-																		<td>${pay_list.pay_history_balance}</td>
+																		<th scope="row">구매자</th>
+																		<td>${order_list.product_buyer}</td>
 																	</tr>
 																	<tr>
-																		<th>거래일</th>
+																		<th scope="row">거래금액</th>
 																		<td>
-																			<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
+																			<c:set var="payAmount" value="${order_list.pay_amount}" />
+																			<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+																		</td>
+																	</tr>
+																	<tr>
+																		<th scope="row">거래일</th>
+																		<td>
+																			<c:set var="datetime" value="${fn:split(order_list.pay_history_date, 'T')}" />
 																			<c:set var="date" value="${datetime[0]}" />
 																			${date}
 																		</td>
 																	</tr>
+																	<tr>
+																		<th scope="row">거래상태</th>
+																		<td>
+																			<c:if test="${order_list.order_status eq 0}">거래완료</c:if>
+																			<c:if test="${order_list.order_status eq 1}">거래취소</c:if>
+																		</td>
+																	</tr>
+																	<c:if test="${order_list.order_status eq 1}">
+																		<tr>
+																			<th scope="row">취소일</th>
+																			<td>${order_list.order_cancel_date}</td>
+																		</tr>
+																	</c:if>
 																</table>
 															</div>
 															<div class="modal-footer">
 																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">뒤로가기</button>
-																<button type="button" class="btn btn-primary">거래취소</button>
+																<button type="button" class="btn btn-primary">취소하기</button>
 															</div>
 														</div>
 													</div>

@@ -54,8 +54,30 @@
 	display: inline-block;
 }
 
-.product-name, .bank-name {
+.bank-name {
     font-size: 20px;	
+}
+.product-name {
+    font-size: 20px;
+    width: 100%;
+}
+
+.product-name:hover .fa-angle-right, .product-name>a:hover {
+	color: #39d274;
+	transition: all 0.2s ease;
+}
+
+.product-name>a {
+	white-space: nowrap;
+    overflow: hidden;	
+    text-overflow: ellipsis;
+    max-width: 90%;
+}
+
+.product-name .fa-angle-right {
+	margin-left: 5px;
+	line-height: 25px;
+	vertical-align: top;
 }
 
 .pay-info-sub, .account-no {
@@ -270,11 +292,43 @@
 	font-size: 17px;
 }
 
+.product-info>.name_span:after, .product-info>.name_span:before {
+	content: "";
+	display: inline-block;
+	width: 100%;
+}
+
 .product-info>.name_span {
-	white-space: nowrap;
+	text-align: justify;
+	line-height: 5px;
+	width: 110px;
+	vertical-align: middle;
+	padding-top: 6px;
 }
 
 .product-info>.value_span {
+	white-space: nowrap;
 	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 32.67px;
+	padding: 0;
 }
 
+.product-img {
+	text-align: center;
+	line-height: 130px;
+	vertical-align: middle;
+}
+
+.product-img>img {
+	width: 100px;
+	margin: auto 0;
+}
+
+.product-msg {
+	margin-top: 0;
+}
+
+#payment-title {
+	margin-bottom: 0;
+}

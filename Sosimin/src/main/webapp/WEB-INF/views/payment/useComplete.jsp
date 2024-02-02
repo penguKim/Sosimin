@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,15 +40,26 @@ $(function() {
 });
 </script>
 <style type="text/css">
-.effect{
+.effect1{
     color: #39d274;
-    animation-name: example;
+    animation-name: example1;
     animation-duration: 5s;
 }
 
-@keyframes example {
+@keyframes example1 {
     from {color: #f9f9f9;}
     to {color: #39d274;}
+}
+
+.effect2{
+    color: #ff0000;
+    animation-name: example2;
+    animation-duration: 5s;
+}
+
+@keyframes example2 {
+    from {color: #f9f9f9;}
+    to {color: #ff0000;}
 }
 </style>
 </head>
@@ -104,47 +118,70 @@ $(function() {
                                 </h3>
                             </div>
                             <div class="complete">
-                            	<div class="material-icons effect" style="font-size:40px;">check_circle</div>
-                            	<div class="complete-msg">10,000원 결제 완료</div>
+                            	<c:choose>
+                            		<c:when test="${payInfo.result eq 'use_success'}">
+		                            	<div class="material-icons effect1" style="font-size:40px;">check_circle</div>
+		                            	<div class="complete-msg">
+		        	                    	<c:set var="payBalance" value="${order_amount}" />
+											<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원 결제 완료
+		                            	</div>
+                            		</c:when>
+                            		<c:when test="${payInfo.result eq 'use_refused'}">
+		                            	<div class="material-icons effect2" style="font-size:40px;">check_circle</div>
+		                            	<div class="complete-msg">
+		                            		<c:set var="payBalance" value="${order_amount}" />
+											<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원 결제 실패
+		                            	</div>
+                            		</c:when>
+                            	</c:choose>
                             </div>
-                            <hr>
-                           	<div class="complete-msg-center">거래정보</div>
-                           	<div class="complete-msg-left">판매자 : 닉네임</div>
-                           	<div class="complete-msg-left">상품명 : 게시글</div>
-                           	<div class="complete-msg-left">가격 : 가격</div>
-                           	<div class="complete-msg-left">거래유형 : 직거래</div>
                            	<hr id="hr">
                             <div class="row">
-	                           	<div class="complete-msg-center col-lg-12 col-md-12 col-12">
-									페이 사용 내역
+	                           <c:if test="${pay_amount ne null && pay_amount ne '' && pay_amount > 0}">
+		                           	<div class="complete-msg-left col-lg-4 col-md-4 col-12">
+										출금계좌
+									</div>
+		                           	<div class="complete-msg-right col-lg-8 col-md-8 col-12">
+										${payInfo.bank_name} ${payInfo.account_num_masked}
+									</div>
+		                           	<div class="complete-msg-left col-lg-4 col-md-4 col-12">
+										충전금액
+									</div>
+		                           	<div class="complete-msg-right col-lg-8 col-md-8 col-12">
+			                           	<c:set var="payCharge" value="${pay_amount}" />
+										<fmt:formatNumber value="${payCharge}" pattern="#,##0" />원
+									</div>
+	                           	</c:if>
+	                           	<div class="complete-msg-left col-lg-4 col-md-4 col-12">
+									결제 금액
 								</div>
-	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
-									출금계좌
+	                           	<div class="complete-msg-right col-lg-8 col-md-8 col-12">
+	                           		<c:set var="orderAmount" value="${order_amount}" />
+									<fmt:formatNumber value="${orderAmount}" pattern="#,##0" />원
 								</div>
-	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
-									은행명 계좌번호
+	                           	<div class="complete-msg-left col-lg-4 col-md-4 col-12">
+									페이 잔액
 								</div>
-	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
-									충전금액
-								</div>
-	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
-									100,000원
-								</div>
-	                           	<div class="complete-msg-left col-lg-6 col-md-6 col-12">
-									페이 머니 잔액
-								</div>
-	                           	<div class="complete-msg-right col-lg-6 col-md-6 col-12">
-									400,000원
+	                           	<div class="complete-msg-right col-lg-8 col-md-8 col-12">
+	                        	   	<c:set var="payBalance" value="${payInfo.pay_balance}" />
+									<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원
 								</div>
 							</div>
 							<hr id="hr">
 							<div class="row">
 								<p class="info-msg">- 페이머니는 환급하기 페이지에서 무료로 즉시 인출 가능합니다</p>
 	                            <div class="button col-lg-6 col-md-6 col-12">
-	                                <button class="btn" onclick="location.href='MemberMyPageMain'">구매 내역보기</button>
+	                                <button class="btn" onclick="location.href='SearchProduct'">상품 목록</button>
 	                            </div>
 	                            <div class="button col-lg-6 col-md-6 col-12">
-	                                <button class="btn" onclick="location.href='PayInfo'">페이 내역보기</button>
+	                            	<c:choose>
+										<c:when test="${payInfo.result eq 'use_success'}">
+			                                <button class="btn" onclick="location.href='MyPage'">구매 내역보기</button>
+	                            		</c:when>
+										<c:when test="${payInfo.result eq 'use_refuse'}">
+			                                <button class="btn" onclick="location.href='ProductDetail'">상품 다시 보기</button>
+	                            		</c:when>
+	                            	</c:choose>
 	                            </div>
                             </div>
                         </div>
