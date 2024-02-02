@@ -40,6 +40,7 @@ $(function() {
 	let pageNum = "";
 	let price = "";
 	let status="";
+	let word="";
 	<%-- 필터링을 위한 변수 초기화 --%>
 	let keyword = "${param.keyword}";
 	let category = "${param.product_category}";
@@ -58,7 +59,8 @@ $(function() {
 			keyword: keyword,
 			category: category,
 			price: price,
-			status: status
+			status: status,
+			word:word
 		},
 		dataType: 'json',
 		success: function(data) {
@@ -149,19 +151,57 @@ $(function() {
 
 <script type="text/javascript">
 // 필터링 옵션 처리 후 ajax
+function wordDis() {
+	let	word = $("#wordExclude").val();
+	<%-- 미포함 단어 없을경우 모달 출력 --%>
+	if(word != "") {
+	} else {
+		const Toast = Swal.mixin({
+		    toast: true,
+		    position: 'center-center',
+		    showConfirmButton: false,
+		    timer: 2000,
+		    timerProgressBar: false,
+		})
+		Toast.fire({
+		    icon: 'error',
+		    title: '제외할 단어를 입력해주세요!'
+		})
+		return false;
+	}
+}
+
+function wordDel() {
+	$("#wordExclude").val("");
+}
 	
 function filtering(sortNum) {
 	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
-	let category = "${param.product_category}";
+	let pageNum = "";
+	let category = "";
 	let keyword = "${param.keyword}";
 	let price = "";
+	let	word = "";
+	
+	if(keyword != "") {
+		category = $(".selcategory").val();
+		alert(category);
+	} else {
+		category = "${param.product_category}";
+	}
+
+	if($("#wordExclude").val() != "") {
+		word = $("#wordExclude").val();
+	}
+	
+	
+	<%-- 정렬 방식 설정--%>
 	let sort = 1;
 	if(sortNum > 1) {
 		sort = sortNum; 
 	} else {
 		sort = 1;
 	}
-	<%-- 정렬 방식 설정--%>
 	
 	
 	<%-- 가격 필터 선택 시 값 설정 --%>
@@ -174,14 +214,22 @@ function filtering(sortNum) {
     });  
     productStatus = productStatus.slice(0, -1);
     
+    if("${param.pageNum}" > 1) {
+		pageNum = "${param.pageNum}";
+	} else {
+		pageNum = $("#pageNum").val();
+	}
+    
 	<%-- 상품 필터링을 위한 ajax --%>    
 	$.ajax({
 		url: "StoreProductList",
 		data: {
+			pageNum: pageNum,
 			keyword:keyword,
 			category:category,
 			price: price,
 			status: productStatus,
+			word: word,
 			sort: sort
 		},
 		dataType: 'json',
@@ -191,7 +239,6 @@ function filtering(sortNum) {
 		    let pageInfo = data[1];
 		    let pageNum = data[2];
 		    $(".productList").empty();
-		    
 		    for(let i = 0; i < productList.length; i++) {
 				$(".productList").append(
 					'<div class="col-lg-4-1 col-md-6 col-12" >'
@@ -218,7 +265,40 @@ function filtering(sortNum) {
 					+ ' </div>'
 				);
 			}
-		
+			
+		    let pages = '';
+			pages += '<nav aria-label="Page navigation">'
+			    + '<ul class="pagination justify-content-center">'
+			    + '<li class="page-item" id="prevPage">'
+			   		 + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + '" class="page-link">&laquo;</a>'
+			    + '</li>';
+			   
+	        for (let i = pageInfo.startPage; i < pageInfo.endPage+1; i++) {
+	            if (pageNum == i) {
+	                pages += '<li class="page-item active"><span class="page-link">' + i + '</span></li>';
+	            } else {
+	                pages += '<li class="page-item">'
+	                    + '<a href="SearchProduct?pageNum=' + i + '" class="page-link">' + i + '</a>'
+	                    + '</li>';
+	            }
+	        }
+	        
+		    pages += '<li class="page-item" id="nextPage">'
+			    + '<a href="SearchProduct?pageNum=' + (pageNum + 1) +'" class="page-link">&raquo;</a>'
+			    + '</li>'
+			    + '</ul>'
+			    + '</nav>';
+			
+			<%-- 페이징 처리 --%>
+			$(".productList").after(pages);	
+			
+			<%-- pageNum 버튼 최소 최대 제한--%> 
+			if(pageNum <= 1) {
+				$("#prevPage").addClass("disabled");
+			}
+			if(pageNum >= pageInfo.maxPage) {
+				$("#nextPage").addClass("disabled");
+			}
 		
 		},
 		error: function() {
@@ -332,14 +412,12 @@ function filtering(sortNum) {
                             
                             <div style="margin-bottom: 20px;"></div>
 		                    <h3>결과내 검색</h3>
-		                    <form action="#">
-			               		<p>포함할 단어</p>
-		               			<input type="text" placeholder="포함할 단어를 입력해주세요" size="23">
+		                    <form action="javascript:filtering()">
 			                    <p>제외할 단어</p>
-			                    <input type="text" placeholder="제외할 단어를 입력해주세요" size="23">
+			                    <input type="text" placeholder="제외 단어 입력" size="20" id="wordExclude">
 			                    <div class="resultSearch">
-				                   	<button class="reset-btn" style="margin-left: 10%;">초기화</button>
-				                   	<button type="submit" class="resultSearch-btn" style="margin-left: 10%;">적용하기</button>
+				                   	<button class="reset-btn" style="margin-left: 10%;"onclick="wordDel()">초기화</button>
+				                   	<button type="submit" class="resultSearch-btn" style="margin-left: 10%;" onclick="wordDis()">적용하기</button>
 			                    </div>
 		                    </form>
 		                    <div style="margin-bottom: 20px;"></div>
@@ -347,28 +425,28 @@ function filtering(sortNum) {
 		                    <h3>카테고리</h3>
                             <ul class="list">
                                 <li>
-                                    <a href="product-grids.html">상의 </a>
+                                    <a href="javascript:filtering()" class="selcategory">상의 </a>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">하의</a>
+                                    <a href="javascript:filtering()" class="selcategory">하의</a>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">아우터</a>
+                                    <a href="javascript:filtering()" class="selcategory">아우터</a>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">아동복</a>
+                                    <a href="javascript:filtering()" class="selcategory">아동복</a>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">셋업/세트</a>
+                                    <a href="javascript:filtering()" class="selcategory">셋업/세트</a>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">패션/잡화</a>
+                                    <a href="javascript:filtering()" class="selcategory">패션/잡화</a>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">신발</a>
+                                    <a href="javascript:filtering()" class="selcategory">신발</a>
                                 </li>
                                 <li>
-                                    <a href="product-grids.html">기타</a>
+                                    <a href="javascript:filtering()" class="selcategory">기타</a>
                                 </li>
                             </ul>
                         <%-- 3. 신고하기 기능 버튼 --%>

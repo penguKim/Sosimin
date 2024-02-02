@@ -8,7 +8,7 @@
 	<select id="productListCount" resultType="int">
 		SELECT COUNT(*)
 		FROM Product
-		<if test="sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('')">
+		<if test="sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('') or !word.equals('')">
 			WHERE 
 		</if>
 		<!-- 로그인시 회원 구별 조회 -->
@@ -54,7 +54,12 @@
 				</otherwise>
 			</choose>
 		</if>
-		
+		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('')) and !word.equals('') ">
+			AND
+		</if>
+		<if test="!word.equals('')">
+			product_name NOT LIKE CONCAT('%', #{word}, '%') 	
+		</if>		
 	</select>
 	
 	<!-- 상품 목록 조회 -->
@@ -65,7 +70,7 @@
 		ON p.product_id = pb.product_id
 		JOIN Member m
 		ON p.member_id = m.member_id
-		<if test="sId != null or category != '' or keyword != '' or price != '' or status != ''">
+		<if test="sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('') or !word.equals('')">
 			WHERE 
 		</if>
 		<if test="sId != null" >
@@ -110,6 +115,12 @@
 				</otherwise>
 			</choose>
 		</if>
+		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('')) and !word.equals('') ">
+			AND
+		</if>
+		<if test="!word.equals('')">
+			product_name NOT LIKE CONCAT('%', #{word}, '%') 	
+		</if>	
 		ORDER BY 
 		<choose>
 			<when test="sort == 1">product_datetime DESC,</when>

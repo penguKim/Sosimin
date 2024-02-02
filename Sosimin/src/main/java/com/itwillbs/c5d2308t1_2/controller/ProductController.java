@@ -60,6 +60,7 @@ public class ProductController {
 		
 		map.put("sId", id);
 		map.put("pageNum", pageNum);
+		// ==========================================================
 		// 가격 선택 별 조회
 		if(map.get("price").equals("500000") ) {
 			System.out.println("50000오십만원");
@@ -70,6 +71,7 @@ public class ProductController {
 			map.put("maxPrice", ((String)map.get("price")).split("~")[1]); 
 		}
 		
+		// ============================================================
 		// 상품 상태 선택 시 배열 저장 후 다시 status 에 각각 저장
 		String[] statusArr = null;
 		if(!map.get("status").equals("")) {
@@ -78,6 +80,10 @@ public class ProductController {
 				map.put("status" + (i + 1), statusArr[i]);
 			}
 		}
+		
+		// =============================================================
+		
+		
 		
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>페이지 넘버 : " + pageNum);
