@@ -35,7 +35,7 @@
 		</if>
 		<if test="!price.equals('')">product_price between #{minPrice} AND #{maxPrice}</if>
 		<!-- 상품 상태별 조회 -->
-		<if test="(sId != null or !category.equals('') or !keyword.equals('')) and !status.equals('')">
+		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('')) and !status.equals('') ">
 			AND
 		</if>
 		<if test="!status.equals('')">
@@ -91,7 +91,7 @@
 		</if>
 		<if test="!price.equals('')">product_price between #{minPrice} AND #{maxPrice}</if>
 		<!-- 상품 상태별 조회 -->
-		<if test="(sId != null or !category.equals('') or !keyword.equals('')) and !status.equals('')">
+		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('')) and !status.equals('')">
 			AND
 		</if>
 		<if test="!status.equals('')">

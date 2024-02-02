@@ -70,14 +70,12 @@ public class ProductController {
 			map.put("maxPrice", ((String)map.get("price")).split("~")[1]); 
 		}
 		
-		
-		// 상품 상태 선택 시 배열 저장 후 status 에 각각 저장
+		// 상품 상태 선택 시 배열 저장 후 다시 status 에 각각 저장
 		String[] statusArr = null;
 		if(!map.get("status").equals("")) {
-			
 			statusArr = ((String)map.get("status")).split(",");
 			for(int i = 0; i < statusArr.length; i++) {
-				map.put("status" + (i + 1), i+1);
+				map.put("status" + (i + 1), statusArr[i]);
 			}
 		}
 		
@@ -96,7 +94,7 @@ public class ProductController {
 		PageInfo pageInfo = new PageInfo(page, listCount, 5);
 		map.put("page", page);
 		// ===============================================================================================
-		
+		// 상품 목록 출력
 		productList = service.selectProductList(map);
 		
 		// 상품 등록 시간 계산 처리 

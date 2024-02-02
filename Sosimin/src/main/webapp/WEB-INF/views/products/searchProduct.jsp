@@ -312,19 +312,19 @@ function filtering(sortNum) {
                             <div style="margin-bottom: 20px;"></div>
                             <h3>상품 상태</h3>
                             <div class="form-check" >
-                                <input class="form-check-input productCheckbox" type="checkbox" name="productStatus" value="보통" id="flexCheckDefault1" onclick="filtering()">
+                                <input class="form-check-input productCheckbox" type="checkbox" name="productStatus" value="0" id="flexCheckDefault1" onclick="filtering()">
                                 <label class="form-check-label" for="flexCheckDefault1">
                                     보통
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input productCheckbox" type="checkbox" name="productStatus" value="좋은상태"  id="flexCheckDefault2" onclick="filtering()">
+                                <input class="form-check-input productCheckbox" type="checkbox" name="productStatus" value="1"  id="flexCheckDefault2" onclick="filtering()">
                                 <label class="form-check-label" for="flexCheckDefault2">
                                     좋은 상태
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input productCheckbox" type="checkbox" name="productStatus" value="새상품" id="flexCheckDefault3" onclick="filtering()">
+                                <input class="form-check-input productCheckbox" type="checkbox" name="productStatus" value="2" id="flexCheckDefault3" onclick="filtering()">
                                 <label class="form-check-label" for="flexCheckDefault3">
                                     새상품
                                 </label>
