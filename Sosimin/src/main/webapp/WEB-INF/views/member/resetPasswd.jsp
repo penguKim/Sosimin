@@ -20,11 +20,19 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+<%-- sweetalert --%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script type="text/javascript">
 	$(function() {
 		<%-- 뒤로가기 방지 --%>
 		if (performance.navigation.type === 2) { <%-- 0 : 처음 로딩/새로고침, 1 : 페이지가 앞/뒤로 이동, 2 : 페이지가 뒤로 이동  --%>
-			alert('비정상적인 접근입니다.\n메인페이지로 이동합니다.');
+			Swal.fire({
+				title: '비정상적인 접근!',         // Alert 제목
+				text: "메인페이지로 이동합니다!",  // Alert 내용
+				icon:'warning',
+			});
+
 			location.href = './'; //다른 페이지로 이동
 		}	
 		
@@ -127,7 +135,12 @@
 					},
 					success: function(result) {
 						if(!result) {
-							alert("비밀번호 수정 실패");
+// 							alert("비밀번호 수정 실패");
+							Swal.fire({
+								title: '수정 실패!',         // Alert 제목
+								text: "비밀번호 수정에 실패했습니다!",  // Alert 내용
+								icon:'error',
+							});
 						} else {
 							$("#resetPasswordArea").html("<div><br><br><h6>비밀번호 수정 완료</h6></div>"
 							);
@@ -141,7 +154,12 @@
 						}
 					},
 					error: function(xhr, textStatus, errorThrown) {
-						alert("비밀번호 수정에 실패했습니다.");
+						Swal.fire({
+							title: 'AJAX 요청 실패!',         // Alert 제목
+							text: "비밀번호 수정에 실패했습니다!",  // Alert 내용
+							icon:'error',
+						});
+// 						alert("비밀번호 수정에 실패했습니다.");
 						console.log(xhr + ", " + textStatus + ", " + errorThrown);
 					}
 					

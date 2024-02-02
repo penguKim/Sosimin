@@ -100,6 +100,8 @@ public class MemberController {
 		
 		if(insertCount == 0) {
 			model.addAttribute("msg", "회원정보 등록 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "error");
 			return "fail_back";
 		}
 		
@@ -122,6 +124,8 @@ public class MemberController {
 		String sId = (String)session.getAttribute("sId");
 		if(sId != null) {
 			model.addAttribute("msg", "이미 로그인된 상태입니다!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "error");
 			return "fail_back";
 		}
 		
@@ -156,19 +160,25 @@ public class MemberController {
 		if(dbMember == null || !member.getMember_id().equals(dbMember.getMember_id())) {
 			System.out.println("dbMember 확인 : " + dbMember);
 			model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "error");
 			return "fail_back";
 		}
 	    
 		// 회원 상태가 2인 경우(탈퇴 회원)
 	   if(dbMember.getMember_status() == 2) {
 		   model.addAttribute("msg", "이미 탈퇴한 회원입니다");
-		   return "fail_back";
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "error");
+			return "fail_back";
 	   }
 	   
 	   // 일치하는 회원정보가 없거나 패스워드가 일치하지 않는 경우
 	   if(dbMember == null || !passwordEncoder.matches(member.getMember_password(), dbMember.getMember_password())) {
 		   model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지않습니다");
-		   return "fail_back";   
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "error");
+			return "fail_back"; 
 	   } else { // 그 외 = 로그인 성공
 		   // 쿠키에 아이디 저장
 		   Cookie cookie = new Cookie("cookieId", dbMember.getMember_id());
@@ -215,6 +225,8 @@ public class MemberController {
 		String sId = (String)session.getAttribute("sId");
 		if(sId != null) { // 로그인한 경우
 			model.addAttribute("msg", "이미 로그인된 계정입니다");
+			model.addAttribute("msg2", "메인페이지로 이동합니다!");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "./");
 			return "forward";
 		}
@@ -239,6 +251,8 @@ public class MemberController {
 		String sId = (String)session.getAttribute("sId");
 		if(sId != null) { // 로그인한 경우
 			model.addAttribute("msg", "이미 로그인된 계정입니다");
+			model.addAttribute("msg2", "메인페이지로 이동합니다!");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "./");
 			return "forward";
 		}
@@ -264,6 +278,8 @@ public class MemberController {
 		String sId = (String)session.getAttribute("sId");
 		if(sId != null) { // 로그인한 경우
 			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("msg2", "메인페이지로 이동합니다!");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "./");
 			return "forward";
 		}

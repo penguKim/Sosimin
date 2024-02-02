@@ -98,7 +98,12 @@
 					success: function(result) {
 						console.log("결과는? : " + result);
 						if(result == "") {
-							alert("정보와 일치하는 회원이 없습니다!");
+							Swal.fire({
+								title: '아이디 찾기 실패!',         // Alert 제목
+								text: "정보와 일치하는 회원이 없습니다!",  // Alert 내용
+								icon:'error',
+							});
+// 							alert("정보와 일치하는 회원이 없습니다!");
 						} else {
 							$("#showIdArea").html("<br><br><h6>회원님의 ID는 </h6>"
 									+ "<div><h6>" + result.member_id + " 입니다.</h6></div>"
@@ -115,7 +120,12 @@
 						
 					},
 					error: function(xhr, textStatus, errorThrown) {
-						alert("아이디 조회 ajax 요청 실패");
+						Swal.fire({
+							title: 'AJAX 요청 실패!',         // Alert 제목
+							text: "아이디 조회에 실패했습니다!",  // Alert 내용
+							icon:'error',
+						});
+// 						alert("아이디 조회 ajax 요청 실패");
 						console.log(xhr + ", " + textStatus + ", " + errorThrown);
 					}
 					

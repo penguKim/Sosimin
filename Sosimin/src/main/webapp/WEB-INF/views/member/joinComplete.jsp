@@ -20,11 +20,19 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+<%-- sweetalert --%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script type="text/javascript">
 	$(function() {
 		<%-- 뒤로가기 방지 --%>
 		if (performance.navigation.type == 2) { <%-- 0 : 처음 로딩/새로고침, 1 : 페이지가 앞/뒤로 이동, 2 : 페이지가 뒤로 이동  --%>
-			alert('비정상적인 접근입니다.\n메인페이지로 이동합니다.');
+// 			alert('비정상적인 접근입니다.\n메인페이지로 이동합니다.');
+			Swal.fire({
+				title: '비정상적인 접근!',         // Alert 제목
+				text: "메인페이지로 이동합니다!",  // Alert 내용
+				icon:'warning',
+			});
 			location.href = './'; // 메인 페이지로 강제 이동
 		}
 	});

@@ -22,6 +22,9 @@
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<%-- sweetalert --%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script type="text/javascript">
 // 	function reviewViewFrom() {
 // 		$("#staticBackdropLabel").text("보낸 후기");

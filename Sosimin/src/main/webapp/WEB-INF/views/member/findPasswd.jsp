@@ -108,11 +108,21 @@
 					success: function(result) {
 // 						alert(result);
 						if(result == false) {
-							alert("일치하는 회원이 없습니다. 다시 확인해주세요");
+							Swal.fire({
+								title: '회원 정보 조회 실패!',         // Alert 제목
+								text: "일치하는 회원이 없습니다. 다시 확인해주세요!",  // Alert 내용
+								icon:'error',
+							});
+// 							alert("일치하는 회원이 없습니다. 다시 확인해주세요");
 							
 						} else {
 							$("#checkPhoneResult").text("사용 가능한 휴대폰 번호입니다").css("color", "green");
-							alert("인증코드 발송 완료");
+// 							alert("인증코드 발송 완료");
+							Swal.fire({
+								title: '인증코드 발송 완료!',         // Alert 제목
+								text: "인증 코드를 확인해주세요!",  // Alert 내용
+								icon:'success',
+							});
 							
 							// 인증 여부 변수 true로 변경
 							isSent = true;
@@ -133,7 +143,12 @@
 								},
 								error: function(xhr,textStatus,errorThrown) {
 								    // 요청이 실패한 경우 처리할 로직
-								    alert("휴대폰 인증 코드 발급 AJAX 요청 실패!");
+// 								    alert("휴대폰 인증 코드 발급 AJAX 요청 실패!");
+								    Swal.fire({
+										title: 'AJAX 요청 실패!',         // Alert 제목
+										text: "휴대폰 인증 코드 발급 실패했습니다!",  // Alert 내용
+										icon:'error',
+									});
 									console.log(xhr + ", " + textStatus + ", " + errorThrown);
 								}
 							});
@@ -142,7 +157,12 @@
 					},
 					error: function(xhr,textStatus,errorThrown) {
 					    // 요청이 실패한 경우 처리할 로직
-					    alert("회원 조회 AJAX 요청 실패!");
+					    Swal.fire({
+							title: 'AJAX 요청 실패!',         // Alert 제목
+							text: "회원 정보 조회에 실패했습니다!",  // Alert 내용
+							icon:'error',
+						});
+// 					    alert("회원 조회 AJAX 요청 실패!");
 						console.log(xhr + ", " + textStatus + ", " + errorThrown);
 					}
 					

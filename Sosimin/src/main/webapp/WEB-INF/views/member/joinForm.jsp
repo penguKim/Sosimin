@@ -20,6 +20,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+<%-- sweetalert --%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
 <script type="text/javascript">
 	$(function() {
@@ -73,7 +76,12 @@
 	          localStorage.setItem("tradePlace", modifiedAddress);
 	          
 		    } else {
-		      alert("주소를 가져오지 못했습니다.");
+		    	Swal.fire({
+					title: '주소 요청 실패!',         // Alert 제목
+					text: "주소를 가져오지 못했습니다!",  // Alert 내용
+					icon:'error',
+				});
+// 		      alert("주소를 가져오지 못했습니다.");
 		    }
 		  });
 		});
@@ -101,7 +109,12 @@
 	$(function() {
 		<%-- 뒤로가기 방지 --%>
 		if (performance.navigation.type === 2) { <%-- 0 : 처음 로딩/새로고침, 1 : 페이지가 앞/뒤로 이동, 2 : 페이지가 뒤로 이동  --%>
-			alert('비정상적인 접근입니다.\n메인페이지로 이동합니다.');
+			Swal.fire({
+				title: '비정상적인 접근!',         // Alert 제목
+				text: "메인페이지로 이동합니다!",  // Alert 내용
+				icon:'warning',
+			});
+// 			alert('비정상적인 접근입니다.\n메인페이지로 이동합니다.');
 			location.href = './'; //다른 페이지로 이동
 		}
 		
@@ -167,7 +180,12 @@
 						},
 						error: function(xhr,textStatus,errorThrown) {
 						    // 요청이 실패한 경우 처리할 로직
-						    alert("아이디 중복 판별 AJAX 요청 실패!");
+						    Swal.fire({
+								title: 'AJAX 요청 실패!',         // Alert 제목
+								text: "아이디 중복 판별에 실패했습니다!",  // Alert 내용
+								icon:'error',
+							});
+// 						    alert("아이디 중복 판별 AJAX 요청 실패!");
 							console.log(xhr + ", " + textStatus + ", " + errorThrown);
 
 						}
@@ -180,7 +198,12 @@
 		// 아이디 입력 값이 없는데 중복 확인 버튼을 클릭했을 경우
 		$("#checkIdDupButton").on("click", function() {
 			if($("#id").val() == "") {
-				alert("아이디를 입력해야 중복 확인이 가능합니다!");
+// 				alert("아이디를 입력해야 중복 확인이 가능합니다!");
+				Swal.fire({
+					title: '입력값이 없어요!',         // Alert 제목
+					text: "아이디를 입력해야 중복 확인이 가능합니다!",  // Alert 내용
+					icon:'warning',
+				});
 				$("#id").focus();
 			}
 		});
@@ -223,7 +246,12 @@
 							},
 							error: function(xhr,textStatus,errorThrown) {
 							    // 요청이 실패한 경우 처리할 로직
-							    alert("닉네임 중복 판별 AJAX 요청 실패!");
+// 							    alert("닉네임 중복 판별 AJAX 요청 실패!");
+							    Swal.fire({
+									title: 'AJAX 요청 실패!',         // Alert 제목
+									text: "닉네임 중복 판별에 실패했습니다!",  // Alert 내용
+									icon:'error',
+								});
 								console.log(xhr + ", " + textStatus + ", " + errorThrown);
 	
 							}
@@ -242,7 +270,12 @@
 		// 닉네임 입력 값이 없는데 중복 확인 버튼을 클릭했을 경우
 		$("#checkNicknameDupButton").on("click", function() {
 			if($("#nickname").val() == "") {
-				alert("닉네임을 입력해야 중복 확인이 가능합니다!");
+// 				alert("닉네임을 입력해야 중복 확인이 가능합니다!");
+				Swal.fire({
+					title: '입력값이 없어요!',         // Alert 제목
+					text: "닉네임 입력해야 중복 확인이 가능합니다!",  // Alert 내용
+					icon:'warning',
+				});
 				$("#nickname").focus();
 			}
 		});
@@ -330,24 +363,66 @@
 		
 		<%-- 생년월일 선택 범위 제한 --%>
 		$("#birthdate").on("click", function() {
+			// 모달창 가림	
+			// 모달창 가림	
+			// 모달창 가림	
+			// 모달창 가림	
+			// 모달창 가림	
+		
 			if(!$(this).hasClass("clicked")) {
-				if(confirm("만 14세 이상만 가입할 수 있습니다. 동의하십니까?")) {
-					$(this).addClass("clicked");
-					<%-- 만 14세 미만은 가입하지 못하도록 날짜 선택 범위 제한  --%>
-					// 현재 날짜를 가져옵니다.
-					var today = new Date();
-									  
-					// 14세 전의 날짜를 계산합니다.
-					var maxDate = new Date(today.getFullYear() - 14, today.getMonth(), today.getDate() + 1);
-									  
-					// input 태그의 최소 날짜(max 속성)를 설정합니다.
-					$("#birthdate").attr("max", maxDate.toISOString().split("T")[0]);
-				} else {
-					alert("만 14세 미만은 가입이 불가능합니다!");
-					location.href = "./";
-				}
-			}
+				Swal.fire({
+					title: '만 14세 이상인가요?',
+					text: '만 14세 이상만 가입할 수 있습니다. 동의하십니까?',
+					icon: 'warning',
+					
+					showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+					confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+					cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+					confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+					cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+					reverseButtons: true, // 버튼 순서 거꾸로
+				}).then(result => {
+					// 만약 Promise리턴을 받으면,
+					if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+						$(this).addClass("clicked");
+						// 만 14세 미만은 가입하지 못하도록 날짜 선택 범위 제한 
+						
+						// 현재 날짜를 가져옵니다.
+						var today = new Date();
+												  
+						// 14세 전의 날짜를 계산합니다.
+						var maxDate = new Date(today.getFullYear() - 14, today.getMonth(), today.getDate() + 1);
+															  
+						// input 태그의 최소 날짜(max 속성)를 설정합니다.
+						$("#birthdate").attr("max", maxDate.toISOString().split("T")[0]);   
+					} else {
+						Swal.fire({
+							title: '만 14세 미만은 가입이 불가능해요!',
+							text: "메인으로 이동합니다",
+							icon: 'error',
+							
+							showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+							confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+							cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+							confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+							cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+							reverseButtons: true, // 버튼 순서 거꾸로
+						}).then(result => {
+							// 만약 Promise리턴을 받으면,
+							if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+								location.href="./";
+							} 
+						}); // Swal-then 끝
+					
+					} // else 문 끝
+					
+				}); // Swal-then 끝
+			
+			
+			
+			} // 첫 클릭 이벤트 끝
 		}); // 생년월일 클릭 이벤트 끝
+
 		
 		$("#birthdate").blur(function() {
 			let member_birth = $("#birthdate").val();
@@ -404,8 +479,13 @@
 						},
 						error: function(xhr,textStatus,errorThrown) {
 						    // 요청이 실패한 경우 처리할 로직
-						    alert("이메일 중복 판별 AJAX 요청 실패!");
-							console.log(xhr + ", " + textStatus + ", " + errorThrown);
+// 						    alert("이메일 중복 판별 AJAX 요청 실패!");
+						    Swal.fire({
+								title: 'AJAX 요청 실패!',         // Alert 제목
+								text: "이메일 중복 판별에 실패했습니다!",  // Alert 내용
+								icon:'error',
+							});
+						    console.log(xhr + ", " + textStatus + ", " + errorThrown);
 
 						}
 					}); // 중복 판별 ajax 요청 끝
@@ -416,7 +496,12 @@
 		// 이메일 입력 값이 없는데 중복 확인 버튼을 클릭했을 경우
 		$("#checkEmailDupButton").on("click", function() {
 			if($("#email").val() == "") {
-				alert("이메일을 입력해야 중복 확인이 가능합니다!");
+// 				alert("이메일을 입력해야 중복 확인이 가능합니다!");
+				Swal.fire({
+					title: '입력값이 없어요!',         // Alert 제목
+					text: "이메일을 입력해야 중복 확인이 가능합니다!",  // Alert 내용
+					icon:'warning',
+				});
 				$("#email").focus();
 			}
 		});
@@ -461,7 +546,12 @@
 							
 							// 인증코드발급 버튼 클릭 시 이벤트 처리
 							$("#requestPhoneAuthCodeButton").on("click", function() {
-								alert("인증코드 발송 완료");	
+// 								alert("인증코드 발송 완료");
+								Swal.fire({
+									title: '인증코드 발송 완료!',         // Alert 제목
+									text: "인증 코드를 확인해주세요!",  // Alert 내용
+									icon:'success',
+								});
 // 								$("#requestPhoneAuthCodeButton").blur();
 								$.ajax({
 									url: "requestPhoneAuthCode",
@@ -481,10 +571,20 @@
 												iscorrectPhoneAuthCode = false;
 											} else {
 												if($.trim(result) == phone_auth_code) {
-													alert("휴대폰 인증이 정상적으로 완료되었습니다!");
+// 													alert("휴대폰 인증이 정상적으로 완료되었습니다!");
+													Swal.fire({
+														title: '인증 완료!',         // Alert 제목
+														text: "휴대폰 인증이 정상적으로 완료되었습니다!",  // Alert 내용
+														icon:'success',
+													});
 													iscorrectPhoneAuthCode = true;
 												} else {
-													alert("인증 코드가 올바르지 않습니다. 다시 인증해주세요!");
+													Swal.fire({
+														title: '인증 코드 불일치!',         // Alert 제목
+														text: "인증 코드가 올바르지 않습니다. 다시 인증해주세요!",  // Alert 내용
+														icon:'error',
+													});
+// 													alert("인증 코드가 올바르지 않습니다. 다시 인증해주세요!");
 												}
 											}
 										});
@@ -493,8 +593,13 @@
 									},
 									error: function(xhr,textStatus,errorThrown) {
 									    // 요청이 실패한 경우 처리할 로직
-									    alert("휴대폰 인증 코드 발급 AJAX 요청 실패!");
-										console.log(xhr + ", " + textStatus + ", " + errorThrown);
+// 									    alert("휴대폰 인증 코드 발급 AJAX 요청 실패!");
+									    Swal.fire({
+											title: 'AJAX 요청 실패!',         // Alert 제목
+											text: "휴대폰 인증 코드 발급에 실패했습니다!",  // Alert 내용
+											icon:'error',
+										});
+									    console.log(xhr + ", " + textStatus + ", " + errorThrown);
 									}
 								}); // 인증코드 발급 ajax 끝			
 								
@@ -507,8 +612,13 @@
 					}, // 중복 체크 ajax success 끝
 					error: function(xhr,textStatus,errorThrown) {
 					    // 요청이 실패한 경우 처리할 로직
-					    alert("휴대폰 번호 중복 판별 AJAX 요청 실패!");
-						console.log(xhr + ", " + textStatus + ", " + errorThrown);
+// 					    alert("휴대폰 번호 중복 판별 AJAX 요청 실패!");
+					    Swal.fire({
+							title: 'AJAX 요청 실패!',         // Alert 제목
+							text: "휴대폰 번호 중복 판별에 실패했습니다!",  // Alert 내용
+							icon:'error',
+						});
+					    console.log(xhr + ", " + textStatus + ", " + errorThrown);
 					}
 				});// 중복 체크 ajax 끝
 	        }
@@ -517,7 +627,12 @@
 		// 휴대폰번호 입력 값이 없는데 인증코드발급 버튼을 클릭했을 경우
 		$("#requestPhoneAuthCodeButton").on("click", function() {
 			if($("#phone").val() == "") {
-				alert("휴대폰번호를 입력해야 인증코드 발급이 가능합니다!");
+				Swal.fire({
+					title: '입력값이 없어요!',         // Alert 제목
+					text: "휴대폰번호를 입력해야 인증코드 발급이 가능합니다!",  // Alert 내용
+					icon:'warning',
+				});
+// 				alert("휴대폰번호를 입력해야 인증코드 발급이 가능합니다!");
 				$("#phone").focus();
 			}
 		});
@@ -525,7 +640,12 @@
 		// 인증코드 입력 값이 없는데 인증 버튼을 클릭했을 경우
 		$("#completePhoneAuthButton").on("click", function() {
 			if($("#phoneAuthCode").val() == "") {
-				alert("인증코드를 입력해야 인증 확인이 가능합니다!");
+				Swal.fire({
+					title: '입력값이 없어요!',         // Alert 제목
+					text: "인증코드를 입력해야 인증 확인이 가능합니다!",  // Alert 내용
+					icon:'warning',
+				});
+// 				alert("인증코드를 입력해야 인증 확인이 가능합니다!");
 				$("#phoneAuthCode").focus();
 			}
 		});
@@ -534,6 +654,8 @@
 
 		<%-- submit 동작을 수행할 때 값을 올바르게 입력했는지 확인 --%>
 		$("form").on("submit", function() {
+			
+		
 			if(!iscorrectName) { // 이름 미입력 또는 정규표현식 위배
 				$("#checkNameResult").text("2~5글자의 한글만 사용 가능합니다").css("color", "red");
 				$("#name").focus();
@@ -592,12 +714,41 @@
 				$("#checkPhoneAuthCodeResult").text("인증 코드를 확인해주세요").css("color", "red");
 				$("#phoneAuthCode").focus();
 				return false; // submit 동작 취소
-			} else if(confirm("가입완료 버튼을 누르시면 회원으로 등록됩니다")) {
-				return true; 
-			} else {
-				return false;
-			}	
-			return true; // submit 동작 수행(생략 가능)
+			}  else {
+// 				confirm("가입 완료 버튼을 누르면 회원가입이 완료됩니다");
+				Swal.fire({
+					title: '가입 완료하시겠어요?',
+					text: '확인을 누르면 회원가입이 완료됩니다',
+					icon: 'info',
+					
+					showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+					confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+					cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+					confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+					cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+					reverseButtons: true, // 버튼 순서 거꾸로
+				}).then(result => {
+					// 만약 Promise리턴을 받으면,
+					if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+						return true;
+						// true 리턴을 안받아도 바로 넘어감
+						// true 리턴을 안받아도 바로 넘어감
+						// true 리턴을 안받아도 바로 넘어감
+						// true 리턴을 안받아도 바로 넘어감
+						// true 리턴을 안받아도 바로 넘어감
+					} else {
+						return false;
+					} // else 문 끝
+					
+				}); // Swal-then 끝
+			
+// 				return true;
+			}
+			
+			
+// 			return true; // submit 동작 수행(생략 가능)
+			
+			
 		});
 		
 		
