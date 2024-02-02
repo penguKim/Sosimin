@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,15 +90,29 @@ $(function() {
 		
 		let regPw = /^\d{6}$/; // 6자리의 숫자를 표현한 정규표현식
 		
+		// 단순 결제와 충전+결제 구분
+		let title = ""; // 타이틀을 저장할 변수 선언
+		let text = "";
+		let confirmButtonText = "";
+		if($('#pay-amount').val() == "" || $('#pay-amount').val() == "0") {
+			title = "결제하시겠습니까?"
+			text = "확인을 누르시면 결제가 완료됩니다";
+			confirmButtonText = "결제";
+		} else {
+			title = "소심페이를 충전하고<br>결제하시겠습니까?"		
+			text = "등록된 계좌에서 출금 후 결제됩니다.";
+			confirmButtonText = "충전 및 결제";
+		}
+			
 		event.preventDefault();
 		Swal.fire({
-	        title: '페이머니로 결제하시겠습니까?',
-	        text: "페이머니가 차감됩니다.",
+	        title: title,
+	        text: text,
 	        icon: 'question',
 	        showCancelButton: true,
 	        confirmButtonColor: '#39d274',
 	        cancelButtonColor: '#d33',
-	        confirmButtonText: '결제',
+	        confirmButtonText: confirmButtonText,
 	        cancelButtonText: '취소',
 	        reverseButtons: true,
 	    }).then((result) => {
@@ -123,7 +140,7 @@ $(function() {
 						toast: true
 					});
 				} else {
-					$("#pay-use").submit();
+					$("#pay-charge").submit();
 				}
 	        } else {
 	        	$('#password-modal').modal('hide'); // 모달창 닫기
@@ -194,13 +211,32 @@ function openModal() {
 	                                	</a>
 	                                </h3>
 	                            </div>
-	                           	<div class="complete-msg-center">거래정보</div>
-	                           	<div class="complete-msg-left">판매자 : 닉네임</div>
-	                           	<div class="complete-msg-left">상품명 : 게시글</div>
-	                           	<div class="complete-msg-left">가격 : 가격</div>
-	                           	<div class="complete-msg-left">거래유형 : 유형</div>
-	                        </div>
-	                     </div>   
+	                           	<div class="msg">거래 정보 확인</div>
+	                           	<div class="account-info">    
+		                           	<div class="row">
+					                	<div class="col-lg-3 col-md-3 col-12" style="text-align: center;">
+					                    	${productInfo.product_image1} <!-- 썸네일 뿌리기 -->
+					                	</div>
+					                	<div class="col-lg-9 col-md-9 col-12">
+					      					<p class="product-info row"><span class="name_span col-4">판&nbsp;&nbsp;&nbsp;매&nbsp;&nbsp;&nbsp;자 :</span> <span class="value_span col-8">${productInfo.member_id}</span></p>
+				                           	<p class="product-info row"><span class="name_span col-4">상&nbsp;&nbsp;&nbsp;품&nbsp;&nbsp;&nbsp;명 :</span> <span class="value_span col-8">${productInfo.product_name}</span></p>
+				                           	<p class="product-info row"><span class="name_span col-4">가&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;격 :</span> 
+				                           		<span class="value_span col-8">
+				                           			<c:set var="product_price" value="${productInfo.product_price}" />
+													<fmt:formatNumber value="${product_price}" pattern="#,##0" />원
+												</span>
+				                           	</p>
+				                           	<p class="product-info row"><span class="name_span col-4">거래방법 :</span> 
+				                           		<span class="value_span col-8">
+				                           			<c:if test="${productInfo.trade_method eq 0}">대면거래</c:if>
+				                           			<c:if test="${productInfo.trade_method eq 1}">소심거래</c:if>
+				                           		</span>
+				                           	</p>
+					                   	</div>
+					                 </div>
+		                        </div>
+		                 	</div>       
+	                	</div>   
 	                </div>
 	            </div>
 	        </div>
@@ -210,18 +246,18 @@ function openModal() {
 	                <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
 	                    <div class="card login-form">
 	                        <div class="card-body">
-	                        	<div class="complete-msg-center">페이정보</div>
 	                            <div class="row">
 		                           	<div class="pay-info col-lg-6 col-md-6 col-12">
 										페이잔액
 									</div>
 		                           	<div class="pay-balance col-lg-6 col-md-6 col-12">
-										10,000원
+										<c:set var="payBalance" value="${payInfo.pay_balance}" />
+										<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원
 									</div>
 	                            </div>
 	                            <br>
 	                            <div class="form-group input-group">
-	                                <label for="reg-fn">충전금액</label>
+	                                <label for="pay-amount">충전금액</label>
 	                                <input class="form-control" type="text" id="pay-amount" name="pay_amount"
 	                                	placeholder="충전을 원하시는 금액을 입력해주세요">
 	                            </div>
@@ -235,7 +271,6 @@ function openModal() {
 							        <input type="button" class="btn-check" id="btn-check4" value="100000" autocomplete="off">
 								    <label class="btn btn-outline-primary" for="btn-check4">+10만원</label>
 								</div>
-								
 	                            <div class="msg">출금 계좌 확인</div>
 	                            <!-- 계좌리스트 한 줄 시작 -->
 	                            <div class="account-info">    
@@ -243,7 +278,7 @@ function openModal() {
 				                       <div class="col-lg-2 col-md-2 col-12" style="text-align: center;">
 				                       		<img src="./resources/images/payment/${payInfo.bank_name}.png" alt="이미지" width="50px"/>
 				                        </div>
-				                        <div class="col-lg-10 col-md-10 col-12">
+				                        <div class="col-lg-6 col-md-6 col-12">
 					                        <h5 class="bank-name">${payInfo.bank_name}</h5>
 					                        <p class="account-no">
 					                                ${payInfo.account_num_masked}
@@ -251,6 +286,9 @@ function openModal() {
 					                         <input type="hidden" name="pay_id" value="${payInfo.pay_id}">
 					                         <input type="hidden" name="user_name" value="${payInfo.user_name}">
 					                         <input type="hidden" name="fintech_use_num" value="${payInfo.fintech_use_num}">
+				                   		</div>
+				                   		<div class="button col-lg-4 col-md-4 col-12" id="regist-btn" >
+				                   			<input type="button" class="btn" onclick="location.href='AccountRegist'" value="변경하기">
 				                   		</div>
 				                   	</div>
 	                            </div>

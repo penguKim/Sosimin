@@ -265,3 +265,16 @@
 .top_table th {
 	background-color: #dee2e6;
 }
+
+.product-info {
+	font-size: 17px;
+}
+
+.product-info>.name_span {
+	white-space: nowrap;
+}
+
+.product-info>.value_span {
+	overflow: hidden;
+}
+

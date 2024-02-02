@@ -395,6 +395,14 @@ function select_date() {
 	
 }
 
+// 임시로 테스트용 결제하기 버튼 추가
+function payment() {
+	// 채팅방에서 produtct_id 들고오기
+	// 지금은 임의로 128번 상품 들고와서 작업
+	location.href="Payment?product_id=274";
+}
+
+
 </script>
 </head>
 <body>
@@ -431,6 +439,7 @@ function select_date() {
         </div>
     </div>
     <!-- End Breadcrumbs -->
+    <input type="button" value="(임시)결제하기" onclick="payment()">
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
 	 <div class="account-login section">

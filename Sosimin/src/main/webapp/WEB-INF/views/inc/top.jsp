@@ -493,7 +493,7 @@
                     <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                         <ul id="nav" class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <a href="./" class="active" aria-label="Toggle navigation">Home</a>
+                                <a href="./" class="active" aria-label="Toggle navigation">홈</a>
                             </li>
                             <li class="nav-item">
                                 <a href="SearchProduct">카테고리</a>

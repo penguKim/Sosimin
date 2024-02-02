@@ -110,7 +110,14 @@
 				</otherwise>
 			</choose>
 		</if>
-		ORDER BY product_datetime DESC
+		ORDER BY 
+		<choose>
+			<when test="sort == 1">product_datetime DESC,</when>
+			<when test="sort == 2">product_wishcount DESC ,</when>
+			<when test="sort == 3">product_price ASC,</when>
+			<when test="sort == 4">product_price DESC,</when>
+		</choose>
+		product_datetime DESC
 		LIMIT #{page.startRow}, #{page.listLimit}
 	</select>
 	

@@ -50,6 +50,11 @@
 				</a>
 			</li>
 			<li>
+				<a href="">
+					<i class="bi bi-circle"></i><span>약정계좌관리</span>
+				</a>
+			</li>
+			<li>
 				<a href="ChargeRefund">
 					<i class="bi bi-circle"></i><span>충전/환급관리</span>
 				</a>
