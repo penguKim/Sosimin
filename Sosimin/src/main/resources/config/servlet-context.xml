@@ -49,12 +49,13 @@
 <!-- 	</beans:bean> -->
 
 
-	<context:property-placeholder location="classpath:/config/appdata.properties"/>
+	<context:property-placeholder location="classpath:/config/appdata.properties"/> <!-- 'appdata.properties'라는 속성 파일을 찾아서 해당 속성들을 사용할 수 있게 함 -->
 
-	<websocket:handlers allowed-origins="*">
-		<websocket:mapping handler="websocketHandler" path="echo"/>
+	<websocket:handlers allowed-origins="*"><!-- WebSocket 핸들러를 설정, 모든곳에서 WebSocket 요청가능 -->
+		<!-- WebSocket 요청과 핸들러를 매핑하는 부분입니다. 'path' 속성의 값이 'echo'인 요청이 들어오면 'websocketHandler'라는 id를 가진 핸들러가 처리하도록 설정되어 있습니다. -->
+		<websocket:mapping handler="wsHandler" path="echo"/>
 	</websocket:handlers>
-	<beans:bean id="websocketHandler" class="com.itwillbs.c5d2308t1_2.handler.ChatHandler"></beans:bean>
-
+	<beans:bean id="wsHandler" class="com.itwillbs.c5d2308t1_2.handler.ChatHandler"></beans:bean>
+<!-- 'websocketHandler'라는 id를 가진 빈을 설정하는 부분.클래스가 실제 WebSocket 요청을 처리하는 핸들러의 역할을 합니다. -->
 	
 </beans:beans>
