@@ -859,7 +859,8 @@ function setThumbnail(event) {
 
 	          var imageItem = document.createElement("span");
 	          imageItem.classList.add("imageItem");
-
+	          imageItem.file = file;
+	          
 	          imageItem.appendChild(img);
 	          imageItem.appendChild(closeButton);
 	          document.getElementById("image_container").appendChild(imageItem);
@@ -957,6 +958,7 @@ function submitFiles(event) {
 // });
 
 
+
 // 이미지 삭제
 function removeImage(button) {
   var imageItem = button.parentNode; // 이미지 항목
@@ -972,6 +974,21 @@ function removeImage(button) {
   // 이미지 항목 삭제
   imageContainer.removeChild(imageItem);
   
+//   var index = imageItem.dataset.index;  // 파일의 인덱스를 가져옵니다.
+//   selectedFiles.splice(index, 1);
+  
+  var file = imageItem.file;  // 파일 객체를 가져옵니다.
+  var index = selectedFiles.indexOf(file);  // selectedFiles 배열에서 해당 파일의 인덱스를 찾습니다.
+  if (index > -1) {
+    selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
+  }
+//   selectedFiles = Array.from(imageContainer.children)
+//   .slice(1)  // 첫 번째 요소는 이미지 추가 버튼이므로 제외합니다.
+//   .map(function(imageItem) {
+//     var index = imageItem.dataset.index;  // 이미지의 인덱스를 가져옵니다.
+//     return selectedFiles[index];  // selectedFiles 배열에서 해당 이미지를 가져옵니다.
+//   });
+  
   if (imageItem.querySelector(".mainImage")) {
 	    var nextImageItem = imageContainer.children[1]; 
 	    if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {
@@ -981,6 +998,7 @@ function removeImage(button) {
 	        nextImageItem.appendChild(mainImageText);
 	      }
 	    }
+  
   var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
   imageLength--;
   document.getElementById("imageLength").textContent = imageLength;
@@ -999,8 +1017,8 @@ function removeImage(button) {
 
 // 지도로 찾기 팝업
 function AddressMap() {
-  var width = 517; // 팝업 창의 가로 크기
-  var height = 485; // 팝업 창의 세로 크기
+  var width = 563; // 팝업 창의 가로 크기
+  var height = 535; // 팝업 창의 세로 크기
   var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
   var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
 

@@ -423,9 +423,8 @@ public class ProductController {
 					
 					// 상품 삭제 페이지
 					@PostMapping("ProductDelete")
-					public String productDelete(HttpSession session, Model model, @RequestParam Map<String,String> map) {
-						
-						System.out.println(" 삭제 하기 전에 뭐 들었음 : " + map);
+					public String productDelete(HttpSession session, Model model, @RequestParam Map<String,String> map, MemberVO member) {
+						// C:\wordspace_spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Sosimin\resources\ upload\2024\02\04
 						
 						String sId = (String)session.getAttribute("sId");
 						if(sId == null) {
@@ -435,7 +434,48 @@ public class ProductController {
 							return "forward";
 						}
 						
-						return "";
+						map = service.selectProduct(member);
+						
+						boolean deleteCount = service.removeProduct(map);
+						
+						System.out.println("여기엔 뭐가 들었지? 삭제하기전에는?" + map);
+						System.out.println(" 삭제에 성공했니? " + deleteCount);
+						if(deleteCount) {
+//							String[] arrFileNames = {map.get("product_image1").toString(), map.get("product_image2").toString(), 
+//									map.get("product_image3").toString(), map.get("product_image4").toString(), map.get("product_image5").toString()};
+							
+							// for 문을 활용하여 배열 반복
+							String[] arrFileNames = new String[5];
+							System.out.println("이미지가 안에 저장되있는건가 ??" + arrFileNames);
+							for (int i = 0; i < 5; i++) {
+								String key = "product_image" + (i + 1);
+								if (map.get(key) != null) {
+									arrFileNames[i] = map.get(key).toString();
+								} else {
+									arrFileNames[i] = "";
+								}
+							}
+							try {
+								// -------------------------------------------------------------
+								// [ 서버에서 파일 삭제 ]
+								// 실제 업로드 경로 알아내기
+								String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+								String saveDir = session.getServletContext().getRealPath(uploadDir);
+								// -----------------------------------------------------------
+								
+								for(String fileName : arrFileNames) {
+									if(!fileName.equals("") || fileName != null) {
+										Path path = Paths.get(saveDir + "/" + fileName);
+										Files.deleteIfExists(path);
+									}
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							return "redirect:/";
+						}else {
+							return "";
+						}
 					}
 					
 					@PostMapping("ProductModifySuccess")

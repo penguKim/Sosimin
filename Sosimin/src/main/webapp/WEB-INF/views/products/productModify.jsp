@@ -824,7 +824,6 @@ function submitFiles(event) {
 		    formData.append('tag_name' + i, tagInput.value);
 		  }
 		}
-	  
 	  // Form의 각 필드를 개별적으로 FormData에 추가
 	    var formElements = form.elements;
 	    for (var i = 0; i < formElements.length; i++) {
@@ -907,9 +906,9 @@ function ProductDelete(event) {
 		    processData: false,
 		    contentType: false,
 		    success: function(data) {
-		        alert("성공");
+		        alert("삭제되었습니다.");
 		        console.log('File upload successful!');
-		        location.href =  "ProductDetail?product_id=" + data;
+		        location.href =  "./"
 		    },
 		    error: function(jqXHR, textStatus, errorThrown) {
 		        // 파일 업로드에 실패했을 때 실행되는 코드

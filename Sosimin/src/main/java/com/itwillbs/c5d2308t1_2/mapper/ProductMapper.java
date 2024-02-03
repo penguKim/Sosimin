@@ -73,4 +73,9 @@ public interface ProductMapper {
 	void updateReadcount(Map<String, String> map);
 
 	Map<String, String> getProductImage(Map<String, String> map);
+
+	int removeProductBoard(Map<String, String> map);
+
+	int removeProduct(Map<String, String> map);
+
 }
