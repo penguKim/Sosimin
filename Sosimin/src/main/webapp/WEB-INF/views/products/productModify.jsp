@@ -818,6 +818,13 @@ function submitFiles(event) {
 	  var form = document.querySelector('form');
 	  var formData = new FormData();
 
+	  for (var i = 1; i <= 4; i++) {
+		  var tagInput = document.querySelector('input[name="tag_name' + i + '"]');
+		  if (tagInput) {
+		    formData.append('tag_name' + i, tagInput.value);
+		  }
+		}
+	  
 	  // Form의 각 필드를 개별적으로 FormData에 추가
 	    var formElements = form.elements;
 	    for (var i = 0; i < formElements.length; i++) {

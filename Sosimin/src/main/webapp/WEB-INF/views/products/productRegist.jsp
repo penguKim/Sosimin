@@ -477,10 +477,49 @@ $(function() {
 			}
 			$(document).ready(() => {
 			  // 페이지가 로드될 때마다 '최근 작성한 글을 불러오시겠습니까?'라는 메시지를 표시합니다.
-			  showConfirmMessage();
+			  loadImage();
 			});
 			// 임시저장 버튼이 클릭되었을 때 askForTemporarySave 함수를 호출합니다.
 		
+// 	$(document).ready(() => {
+	function loadImage() {
+  var imageCount = 0; // 이미지 카운트를 초기화합니다.
+  if (localStorage.getItem("isTempSaved") === "1") {
+    for (let i = 1 ; i <= 5; i++) {
+      var base64Image = localStorage.getItem("image" + i);
+      if (base64Image) {
+        var img = document.createElement("img");
+        img.setAttribute("src", base64Image);
+        img.setAttribute("class", "imageSize");
+
+        var closeButton = document.createElement("button");
+        closeButton.setAttribute("type", "button");
+        closeButton.setAttribute("class", "imageClose");
+        closeButton.setAttribute("onclick", "removeImage(this)");
+
+        var imageItem = document.createElement("span");
+        imageItem.classList.add("imageItem");
+
+        imageItem.appendChild(img);
+        imageItem.appendChild(closeButton);
+
+        if(i == 1) {
+          var mainImageText = document.createElement("span");
+          mainImageText.classList.add("mainImage");
+          mainImageText.textContent = "대표이미지";
+          imageItem.appendChild(mainImageText);
+        }
+
+        document.getElementById("image_container").appendChild(imageItem);
+
+        imageCount++; // 이미지를 불러올 때마다 이미지 카운트를 증가시킵니다.
+      }
+    }
+    document.getElementById("imageLength").textContent = imageCount.toString(); // 이미지 카운트를 표시합니다.
+    localStorage.setItem("imageCount", imageCount.toString()); // 이미지 카운트를 로컬스토리지에 저장합니다.
+  }
+}
+			
 $(document).ready(() => {
 	
   function showConfirmMessage() {
@@ -507,6 +546,16 @@ $(document).ready(() => {
       } else {
           localStorage.removeItem("isTempSaved");  // '아니오'를 선택하면 플래그를 삭제합니다.
           localStorage.clear();
+       // 이미지 컨테이너의 모든 이미지를 제거합니다.
+          var imageContainer = document.getElementById("image_container");
+          while (imageContainer.firstChild) {
+            imageContainer.removeChild(imageContainer.firstChild);
+          }
+          document.getElementById("imageLength").textContent = "0";
+          localStorage.setItem("imageCount", "0");
+          
+          var mainImageText = document.querySelector(".mainImage");
+          mainImageText.style.display = "none";
       }
     }
   }
@@ -772,62 +821,67 @@ $(document).on("click", ".close-button", function() {
 var selectedFiles = [];  // 사용자가 선택한 파일을 저장할 배열
 
 function setThumbnail(event) {
-  var newFiles = event.target.files;
-  var imageCounter = document.querySelectorAll(".imageItem").length + 1;
-  
-  for (var i = 0; i < newFiles.length; i++) {
-    var file = newFiles[i];
-    var ext = file.name.split('.').pop().toLowerCase();
-    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+	  var newFiles = event.target.files;
+	  var imageCounter = document.querySelectorAll(".imageItem").length + 1;
+	  
+	  for (var i = 0; i < newFiles.length; i++) {
+	    var file = newFiles[i];
+	    var ext = file.name.split('.').pop().toLowerCase();
+	    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
 
-    if (!allowedExtensions.includes(ext)) {
-      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
-      event.target.value = "";
-      return false;
-    }
+	    if (!allowedExtensions.includes(ext)) {
+	      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
+	      event.target.value = "";
+	      return false;
+	    }
 
+	    var imageLength = parseInt(document.getElementById("imageLength").textContent);
+	    imageLength++;
 
-    var imageLength = parseInt(document.getElementById("imageLength").textContent);
-    imageLength++;
+	    if (imageLength <= 5) {
+	      selectedFiles.push(file); 
+	      document.getElementById("imageLength").textContent = imageLength;
+	      localStorage.setItem("imageCount", imageLength.toString()); // 임시 저장된 이미지의 갯수를 로컬 스토리지에 저장
 
-    if (imageLength <= 5) {
-    selectedFiles.push(file);  // 사용자가 선택한 파일을 배열에 추가
-    document.getElementById("imageLength").textContent = imageLength;
-    
-      var reader = new FileReader();
-      reader.onload = (function(file) {
-        return function(e) {
-          var img = document.createElement("img");
-          img.setAttribute("src", e.target.result);
-          img.setAttribute("class", "imageSize");
+	      var reader = new FileReader();
+	      reader.onload = (function(file) {
+	        return function(e) {
+	          var img = document.createElement("img");
+	          img.setAttribute("src", e.target.result);
+	          img.setAttribute("class", "imageSize");
 
-          var closeButton = document.createElement("button");
-          closeButton.setAttribute("type", "button");
-          closeButton.setAttribute("class", "imageClose");
-          closeButton.setAttribute("onclick", "removeImage(this)");
+	          localStorage.setItem("image" + imageCounter, e.target.result); // 이미지를 Base64 형식의 문자열로 변환하여 로컬스토리지에 저장
 
-          var imageItem = document.createElement("span");
-          imageItem.classList.add("imageItem");
+	          var closeButton = document.createElement("button");
+	          closeButton.setAttribute("type", "button");
+	          closeButton.setAttribute("class", "imageClose");
+	          closeButton.setAttribute("onclick", "removeImage(this)");
 
-          imageItem.appendChild(img);
-          imageItem.appendChild(closeButton);
-          document.getElementById("image_container").appendChild(imageItem);
+	          var imageItem = document.createElement("span");
+	          imageItem.classList.add("imageItem");
 
-          if(imageCounter == 1) {
-            var mainImageText = document.querySelector(".mainImage");
-            mainImageText.style.display = "inline";
-          }
-          imageCounter++;
-        };
-      })(file);
-      reader.readAsDataURL(file);
-    } else if (imageLength > 5) {
-      alert("사진 첨부는 최대 5장까지 가능합니다.");
-      imageLength = 5;
-      document.getElementById("imageLength").textContent = imageLength;
-    }
-  }
-}
+	          imageItem.appendChild(img);
+	          imageItem.appendChild(closeButton);
+	          document.getElementById("image_container").appendChild(imageItem);
+
+	          // 첫 번째 이미지에 "대표이미지" 텍스트를 추가합니다.
+	          if(imageCounter == 1) {
+	            var mainImageText = document.createElement("span");
+	            mainImageText.classList.add("mainImage");
+	            mainImageText.textContent = "대표이미지";
+	            imageItem.appendChild(mainImageText);
+	          }
+	          imageCounter++;
+	        };
+	      })(file);
+	      reader.readAsDataURL(file);
+	    } else if (imageLength > 5) {
+	      alert("사진 첨부는 최대 5장까지 가능합니다.");
+	      imageLength = 5;
+	      document.getElementById("imageLength").textContent = imageLength;
+	    }
+	  }
+	}
 //파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
 function addFileInput() {
 document.getElementById("product_image").click();
@@ -918,6 +972,15 @@ function removeImage(button) {
   // 이미지 항목 삭제
   imageContainer.removeChild(imageItem);
   
+  if (imageItem.querySelector(".mainImage")) {
+	    var nextImageItem = imageContainer.children[1]; 
+	    if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {
+	        var mainImageText = document.createElement("span");
+	        mainImageText.classList.add("mainImage");
+	        mainImageText.textContent = "대표이미지";
+	        nextImageItem.appendChild(mainImageText);
+	      }
+	    }
   var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
   imageLength--;
   document.getElementById("imageLength").textContent = imageLength;
@@ -955,8 +1018,12 @@ function setAddress(address) {
 
 
 function checkInput() {
+	var fileInput = document.getElementById('product_image');
+    var imageCount = parseInt(localStorage.getItem("imageCount") || "0");
+	  
     var fileInput = document.getElementById('product_image');
     if (fileInput.files.length === 0) {
+//     if (fileInput.files.length === 0 && imageCount === 0) {
       alert('이미지파일 1개 이상 등록하셔야 됩니다.');
       	$("#product_image").focus();
       	$("html, body").animate({ // 페이지를 이동시켜준다.
