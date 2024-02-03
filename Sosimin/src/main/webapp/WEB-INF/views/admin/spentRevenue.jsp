@@ -44,6 +44,12 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 ======================================================== -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script>
+	function orderDetail(order_id) {
+		location.href="OrderList?order_id=" + order_id;
+	}
+</script>
 </head>
 <body>
 
@@ -94,19 +100,19 @@
 										<tr>
 											<td>${pay_list.pay_history_id}</td>
 											<td>${pay_list.pay_id}</td>
-											<td>
-												<c:choose>
-													<c:when test="${pay_list.pay_history_type eq '3'}">${pay_list.product_buyer}</c:when>
-													<c:when test="${pay_list.pay_history_type eq '4'}">${pay_list.product_seller}</c:when>
-												</c:choose>
-											</td>
+											<td>${pay_list.member_id}</td>
 											<td>
 												<c:choose>
 													<c:when test="${pay_list.pay_history_type eq '3'}">사용</c:when>
 													<c:when test="${pay_list.pay_history_type eq '4'}">수익</c:when>
 												</c:choose>
 											</td>
-											<td>${pay_list.order_id}</td>
+											<td>
+												<c:choose>
+													<c:when test="${pay_list.pay_history_type eq '3'}">${pay_list.buy_id}</c:when>
+													<c:when test="${pay_list.pay_history_type eq '4'}">${pay_list.sell_id}</c:when>
+												</c:choose>
+											</td>
 											<td>
 												<c:set var="payAmount" value="${pay_list.pay_amount}" />
 												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
@@ -117,9 +123,18 @@
 												${date}
 											</td>
 											<td class="green">
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${pay_list.pay_history_id}">
-													거래보기
-												</button>
+												<c:choose>
+													<c:when test="${pay_list.pay_history_type eq '3'}">
+														<button type="button" class="btn btn-primary" onclick="orderDetail(${pay_list.buy_id})">
+															거래보기
+														</button>
+													</c:when>
+													<c:when test="${pay_list.pay_history_type eq '4'}">
+														<button type="button" class="btn btn-primary" onclick="orderDetail(${pay_list.sell_id})">
+															거래보기
+														</button>
+													</c:when>
+												</c:choose>
 											</td>
 										</tr>
 									</c:forEach>

@@ -317,11 +317,11 @@ function load_list(pay_history_type, start_date, end_date) {
 						subject = "페이환급";
 					} else if(history.pay_history_type == "3") {
 						pay_history_type = "사용";
-						subject = '<a href="ProductDetail?product_id=' + history.product_id +'">' + history.product_name + '</a><i class="fa fa-angle-right"></i>';
+						subject = '<a href="ProductDetail?product_id=' + history.buy_product_id +'">' + history.buy_product_name + '</a><i class="fa fa-angle-right"></i>';
 					} else if(history.pay_history_type == "4") {
 						pay_history_type = "수익";
-						subject = '<a href="ProductDetail?product_id=' + history.product_id +'">' + history.product_name + ' </a>';
-					}
+						subject = '<a href="ProductDetail?product_id=' + history.sell_product_id +'">' + history.sell_product_name + '</a><i class="fa fa-angle-right"></i>';
+					} 
 					
 					let pay_amount = history.pay_amount.toLocaleString();
 					let pay_history_balance = history.pay_history_balance.toLocaleString();
@@ -400,8 +400,37 @@ function select_date() {
 // 임시로 테스트용 결제하기 버튼 추가
 function payment() {
 	// 채팅방에서 produtct_id 들고오기
-	// 지금은 임의로 128번 상품 들고와서 작업
 	location.href="Payment?product_id=303";
+}
+
+// 임시로 테스트용 구매확정 버튼 추가(에이젝스)
+function confirmPayment() {
+	// 채팅방에서 produtct_id 들고오기
+// 	location.href="ConfirmPayment?product_id=303";
+	
+	<%-- 서블릿 요청 --%>
+	$.ajax({
+		type: "GET",
+		url: "ConfirmPayment",
+		data: {
+			"product_id": 303,
+		},
+		dataType: "json",
+		success:  function(data) {
+	
+		},
+		error: function(request, status, error) {
+	      // 요청이 실패한 경우 처리할 로직
+	      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+		}
+	});
+	
+}
+
+// 임시로 테스트용 결제취소 버튼 추가(에이젝스)
+function cancelPayment() {
+	// 채팅방에서 produtct_id 들고오기
+	location.href="CancelPayment?product_id=303";
 }
 
 
@@ -442,6 +471,8 @@ function payment() {
     </div>
     <!-- End Breadcrumbs -->
     <input type="button" value="(임시)결제하기" onclick="payment()">
+    <input type="button" value="(임시)구매확정" onclick="confirmPayment()">
+    <input type="button" value="(임시)결제취소" onclick="cancelPayment()">
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
 	 <div class="account-login section">

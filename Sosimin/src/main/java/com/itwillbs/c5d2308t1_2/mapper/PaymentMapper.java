@@ -65,6 +65,12 @@ public interface PaymentMapper {
 	// 회원의 페이 정보 불러오기
 	Map<String, Object> selectPayList(Map<String, Object> map);
 	
+	// 페이 정보 수정하기
+	int updatePayInfo(Map<String, Object> map);
+	
+	// 페이 잔액 변경 내역 저장
+	void insertPayHistory2(Map<String, Object> map);
+	
 	// 페이 사용 내역 불러오기(충전/환급)
 	List<Map<String, Object>> selectPayChargeRefund();
 
@@ -72,6 +78,8 @@ public interface PaymentMapper {
 	List<Map<String, Object>> selectPaySpentRevenue();
 
 	List<Map<String, Object>> selectOrderList();
+
+
 
 
 

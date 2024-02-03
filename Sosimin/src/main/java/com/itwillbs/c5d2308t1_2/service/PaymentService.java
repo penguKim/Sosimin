@@ -141,8 +141,8 @@ public class PaymentService {
 	// 구매하고 구매 기록 저장
 	@Transactional
 	public int orderProduct(Map<String, Object> map) {
-		mapper.insertOrder(map);
 		mapper.insertOrderHistory(map);
+		mapper.insertOrder(map);
 		
 		return mapper.updatePayBalance(map);
 	}
@@ -159,6 +159,16 @@ public class PaymentService {
 	// 회원의 페이 정보 불러오기
 	public Map<String, Object> getPayList(Map<String, Object> map) {
 		return mapper.selectPayList(map);
+	}
+	
+	// 페이 정보 변경
+	@Transactional
+	public int updatePayInfo(Map<String, Object> map) {
+		if(map.get("pay_balance") != null && !map.get("pay_balance").toString().equals("")) {
+			mapper.insertPayHistory2(map);			
+		}
+		
+		return mapper.updatePayInfo(map);
 	}
 	
 	// 페이 이용 내역 불러오기(충전/환급)

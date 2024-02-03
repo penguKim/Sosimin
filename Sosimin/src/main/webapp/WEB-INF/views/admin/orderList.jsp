@@ -44,6 +44,23 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 ======================================================== -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script>
+$(function() {
+	// 파라미터에 order_id 값이 있을 경우 값을 저장
+	let order_id = ${param.order_id};
+	
+	console.log(order_id);
+	
+	if (order_id) {
+	    openModal(order_id);
+	}
+});
+
+function openModal(order_id) {
+	$("#modal-" + order_id).modal('show');
+}
+</script>
 </head>
 <body>
 
@@ -83,6 +100,7 @@
 										<th>거래금액</th>
 										<th>판매자</th>
 										<th>구매자</th>
+										<th>거래상태</th>
 										<th>거래일</th>
 										<th>상세보기</th>
 									</tr>
@@ -93,22 +111,34 @@
 											<td>${order_list.order_id}</td>
 											<td>${order_list.product_name}</td>
 											<td>
-												<c:set var="payAmount" value="${order_list.pay_amount}" />
+												<c:set var="payAmount" value="${order_list.payment_amount}" />
 												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
 											</td>
-											<td>${order_list.product_seller}</td>
-											<td>${order_list.product_buyer}</td>
+											<td>${order_list.seller}</td>
+											<td>${order_list.buyer}</td>
 											<td>
-												<c:set var="datetime" value="${fn:split(order_list.pay_history_date, 'T')}" />
-												<c:set var="date" value="${datetime[0]}" />
-												${date}
+												<c:choose>
+													<c:when test="${order_list.order_status eq 0}">거래진행</c:when>
+													<c:when test="${order_list.order_status eq 1}">거래완료</c:when>
+													<c:when test="${order_list.order_status eq 2}">거래취소</c:when>
+												</c:choose>
+											</td>
+											<td>
+											<c:choose>
+												<c:when test="${order_list.order_status eq 0}">거래진행중</c:when>
+												<c:otherwise>
+													<c:set var="datetime" value="${fn:split(order_list.pay_history_date, 'T')}" />
+													<c:set var="date" value="${datetime[0]}" />
+													${date}
+												</c:otherwise>
+											</c:choose>
 											</td>
 											<td class="green">
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${pay_list.pay_history_id}">
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${order_list.order_id}">
 													상세보기
 												</button>
 												<!-- Basic Modal -->
-												<div class="modal fade" id="modal-${pay_list.pay_history_id}" tabindex="-1">
+												<div class="modal fade" id="modal-${order_list.order_id}" tabindex="-1">
 													<div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header">
@@ -136,35 +166,43 @@
 																	</tr>
 																	<tr>
 																		<th scope="row">판매자</th>
-																		<td>${order_list.product_seller}</td>
+																		<td>${order_list.seller}</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">구매자</th>
-																		<td>${order_list.product_buyer}</td>
+																		<td>${order_list.buyer}</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">거래금액</th>
 																		<td>
-																			<c:set var="payAmount" value="${order_list.pay_amount}" />
+																			<c:set var="payAmount" value="${order_list.payment_amount}" />
 																			<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
-																		</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">거래일</th>
-																		<td>
-																			<c:set var="datetime" value="${fn:split(order_list.pay_history_date, 'T')}" />
-																			<c:set var="date" value="${datetime[0]}" />
-																			${date}
 																		</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">거래상태</th>
 																		<td>
-																			<c:if test="${order_list.order_status eq 0}">거래완료</c:if>
-																			<c:if test="${order_list.order_status eq 1}">거래취소</c:if>
+																			<c:choose>
+																				<c:when test="${order_list.order_status eq 0}">거래진행</c:when>
+																				<c:when test="${order_list.order_status eq 1}">거래완료</c:when>
+																				<c:when test="${order_list.order_status eq 2}">거래취소</c:when>
+																			</c:choose>
 																		</td>
 																	</tr>
-																	<c:if test="${order_list.order_status eq 1}">
+																	<tr>
+																		<th scope="row">거래일</th>
+																		<td>
+																			<c:choose>
+																				<c:when test="${order_list.order_status eq 0}">거래진행중</c:when>
+																				<c:otherwise>
+																					<c:set var="datetime" value="${fn:split(order_list.pay_history_date, 'T')}" />
+																					<c:set var="date" value="${datetime[0]}" />
+																					${date}
+																				</c:otherwise>
+																			</c:choose>
+																		</td>
+																	</tr>
+																	<c:if test="${order_list.order_status eq 2}">
 																		<tr>
 																			<th scope="row">취소일</th>
 																			<td>${order_list.order_cancel_date}</td>
@@ -173,7 +211,7 @@
 																</table>
 															</div>
 															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">뒤로가기</button>
+																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 																<button type="button" class="btn btn-primary">취소하기</button>
 															</div>
 														</div>

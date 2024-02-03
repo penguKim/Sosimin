@@ -44,6 +44,7 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 ======================================================== -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 function MemberAccountDetail(pay_id) {
 	location.href = "MemberPayDetail?pay_id=" + pay_id;

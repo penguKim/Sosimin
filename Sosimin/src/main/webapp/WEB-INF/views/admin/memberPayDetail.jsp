@@ -44,6 +44,239 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 ======================================================== -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script>
+$(function() {
+	// 금액에 자동으로 , 입력
+	$("#new-balance").blur(function() {
+		if(!$("#new-balance").val() == "") {
+			input_amount = parseInt($("#new-balance").val().replace(/,/g, '')); // 인풋텍스트에 있는 값 숫자로 변환하여 대입			
+		}
+
+		let formattedValue = input_amount.toLocaleString(); // 1000단위마다 ,
+		$("#new-balance").val(formattedValue);
+	});
+	
+	// 모달창을 열 때 값을 초기화
+	$("#modify").click(function() {
+
+		 $("#new-balance").val("${payList.pay_balance}");
+		 $("#new-status").val("${payList.pay_status}");		
+		 $("#new-passwd1").val("");		
+		 $("#new-passwd2").val("");		
+		
+	});
+	
+	
+});
+
+	// 정보 변경을 눌렀을 때 에이젝스 요청
+	function CheckPayInfo(pay_id) {
+		
+		event.preventDefault(); 
+		
+		Swal.fire({
+	        title: '해당 고객의 페이정보를 수정하시겠습니까?',
+	        text: "확인을 누르시면 수정이 진행됩니다.",
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#0d6efd',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '수정',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	    }).then((result) => {
+	    	if (result.isConfirmed) {
+				let pay_balance = $("#new-balance").val();
+				let pay_status = $("#new-status").val();
+				let pay_password = $("#new-passwd1").val();
+				let pay_password2 = $("#new-passwd2").val();
+				let existing_balance = ${payList.pay_balance};
+				
+		// 		console.log("pay_balance = " + pay_balance + ", pay_status = " + pay_status + ", pay_password = " + pay_password);				
+				
+				// 입력값이 있다면 입력값을 검증
+				let isCorrect = true; // 입력값 검증에 사용할 변수 선언
+				
+				input_amount = parseInt(pay_balance.replace(/,/g, ''));
+				existing_balance = parseInt(existing_balance);
+				
+				let regex = /^[^-]*$/;
+				if(pay_balance != null && pay_balance != "") {
+					event.preventDefault(); 
+					if(!regex.test(pay_balance)) {
+						event.preventDefault();
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '0 이상의 값만 입력 가능합니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});
+						isCorrect = false;
+						$("#new-balance").focus();
+					} else if(input_amount < existing_balance) {
+						event.preventDefault();
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '페이 차감은 불가능합니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});
+						isCorrect = false;
+						$("#new-balance").focus();
+					}
+				}
+				
+				let regPw = /^\d{6}$/;
+				if(pay_password != null && pay_password != "") {
+					if(!regPw.test(pay_password)) {
+						event.preventDefault();
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '숫자 6자리를 입력해주세요.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});
+						isCorrect = false;
+						$("#new-passwd1").focus();
+					} else if(pay_password != pay_password2) {
+						event.preventDefault();
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '비밀번호가 일치하지 않습니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});
+						isCorrect = false;
+						$("#new-passwd2").focus();
+					}
+				
+				}
+		
+				// 패스워드 확인 에이젝스 재사용
+				let is_correct_passwd = false; // 불일치(=변경가능)
+				
+				if(isCorrect) { // 검증이 잘 된 경우에만 에이젝스 실행
+					$.ajax({
+						type: "GET",
+						url: "PasswdCheck",
+						data: {
+							"input_passwd": pay_password
+						},
+						success:  function(data) {
+							if(data == "true") {
+								is_correct_passwd = true; // 일치(=변경할 필요 없음)
+							}
+							
+							if(pay_balance == ${payList.pay_balance} && pay_status == ${payList.pay_status} && is_correct_passwd) { // 변경값이 없으면
+								event.preventDefault();
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '변경된 정보가 없습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});
+							} else {
+								if(input_amount == existing_balance) { // 금액이 같으면
+									pay_balance = null; // null값 세팅
+								}
+								
+								if(pay_status == ${payList.pay_status}) { // 상태 변경이 없으면
+									pay_status = null; // null값 세팅
+								}
+								
+								if(is_correct_passwd) { // 비밀번호 변경이 없으면
+									pay_password = null; // null값 세팅
+								}
+								
+								if(pay_balance == null && pay_status == null && pay_password == null) { // 변경할 값이 없으면
+									Swal.fire({
+										icon: 'error',
+										title: '정보 변경에 실패했습니다.',
+										confirmButtonColor: '#0d6efd',
+										confirmButtonText: '확인',
+										allowOutsideClick: false
+									});
+									console.log(pay_balance + pay_status + is_correct_passwd);									
+								} else {
+									ChangePayInfo(pay_id, pay_balance, pay_status, pay_password); // 변경 요청 진행
+								}
+								
+							}
+							
+						},
+						error: function(request, status, error) {
+					      // 요청이 실패한 경우 처리할 로직
+					      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+						}
+					});
+				}
+	    	} else {
+	        	$('#modal-${pay_list.pay_history_id}').modal('hide'); // 모달창 닫기
+	        }
+	    	
+	    });
+	}
+	
+	// 잔액, 상태, 비밀번호 중 변경값이 있을 때에만 변경 진행
+	function ChangePayInfo(pay_id, pay_balance, pay_status, pay_password) {
+		console.log("ChangePayInfo 실행됨" + pay_id);
+
+		// 변경을 위해 ajax 요청
+		$.ajax({
+			type: "GET",
+			url: "ChangePayInfo",
+			data: {
+				"pay_id": pay_id,
+				"pay_balance": pay_balance,
+				"pay_status": pay_status,
+				"pay_password": pay_password
+			},
+			success:  function(data) {
+				console.log("인서트 결과 : " + data);
+				
+				if(data = "true") {
+					Swal.fire({
+						icon: 'success',
+						title: '정보 변경에 성공했습니다.',
+						confirmButtonColor: '#0d6efd',
+						confirmButtonText: '확인',
+						allowOutsideClick: false
+					}).then((result) => {
+						location.reload();
+					});
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: '정보 변경에 실패했습니다.',
+						confirmButtonColor: '#0d6efd',
+						confirmButtonText: '확인',
+						allowOutsideClick: false
+					});
+				}
+				
+				$('#modal-${pay_list.pay_history_id}').modal('hide'); // 모달창 닫기
+				
+			},
+			error: function(request, status, error) {
+		      // 요청이 실패한 경우 처리할 로직
+		      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+			}
+		});
+		
+	}
+	
+</script>
 </head>
 <body>
 
@@ -95,9 +328,10 @@
 										</c:choose>
 									</td>
 									<td class="green">
-										<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${pay_list.pay_history_id}">
+										<button type="button" id="modify" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${pay_list.pay_history_id}">
 											정보수정
 										</button>
+									
 										<!-- Basic Modal -->
 										<div class="modal fade" id="modal-${pay_list.pay_history_id}" tabindex="-1">
 											<div class="modal-dialog">
@@ -112,32 +346,41 @@
 															<tr>
 																<th scope="row">소심페이잔액</th>
 																<td>
-																	<input type="text" placeholder="${payList.pay_balance}">
+																	<input type="text" id="new-balance" value="${payList.pay_balance}">
 																</td>
 															</tr>
 															<tr>
 																<th scope="row">소심페이상태</th>
 																<td>
-																	<select>
-																		<option <c:if test="${payList.pay_status eq '0'}">selected</c:if>>정상</option>
-																		<option <c:if test="${payList.pay_status eq '1'}">selected</c:if>>탈퇴</option>
+																	<select id="new-status">
+																		<option value="0" <c:if test="${payList.pay_status eq '0'}">selected</c:if>>정상</option>
+																		<option value="1" <c:if test="${payList.pay_status eq '1'}">selected</c:if>>탈퇴</option>
 																	</select>
 																</td>
 															</tr>
 															<tr>
-																<th scope="row">소심페이비밀번호</th>
-																<td><input type="password" maxlength="6" placeholder="변경시에만 입력"></td>
+																<th scope="row">비밀번호변경</th>
+																<td><input type="password" id="new-passwd1" maxlength="6" placeholder="변경시에만 입력"></td>
+															</tr>
+															<tr>
+																<th scope="row">비밀번호확인</th>
+																<td><input type="password" id="new-passwd2" maxlength="6" placeholder="변경시에만 입력"></td>
 															</tr>
 														</table>
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">뒤로가기</button>
-														<button type="button" class="btn btn-primary">변경하기</button>
+														<button type="button" class="btn btn-primary" onclick="CheckPayInfo(${payList.pay_id})">변경하기</button>
 													</div>
 												</div>
 											</div>
 										</div>
 										<!-- End Basic Modal-->
+									</td>
+									<td class="green">
+										<button type="button" id="modify" class="btn btn-primary" >
+											페이환불
+										</button>
 									</td>
 								</tr>
 							</table>

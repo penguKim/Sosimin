@@ -44,6 +44,12 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 ======================================================== -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<script>
+function MemberAccountDetail(pay_id) {
+	location.href = "MemberPayDetail?pay_id=" + pay_id;
+}
+</script>
 </head>
 <body>
 
@@ -85,6 +91,7 @@
 										<th>거래유형</th>
 										<th>거래금액</th>
 										<th>거래일</th>
+										<th>페이상세정보</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -107,6 +114,11 @@
 												<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
 												${date}
+											</td>
+											<td class="green">
+												<button type="button" class="btn btn-primary" onclick="MemberAccountDetail('${pay_list.pay_id}')">
+													상세보기
+												</button>
 											</td>
 										</tr>
 									</c:forEach>

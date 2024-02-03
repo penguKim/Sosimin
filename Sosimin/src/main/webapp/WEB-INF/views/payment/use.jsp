@@ -260,6 +260,7 @@ function openModal() {
 		                           	<div class="pay-balance col-lg-6 col-md-6 col-12">
 										<c:set var="payBalance" value="${payInfo.pay_balance}" />
 										<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원
+										<input type="hidden" value="${payInfo.pay_balance}" name="pay_balance">
 									</div>
 	                            </div>
 	                            <br>

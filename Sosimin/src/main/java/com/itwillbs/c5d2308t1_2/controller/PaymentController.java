@@ -336,6 +336,8 @@ public class PaymentController {
 	public String payChargePro(@RequestParam Map<String, Object> map, HttpSession session, Model model, RedirectAttributes rttr) {
 		String member_id = (String)session.getAttribute("sId");
 		
+		session.setAttribute("PayChargePro", "PayChargePro" + member_id); // 세션에 거래 요청 정보를 추가
+		
 		if(member_id == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
@@ -432,8 +434,6 @@ public class PaymentController {
 			// pay_history_type을 충전으로 지정
 			map.put("pay_history_type", 1);
 			
-			session.setAttribute("complete", "complete" + member_id); // 세션에 거래 완료 정보를 추가
-			
 			if(withdrawResult.get("rsp_code").equals("A0000")) {
 				log.info("이거임 >>>>>>>>>>>>>>>" + map.toString());
 //				System.out.println("출금됨");
@@ -463,7 +463,7 @@ public class PaymentController {
 	public String payChargeComplete(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
 		
-		if(!("complete" + member_id).equals((String)session.getAttribute("complete"))) { // 세션에 부여된 정보가 일치하지 않으면
+		if(!("PayChargePro" + member_id).equals((String)session.getAttribute("PayChargePro"))) { // 세션에 부여된 정보가 일치하지 않으면
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "./");	// 메인 페이지로 이동
@@ -477,7 +477,7 @@ public class PaymentController {
 		
 		model.addAttribute("payInfo", payInfo);
 		
-		session.removeAttribute("complete"); // 세션에 저장된 정보 삭제
+		session.removeAttribute("PayChargePro"); // 세션에 저장된 정보 삭제
 		
 		return "payment/payModifyComplete";
 	}
@@ -487,7 +487,7 @@ public class PaymentController {
 	public String payChargeRefused(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
 		
-		if(!("complete" + member_id).equals((String)session.getAttribute("complete"))) { // 세션에 부여된 정보가 일치하지 않으면
+		if(!("PayChargePro" + member_id).equals((String)session.getAttribute("PayChargePro"))) { // 세션에 부여된 정보가 일치하지 않으면
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "./");	// 메인 페이지로 이동
@@ -501,7 +501,7 @@ public class PaymentController {
 		
 		model.addAttribute("payInfo", payInfo);
 		
-		session.removeAttribute("complete"); // 세션에 저장된 정보 삭제
+		session.removeAttribute("PayChargePro"); // 세션에 저장된 정보 삭제
 		
 		return "payment/payModifyComplete";
 	}
@@ -591,6 +591,8 @@ public class PaymentController {
 	public String payRefundPro(@RequestParam Map<String, Object> map, HttpSession session, Model model, RedirectAttributes rttr) {
 		String member_id = (String)session.getAttribute("sId");
 		
+		session.setAttribute("PayRefundPro", "PayRefundPro" + member_id); // 거래 완료 정보를 추가
+		
 		if(member_id == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
@@ -653,8 +655,6 @@ public class PaymentController {
 		// pay_history_type을 환급으로 지정
 		map.put("pay_history_type", 2);
 		
-		session.setAttribute("complete", "complete" + member_id); // 거래 완료 정보를 추가
-		
 		if(depositResult.get("rsp_code").equals("A0000")) {
 //			log.info("이거임 >>>>>>>>>>>>>>>" + map.toString());
 //			System.out.println("입금됨");
@@ -681,7 +681,7 @@ public class PaymentController {
 	public String payRefundComplete(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
 		
-		if(!("complete" + member_id).equals((String)session.getAttribute("complete"))) { // 세션에 부여된 정보가 일치하지 않으면
+		if(!("PayRefundPro" + member_id).equals((String)session.getAttribute("PayRefundPro"))) { // 세션에 부여된 정보가 일치하지 않으면
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "./");	// 메인 페이지로 이동
@@ -695,7 +695,7 @@ public class PaymentController {
 		
 		model.addAttribute("payInfo", payInfo);
 		
-		session.removeAttribute("complete"); // 세션에 저장된 정보 삭제
+		session.removeAttribute("PayRefundPro"); // 세션에 저장된 정보 삭제
 		
 		return "payment/payModifyComplete";
 	}
@@ -705,7 +705,7 @@ public class PaymentController {
 	public String payRefundRefused(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
 		
-		if(!("complete" + member_id).equals((String)session.getAttribute("complete"))) { // 세션에 부여된 정보가 일치하지 않으면
+		if(!("PayRefundPro" + member_id).equals((String)session.getAttribute("PayRefundPro"))) { // 세션에 부여된 정보가 일치하지 않으면
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "./");	// 메인 페이지로 이동
@@ -719,7 +719,7 @@ public class PaymentController {
 		
 		model.addAttribute("payInfo", payInfo);
 		
-		session.removeAttribute("complete"); // 세션에 저장된 정보 삭제
+		session.removeAttribute("PayRefundPro"); // 세션에 저장된 정보 삭제
 		
 		return "payment/payModifyComplete";
 	}
@@ -781,8 +781,11 @@ public class PaymentController {
 	public String payUsePro(@RequestParam Map<String, Object> map, HttpSession session, Model model, RedirectAttributes rttr) {
 		log.info("PaymentPro : " + map.toString());
 		
+		
 		String product_buyer = (String)session.getAttribute("sId"); // 구매자 정보
 		map.put("member_id", product_buyer);
+		
+		session.setAttribute("PaymentPro", "PaymentPro" + product_buyer); // 세션에 거래 요청 정보를 저장
 		
 		// DB에서 페이 가입 여부 조회하고 정보 가져오기(페이 미가입자는 현금거래만 가능)
 		Map<String, Object> payInfo = service.getPayInfo(product_buyer);
@@ -909,7 +912,6 @@ public class PaymentController {
 					
 					if(updateCount > 0) {
 						log.info(difference + "원 충전완료");
-						rttr.addFlashAttribute("difference", difference);
 					} else {
 						return "redirect:/PaymentRefuse"; // 거래 실패 페이지로 이동				
 					}
@@ -943,7 +945,6 @@ public class PaymentController {
 		
 		int orderCount = service.orderProduct(map);
 		rttr.addFlashAttribute("order_amount", order_amount);
-		session.setAttribute("complete", "complete" + product_buyer); // 세션에 거래 완료 정보를 추가
 		
 		if(orderCount > 0) {
 			
@@ -959,7 +960,7 @@ public class PaymentController {
 	public String paymentComplete(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
 		
-		if(!("complete" + member_id).equals((String)session.getAttribute("complete"))) { // 세션에 부여된 정보가 일치하지 않으면
+		if(!("PaymentPro" + member_id).equals((String)session.getAttribute("PaymentPro"))) { // 세션에 부여된 정보가 일치하지 않으면
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "./");	// 메인 페이지로 이동
@@ -973,7 +974,7 @@ public class PaymentController {
 		
 		model.addAttribute("payInfo", payInfo);
 		
-		session.removeAttribute("complete"); // 세션에 저장된 정보 삭제
+		session.removeAttribute("PaymentPro"); // 세션에 저장된 정보 삭제
 		
 		
 		return "payment/useComplete";
@@ -984,7 +985,7 @@ public class PaymentController {
 	public String paymentRefuse(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
 		
-		if(!("complete" + member_id).equals((String)session.getAttribute("complete"))) { // 세션에 부여된 정보가 일치하지 않으면
+		if(!("PaymentPro" + member_id).equals((String)session.getAttribute("PaymentPro"))) { // 세션에 부여된 정보가 일치하지 않으면
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			model.addAttribute("msg3", "error");
 			model.addAttribute("targetURL", "./");	// 메인 페이지로 이동
@@ -998,11 +999,44 @@ public class PaymentController {
 		
 		model.addAttribute("payInfo", payInfo);
 		
-		session.removeAttribute("complete"); // 세션에 저장된 정보 삭제
+		session.removeAttribute("PaymentPro"); // 세션에 저장된 정보 삭제
 		
 		
 		return "payment/useComplete";
 	}
+	
+	
+	
+	// ----------------- 구매확정 처리 -----------------------
+	// 구매확정 버튼을 클릭하면 일단 구매자가 입금한 사실이 있는지 확인
+	
+	// 아이디 + pay_id 로 PayHistory찾아서 Orders에서 검색??
+	
+	// 구매자가 입금한 만큼의 금액을 판매자 페이에 더하고 [PayHistory]에 적기 - INSERT
+	// [Pay] 테이블 전체금액(pay_balance) 증가 - UPDATE
+	// 입금 후에 pay_history_id를 [Orders]의 seller_pay_history_id에 넣기 - UPDATE
+	// [Orders]의 order_status를 거래 완료로 바꾸고 거래 완료 시간 적기 - UPDATE
+	// [Product]의 trade_status를 거래완료로 바꾸기 - UPDATE
+	@ResponseBody
+	@GetMapping("ConfirmPayment")
+	public String confirmPayment() {
+		
+		
+		
+		return "";
+	}
+	
+	
+	
+	
+	
+	// ----------------- 결제 취소 -----------------------
+	// [PayHistory] 테이블에 거래 상태 변경 + 구매자 페이머니 다시 돌려주기, 판매자 페이머니 다시 돌려받기
+	// [Pay] 테이블 전체금액도 다시 돌려놓기
+	
+	
+	
+	
 	
 	
 	// ---------- 페이 비밀번호 체크 ---------------
@@ -1056,6 +1090,42 @@ public class PaymentController {
 		return "admin/memberPayDetail";
 	}
 	
+	// 페이 가입 정보 수정(잔액, 상태, 비밀번호 변경)
+	@ResponseBody
+	@GetMapping("ChangePayInfo")
+	public String changePayInfo(@RequestParam Map<String, Object> map) {
+		
+		log.info(map.toString());
+		
+		// 입력한 금액이 있으면 숫자로 변환
+		if(map.get("pay_balance") != null && !map.get("pay_balance").toString().equals("")) {		
+			String pay_balanceString = (String) map.get("pay_balance");
+			pay_balanceString = pay_balanceString.replace(",", "");
+			int pay_balance = Integer.parseInt(pay_balanceString); // 실결제금액
+			map.put("pay_balance", pay_balance);
+		}
+		
+		// 비밀번호 변경이 있을 경우 암호화 진행
+		if(map.get("pay_password") != null && !map.get("pay_password").toString().equals("")) {
+			// 페이비밀번호 암호화하기
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			String securePasswd = passwordEncoder.encode(map.get("pay_password").toString());
+			
+			map.put("pay_password", securePasswd);
+		}
+		
+		int updateCount = service.updatePayInfo(map);
+		
+		if(updateCount > 0) { // 성공 시
+			return "true";			
+		} else {
+			return "false";						
+		}
+		
+	}
+	
+	
+	
 	// 충전/환급 관리 페이지로 이동
 	@GetMapping("ChargeRefund")
 	public String chargeRefund(Model model) {
@@ -1070,8 +1140,7 @@ public class PaymentController {
 	// 사용/수익 관리 페이지로 이동
 	@GetMapping("SpentRevenue")
 	public String spentRevenue(Model model) {
-//		List<Map<String, Object>> payHistoryList = service.getPayHistorySpentRevenue();
-		List<Map<String, Object>> payHistoryList = service.getOrderList();
+		List<Map<String, Object>> payHistoryList = service.getPayHistorySpentRevenue();
 		log.info(payHistoryList.toString());
 		
 		model.addAttribute("payHistoryList", payHistoryList);
