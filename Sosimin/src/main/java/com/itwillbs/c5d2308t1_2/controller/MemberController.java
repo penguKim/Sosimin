@@ -1,5 +1,11 @@
 package com.itwillbs.c5d2308t1_2.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -19,7 +25,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.c5d2308t1_2.service.MemberService;
 import com.itwillbs.c5d2308t1_2.service.PaymentService;
+import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
+import com.itwillbs.c5d2308t1_2.vo.PageDTO;
+import com.itwillbs.c5d2308t1_2.vo.PageInfo;
+import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 
 @Controller
 public class MemberController {
@@ -93,6 +103,16 @@ public class MemberController {
 		
 		// 암호화된 비밀번호 MemberVO 객체에 저장
 		member.setMember_password(securePassword);
+		
+		// 동네인증을 위해 문자열 가공
+		System.out.println("주소 파라미터 확인 : " + member.getMember_address());
+		// 파라미터 확인 : MemberVO(member_id=eri666, member_name=육은령, member_email=eri666@gmail.com, member_birth=2010-02-02, member_nickname=육육육, member_phone=010-6666-6666, member_status=0, member_password=$2a$10$5n8aqx9o3F4FCHzXXqpK0.NXj/JoA0c20wesoY6qV8SpqHJkZQokq, member_profile=null, member_address=부산광역시 부산진구 부전동, member_withdraw_time=null, phone_auth=0, neighbor_auth=0, neighbor_time=null, pay_auth=0, member_level=0, member_exp=0, dong=null, report_real_count=0, product_id=null)
+		String str = member.getMember_address();
+		String[] strArr = str.split("\\s");
+		String result = strArr[1] + " " + strArr[2];
+		System.out.println("문자열 결합 확인 : " + result);
+		member.setMember_address(result);
+		System.out.println(member.getMember_address());
 		
 		// JoinService - registMember() 메서드 호출하여 회원정보 등록 요청
 		// => 파라미터 : MemberVO 객체   리턴타입 : int(insertCount)
@@ -205,6 +225,14 @@ public class MemberController {
 			   session.setAttribute("user_seq_no", token.get("user_seq_no"));
 		   }
 		   // -----------------------------------------------------------------------
+		   // -------------------- 동네 재인증을 위해 추가 ----------------------------
+		   if(dbMember.getMember_neighbor_auth() == 0) {
+			   model.addAttribute("msg", "위치 재인증 필요!");
+			   model.addAttribute("msg2", "내 정보 수정에서 동네 인증을 다시 해주세요!");
+			   model.addAttribute("msg3", "error");
+			   model.addAttribute("targetURL", "MyPage");
+			   return "forward";
+		   }
 		   
 		   
 		   // 이전 페이지 주소 판별 후 메인페이지로 리다이렉트
@@ -322,7 +350,91 @@ public class MemberController {
 	// 뷰 제작 작업의 편의성을 위해 마이페이지는 임시로 서블릿 나눠서 매핑
 	// 마이페이지 상품 관련 탭(판매내역, 구매내역, 관심목록)
 	@GetMapping("MyPage")
-	public String MyPage() {
+	public String MyPage(HttpSession session, Model model, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "0") String category) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) { // 로그인 안 한 경우
+			model.addAttribute("msg", "로그인이 필요합니다!");
+			model.addAttribute("msg2", "로그인 후 마이페이지로 이동합니다!");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		}
+		System.out.println("카테고리 : " + category);
+		System.out.println("세션 아이디 확인 : " + sId);
+		
+		// 페이지 번호와 글의 개수를 파라미터로 전달
+		PageDTO page = new PageDTO(pageNum, 15);
+		// 전체 게시글 갯수 조회
+		int listCount = service.getMyPageListCount(category, sId);
+		System.out.println(listCount);
+		// 페이징 처리
+		PageInfo pageInfo = new PageInfo(page, listCount, 3);
+		
+		// 한 페이지에 불러올 게시글 목록 조회
+		List<HashMap<String, Object>> MyPageList = service.getMyPageList(sId, category, page);
+		System.out.println("컨트롤러에서 넘긴 마이페이지 리스트 확인 : " + MyPageList);
+		
+		
+		// 시간 변환
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+        
+        LocalDateTime datetime = null;
+        for(HashMap<String, Object> map : MyPageList) {
+//        	System.out.println(map.get("product_datetime").getClass().getName());
+//        	System.out.println();
+        	if(category.equals("1") || category.equals("3")) {
+        		datetime = (LocalDateTime)map.get("product_datetime");
+        	} else if(category.equals("2")) {
+        		datetime = (LocalDateTime)map.get("order_date");
+        	} else if(category.equals("4")) {
+        		datetime = (LocalDateTime)map.get("community_datetime");
+        	} else if(category.equals("5")) {
+        		datetime = (LocalDateTime)map.get("reply_datetime");
+        	}
+//        	productMap.put("product_datetime", productDatetime.format(formatter));
+//        	
+//        	
+//        	// 시분초 차이 계산
+    		Duration duration = Duration.between(datetime, now);
+//    		// 년월일 차이 계산
+    		Period period = Period.between(datetime.toLocalDate(), now.toLocalDate());
+    		
+            long minutes = duration.toMinutes() % 60;
+            long hours = duration.toHours() % 24;
+            long days = duration.toDays() % 7;
+            long weeks = duration.toDays() / 7;
+            long months = period.getMonths();
+            long years = period.getYears();
+            
+            String timeAgo = "";
+            if(years > 0) {
+            	timeAgo = years + "년 전";
+            } else if(months > 0) {
+            	timeAgo = months + "개월 전";
+            } else if(weeks > 0 && weeks <= 4) {
+            	timeAgo = weeks + "주전";
+    		} else if (days > 0 && days < 7) { // 1 ~ 7 차이날 때
+                timeAgo = days + "일전";
+            } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+                timeAgo = hours + "시간 전";
+            } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+                timeAgo = minutes + "분 전";
+            } else {
+                timeAgo = "방금 전";
+            }
+        	
+            map.put("product_datetime", timeAgo);
+            map.put("order_date", timeAgo);
+            map.put("community_datetime", timeAgo);
+            map.put("reply_datetime", timeAgo);
+        	
+    	}
+		
+        model.addAttribute("MyPageList", MyPageList);
+		
 		return "member/myPage";
 	}
 

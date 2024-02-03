@@ -1,6 +1,7 @@
 package com.itwillbs.c5d2308t1_2.vo;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 import lombok.Data;
 
@@ -16,15 +17,16 @@ public class MemberVO {
 	private int member_status;
 	private String member_password;
 	private String member_profile;
+	private String member_intro;
 	private String member_address;
-	private Date member_withdraw_time;
-	private int phone_auth;
-	private int neighbor_auth;
-	private Date neighbor_time;
-	private int pay_auth;
+	private LocalDateTime member_withdraw_time;
+	private int member_phone_auth;
+	private int member_neighbor_auth;
+	private LocalDateTime member_neighbor_time;
+	private int member_pay_auth;
 	private int member_level;
 	private int member_exp;
-	private String dong;
+	private int town_id;
 	private int report_real_count;
 	private String product_id;
 	

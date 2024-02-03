@@ -1,6 +1,7 @@
 package com.itwillbs.c5d2308t1_2.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.c5d2308t1_2.mapper.MemberMapper;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
+import com.itwillbs.c5d2308t1_2.vo.PageDTO;
+import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
@@ -17,11 +21,13 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 public class MemberService {
 	@Autowired
 	MemberMapper mapper;
-
+	
 	// 회원 정보 등록
 	public int registMember(MemberVO member) {
+		member.setTown_id(mapper.getlocation(member));
 		return mapper.insertMember(member);
 	}
+	
 
 	// 회원 정보 조회
 	public MemberVO getMember(MemberVO member) {
@@ -71,4 +77,17 @@ public class MemberService {
 	public int modifyMemberPassword(MemberVO member, String newPassword) {
 		return mapper.updateMemberPassword(member, newPassword);
 	}
+
+	// ============================== 마이페이지 작업 =====================================
+	// 마이페이지 목록 개수 조회
+	public int getMyPageListCount(String category, String sId) {
+		return mapper.selectMyPageListCount(category, sId);
+	}
+
+	// 마이페이지 목록 조회
+	public List<HashMap<String, Object>> getMyPageList(String sId, String category, PageDTO page) {
+		return mapper.selectMyPageList(sId, category, page);
+	}
+
+
 }

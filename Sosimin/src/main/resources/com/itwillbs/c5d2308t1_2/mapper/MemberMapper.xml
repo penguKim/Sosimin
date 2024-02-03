@@ -4,6 +4,14 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.itwillbs.c5d2308t1_2.mapper.MemberMapper">
+
+	<!-- ==================================== 회원가입/로그인 ===================================== -->
+	<!-- town_id 조회 SELECT -->
+	<select id="getlocation" resultType="int">
+		SELECT town_id
+		FROM locationView
+		WHERE location = #{member_address}
+	</select>
 	<!--  회원가입 INSERT  -->
 	<insert id="insertMember">
 		INSERT INTO Member
@@ -17,15 +25,15 @@
 			, 1 -- 회원 상태
 			, #{member_password}
 			, null -- 프로필 임시로 null
-			, #{member_address}
+			, null -- 소개글 임시로 null
 			, null -- 탈퇴시간 null
-			, 0 -- 본인인증여부 임시로 미인증(휴대폰인증기능 구현후 1로 변경)
+			, 1 -- 문자인증 여부(가입 성공 시 인증)
 			, 1 -- 동네인증여부(가입 시 인증하므로 1)
 			, now() -- 동네인증 시간 now()
 			, 0 -- 페이 인증 여부 미인증(0)
 			, 1 -- 회원레벨 1으로 시작
 			, 0 -- 회원경험치 0으로 시작
-			, null -- 동 임시로 null
+			, #{town_id}
 			, 0 -- 최종신고횟수 0
 		
 		)
@@ -73,4 +81,89 @@
 		SET member_password = #{newPassword}
 		WHERE member_id = #{member.member_id}
 	</insert>
+	
+	<!-- ==================================== 마이페이지 ===================================== -->
+	<!-- 페이징 처리를 위한 게시물 개수 조회 작업 -->
+	<select id="selectMyPageListCount" resultType="int">
+		SELECT COUNT(*)
+			<choose>
+				<when test="category == 1">
+					FROM Product WHERE member_id = #{sId}
+				</when>
+				<when test="category == 2">
+					FROM Orders WHERE member_id = #{sId}
+				</when>
+				<when test="category == 3">
+					FROM productLike WHERE member_id = #{sId}
+				</when>
+				<when test="category == 4">
+					FROM Community WHERE community_writer = #{sId}
+				</when>
+				<when test="category == 5">
+					FROM CommunityReply WHERE reply_writer = #{sId}
+				</when>
+			</choose>
+	</select>
+	
+	<!-- 한 페이지에 표시할 게시물 목록 조회 작업 -->
+	<select id="selectMyPageList" resultType="hashmap">
+		SELECT *
+			<choose>
+				<when test="category == 1">
+					FROM Product 
+					WHERE member_id = #{sId}
+					ORDER BY product_datetime DESC
+				</when>
+				<when test="category == 2">
+					FROM Orders 
+					WHERE member_id = #{sId}
+					ORDER BY order_date DESC
+				</when>
+				<when test="category == 3">
+					FROM productLike 
+					JOIN Product
+					ON productLike.product_id = Product.product_id
+					WHERE productLike.member_id = #{sId}
+					ORDER BY product_datetime DESC
+				</when>
+				<when test="category == 4">
+					FROM Community WHERE community_writer = #{sId}
+					ORDER BY community_datetime DESC
+				</when>
+				<when test="category == 5">
+					FROM CommunityReply WHERE reply_writer = #{sId}
+					ORDER BY reply_datetime DESC
+				</when>
+			</choose>
+			LIMIT #{page.startRow}, #{page.listLimit}
+	</select>
+	
+	<!-- 위치 재인증을 위한 회원 정보 조회 SELECT -->
+	<select id="selectMemberAuthRequired" resultType="member">
+		SELECT *
+		FROM Member
+		WHERE member_status = 1
+		AND member_neighbor_auth = 1
+	</select>
+	
+	<!-- 동네 인증 상태 초기화 UPDATE -->
+	<update id="updateMemberNeighborAuth">
+		update Member
+		set member_neighbor_auth = 0
+		where member_id = #{member_id}
+	</update>
+	
+	<!-- 탈퇴 회원 조회 SELECT -->
+	<select id="selectWithdrawMember" resultType="member">
+		SELECT *
+		FROM Member
+		WHERE member_status = 2
+	</select>
+	
+	<!-- 탈퇴 회원 정보 삭제 DELETE -->
+	<delete id="deleteMemberInfo">
+		DELETE FROM Member
+		WHERE member_id = #{member_id}
+	</delete>
+	
 </mapper>
