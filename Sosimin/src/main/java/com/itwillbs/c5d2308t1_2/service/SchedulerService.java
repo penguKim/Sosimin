@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.itwillbs.c5d2308t1_2.mapper.CommunityMapper;
+import com.itwillbs.c5d2308t1_2.mapper.MemberMapper;
+import com.itwillbs.c5d2308t1_2.vo.MemberVO;
 
 public class SchedulerService {
 	private static final Logger logger = LoggerFactory.getLogger(SchedulerService.class);
@@ -25,6 +31,9 @@ public class SchedulerService {
 	
 	@Autowired
 	private CommunityMapper communityMapper;
+	
+	@Autowired
+	private MemberMapper memberMapper;
 	
 	
 //	@Scheduled(cron="*/5 * * * * *")
@@ -74,6 +83,34 @@ public class SchedulerService {
 			
 		}
 		
+	}
+	
+	// 위치 재인증
+//	@Scheduled(cron="*/10 * * * * *")
+	public void neighbor() {
+		List<MemberVO> memberList = memberMapper.selectMemberAuthRequired();
+		LocalDateTime now = LocalDateTime.now();
+		for(MemberVO member : memberList) {
+//			System.out.println(member.getMember_neighbor_time());
+			// 2. Date -> LocalDate        
+//			LocalDate localDate = member.getMember_neighbor_time().toInstant()   // Date -> Instant                
+//					.atZone(ZoneId.systemDefault())  // Instant -> ZonedDateTime                
+//					.toLocalDate(); // ZonedDateTime -> LocalDate         
+//			System.out.println("변환 " + localDate);
+//			 3. Date -> LocalDateTime        
+//			LocalDateTime localDateTime = member.getMember_neighbor_time().toInstant() // Date -> Instant                
+//					.atZone(ZoneId.systemDefault()) // Instant -> ZonedDateTime                
+//					.toLocalDateTime(); // ZonedDateTime -> LocalDateTime         
+//			System.out.println("변환 " + localDateTime);
+			
+			Duration duration =  Duration.between(member.getMember_neighbor_time(), now);			
+			System.out.println("날짜 차이 " + duration.toHours());
+			
+			if(duration.toHours() >= 24) {
+				member.setMember_neighbor_auth(0);
+				memberMapper.updateMemberNeighborAuth(member.getMember_id());
+			}
+		}
 	}
 	
 }
