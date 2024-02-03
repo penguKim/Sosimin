@@ -274,29 +274,33 @@
 			product_id = #{product_id}
 	</select>
 	<!-- 상품 수정 등록 -->
-	<update id="updateProduct">
-		UPDATE Product
-	    SET 
-	    	product_name = #{product_name}
-			, product_price = #{product_price}
-			, product_txt = #{product_txt}
-			, product_category = #{product_category}
-			, product_image1 = #{product_image1} 
-	        , product_image2 = <if test="product_image2 != null">#{product_image2}</if><if test="product_image2 == null">NULL</if> 
-	        , product_image3 = <if test="product_image3 != null">#{product_image3}</if><if test="product_image3 == null">NULL</if>
-	        , product_image4 = <if test="product_image4 != null">#{product_image4}</if><if test="product_image4 == null">NULL</if>
-	        , product_image5 = <if test="product_image5 != null">#{product_image5}</if><if test="product_image5 == null">NULL</if>
-			, trade_method = #{trade_method}
-			, product_status = #{product_status}
-			, gu = #{gu}
-			, dong = #{dong}
-			, tag_name1 = #{tag_name1}
-			, tag_name2 = #{tag_name2}
-			, tag_name3 = #{tag_name3}
-			, tag_name4 = #{tag_name4}
-		WHERE
-			product_id = #{product_id}
-	</update>
+<update id="updateProduct">
+  UPDATE Product
+  SET 
+    product_name = #{product_name}
+    , product_price = #{product_price}
+    , product_txt = #{product_txt}
+    , product_category = #{product_category}
+    , product_image1 = #{product_image1} 
+    <if test="product_image2 != null">, product_image2 = #{product_image2}</if>
+    <if test="product_image2 == null">, product_image2 = NULL</if> 
+    <if test="product_image3 != null">, product_image3 = #{product_image3}</if>
+    <if test="product_image3 == null">, product_image3 = NULL</if>
+    <if test="product_image4 != null">, product_image4 = #{product_image4}</if>
+    <if test="product_image4 == null">, product_image4 = NULL</if>
+    <if test="product_image5 != null">, product_image5 = #{product_image5}</if>
+    <if test="product_image5 == null">, product_image5 = NULL</if>
+    , trade_method = #{trade_method}
+    , product_status = #{product_status}
+    , gu = #{gu}
+    , dong = #{dong}
+    <if test="tag_name1 != null and tag_name1 != ''">, tag_name1 = #{tag_name1}</if>
+    <if test="tag_name2 != null and tag_name2 != ''">, tag_name2 = #{tag_name2}</if>
+    <if test="tag_name3 != null and tag_name3 != ''">, tag_name3 = #{tag_name3}</if>
+    <if test="tag_name4 != null and tag_name4 != ''">, tag_name4 = #{tag_name4}</if>
+  WHERE
+    product_id = #{product_id}
+</update>
 	<!-- 판매자판매 상품 조회 -->
 	<select id="selectSellerProductInfo" resultType="map">
 		SELECT *
@@ -309,4 +313,22 @@
 		FROM Product
 		WHERE member_id = #{member_id}
 	</select>
+	<!-- 판매글 조회 -->
+	<select id="selectProductCount" resultType="map">
+		SELECT *
+		FROM Product_board
+		WHERE product_id = #{product_id}
+	</select>
+	
+	<!-- 판매글 조회수 증가 작업 -->
+		<update id="updateReadcount">
+		<selectKey keyProperty="product_readcount" resultType="int" order="AFTER">
+			SELECT product_readcount
+			FROM Product_board
+			WHERE product_id = #{product_id}
+		</selectKey>
+		UPDATE Product_board
+		SET product_readcount = product_readcount + 1
+		WHERE product_id = #{product_id}
+	</update>
 </mapper>

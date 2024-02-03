@@ -63,6 +63,8 @@ public class ProductVO {
 	private String product_image3;
 	private String product_image4;
 	private String product_image5;
+	private String product_readcount;
+	private String product_board_id;
 	private int product_datetime;
 	private int trade_method;
 	private String gu;

@@ -113,5 +113,21 @@ public class ProductService {
 		return mapper.selectSellerProductCount(member_id);
 	}
 
+
+	public Map<String, Object> getCount(Map<String, String> map, boolean isReadcount) {
+		// 상품 글 조회
+		Map<String,Object> map2 = new HashMap<String, Object>();
+		map2 = mapper.selectProductCount(map);
+		
+		System.out.println("상품 글 조회 : " + map2);
+		
+		if(map2 != null && isReadcount) {
+			mapper.updateReadcount(map);
+			map2.put("product_readcount", (int)map2.get("product_readcount") + 1);
+		}
+		return map2;
+	}
+
+
 	
 }

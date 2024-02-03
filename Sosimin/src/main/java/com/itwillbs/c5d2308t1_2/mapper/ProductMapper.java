@@ -65,4 +65,10 @@ public interface ProductMapper {
 
 	// 판매자판매 상품 카운트
 	int selectSellerProductCount(String member_id);
+
+
+//	 판매글 조회수 카운트
+	Map<String, Object> selectProductCount(Map<String, String> map);
+
+	void updateReadcount(Map<String, String> map);
 }

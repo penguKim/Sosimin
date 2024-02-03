@@ -783,13 +783,19 @@ function submitFiles(event) {
 	  var formData = new FormData();
 	  
 	  // Form의 각 필드를 개별적으로 FormData에 추가
-	  var formElements = form.elements;
-	  for (var i = 0; i < formElements.length; i++) {
-	    var element = formElements[i];
-	    if (element.name && element.name != 'product_image') {  // 'product_image' 필드 제외
-	      formData.append(element.name, element.value);
-	    }
-	  }
+		var formElements = form.elements;
+		for (var i = 0; i < formElements.length; i++) {
+		  var element = formElements[i];
+		  if (element.name && element.name != 'product_image') {  // 'product_image' 필드 제외
+		    if (element.type === 'radio') {  // radio 버튼일 경우
+		      if (element.checked) {  // 'checked'된 버튼의 값만 추가
+		        formData.append(element.name, element.value);
+		      }
+		    } else {  // radio 버튼이 아닐 경우
+		      formData.append(element.name, element.value);
+		    }
+		  }
+		}
 
 	  for (var i = 0; i < selectedFiles.length; i++) {
 	    formData.append('product_image', selectedFiles[i]);

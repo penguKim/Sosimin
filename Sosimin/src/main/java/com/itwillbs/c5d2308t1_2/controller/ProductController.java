@@ -15,6 +15,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections.map.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mybatis.spring.*;
@@ -290,10 +291,11 @@ public class ProductController {
 					public String productDetail(@RequestParam Map<String, String> map , MemberVO member, Model model, HttpSession session, String tag_name, String product_name) {
 						
 						
+//						System.out.println(" 나는 프로 덕트다 " + product);
+						
 						String sId = (String)session.getAttribute("sId");
 						
-						System.out.println("뭐 받아와짐 >>>>>>>>>>> :" + map.get("product_status"));
-						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>너 프로덕트아이디임?: " + map);
+						System.out.println(">>>>>>>>>>>>>>>>너 프로덕트아이디임?: " + map);
 						
 						member.setMember_id(sId);
 						// 전체상품 조회
@@ -315,6 +317,10 @@ public class ProductController {
 						// 판매자상품 상품 갯수 조회
 						String member_id = SellerInfo.get("member_id");
 						int SellerProductCount = service.selectSellerProductCount(member_id);
+						// 조회수 증가 여부
+						Map<String, Object> count = new HashMap<String, Object>();
+						count = service.getCount(map,true);
+						
 						
 						System.out.println(" >>>>>>>>>>>>>>>> 몇개 들었노: " + SellerProductCount);
 						System.out.println(" >>>>>>>>>>>>>>>> 판매자정보 : " + SellerInfo);
@@ -365,7 +371,6 @@ public class ProductController {
 									
 									System.out.println(Product.get("tag_name"));
 									System.out.println(Product.get("product_name"));
-									
 									System.out.println(">>>>>>>>>>>>> 잘넘어왔는가 : " + Product);
 									System.out.println(">>>>>>>>>>>>> 이건 잘잘넘어왔는가 : " + Product2);
 									model.addAttribute("Product", Product);
@@ -375,6 +380,7 @@ public class ProductController {
 									model.addAttribute("SellerInfo", SellerInfo);
 //									model.addAttribute("SellerProductInfo", SellerProductInfo);
 									model.addAttribute("SellerProductCount", SellerProductCount);
+									model.addAttribute("count", count);
 									// 리스트를 무작위로 섞어 조회한 상품중 랜덤한 값 뿌리기
 									
 									RelatedProducts = service.selectRelatedProducts(Product);
@@ -384,6 +390,7 @@ public class ProductController {
 									}
 									model.addAttribute("RelatedProducts", RelatedProducts);
 									
+									System.out.println("카운트엔 뭐가 들었지! :" + count);
 									// 랜덤한 값의 이미지 뿌리기
 									Collections.shuffle(SellerProductInfo); 
 									if (SellerProductInfo.size() > 2) {
@@ -400,6 +407,11 @@ public class ProductController {
 					public String productModify(HttpSession session, @RequestParam Map<String, String> map, Model model) {
 						
 						System.out.println(" ======================> 뭐가들었지 : " + map);
+						
+					    map.put("tag_name1", "#" + map.get("tag_name1"));
+					    map.put("tag_name2", "#" + map.get("tag_name2"));
+					    map.put("tag_name3", "#" + map.get("tag_name3"));
+					    map.put("tag_name4", "#" + map.get("tag_name4"));
 						
 						Map<String, String> productModify = service.selectProductModify(map);
 						
@@ -430,6 +442,12 @@ public class ProductController {
 					@PostMapping("ProductModifySuccess")
 					public String productModifySuccess(@RequestParam Map<String, String> map ,@RequestParam("product_image") MultipartFile[] files, HttpSession session, Model model) {
 						
+						
+						System.out.println("태그네임 : " + map.get("tag_name1"));
+						System.out.println(map.get("tag_name2"));
+						System.out.println(map.get("tag_name3"));
+						System.out.println(map.get("tag_name4"));
+						
 						String sId = (String)session.getAttribute("sId");
 						if(sId == null) {
 							model.addAttribute("msg", "로그인이 필요합니다!");
@@ -437,6 +455,7 @@ public class ProductController {
 							model.addAttribute("targetURL", "MemberLogin");
 							return "forward";
 						}
+						System.out.println(" 뭐가 넘어 왔우요 수정페이지 : " + map);
 						
 						
 						for(MultipartFile file : files) {
@@ -474,6 +493,8 @@ public class ProductController {
 					        }
 					    }
 					    
+					    
+					    
 					    String product_price =  map.get("product_price").replace(",", "");
 					    String address = map.get("trade_place"); // 가져온 주소값 
 					    String[] addressSplit = address.split(" "); // 공백으로 나눈다
@@ -482,13 +503,36 @@ public class ProductController {
 					    map.put("product_price" , product_price);
 					    map.put("gu", gu);
 					    map.put("dong", dong);
+//					    map.put("tag_name1", "#" + map.get("tag_name1"));
+//					    map.put("tag_name2", "#" + map.get("tag_name2"));
+//					    map.put("tag_name3", "#" + map.get("tag_name3"));
+//					    map.put("tag_name4", "#" + map.get("tag_name4"));
 					    
+					    if (map.get("tag_name1") != null) {
+					    	  map.put("tag_name1", "#" + map.get("tag_name1"));
+					    	}
+					    	if (map.get("tag_name2") != null) {
+					    	  map.put("tag_name2", "#" + map.get("tag_name2"));
+					    	}
+					    	if (map.get("tag_name3") != null) {
+					    	  map.put("tag_name3", "#" + map.get("tag_name3"));
+					    	}
+					    	if (map.get("tag_name4") != null) {
+					    	  map.put("tag_name4", "#" + map.get("tag_name4"));
+					    	}
+					    
+						System.out.println("태그네임은 뭐가들었어 : " + map.get("tag_name1"));
+						System.out.println(map.get("tag_name2"));
+						System.out.println(map.get("tag_name3"));
+						System.out.println(map.get("tag_name4"));
 					    
 					    int modifyOk = service.updateProduct(map);
 					    
 					    System.out.println(modifyOk);
 						System.out.println("뭔가가 넘어오긴 한걸까? : " + map);
 						model.addAttribute("modifyOk", modifyOk);
+						System.out.println("트레이드메서드 머가넘어왔지 : " + map.get("trade_method"));
+						System.out.println(" 프로덕트 스테이터스 뭐 넘어왔찌 : " + map.get("product_status"));
 						
 						String product_id = map.get("product_id");
 						
