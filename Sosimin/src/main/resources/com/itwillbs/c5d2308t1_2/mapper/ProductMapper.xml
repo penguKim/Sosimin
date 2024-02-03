@@ -294,10 +294,10 @@
     , product_status = #{product_status}
     , gu = #{gu}
     , dong = #{dong}
-    <if test="tag_name1 != null and tag_name1 != ''">, tag_name1 = #{tag_name1}</if>
-    <if test="tag_name2 != null and tag_name2 != ''">, tag_name2 = #{tag_name2}</if>
-    <if test="tag_name3 != null and tag_name3 != ''">, tag_name3 = #{tag_name3}</if>
-    <if test="tag_name4 != null and tag_name4 != ''">, tag_name4 = #{tag_name4}</if>
+    , tag_name1 = <choose><when test="tag_name1 != null and tag_name1 != ''">#{tag_name1}</when><otherwise>NULL</otherwise></choose>
+    , tag_name2 = <choose><when test="tag_name2 != null and tag_name2 != ''">#{tag_name2}</when><otherwise>NULL</otherwise></choose>
+    , tag_name3 = <choose><when test="tag_name3 != null and tag_name3 != ''">#{tag_name3}</when><otherwise>NULL</otherwise></choose>
+    , tag_name4 = <choose><when test="tag_name4 != null and tag_name4 != ''">#{tag_name4}</when><otherwise>NULL</otherwise></choose>
   WHERE
     product_id = #{product_id}
 </update>
@@ -331,4 +331,11 @@
 		SET product_readcount = product_readcount + 1
 		WHERE product_id = #{product_id}
 	</update>
+	
+	<select id="getProductImage" resultType="map">
+		SELECT *
+		FROM Product
+		WHERE product_id = #{product_id}
+		
+	</select>
 </mapper>

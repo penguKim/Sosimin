@@ -128,6 +128,11 @@ public class ProductService {
 		return map2;
 	}
 
+	public Map<String, String> getProductimage(Map<String, String> map) {
+		
+		return mapper.getProductImage(map);
+	}
+
 
 	
 }

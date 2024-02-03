@@ -438,62 +438,77 @@ public class ProductController {
 						return "";
 					}
 					
-					@ResponseBody
 					@PostMapping("ProductModifySuccess")
-					public String productModifySuccess(@RequestParam Map<String, String> map ,@RequestParam("product_image") MultipartFile[] files, HttpSession session, Model model) {
-						
-						
-						System.out.println("태그네임 : " + map.get("tag_name1"));
-						System.out.println(map.get("tag_name2"));
-						System.out.println(map.get("tag_name3"));
-						System.out.println(map.get("tag_name4"));
-						
-						String sId = (String)session.getAttribute("sId");
-						if(sId == null) {
-							model.addAttribute("msg", "로그인이 필요합니다!");
-							// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-							model.addAttribute("targetURL", "MemberLogin");
-							return "forward";
-						}
-						System.out.println(" 뭐가 넘어 왔우요 수정페이지 : " + map);
-						
-						
-						for(MultipartFile file : files) {
-							System.out.println(" 무엇이 들었을 까 " + file);
-						};
+					@ResponseBody
+					public String productModifySuccess(@RequestParam Map<String, String> map ,@RequestParam(value = "product_image", required = false) MultipartFile[] files, @RequestParam(value = "delete_image", required = false) String deleteImageStr, HttpSession session, Model model) {
+					    Map<String,String> product = service.getProductimage(map);
+
+					    String sId = (String)session.getAttribute("sId");
+					    if(sId == null) {
+					        model.addAttribute("msg", "로그인이 필요합니다!");
+					        model.addAttribute("targetURL", "MemberLogin");
+					        return "forward";
+					    }
+
 					    String uploadDir = "/resources/upload";
 					    String saveDir = session.getServletContext().getRealPath(uploadDir);
-
-					    // 서브 디렉토리
-				 		String subDir = "";
-					    
-					    LocalDate now = LocalDate.now();
-					    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-					   subDir = now.format(dtf);
-
+					    String subDir = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 					    saveDir += File.separator + subDir;
 
-					    for (int i = 0; i < files.length; i++) {
-					        MultipartFile file = files[i];
-					        String originalName = file.getOriginalFilename(); // 원래 파일명
-					        String fileName = UUID.randomUUID().toString().substring(0,8) + "_" + originalName; // 고유한 파일명 생성
-					        String filePath = saveDir + File.separator + fileName;
-					        try {
-					            file.transferTo(new File(filePath)); // 파일 저장
-					            
-					            // 파일 경로에서 'upload' 이후의 부분만 추출
-					            int uploadIndex = filePath.indexOf("upload");
-					            if (uploadIndex != -1) {
-					                String relativePath = filePath.substring(uploadIndex + "upload".length() + 1);
-					                String key = (i == 0) ? "product_image1" : "product_image" + (i + 1);
-					                map.put(key, relativePath); // 파일 경로를 map에 추가
-					            }
-					        } catch (IllegalStateException | IOException e) {
-					            e.printStackTrace();
+					    List<String> images = new ArrayList<>();
+					    for (int i = 1; i <= 5; i++) {
+					        if (product.get("product_image" + i) != null) {
+					            images.add(product.get("product_image" + i));
 					        }
 					    }
 					    
-					    
+					    System.out.println("삭제 할때 뭐가넘어왔노! : " + deleteImageStr);
+					    int[] deleteImages = null;
+					    if (deleteImageStr != null && !deleteImageStr.isEmpty()) {
+					        deleteImages = Arrays.stream(deleteImageStr.split(","))
+					                               .mapToInt(Integer::parseInt)
+					                               .toArray();
+					    }
+					    if (deleteImages != null) {
+					        Arrays.sort(deleteImages);
+					        for (int i = deleteImages.length - 1; i >= 0; i--) {
+					            if (deleteImages[i] - 1 < images.size()) {
+					                String imagePath = images.remove(deleteImages[i] - 1);
+					                File imageFile = new File(session.getServletContext().getRealPath("/") + imagePath);
+					                if (imageFile.exists()) {
+					                    imageFile.delete();
+					                }
+					            }
+					        }
+					    }
+
+					    if (files != null) {
+					        for (MultipartFile file : files) {
+					            if (!file.isEmpty()) {
+					                String originalName = file.getOriginalFilename();
+					                String fileName = UUID.randomUUID().toString().substring(0,8) + "_" + originalName;
+					                String filePath = saveDir + File.separator + fileName;
+					                try {
+					                    file.transferTo(new File(filePath));
+					                    int uploadIndex = filePath.indexOf("upload");
+					                    if (uploadIndex != -1) {
+					                        String relativePath = filePath.substring(uploadIndex + "upload".length() + 1);
+					                        images.add(relativePath);
+					                    }
+					                } catch (IllegalStateException | IOException e) {
+					                    e.printStackTrace();
+					                }
+					            }
+					        }
+					    }
+					    	
+					    for (int i = 0; i < 5; i++) {
+					        if (i < images.size()) {
+					            map.put("product_image" + (i + 1), images.get(i));
+					        } else {
+					            map.put("product_image" + (i + 1), null);
+					        }
+					    }
 					    
 					    String product_price =  map.get("product_price").replace(",", "");
 					    String address = map.get("trade_place"); // 가져온 주소값 
@@ -531,9 +546,7 @@ public class ProductController {
 					    System.out.println(modifyOk);
 						System.out.println("뭔가가 넘어오긴 한걸까? : " + map);
 						model.addAttribute("modifyOk", modifyOk);
-						System.out.println("트레이드메서드 머가넘어왔지 : " + map.get("trade_method"));
-						System.out.println(" 프로덕트 스테이터스 뭐 넘어왔찌 : " + map.get("product_status"));
-						
+						System.out.println("여긴 뭐가 넘어왔을까!!!!!!!!!!!!! : " + product);
 						String product_id = map.get("product_id");
 						
 						return String.valueOf(product_id);

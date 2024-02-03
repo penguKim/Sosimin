@@ -71,4 +71,6 @@ public interface ProductMapper {
 	Map<String, Object> selectProductCount(Map<String, String> map);
 
 	void updateReadcount(Map<String, String> map);
+
+	Map<String, String> getProductImage(Map<String, String> map);
 }
