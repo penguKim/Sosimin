@@ -91,24 +91,25 @@ public class SchedulerService {
 		List<MemberVO> memberList = memberMapper.selectMemberAuthRequired();
 		LocalDateTime now = LocalDateTime.now();
 		for(MemberVO member : memberList) {
-//			System.out.println(member.getMember_neighbor_time());
-			// 2. Date -> LocalDate        
-//			LocalDate localDate = member.getMember_neighbor_time().toInstant()   // Date -> Instant                
-//					.atZone(ZoneId.systemDefault())  // Instant -> ZonedDateTime                
-//					.toLocalDate(); // ZonedDateTime -> LocalDate         
-//			System.out.println("변환 " + localDate);
-//			 3. Date -> LocalDateTime        
-//			LocalDateTime localDateTime = member.getMember_neighbor_time().toInstant() // Date -> Instant                
-//					.atZone(ZoneId.systemDefault()) // Instant -> ZonedDateTime                
-//					.toLocalDateTime(); // ZonedDateTime -> LocalDateTime         
-//			System.out.println("변환 " + localDateTime);
-			
 			Duration duration =  Duration.between(member.getMember_neighbor_time(), now);			
 			System.out.println("날짜 차이 " + duration.toHours());
 			
 			if(duration.toHours() >= 24) {
 				member.setMember_neighbor_auth(0);
 				memberMapper.updateMemberNeighborAuth(member.getMember_id());
+			}
+		}
+	}
+	
+	// 탈퇴 회원 정보 삭제
+//	@Scheduled(cron="*/10 * * * * *")
+	public void memberWithdraw() {
+		List<MemberVO> memberList = memberMapper.selectWithdrawMember();
+		LocalDate now = LocalDate.now();
+		for(MemberVO member : memberList) {
+			Period period = Period.between(member.getMember_withdraw_time().toLocalDate(), now);
+			if(period.getDays() >= 30) {
+				memberMapper.deleteMemberInfo(member.getMember_id());
 			}
 		}
 	}

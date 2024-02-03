@@ -37,6 +37,15 @@ public interface MemberMapper {
 
 	// 위치 재인증
 	List<MemberVO> selectMemberAuthRequired();
+
+	// 동네 인증 상태 초기화
+	void updateMemberNeighborAuth(String member_id);
+	
+	// 탈퇴 회원 조회
+	List<MemberVO> selectWithdrawMember();
+
+	// 탈퇴 회원 정보 삭제
+	void deleteMemberInfo(String member_id);
 	// =========================== 마이페이지 작업 =============================
 	// 마이페이지 목록 개수 조회
 	int selectMyPageListCount(@Param("category")String category, @Param("sId") String sId);
@@ -44,8 +53,7 @@ public interface MemberMapper {
 	// 마이페이지 목록 조회
 	List<HashMap<String, Object>> selectMyPageList(@Param("sId")String sId, @Param("category")String category, @Param("page") PageDTO page);
 
-	// 동네 인증 상태 초기화
-	void updateMemberNeighborAuth(String member_id);
+
 
 
 

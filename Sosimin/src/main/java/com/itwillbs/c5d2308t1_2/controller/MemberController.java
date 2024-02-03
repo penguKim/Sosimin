@@ -226,7 +226,7 @@ public class MemberController {
 		   }
 		   // -----------------------------------------------------------------------
 		   // -------------------- 동네 재인증을 위해 추가 ----------------------------
-		   if(member.getMember_neighbor_auth() == 0) {
+		   if(dbMember.getMember_neighbor_auth() == 0) {
 			   model.addAttribute("msg", "위치 재인증 필요!");
 			   model.addAttribute("msg2", "내 정보 수정에서 동네 인증을 다시 해주세요!");
 			   model.addAttribute("msg3", "error");

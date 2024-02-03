@@ -153,4 +153,17 @@
 		where member_id = #{member_id}
 	</update>
 	
+	<!-- 탈퇴 회원 조회 SELECT -->
+	<select id="selectWithdrawMember" resultType="member">
+		SELECT *
+		FROM Member
+		WHERE member_status = 2
+	</select>
+	
+	<!-- 탈퇴 회원 정보 삭제 DELETE -->
+	<delete id="deleteMemberInfo">
+		DELETE FROM Member
+		WHERE member_id = #{member_id}
+	</delete>
+	
 </mapper>
