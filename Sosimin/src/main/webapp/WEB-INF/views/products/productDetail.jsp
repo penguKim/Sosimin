@@ -449,14 +449,15 @@ function imagePopup(src) {
 }
 
 function Proposal() {
-	var width = 700; // 팝업 창의 가로 크기
-	var height = 500; // 팝업 창의 세로 크기
+	var product_id = ${Product.product_id};
+	var width = 640; // 팝업 창의 가로 크기
+	var height = 480; // 팝업 창의 세로 크기
 	var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
 	var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
 
 	var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
 
-	window.open("Proposal", "상품이미지", options);
+	window.open("Proposal?product_id=" + product_id, "상품이미지", options);
 }
 	
 
@@ -612,7 +613,7 @@ window.onload = function() {
 	                        	</div>
 	                        	<div id="eye">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/눈깔.png" width="25" height="25">
-	                        		${count.product_readcount }
+	                        		${count.product_readcount}
                        			</div>
 	                        	<div id="time">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/시간.png" width="25" height="25">

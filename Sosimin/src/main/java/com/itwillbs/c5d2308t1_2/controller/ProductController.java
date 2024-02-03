@@ -643,10 +643,12 @@ public class ProductController {
 						
 						return object.toString();
 					}
-	// 상품 제안하기 
+	// 가격 제안하기 
 	@GetMapping("Proposal")
-	public String Proposal() {
-		
+	public String Proposal(@RequestParam Map<String,String> map, MemberVO member, Model model) {
+		// 상품 조회
+		Map<String,String> Product = service.selectProduct(member);
+		model.addAttribute("Product", Product);
 		return"products/Proposal";
 	}
 	

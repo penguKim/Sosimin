@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,23 +14,32 @@
 	#proposalBackground{
 		background-color: #f9f9f9;
 	}
-	#proposalProductImage , #proposalProductSubject , #proposalProductPrice{
+	#proposalProductImage{
 		display: inline-block;
 	}
 	#proposalThree , #proposalPriceDiv{
+	display:inline-block;
 	padding: 30px;
+	position:relative;
+	width:2400px;
+	max-width: 700px;	
+	}
+	#proposalPriceDiv{
+		width: 550px;
+		position: relative;
 	}
 	#proposalProductSubject{
-		font-size: 30px;
 		position:relative;
-		bottom:60px;
+		top:140px;
+		right:150px;
+		font-size: 30px;
 	}
 	#proposalProductPrice{
 		font-size: 40px;
 		font-weight: bold;
 		position: relative;
-		right:180px;
-		bottom:10px;
+		top:140px;
+		right:150px;
 	}
 	#priceInput{
 		font-size: 40px;
@@ -43,12 +55,22 @@
 		left:30px;
 		bottom:30px; 
 	}
+	#product_name{
+	display:inline-block;
+	position:relative;
+	left:155px;
+	bottom:155px;
+	}
+	#productPrice{
+		position: relative;
+		left:50em;
+	}
 	.btn{
     display: inline-block;
     margin-right: 7px;
-    border: 1px solid #eee;
+    border: 1px solid #39d274;
     border-radius: 4px; 
-    color: #555;
+    color: #39d274;
     padding: 10px 18px;
     font-size: 13px;
     font-weight: 600;
@@ -56,6 +78,8 @@
     transition: all 0.4s ease;
     height: 46px;
     width: 100%;
+    background-color: white;
+    
 	}
 	.btn:hover {
     color: #fff;
@@ -74,8 +98,8 @@
     padding: 16px 45px;
     border-radius: 2px;
     border: 1px solid rgb(229, 229, 229);
-    background: rgb(255, 255, 255);
-    color: rgb(102, 102, 102);
+    background: #39d274;
+    color: white;
     font-size: 20px;
     font-weight: 500;
     width:550px;
@@ -95,6 +119,7 @@
 		color:red;
 		font-weight: bold;
 	}
+
 </style>
 <script>
 
@@ -170,23 +195,33 @@ $(document).ready(function(){
     });
 });
 
+function price(input, maxLength) {
+    if (input.value.length > maxLength) {
+      input.value = input.value.slice(0, maxLength);
+    }
+    document.getElementById("priceInput").textContent = input.value.length;
+  }
+
 </script>
 <body>
 		<div id="proposalBackground">
 			<div id="proposalThree">
 				<div id="proposalProductImage">
-					<img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" class="img" alt="#" height="100px">
+					<img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1}" class="img" alt="#" height="100px" width="100px">
 				</div>
-				<div id="proposalProductSubject">
-					아이유사진첩
-				</div>
-				<div id="proposalProductPrice">
-					20,000원
+				<div id="product_name">
+					<div id="proposalProductSubject">
+					${Product.product_name }
+					</div>
+					<div id="proposalProductPrice">
+					<fmt:formatNumber value='${Product.product_price}' pattern='#,###' />원
+					</div>
 				</div>
 			</div>
 		</div>
 		<div id="proposalPriceDiv">
-			<input type="text" id="priceInput" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11" value="20,000"><span id="priceInput2" style="font-size: 40px">원</span>
+			<input type="text" id="priceInput" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11"
+			value="<fmt:formatNumber value='${Product.product_price}' pattern='#,###' />"><span id="priceInput2" style="font-size: 40px">원</span>
 			<hr>
 		</div>
 		<div id="priceX"></div>
