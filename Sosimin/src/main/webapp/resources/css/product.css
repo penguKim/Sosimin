@@ -1,5 +1,11 @@
-/* 찜하기 버튼 */
-.heart {
+/* 관심 등록 버튼 */
+.product-info{
+	position: relative;
+	padding: 0;
+	
+}
+
+.product-info .heart {
 	width: 80px;
 	height: 80px;
 	background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
@@ -7,10 +13,13 @@
 	cursor: pointer;
 	transition: background-position 1s steps(28);
 	transition-duration: 0s;
-	transform:translate(-40px, 15px);
+	transform:translate(0px, 10px);
 	max-width: 80px;
-	position: relative;
-	left:50em;
+	position:absolute;
+	z-index: 2;
+	 right: 0;
+    bottom: 0;
+    
 }
 
 .heart.is-active {

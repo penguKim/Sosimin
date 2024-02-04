@@ -76,14 +76,14 @@ $(function() {
 							+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
 								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
 							+ ' </a>'
-							+ ' <div class="product-info">'
+							+ ' <div class="product-info heartPosition">'
 								+ '<h6>' + productList[i].product_name + '</h6>'
-							+ ' <div class="heart position-absolute bottom-0 start-0"></div>'
-									+ ' <ul class="review">'
-										+ ' <li><span>' +  productList[i].dong + '</span></li>'
-										+ ' <li><span>|</span></li>'
-										+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
-									+ ' </ul>'
+								+ ' <div class="heart"></div>'
+								+ ' <ul class="review">'
+									+ ' <li><span>' +  productList[i].dong + '</span></li>'
+									+ ' <li><span>|</span></li>'
+									+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
+								+ ' </ul>'
 								+ ' <div class="price">'
 									+ ' <span>' + productList[i].product_price + '원</span>'
 								+ ' </div>'
@@ -92,7 +92,7 @@ $(function() {
 								+ ' </div>'
 							+ ' </div>'
 						+ ' </div>'
-					+ ' </div>'
+				+ ' </div>'
 				);
 			}
 			
@@ -145,18 +145,30 @@ $(function() {
 		
 	});
 			
-	//좋아요 버튼 클릭 이벤트
+	<%-- 관심 목록 불러오기 --%> 
+	$.ajax({
+		type: "post",
+		url: "ProductLikeList",
+		data: {
+				
+		},
+		success: function() {
+			$(".heart").addClass("is-active");
+		},
+		error: function() {
+			
+		}
+	}); <%-- 관심목록 ajax 끝 --%>
+	
+	
+	
+	<%-- 관심 클릭 이벤트 --%>
 	$(".heart").on("click", function () {
 	    $(this).toggleClass("is-active");
 	    
-	    Swal.fire({
-			title: '찜했습니다!',         // Alert 제목
-			text: "감사합니다!",  // Alert 내용
-			icon:'success',                         // Alert 타입
-		});
 	});
 	
-});
+}); // ready 끝
 
 	<%-- 카테고리 선택 시 이동--%>
 	$(function() {
@@ -509,7 +521,7 @@ function filtering(data) {
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-grid" role="tabpanel"
                                 aria-labelledby="nav-grid-tab">
-                                <div class="row productList">
+                                <div class="row productList ">
                                 	<!-- 한개의 상품 목록 -->
 <!--                                     <div class="col-lg-4-1 col-md-6 col-12" > -->
 <!--                                         Start Single Product -->
