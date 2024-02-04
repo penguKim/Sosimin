@@ -732,11 +732,7 @@ public class PaymentController {
 		String product_seller = (String)session.getAttribute("sId"); // 구매자 정보
 		
 		if(product_seller == null) {
-			model.addAttribute("msg", "로그인을 해주세요!");
-			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "warning");
-			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
-			return "forward";
+			return "not-login";
 		}
 		
 		// 해당 상품정보를 조회하여 판매자 정보가 일치하는지 확인
@@ -1113,17 +1109,9 @@ public class PaymentController {
 			
 			Map<String, Object> payInfo = service.getPayInfo(product_buyer);
 			if(session.getAttribute("access_token") == null) {
-				model.addAttribute("msg", "계좌 인증이 필요합니다");
-				model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
-				model.addAttribute("msg3", "warning");
-				model.addAttribute("targetURL", "AccountVerification");	
-				return "forward";
+				return "not-access_token";
 			} else if(payInfo == null) {
-				model.addAttribute("msg", "계좌 등록이 필요합니다");
-				model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
-				model.addAttribute("msg3", "warning");
-				model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
-				return "forward";
+				return "not-payInfo";
 			}
 			
 			// 페이결제용 추가 로직

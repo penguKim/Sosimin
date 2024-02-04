@@ -409,7 +409,16 @@ function acceptPayment() {
 			"product_buyer": "leess"
 		},
 		success:  function(data) {
-			if(data == "true") {
+			if(data == "not-login") {
+				Swal.fire({
+					icon: 'warning',
+					title: '로그인을 해주세요!',
+					text: '로그인 페이지로 이동합니다!',
+					allowOutsideClick: false
+				}).then((result) => {
+						location.href="MemberLogin";
+				});	
+			} else if(data == "true") {
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
@@ -464,7 +473,16 @@ function confirmPayment() {
 			"product_id": 348,
 		},
 		success:  function(data) {
-			if(data == "true") {
+			if(data == "not-login") {
+				Swal.fire({
+					icon: 'warning',
+					title: '로그인을 해주세요!',
+					text: '로그인 페이지로 이동합니다!',
+					allowOutsideClick: false
+				}).then((result) => {
+						location.href="MemberLogin";
+				});	
+			} else if(data == "true") {
 				Swal.fire({
 					position: 'center',
 					icon: 'success',
@@ -500,6 +518,24 @@ function confirmPayment() {
 					timer: 2000,
 					toast: true
 				});			
+			} else if(data == "not-access_token") {
+				Swal.fire({
+					icon: 'warning',
+					title: '계좌 인증이 필요합니다',
+					text: '계좌 인증 페이지로 이동합니다.',
+					allowOutsideClick: false
+				}).then((result) => {
+						location.href="AccountVerification";
+				});	
+			} else if(data == "not-payInfo") {
+				Swal.fire({
+					icon: 'warning',
+					title: '계좌 등록이 필요합니다',
+					text: '계좌 등록 페이지로 이동합니다.',
+					allowOutsideClick: false
+				}).then((result) => {
+						location.href="AccountRegist";
+				});	
 			} else {
 				Swal.fire({
 					position: 'center',
