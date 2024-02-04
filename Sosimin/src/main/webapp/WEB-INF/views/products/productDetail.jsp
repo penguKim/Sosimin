@@ -691,7 +691,7 @@ window.onload = function() {
                                  </div>
                                  <div class="col-lg-4 col-md-4 col-12">
                                      <div class="wish-button">
-                                         <button class="btn" style="height: 60px;" id="chatButton"> 1:1채팅</button>
+                                         <button class="btn" style="height: 60px;" id="chatButton" onclick="location.href='ChatMain?product_id=${Product.product_id}'"> 1:1채팅</button>
                                      </div>
                                  </div>
 	     						 <div class="col-lg-4 col-md-4 col-12">

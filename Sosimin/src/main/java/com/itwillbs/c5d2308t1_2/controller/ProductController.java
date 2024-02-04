@@ -262,7 +262,7 @@ public class ProductController {
 
 //			    map.put("tag_name", tag_name); 
 			    map.put("product_price" , product_price);
-			    map.put("gu", gu);
+			    map.put("gu", gu); 
 			    map.put("dong", dong);
 			    
 			    

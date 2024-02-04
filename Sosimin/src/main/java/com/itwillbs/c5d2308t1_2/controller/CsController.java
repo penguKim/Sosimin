@@ -23,11 +23,11 @@ public class CsController {
 		
 		return "cs/csFaq";
 	}
-	@GetMapping("CsOneOnOne")
-	public String csOneOnOne() {
-		
-		return "cs/csOneOnOne";
-	}
+//	@GetMapping("CsOneOnOne")
+//	public String csOneOnOne() {
+//		
+//		return "cs/csOneOnOne";
+//	}
 	
 	@GetMapping("CsNoticeList")
 	public String csNoticeList() {

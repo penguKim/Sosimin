@@ -134,7 +134,7 @@ main header img:first-child{
   width: 60px;
   height: 60px;
 }
-main header img:last-child{ /*별*/
+main header img:last-child:not(#imageTag){ /*별*/
   width:30px;
   margin-top:0;
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.c5d2308t1_2.mapper.ChatMapper">
+
+<select id="getProduct" resultType="map">
+	SELECT *
+	FROM Product
+	WHERE product_id = #{product_id}
+	<!-- WHERE절 앞에는 서버(db)값들이고 = 우리가 받아올 파라미터값(map으로 받아온값) -->
+</select>
+
+<select id="getSellMember" resultType="map">
+		SELECT DISTINCT *
+		FROM Product p JOIN Member m
+		on p.member_id = m.member_id
+		WHERE
+	    product_id = #{product_id}
+</select>
+
+
+</mapper>
