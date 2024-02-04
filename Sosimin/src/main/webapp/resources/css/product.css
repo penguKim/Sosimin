@@ -1,7 +1,6 @@
 /* 관심 등록 버튼 */
 .product-info{
 	position: relative;
-	padding: 0;
 	
 }
 
@@ -14,12 +13,10 @@
 	transition: background-position 1s steps(28);
 	transition-duration: 0s;
 	transform:translate(0px, 10px);
-	max-width: 80px;
 	position:absolute;
-	z-index: 2;
+	z-index: 99;
 	 right: 0;
     bottom: 0;
-    
 }
 
 .heart.is-active {

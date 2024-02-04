@@ -78,7 +78,7 @@ $(function() {
 							+ ' </a>'
 							+ ' <div class="product-info heartPosition">'
 								+ '<h6>' + productList[i].product_name + '</h6>'
-								+ ' <div class="heart"></div>'
+								+ ' <div class="heart" id="heartLike '+ i +'"></div>'
 								+ ' <ul class="review">'
 									+ ' <li><span>' +  productList[i].dong + '</span></li>'
 									+ ' <li><span>|</span></li>'
@@ -138,47 +138,79 @@ $(function() {
 			if(pageNum >= pageInfo.maxPage) {
 				$("#nextPage").addClass("disabled");
 			}
+			
+			if()
+				<%-- 관심 목록 불러오기 --%> 
+				$.ajax({
+					url: 'ProductLikeList',
+					dataType: 'json',
+					success: function(data) {
+						for(let i = 0; i < productList.length; i++) {
+							if(productList[i].product_id == data[i].product_id) {
+								alert("확인");
+								$("#heartLike" + i).addClass("is-active");
+							} else {
+								alert("실패");
+							}
+							
+						}
+						
+					},
+					error: function() {
+						const Toast = Swal.mixin({
+						    toast: true,
+						    position: 'center-center',
+						    showConfirmButton: false,
+						    timer: 1000,
+						    timerProgressBar: false,
+						})
+						Toast.fire({
+						    icon: 'error',
+						    title: '관심목록 불러오기 실패했습니다'
+						})					
+					}
+				}); <%-- 관심목록 ajax 끝 --%>
+			}	
+			
 		},
 		error: function() {
-			alert("오류");
+			const Toast = Swal.mixin({
+			    toast: true,
+			    position: 'center-center',
+			    showConfirmButton: false,
+			    timer: 1000,
+			    timerProgressBar: false,
+			})
+			Toast.fire({
+			    icon: 'error',
+			    title: 'ajax 불러오기 실패!'
+			})		
 		}
-		
-	});
-			
-	<%-- 관심 목록 불러오기 --%> 
-	$.ajax({
-		type: "post",
-		url: "ProductLikeList",
-		data: {
-				
-		},
-		success: function() {
-			$(".heart").addClass("is-active");
-		},
-		error: function() {
-			
-		}
-	}); <%-- 관심목록 ajax 끝 --%>
-	
-	
+	}); <%-- 상품목록 조회 ajax 끝 --%>
 	
 	<%-- 관심 클릭 이벤트 --%>
 	$(".heart").on("click", function () {
+		alert("좋아요!!");
 	    $(this).toggleClass("is-active");
-	    
+	
 	});
+	
+	
+	
+	
+	
 	
 }); // ready 끝
 
-	<%-- 카테고리 선택 시 이동--%>
-	$(function() {
-		$("#submenu-1-3>li").on("click", function() {
-			let length =  $("#submenu-1-3>li").length;
-			let	category = $(this).text();
-			
-			location.href="SearchProduct?product_category=" + category;
-		});
+<%-- 카테고리 선택 시 이동--%>
+$(function() {
+	$("#submenu-1-3>li").on("click", function() {
+		let length =  $("#submenu-1-3>li").length;
+		let	category = $(this).text();
+		
+		location.href="SearchProduct?product_category=" + category;
 	});
+});
 </script>
 
 <script type="text/javascript">

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.collections.map.*;
+import org.apache.ibatis.javassist.expr.NewArray;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.mybatis.spring.*;
@@ -158,13 +159,29 @@ public class ProductController {
 		return jsonArray.toString();
 	}
 	
+	// 관심 상품 목록
+	@ResponseBody
+	@GetMapping("ProductLikeList")
+	public String productLikeList(@RequestParam Map<String, String> map, HttpSession session, Model model) {
+		String sId = (String)session.getAttribute("sId");
+		map.put("sId", sId);
+		System.out.println(">>>>>>>>>>>>>>>>> 저장 후 맵 : " + map);
+		if(sId == null) {
+			List<Map<String, Object>> likeList = service.getLikeList(map);
+			System.out.println(">>>>>>>>>>>>>>>>> 관심 목록 : " + likeList);
+			JSONArray jo = new JSONArray(likeList);
+			System.out.println(">>>>>>>>>>>>>>>>>>>> : jo " + jo);
+			return jo.toString();
+		}
+		
+		return "";
+	}
+	
 	// =============================== 관리자 페이지
 		// 등록 상품 목록
 		@GetMapping("ProductList")
 		public String productList(HttpSession session, Model model) {
-			
 			List<Map<String, Object>> productList = service.adminProductList();
-			
 			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>" + productList);
 			
 			model.addAttribute("productList", productList);

@@ -19,6 +19,9 @@ public interface ProductMapper {
 	// 상품 목록 카운트
 	int productListCount(Map<String, Object> map);
 	
+	// 관심 상품 목록 조회
+	List<Map<String, Object>> selectLikeList(Map<String, String> map);
+	
 	// =============================================================================
 	// 상품 등록 
 	int productInsert(Map<String, String> map);
@@ -81,5 +84,8 @@ public interface ProductMapper {
 	
 	// 관리자 페이지 상품목록
 	List<Map<String, Object>> adminProductList();
-
+	
+	 
+	
+	
 }

@@ -164,5 +164,8 @@ public class ProductService {
 	public List<Map<String, Object>> adminProductList() {
 		return mapper.adminProductList();
 	}
+	public List<Map<String, Object>> getLikeList(Map<String, String> map) {
+		return mapper.selectLikeList(map);
+	}
 	
 }
