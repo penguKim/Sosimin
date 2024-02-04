@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <script type="text/javascript">
+let reporter_id = "${sessionScope.sId}";
 $(function() {
 	$("#testBtn").on("click", function() {
 		let test = $("#testBtn").val();
@@ -43,19 +44,64 @@ $(function() {
 // 	});
 // });
 
-
-
-
 <%-- sweetalert confirm --%>
-function reportRegist(index) {
+function reportRegist(index, reason) {
 	<%-- 신고 분류 0: 게시물 신고, 1: 사용자 신고--%>
-// 	let report_content = $("#reportTextArea").val();
 	let report_type = index;
+	let report_content = ""; 
 	
-// 	if(report_content == null) {
-// 		alert("신고내용을 입력해주세요");
-		
-// 	} else if(report_content != null) {
+	// 신고사유에 따른 내용 저장
+	if(reason === 1) {
+		report_content = $(".reportTextArea").eq(reason - 1).val();
+	} else if (reason === 2 ) {
+		report_content = $(".reportTextArea").eq(reason - 1).val();
+	} else if (reason === 3 ) {
+		report_content = $(".reportTextArea").eq(reason - 1).val();
+	} else if (reason === 4 ) {
+		report_content = $(".reportTextArea").eq(reason - 1).val();
+	} else if (reason === 5 ) {
+		report_content = $(".reportTextArea").eq(reason - 1).val();
+	} else if (reason === 6 ) {
+		report_content = $(".reportTextArea").eq(reason - 1).val();
+	} else if (reason === 7 ) {
+		report_content = $(".reportTextArea").eq(reason - 1).val();
+	} 
+	
+	// 신고 내용 미입력시 
+ 	if (report_content === "") {
+	    // textarea가 입력되지 않은 경우 모달 창 띄우기
+	    const Toast = Swal.mixin({
+		    toast: true,
+		    position: 'center-center',
+		    showConfirmButton: false,
+		    timer: 2000,
+		    timerProgressBar: false,
+		})
+		Toast.fire({
+		    icon: 'error',
+		    title: '신고 내용을 입력해주세요!!!'
+		})
+		return false;
+    }
+	
+ 	// 사용자 미로그인 시
+ 	if(reporter_id === "") {
+ 		 const Toast = Swal.mixin({
+ 		    toast: true,
+ 		    position: 'center-center',
+ 		    showConfirmButton: false,
+ 		    timer: 2000,
+ 		    timerProgressBar: false,
+ 		})
+ 		Toast.fire({
+ 		    icon: 'info',
+ 		    title: '로그인 후 이용해주세요!'
+ 		})
+ 		
+ 		$("#modalDismiss").click();
+ 		return false;
+ 	} 	
+	
 		Swal.fire({
 			   title: '정말 신고하시겠습니까?',
 			   text: '내용과 사실이 다를 경우 불이익을 당할 수 있습니다',
@@ -75,11 +121,11 @@ function reportRegist(index) {
 		    	$.ajax({
 						url: "ReportRegist",
 						data: {
-							report_type: report_type, // 신고 종류
-							reporter_id: "너굴맨", // 신고자 아이디
+							report_type: index, // 신고 종류
+							reporter_id: reporter_id, // 신고자 아이디
 							reportee_id: "사기꾼", // 피신고자 아이디
-							report_reason: "1", // 신고 사유
-							report_content: "너굴맨이 해치웠으니 안심하라구!" // 신고 내용
+							report_reason: reason, // 신고 사유
+							report_content: report_content // 신고 내용
 						},
 						success: function() {
 							const Toast = Swal.mixin({
@@ -112,6 +158,7 @@ function reportRegist(index) {
 		   	}
 		});
 	}
+	
 </script>
 </head>
 <body>
@@ -120,12 +167,12 @@ function reportRegist(index) {
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="reportsubject">게시글 신고하기</h1>
+					<h1 class="modal-title fs-5" id="reportsubject">신고하기</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modalDismiss"></button>
 				</div>
 				<div class="modal-body">
 					<div class="accordion" id="accordionExample">
-						<div class="accordion-subject">'게시글 제목' 게시글을 신고하는 이유를 선택해주세요 </div>
+						<div class="accordion-subject">게시글 신고</div>
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="heading1">
 								<button id="accordionBtn" class="accordion-button collapsed .accordioncolor" type="button" data-bs-toggle="collapse"
@@ -138,8 +185,9 @@ function reportRegist(index) {
 								<div class="accordion-body">
 									<p class="accordion-body-1">어떤 물품을 판매하고 있나요?</p> 
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
-									<p><a href="#">거래 금지 품목을 살펴봅시다</a></p>		
-									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>	
+									<p><a href="#">거래 금지 품목을 살펴봅시다</a></p>
+									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(0, 1)">신고 하기</button>		
 								</div>
 							</div>
 						</div>
@@ -157,7 +205,8 @@ function reportRegist(index) {
 									<p class="accordion-body-1">어떤 내용의 광고성 게시글인가요? </p>
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
 									<p><a href="#">이런 종류의 내용은 광고 입니다.</a></p>		
-									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>	
+									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(0, 2)">신고 하기</button>	
 								</div>
 							</div>
 						</div>
@@ -175,7 +224,8 @@ function reportRegist(index) {
 									<p class="accordion-body-1">어떤 분쟁이 발생했나요? </p> 
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다 </p>
 									<p><a href="#">분쟁 시 이렇게 대처 하세요</a></p>
-									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>	
+									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(0, 3)">신고 하기</button>	
 								</div>
 							</div>
 						</div>
@@ -194,10 +244,54 @@ function reportRegist(index) {
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
 									<p><a href="#">이런 내용은 사기니까 조심하세요!</a></p>
 									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(0, 4)">신고 하기</button>
 								</div>
 							</div>
 						</div>
 						
+						<div class="accordion-subject">사용자 신고</div>
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="heading6">
+								<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
+									data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+									<span class="title">비매너 사용자에요</span>
+								</button>
+							</h2>
+							<div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6"
+							   		data-bs-parent="#accordionExample">
+								<div class="accordion-body">
+									<form>
+										<p class="accordion-body-1">어떤 행위를 했나요?</p> 
+										<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
+										<p><a href="#">이런 행위는 비매너행위에요!</a></p>		
+										<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
+										<button type="submit" class="btn btn-primary" id="reportBtn" onclick="reportRegist(1, 5)">신고 하기</button>
+										
+									</form>
+								</div>
+							</div>
+						</div>
+						
+						<div class="accordion-item">
+							<h2 class="accordion-header" id="heading7">
+								<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
+									data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+									<span class="title">욕설, 비방, 혐오를 표현을 해요</span>
+								</button>
+							</h2>
+							<div id="collapse7" class="accordion-collapse collapse" aria-labelledby="heading7"
+			    				data-bs-parent="#accordionExample">
+								<div class="accordion-body">
+									<p class="accordion-body-1">어떤 표현을 했나요?</p>
+									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
+									<p><a href="#">이런 말은 하면 안되요!!</a></p>		
+									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(1, 6)">신고 하기</button>	
+								</div>
+							</div>
+						</div>
+						
+						<div class="accordion-subject">기타</div>
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="heading5">
 							<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
@@ -211,129 +305,21 @@ function reportRegist(index) {
 									<p class="accordion-body-1">어떤 문제가 있나요?</p> 
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
 									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(1, 7)">신고 하기</button>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="accordion-item2">
-						<div class="accordion-member">\'사용자이름\'을 신고하고 싶으신가요 </div>
-						<button id="memberReportModal" type="button" class="btn btn-primary" value="1">회원 신고하기</button>
+						
+						
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>
-					<button type="submit" class="btn btn-primary" id="reportBtn" onclick="reportRegist(0)">신고 하기</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<%-- 회원 모달 --%>
-	<div class="modal fade review-modal" id="memberModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-scrollable" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="reportsubject">회원 신고하기</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="memberDismiss"></button>
-				</div>
-				<div class="modal-body">
-					<div class="accordion" id="accordionExample">
-						<div class="accordion-subject">'사용자이름' 사용자를 신고하는 이유를 선택해주세요 </div>
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="heading6">
-								<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
-									data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
-									<span class="title">비매너 사용자에요</span>
-								</button>
-							</h2>
-							<div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6"
-							   		data-bs-parent="#accordionExample">
-								<div class="accordion-body">
-									<p class="accordion-body-1">어떤 행위를 했나요?</p> 
-									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
-									<p><a href="#">이런 행위는 비매너행위에요!</a></p>		
-									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
-								</div>
-							</div>
-						</div>
-						
-						<div class="accordion-item">
-						<h2 class="accordion-header" id="heading7">
-								<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
-									data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
-									<span class="title">욕설, 비방, 혐오를 표현을 해요</span>
-								</button>
-							</h2>
-							<div id="collapse7" class="accordion-collapse collapse" aria-labelledby="heading7"
-			    				data-bs-parent="#accordionExample">
-								<div class="accordion-body">
-									<p class="accordion-body-1">어떤 표현을 했나요?</p>
-									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
-									<p><a href="#">이런 말은 하면 안되요!!</a></p>		
-									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>	
-								</div>
-							</div>
-						</div>
-					
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="heading8">
-							<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
-								data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
-								<span class="title">거래중 분쟁이 발생했어요</span>
-							</button>
-							</h2>
-							<div id="collapse8" class="accordion-collapse collapse" aria-labelledby="heading8"
-					    		data-bs-parent="#accordionExample">
-								<div class="accordion-body">
-									<p class="accordion-body-1">어떤 분쟁이 발생했나요?</p>
-									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
-									<p><a href="#">분쟁 시 이렇게 대처 하세요</a></p>
-									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>	
-								</div>
-							</div>
-						</div>
-						
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="heading9">
-							<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
-								data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
-								<span class="title">전문 판매 업자같아요</span>
-							</button>
-							</h2>
-							<div id="collapse9" class="accordion-collapse collapse" aria-labelledby="heading9"
-					    		data-bs-parent="#accordionExample">
-								<div class="accordion-body">
-									<p class="accordion-body-1">어떤 종류의 물건을 팔고있나요? </p>
-									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
-									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
-								</div>
-							</div>
-						</div>
-						
-						<div class="accordion-item">
-							<h2 class="accordion-header" id="heading10">
-							<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
-								data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
-								<span class="title">다른 문제가 있어요</span>
-							</button>
-							</h2>
-							<div id="collapse10" class="accordion-collapse collapse" aria-labelledby="heading10"
-					    		data-bs-parent="#accordionExample">
-								<div class="accordion-body">
-									<p class="accordion-body-1">어떤 문제가 있나요?</p>
-									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
-									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>
-					<button type="submit" class="btn btn-primary" id="reportBtn" onclick="reportRegist(1)">신고 하기</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 </body>
 </html>
