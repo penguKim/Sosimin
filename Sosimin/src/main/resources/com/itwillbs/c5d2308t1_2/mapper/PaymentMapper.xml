@@ -127,7 +127,7 @@
 				pay_balance = pay_balance - CAST(#{order_amount} AS SIGNED)
 			</when>
 			<when test="pay_history_type == 4">
-				pay_balance = pay_balance + CAST(#{order_amount} AS SIGNED)
+				pay_balance = pay_balance + CAST(#{payment_amount} AS SIGNED)
 			</when>
 			<otherwise>
 				pay_balance = pay_balance
@@ -186,8 +186,38 @@
 		WHERE product_id = #{product_id}
 	</select>
 	
-	<!-- 페이 사용/수익 내역 -->
-	<insert id="insertOrderHistory">
+	<!-- 구매 기록 생성 -->
+	<insert id="insertOrder">
+		INSERT INTO Orders
+		VALUE (
+			null
+			, #{product_id}
+			, 1 -- 수락하면 일단 현금거래로 세팅
+			, #{product_buyer}
+			, null
+			, null
+			, null
+			, 0
+			, null
+		)
+	</insert>
+
+	<!-- 상품 거래 상태를 거래중(1)으로 변경 -->
+	<update id="updateTradeStatus1">
+		UPDATE Product
+		SET trade_status = 1
+		WHERE product_id = #{product_id}
+	</update>
+
+	<!-- 거래 내역 조회하여 구매자 대조 -->
+	<select id="selectOrderInfo" resultType="map">
+		select *
+		From OrderList
+		WHERE product_id = #{product_id}
+	</select>
+	
+	<!-- 페이 사용 내역 -->
+	<insert id="insertbuyHistory">
 		<selectKey keyProperty="buyer_pay_history_id" resultType="INT" order="AFTER">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -196,35 +226,63 @@
 			null
 			, #{pay_id}
 			, #{order_amount}
-			<choose>
-				<when test="pay_history_type == 3">
-					, #{pay_balance} - CAST(#{order_amount} AS SIGNED)
-				</when>
-				<when test="pay_history_type == 4">
-					, #{pay_balance} + CAST(#{order_amount} AS SIGNED)
-				</when>
-				<otherwise>
-					, #{pay_balance}
-				</otherwise>
-			</choose>
-			, #{pay_history_type}
+			, #{pay_balance} - CAST(#{order_amount} AS SIGNED)
+			, 3
 			, now()
 			, null
 		)
 	</insert>
 	
 	<!-- 구매 기록 저장 -->
-	<insert id="insertOrder">
-		INSERT INTO Orders
+	<insert id="updateOrderBuyer">
+		UPDATE Orders
+		SET
+			order_type = 0 -- 페이거래 번호로 변경
+			, buyer_pay_history_id = #{buyer_pay_history_id}
+		WHERE product_buyer = #{product_buyer}
+			AND product_id = #{product_id}
+	</insert>
+	
+	<!-- 상품 거래 상태를 거래완료(2)으로 변경 -->
+	<update id="updateTradeStatus2">
+		UPDATE Product
+		SET trade_status = 2
+		WHERE product_id = #{product_id}
+	</update>
+	
+	<!-- 상품 결제 상태를 거래완료(1)으로 변경 -->
+	<update id="updateOrderStatus">
+		UPDATE Orders
+		SET order_type = 1
+		WHERE product_buyer = #{product_buyer}
+			AND product_id = #{product_id}
+	</update>
+	
+	<!-- 페이 수익 내역 -->
+	<insert id="insertsellHistory">
+		<selectKey keyProperty="seller_pay_history_id" resultType="INT" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO PayHistory
 		VALUE (
 			null
-			, #{product_id}
-			, #{buyer_pay_history_id}	
-			, null
-			, null
-			, 0
+			, #{seller_pay_id}
+			, #{payment_amount}
+			, #{pay_balance} + CAST(#{payment_amount} AS SIGNED)
+			, 4
+			, now()
 			, null
 		)
+	</insert>
+	
+		<!-- 구매 기록 저장 -->
+	<insert id="updateOrderSeller">
+		UPDATE Orders
+		SET
+			order_status = 1 -- 거래완료 상태로 변경
+			, seller_pay_history_id = #{seller_pay_history_id}
+		WHERE product_buyer = #{product_buyer}
+			AND product_id = #{product_id}
 	</insert>
 	
 	<!-- ================ 관리자페이지 ====================== -->	

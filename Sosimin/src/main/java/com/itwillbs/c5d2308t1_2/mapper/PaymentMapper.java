@@ -50,12 +50,33 @@ public interface PaymentMapper {
 	
 	// 구매하려는 상품 정보 조회
 	Map<String, Object> selectProductInfo(Map<String, Object> map);
-
-	// 페이 사용/수익 내역
-	void insertOrderHistory(Map<String, Object> map);
 	
-	// 상품 구매 기록 요청
+	// 거래수락 시 거래 정보 생성
 	int insertOrder(Map<String, Object> map);
+	
+	// 상품 거래 상태 1로 변경
+	void updateTradeStatus1(Map<String, Object> map);
+
+	// 페이 사용 내역
+	void insertbuyHistory(Map<String, Object> map);
+	
+	// 구매자 지불 정보 넣기
+	void updateOrderBuyer(Map<String, Object> map);
+	
+	// 구매자 정보 불러오기
+	Map<String, Object> selectOrderInfo(Map<String, Object> map);
+	
+	// 상품 거래 상태 2로 변경
+	void updateTradeStatus2(Map<String, Object> map);
+	
+	// 상품 결제 상태를 1로 변경
+	int updateOrderStatus(Map<String, Object> map);
+	
+	// 페이 수익 내역
+	void insertsellHistory(Map<String, Object> map);
+	
+	// 판매자 수익 정보 넣기
+	void updateOrderSeller(Map<String, Object> map);
 	
 	// ====================== 관리자페이지 ==================
 	
@@ -78,6 +99,10 @@ public interface PaymentMapper {
 	List<Map<String, Object>> selectPaySpentRevenue();
 
 	List<Map<String, Object>> selectOrderList();
+
+
+
+
 
 
 

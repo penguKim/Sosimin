@@ -725,6 +725,40 @@ public class PaymentController {
 	}
 	
 	
+	// --------- 거래 수락 처리 ------------
+	@ResponseBody
+	@GetMapping("AcceptPayment")
+	public String acceptPayment(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
+		String product_seller = (String)session.getAttribute("sId"); // 구매자 정보
+		
+		if(product_seller == null) {
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
+			return "forward";
+		}
+		
+		// 해당 상품정보를 조회하여 판매자 정보가 일치하는지 확인
+		Map<String, Object> productInfo = service.getProductInfo(map);
+		
+		// 일치하지 않으면 튕겨내기
+		if(!productInfo.get("member_id").toString().equals(product_seller)) {
+			return "inconsistency";
+		}
+		
+		// 거래수락하면 거래가 시작됨
+		// 상품의 거래 상태도 바꿔주기
+		int orderCount = service.orderProduct(map);
+		
+		if(orderCount > 0) {
+			return "true";			
+		} else {
+			return "false";	
+		}
+
+	}
+
 	
 	// ----------- 페이사용 ---------------
 	// 페이 사용 페이지로 이동
@@ -764,7 +798,7 @@ public class PaymentController {
 		model.addAttribute("payInfo", payInfo);
 		
 		// 상품 상태가 거래중이 아니면 튕겨내기
-		if(!productInfo.get("trade_status").toString().equals("0")) {
+		if(!productInfo.get("trade_status").toString().equals("1")) {
 			model.addAttribute("msg", "거래 가능한 상품이 아닙니다.");
 			model.addAttribute("msg2", "상품 목록으로 이동합니다.");
 			model.addAttribute("msg3", "warning");
@@ -772,6 +806,19 @@ public class PaymentController {
 			return "forward";
 		}
 		
+		// Orders 테이블의 product_buyer를 조회하여 세션아이디와 비교
+		// 일치하지 않으면 돌려보내기
+		Map<String, Object> orderInfo = service.getOrderInfo(map);
+		
+		if(orderInfo == null) {
+			model.addAttribute("msg", "결제 가능한 상품이 없습니다!");
+			model.addAttribute("msg3", "error");
+			return "fail_back";
+		} else if(!orderInfo.get("product_buyer").toString().equals(product_buyer)) {
+			model.addAttribute("msg", "구매자 정보가 일치하지 않습니다!");
+			model.addAttribute("msg3", "error");
+			return "fail_back";
+		}
 		
 		return "payment/use";
 	}
@@ -783,12 +830,13 @@ public class PaymentController {
 		
 		
 		String product_buyer = (String)session.getAttribute("sId"); // 구매자 정보
-		map.put("member_id", product_buyer);
+		map.put("product_buyer", product_buyer);
 		
 		session.setAttribute("PaymentPro", "PaymentPro" + product_buyer); // 세션에 거래 요청 정보를 저장
 		
 		// DB에서 페이 가입 여부 조회하고 정보 가져오기(페이 미가입자는 현금거래만 가능)
 		Map<String, Object> payInfo = service.getPayInfo(product_buyer);
+
 		if(product_buyer == null) {
 			model.addAttribute("msg", "로그인을 해주세요!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
@@ -940,10 +988,10 @@ public class PaymentController {
 		
 		// pay_history_type을 사용으로 지정
 		map.put("pay_history_type", 3);
-		
 		log.info("뭐가들었니 : " + map.toString());
 		
-		int orderCount = service.orderProduct(map);
+		
+		int orderCount = service.paymentBuyer(map);
 		rttr.addFlashAttribute("order_amount", order_amount);
 		
 		if(orderCount > 0) {
@@ -1008,26 +1056,104 @@ public class PaymentController {
 	
 	
 	// ----------------- 구매확정 처리 -----------------------
-	// 구매확정 버튼을 클릭하면 일단 구매자가 입금한 사실이 있는지 확인
-	
-	// 아이디 + pay_id 로 PayHistory찾아서 Orders에서 검색??
-	
-	// 구매자가 입금한 만큼의 금액을 판매자 페이에 더하고 [PayHistory]에 적기 - INSERT
-	// [Pay] 테이블 전체금액(pay_balance) 증가 - UPDATE
-	// 입금 후에 pay_history_id를 [Orders]의 seller_pay_history_id에 넣기 - UPDATE
-	// [Orders]의 order_status를 거래 완료로 바꾸고 거래 완료 시간 적기 - UPDATE
-	// [Product]의 trade_status를 거래완료로 바꾸기 - UPDATE
+	// 구매확정을 눌렀을 때
 	@ResponseBody
 	@GetMapping("ConfirmPayment")
-	public String confirmPayment() {
+	public String confirmPayment(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
+		String product_buyer = (String)session.getAttribute("sId"); // 구매자 정보
+		
+		map.put("product_buyer", product_buyer);
+		
+		if(product_buyer == null) {
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
+			return "forward";
+		}
+		
+		// Orders 테이블의 product_buyer를 조회하여 세션아이디와 비교
+		// 일치하지 않으면 돌려보내기
+		Map<String, Object> orderInfo = service.getOrderInfo(map);
+		
+		if(orderInfo == null) {
+			return "none"; // 구매 확정 가능한 상품이 없습니다!
+		} else if(!orderInfo.get("product_buyer").toString().equals(product_buyer)) {
+			return "inconsistency"; // 구매자 정보가 일치하지 않습니다!
+		}
+		
+		// 소심거래(비대면)의 경우에는 페이결제만 가능하므로
+		// 페이 지불을 하지 않았으면 거래완료 불가능
+		// 해당 상품정보를 조회하여 현재 결제에 필요한 상품정보 가져오기
+		Map<String, Object> productInfo = service.getProductInfo(map);
+		if(productInfo.get("trade_method").toString().equals("1")&& // 비대면거래에서
+				(orderInfo.get("buyer_pay_history_id") == null // 페이지불이 없으면
+				|| orderInfo.get("buyer_pay_history_id").toString().equals(""))) {
+			return "unpaid"; // 결제안함
+		}
 		
 		
-		
-		return "";
+		// 현금결제인지 소심결제인지 따라서 다름!
+		if(orderInfo.get("order_type").toString().equals("1")) { // 현금거래일 경우
+			// Products 테이블과 Orders 테이블의 결제 상태 바꾸기 order_status 1
+			// 현금 / 소심 공통 [Product]의 trade_status를 거래완료로 바꾸기 - UPDATE
+			// [Product]의 trade_status를 거래완료로 바뀌면 리뷰 쓰기 가능해짐
+			
+			int updateCount = service.modifyStatus(map);
+			
+			if(updateCount > 0) { // 성공시
+				return "true";	
+			} else {
+				return "false";					
+			}
+
+			
+		} else if(orderInfo.get("order_type").toString().equals("0")) { // 페이거래일 경우
+			// DB에서 페이 가입 여부 조회하고 정보 가져오기(페이 미가입자는 현금거래만 가능)
+			
+			Map<String, Object> payInfo = service.getPayInfo(product_buyer);
+			if(session.getAttribute("access_token") == null) {
+				model.addAttribute("msg", "계좌 인증이 필요합니다");
+				model.addAttribute("msg2", "계좌 인증 페이지로 이동합니다.");
+				model.addAttribute("msg3", "warning");
+				model.addAttribute("targetURL", "AccountVerification");	
+				return "forward";
+			} else if(payInfo == null) {
+				model.addAttribute("msg", "계좌 등록이 필요합니다");
+				model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
+				model.addAttribute("msg3", "warning");
+				model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
+				return "forward";
+			}
+			
+			// 페이결제용 추가 로직
+			// 구매확정 버튼을 클릭하면 일단 구매자가 입금한 사실이 있는지 확인
+			if(orderInfo.get("buyer_pay_history_id") != null && !orderInfo.get("buyer_pay_history_id").toString().equals("")) { // 결제한 것이 확인되면
+				// Products 테이블과 Orders 테이블의 결제 상태 바꾸기
+				// 구매자가 입금한 만큼의 금액을 판매자 페이에 더하고 [PayHistory]에 적기 - INSERT
+				// [Pay] 테이블 전체금액(pay_balance) 증가 - UPDATE
+				// 입금 후에 pay_history_id를 [Orders]의 seller_pay_history_id에 넣기 - UPDATE
+				// [Orders]의 order_status를 거래 완료로 바꾸고 거래 완료 시간 적기 - UPDATE
+				
+				// 판매자의 페이 정보 확인
+				Map<String, Object> sellerInfo = service.getPayInfo(orderInfo.get("product_seller").toString());
+				
+				log.info("orderInfo 확인 : " + orderInfo);
+				
+				orderInfo.put("pay_balance", sellerInfo.get("pay_balance"));
+				orderInfo.put("fintech_use_num", sellerInfo.get("fintech_use_num"));
+				
+				int modifyCount = service.confirmPayment(orderInfo);
+			
+				if(modifyCount > 0) { // 성공시
+					return "true";	
+				} else {
+					return "false";					
+				}		
+			}		
+		}		
+		return "false";
 	}
-	
-	
-	
 	
 	
 	// ----------------- 결제 취소 -----------------------

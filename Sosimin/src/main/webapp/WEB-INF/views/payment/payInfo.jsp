@@ -397,10 +397,58 @@ function select_date() {
 	
 }
 
+// 임시로 테스트용 거래수락 버튼 추가
+function acceptPayment() {
+	// 채팅방에서 produtct_id 들고오기
+	<%-- 서블릿 요청 --%>
+	$.ajax({
+		type: "GET",
+		url: "AcceptPayment",
+		data: {
+			"product_id": 348,
+			"product_buyer": "leess"
+		},
+		success:  function(data) {
+			if(data == "true") {
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: '거래를 수락했습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+			} else if(data == "inconsistency") {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '판매자 정보가 일치하지 않습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});				
+			} else {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '거래 수락을 실패했습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});			
+			}
+		},
+		error: function(request, status, error) {
+	      // 요청이 실패한 경우 처리할 로직
+	      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+		}
+	});
+}
+
 // 임시로 테스트용 결제하기 버튼 추가
 function payment() {
 	// 채팅방에서 produtct_id 들고오기
-	location.href="Payment?product_id=303";
+	location.href="Payment?product_id=348";
 }
 
 // 임시로 테스트용 구매확정 버튼 추가(에이젝스)
@@ -413,10 +461,55 @@ function confirmPayment() {
 		type: "GET",
 		url: "ConfirmPayment",
 		data: {
-			"product_id": 303,
+			"product_id": 348,
 		},
-		dataType: "json",
 		success:  function(data) {
+			if(data == "true") {
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: '구매를 확정했습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+			} else if(data == "none") {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '구매 확정 가능한 상품이 없습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});				
+			} else if(data == "inconsistency") {
+					Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: '구매자 정보가 일치하지 않습니다.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+				});			
+			} else if(data == "unpaid") {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '결제를 먼저 진행해주세요.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});			
+			} else {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '구매 확정을 실패했습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});			
+			}
 	
 		},
 		error: function(request, status, error) {
@@ -430,7 +523,7 @@ function confirmPayment() {
 // 임시로 테스트용 결제취소 버튼 추가(에이젝스)
 function cancelPayment() {
 	// 채팅방에서 produtct_id 들고오기
-	location.href="CancelPayment?product_id=303";
+	location.href="CancelPayment?product_id=347";
 }
 
 
@@ -470,6 +563,7 @@ function cancelPayment() {
         </div>
     </div>
     <!-- End Breadcrumbs -->
+    <input type="button" value="(임시)거래수락" onclick="acceptPayment()">
     <input type="button" value="(임시)결제하기" onclick="payment()">
     <input type="button" value="(임시)구매확정" onclick="confirmPayment()">
     <input type="button" value="(임시)결제취소" onclick="cancelPayment()">

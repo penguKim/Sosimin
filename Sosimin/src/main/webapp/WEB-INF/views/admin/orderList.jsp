@@ -111,8 +111,15 @@ function openModal(order_id) {
 											<td>${order_list.order_id}</td>
 											<td>${order_list.product_name}</td>
 											<td>
-												<c:set var="payAmount" value="${order_list.payment_amount}" />
-												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+												<c:choose>
+													<c:when test="${order_list.order_status eq 0}">
+														금액확인중
+													</c:when>
+													<c:otherwise>
+														<c:set var="payAmount" value="${order_list.payment_amount}" />
+														<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+													</c:otherwise>
+												</c:choose>
 											</td>
 											<td>${order_list.seller}</td>
 											<td>${order_list.buyer}</td>
@@ -175,8 +182,15 @@ function openModal(order_id) {
 																	<tr>
 																		<th scope="row">거래금액</th>
 																		<td>
-																			<c:set var="payAmount" value="${order_list.payment_amount}" />
-																			<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+																			<c:choose>
+																				<c:when test="${order_list.order_status eq 0}">
+																					금액확인중
+																				</c:when>
+																				<c:otherwise>
+																					<c:set var="payAmount" value="${order_list.payment_amount}" />
+																					<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+																				</c:otherwise>
+																			</c:choose>
 																		</td>
 																	</tr>
 																	<tr>

@@ -138,16 +138,45 @@ public class PaymentService {
 		return mapper.selectProductInfo(map);
 	}
 
-	// 구매하고 구매 기록 저장
+	// 거래수락
 	@Transactional
 	public int orderProduct(Map<String, Object> map) {
-		mapper.insertOrderHistory(map);
-		mapper.insertOrder(map);
+		mapper.updateTradeStatus1(map);
+		
+		return mapper.insertOrder(map);
+	}
+	
+	// 구매하고 구매 기록 저장
+	@Transactional
+	public int paymentBuyer(Map<String, Object> map) {
+		mapper.insertbuyHistory(map);
+		mapper.updateOrderBuyer(map);
 		
 		return mapper.updatePayBalance(map);
 	}
 
-	
+	// 구매자 확인
+	public Map<String, Object> getOrderInfo(Map<String, Object> map) {
+		return mapper.selectOrderInfo(map);
+	}
+
+	// 구매확정처리(현금결제용)
+	@Transactional
+	public int modifyStatus(Map<String, Object> map) {
+		mapper.updateTradeStatus2(map);
+		
+		return mapper.updateOrderStatus(map);
+	}
+
+	// 구매확정처리(페이결제용)
+	@Transactional
+	public int confirmPayment(Map<String, Object> map) {
+		mapper.updateTradeStatus2(map); // Product 테이블 상품상태 변경
+		mapper.insertsellHistory(map); // 페이 기록 넣기
+		mapper.updateOrderSeller(map); // Orders테이블 결제상태 1로, seller_pay_history_id, 거래완료시간
+		
+		return mapper.updatePayBalance(map); // 페이 잔액 올리기
+	}
 	
 	// ============= 관리자 페이지 ======================
 	
