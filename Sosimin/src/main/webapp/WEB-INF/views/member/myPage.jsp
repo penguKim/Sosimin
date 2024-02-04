@@ -165,14 +165,53 @@
 		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
 		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
 		
+		// 파일 change 이벤트 처리
+        $("#profilePicFile").on("change", showPreviewImage);
 		
+		// "삭제" 영역 클릭 이벤트 처리
+        $(".btnProfilePicModify").on("click", function() {
+			let fileInput = $("#profilePicFile");
+			let previewImage = $("#formGroupForProfilePic img");
+			
+			// 파일 입력 요소 초기화
+			fileInput.val("");
+			
+			// 이미지 미리보기 초기화
+			previewImage.attr("src", "");
+		});
 		
 		
 	}); // document.ready 끝
 	
 	// 내 정보 수정 클릭 시 모달 띄우는 함수 정의
 	function openModifyMyInfoModal() {
+	    var memberBirth = "${MyProfileMember.member_birth}"; // EL 표현식에서 값을 가져옴
+	    $("#birthdate").val(memberBirth); // 값 설정
 		$("#myPageModifyInfoModal").modal("show");
+	}
+	
+	// 파일 선택 시 미리보기 업데이트 처리 함수
+	function showPreviewImage() {
+		let fileInput = $("#profilePicFile")[0];
+		let previewImage = $("#formGroupForProfilePic img");
+		
+		// 파일 미선택 시 미리보기 초기화
+		if(!fileInput.files || !fileInput.files[0]) {
+			previewImage.attr("src", "");
+			return;
+		}
+		
+		let reader = new FileReader();
+		reader.onload = function(e) {
+			// 선택한 파일 미리보기 설정
+			previewImage.attr("src", e.target.result);
+		};
+		reader.readAsDataURL(fileInput.files[0]);
+	}
+	
+	// 내정보수정 모달 수정버튼 클릭 시 호출되는 함수
+	function submitForm() {
+		$("#MyInfoForm").submit();
 	}
 	
 </script>
@@ -220,47 +259,59 @@
     </div>
     <!-- End Breadcrumbs -->
     <%-- el 출력 테스트 --%>
-		<c:choose>
-			<c:when test="${param.category eq '1' or param.category eq '3'}">
-				<c:forEach var="page" items="${MyPageList }">
-					${page.product_datetime }
-				</c:forEach>          
-			</c:when>
-			<c:when test="${param.category eq '2' }">
-				<c:forEach var="page" items="${MyPageList }">
-					${page.order_date }
-				</c:forEach>          
-			</c:when>
-			<c:when test="${param.category eq '4' }">
-				<c:forEach var="page" items="${MyPageList }">
-					${page.community_datetime }
-				</c:forEach>          
-			</c:when>
-			<c:when test="${param.category eq '5' }">
-				<c:forEach var="page" items="${MyPageList }">
-					${page.reply_datetime }
-				</c:forEach>          
-			</c:when>
-		</c:choose>
+<%-- 		<c:choose> --%>
+<%-- 			<c:when test="${param.category eq '1' or param.category eq '3'}"> --%>
+<%-- 				<c:forEach var="page" items="${MyPageList }"> --%>
+<%-- 					${page.product_datetime } --%>
+<%-- 				</c:forEach>           --%>
+<%-- 			</c:when> --%>
+<%-- 			<c:when test="${param.category eq '2' }"> --%>
+<%-- 				<c:forEach var="page" items="${MyPageList }"> --%>
+<%-- 					${page.order_date } --%>
+<%-- 				</c:forEach>           --%>
+<%-- 			</c:when> --%>
+<%-- 			<c:when test="${param.category eq '4' }"> --%>
+<%-- 				<c:forEach var="page" items="${MyPageList }"> --%>
+<%-- 					${page.community_datetime } --%>
+<%-- 				</c:forEach>           --%>
+<%-- 			</c:when> --%>
+<%-- 			<c:when test="${param.category eq '5' }"> --%>
+<%-- 				<c:forEach var="page" items="${MyPageList }"> --%>
+<%-- 					${page.reply_datetime } --%>
+<%-- 				</c:forEach>           --%>
+<%-- 			</c:when> --%>
+<%-- 		</c:choose> --%>
 	<section class="item-details section row" id="myPageProfileSectionArea">
         <div class="container">
             <div class="top-area" id="profileArea">
 				<div id="profileLeft">
-					<img src="${pageContext.request.contextPath}/resources/images/">
+					<img src="${pageContext.request.contextPath}/resources/upload/${MyProfileMember.member_profile}">
 				</div>
 				<div id="profileRight">
 					<div id="profileRightUpperLeft">
-						<b id="bold">닉네임</b>&nbsp;&nbsp;&nbsp;&nbsp;
+						<b id="bold">${MyProfileMember.member_nickname }</b>&nbsp;&nbsp;&nbsp;&nbsp;
 							<!-- 인증 완료된 경우 예시 -->
 							<p id="sellerAuthArea">
-							동네인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
-							&nbsp;&nbsp;&nbsp;&nbsp;본인인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
+							동네인증
+							<c:choose>
+								<c:when test="${MyProfileMember.member_neighbor_auth eq 0 }"> <%-- 미인증 --%>
+									<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 
+								</c:when>
+								<c:otherwise> <%-- 인증 --%>
+									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
+								</c:otherwise>
+							</c:choose>
+							&nbsp;&nbsp;&nbsp;&nbsp;본인인증
+							<c:choose>
+								<c:when test="${MyProfileMember.member_phone_auth eq 0 }"> <%-- 미인증 --%>
+									<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 
+								</c:when>
+								<c:otherwise> <%-- 인증 --%>
+									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
+								</c:otherwise>
+							</c:choose>
+							
 							</p>
-							<!-- 인증 완료되지않은 경우 예시 -->
-<!-- 							<p id="sellerAuthArea"> -->
-<%-- 							동네인증<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> --%>
-<%-- 							&nbsp;&nbsp;&nbsp;&nbsp;본인인증<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> --%>
-<!-- 							</p> -->
 					</div>
 					<div id="profileRightUpperRight">
 <!-- 						<a href="javascript:reviewViewFrom()" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> -->
@@ -275,19 +326,15 @@
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					</div>
 					<section id="profileRightMiddle">
-						<span>Lv.3</span>
-						<span>상품 판매 n회</span>
-						<span>커뮤니티 글 n개</span>
-						<span>커뮤니티 댓글 n개</span>
-						<span>받은 좋아요 n개</span>
+						<span>Lv. ${MyProfileMember.member_level }</span>
+						<span>상품 판매 ${MyProfileCountProductSold }회</span>
+						<span>커뮤니티 글 ${MyProfileCountCommunity }개</span>
+						<span>커뮤니티 댓글 ${MyProfileCountCommunityReply }개</span>
+						<span>받은 좋아요 ${MyProfileCountCommunityLike }개</span>
 					</section>
 					<div id="profileRightBottom">
 						<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-						Maecenas ac libero ac ligula consectetur accumsan in et diam. 
-						Vestibulum commodo in sem sit amet laoreet. 
-						Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-						Cras et sapien vel arcu suscipit vulputate. 
+						${MyProfileMember.member_intro }
 						</p>
 					</div>
 				</div>
@@ -296,15 +343,15 @@
     </section>
     <form action="" id="myPageCategory">
 		<div id="categoryArea" class="btn-group col categoryBtn" role="group" aria-label="Basic radio toggle button group">
-		  <input type="radio" class="btn-check" name="category" id="soldCategory" value="1" autocomplete="off" <c:if test="${param.category eq '1' }">checked</c:if>>
+		  <input type="radio" class="btn-check" name="category" id="soldCategory" value="1" autocomplete="off" <c:if test="${category eq '1' }">checked</c:if>>
 		  <label class="btn btn-outline-primary" for="soldCategory">판매내역</label>
-		  <input type="radio" class="btn-check" name="category" id="boughtCategory" value="2" autocomplete="off" <c:if test="${param.category eq '2' }">checked</c:if>>
+		  <input type="radio" class="btn-check" name="category" id="boughtCategory" value="2" autocomplete="off" <c:if test="${category eq '2' }">checked</c:if>>
 		  <label class="btn btn-outline-primary" for="boughtCategory">구매내역</label>
-		  <input type="radio" class="btn-check" name="category" id="likeCategory" value="3" autocomplete="off" <c:if test="${param.category eq '3' }">checked</c:if>>
+		  <input type="radio" class="btn-check" name="category" id="likeCategory" value="3" autocomplete="off" <c:if test="${category eq '3' }">checked</c:if>>
 		  <label class="btn btn-outline-primary" for="likeCategory">찜 목록</label>
-		  <input type="radio" class="btn-check" name="category" id="communityCategory" value="4" autocomplete="off" <c:if test="${param.category eq '4' }">checked</c:if>>
+		  <input type="radio" class="btn-check" name="category" id="communityCategory" value="4" autocomplete="off" <c:if test="${category eq '4' }">checked</c:if>>
 		  <label class="btn btn-outline-primary" for="communityCategory">커뮤니티 작성 글</label>
-		  <input type="radio" class="btn-check" name="category" id="communityReplyCategory" value="5" autocomplete="off" <c:if test="${param.category eq '5' }">checked</c:if>>
+		  <input type="radio" class="btn-check" name="category" id="communityReplyCategory" value="5" autocomplete="off" <c:if test="${category eq '5' }">checked</c:if>>
 		  <label class="btn btn-outline-primary" for="communityReplyCategory">커뮤니티 작성 댓글</label>
 		</div>
     </form>
@@ -688,39 +735,39 @@
 				</div>
 				<div class="modal-body">
 					<div id="modifyMyInfo" class="mx-auto my-5 w-75">
-						<form action="" class="row" method="post">
+						<form id="MyInfoForm" action="ModifyMyInfo" class="row" method="post" enctype="multipart/form-data">
 							<div class="form-group" id="formGroupForProfilePic">
 								<label for="reg-fn" id="mgForFiveMod">프로필사진</label>
-								<img alt="" src=""><%-- 썸네일 처리!!!! --%>
+								<img src="${pageContext.request.contextPath}/resources/upload/${MyProfileMember.member_profile}"><%-- 썸네일 처리!!!! --%>
 								<label for="profilePicFile">
 <!-- 										<input type="button" class="btnProfilePicModify" value="사진 변경"> -->
 									<div class="btnProfilePicModify">사진 변경</div>
 								</label>
-								<input type="file" name="file" id="profilePicFile">
+								<input type="file" name="file" id="profilePicFile" accept="image/gif, image/png, image/jpeg">
 								<div class="btnProfilePicModify">삭제</div>
 							</div>
 
 							<div class="form-group">
-								<label for="reg-fn" id="mgForTwoMod">이름</label> 
-								<input class="form-control" placeholder="기존이름" maxlength="5" type="text" name="member_name" id="name" readonly>
+								<label for="name" id="mgForTwoMod">이름</label> 
+								<input class="form-control" placeholder="${MyProfileMember.member_name }" maxlength="5" type="text" name="member_name" id="name" readonly>
 							</div>
 							<div class="form-group" >
-								<label for="reg-ln" id="mgForThreeMod">아이디</label> 
-								<input class="form-control" placeholder="기존아이디" maxlength="20" type="text"  name="member_id" id="id" readonly>
+								<label for="id" id="mgForThreeMod">아이디</label> 
+								<input class="form-control" placeholder="${MyProfileMember.member_id }" maxlength="20" type="text"  name="member_id" id="id" readonly>
 							</div>
 							<div class="form-group">
-								<label for="reg-pass" id="mgForFiveOneMod">새 비밀번호</label> 
-								<input class="form-control" maxlength="16" placeholder="비밀번호를 수정할 경우에만 입력해주세요" type="password"  name="member_password" id="password">
+								<label for="password" id="mgForFiveOneMod">새 비밀번호</label> 
+								<input class="form-control" maxlength="16" placeholder="비밀번호를 수정할 경우에만 입력해주세요" type="password"  name="member_password" id="password" required>
 								<div id="checkPasswordResult" class="resultArea"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
 							</div>
 							<div class="form-group">
-								<label for="reg-pass-confirm" id="mgForSevenTwoMod">새 비밀번호 확인</label> 
-								<input class="form-control" maxlength="16" placeholder="비밀번호를 한 번 더 입력해주세요" type="password" id="passwordConfirm">
+								<label for="passwordConfirm" id="mgForSevenTwoMod">새 비밀번호 확인</label> 
+								<input class="form-control" maxlength="16" placeholder="비밀번호를 한 번 더 입력해주세요" type="password" id="passwordConfirm" required>
 								<div id="checkPasswordConfirmResult" class="resultArea"></div>
 							</div>
 							<div class="form-group">
-								<label for="reg-ln" id="mgForThreeMod">닉네임</label> 
-								<input class="form-control" type="text" placeholder="기존닉네임" name="member_nickname" id="nickname" required>
+								<label for="nickname" id="mgForThreeMod">닉네임</label> 
+								<input class="form-control" type="text" placeholder="${MyProfileMember.member_nickname }" name="member_nickname" id="nickname" required>
 								<input type="button" value="중복확인" id="checkNicknameDupButton">
 <!-- 								<input type="button" value="닉네임만들기" id="generateNicknameButton"> -->
 								<%-- 입력값이 비어있을 경우 DB에서 임의로 난수발생해 insert 처리 --%>
@@ -728,39 +775,47 @@
 							</div>
 
 							<div class="form-group">
-								<label for="reg-ln" id="mgForFourMod">생년월일</label> 
-								<input class="form-control" type="date" name="member_birth" id="birthdate" required>
+								<label for="birthdate" id="mgForFourMod">생년월일</label> 
+								<input class="form-control" type="date" name="member_birth" id="birthdate" placeholder="${MyProfileMember.member_birth }" required>
 								<%--회원가입과 동일하게 범위제한하고 기존 생년월일 placeholder --%>
 								<div id="checkBirthdateResult" class="resultArea"></div>
 							</div>
+							<c:if test="${MyProfileMember.member_neighbor_auth eq 0 }">
+								<div class="form-group">
+									<label for="myMap" id="mgForTwoMod">주소</label> 
+									<input type="hidden" id="map">
+									<input class="form-control" type="text" placeholder="재인증을 해주세요" name="member_address" id="myMap" required readonly>
+									<%--회원가입과 동일. 기존 주소 placeholder --%>
+									<input type="button" value="동네인증" id="myMapButton" onclick="AddressMap()">
+									<div id="checkAddressResult" class="resultArea"></div>
+								</div>
+							</c:if>
 							<div class="form-group">
-								<label for="reg-ln" id="mgForTwoMod">주소</label> 
-								<input type="hidden" id="map">
-								<input class="form-control" type="text" placeholder="기존주소" name="member_address" id="myMap" required readonly>
-								<%--회원가입과 동일. 기존 주소 placeholder --%>
-								<input type="button" value="동네인증" id="myMapButton" onclick="AddressMap()">
-								<div id="checkAddressResult" class="resultArea"></div>
-							</div>
-							<div class="form-group">
-								<label for="reg-email" id="mgForThreeMod">이메일</label> 
-								<input class="form-control" type="email" placeholder="기존이메일" name="member_email" id="email" required>
+								<label for="email" id="mgForThreeMod">이메일</label> 
+								<input class="form-control" type="email" placeholder="${MyProfileMember.member_email }" name="member_email" id="email" required>
 								<%--회원가입과 동일하게 정규표현식 검증 및 중복확인. 기존 이메일 placeholder --%>
 								<input type="button" value="중복확인" id="checkEmailDupButton">
 								<div id="checkEmailResult" class="resultArea"></div>
 							</div>
 							<div class="form-group">
-								<label for="reg-phone" id="mgForFiveMod">휴대폰번호</label> 
-								<input class="form-control" placeholder="기존휴대폰번호" type="tel" name="member_phone" id="phone" required>
+								<label for="phone" id="mgForFiveMod">휴대폰번호</label> 
+								<input class="form-control" placeholder="${MyProfileMember.member_phone }" type="tel" name="member_phone" id="phone" required>
 								<%--회원가입과 동일하게 인증, 정규표현식 검증, 중복확인(회원아이디 일치하고 휴대폰 번호 동일한 경우 자바스크립트 처리?). 기존 폰번호 placeholder --%>
-								<input type="button" value="인증">
+								<input type="button" value="인증코드발급" id="requestPhoneAuthCodeButton">
 								<div id="checkPhoneResult" class="resultArea"></div>
+							</div>
+							<div class="form-group">
+								<label for="phoneAuthCode" id="mgForFourMod">인증코드</label> 
+								<input class="form-control" placeholder="코드를 입력한 후 인증 버튼을 눌러주세요" type="text" name="phone_auth_code" id="phoneAuthCode" maxlength="4" required>
+								<input type="button" value="인증" id="completePhoneAuthButton">
+								<div id="checkPhoneAuthCodeResult" class="resultArea"></div>
 							</div>
 						</form>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modifyInfoClose">창닫기</button>
-					<button type="submit" class="btn btn-primary" onclick="location.reload()">수정</button>
+					<button type="submit" class="btn btn-primary" onclick="submitForm()">수정</button>
 				</div>
 			</div>
 		</div>

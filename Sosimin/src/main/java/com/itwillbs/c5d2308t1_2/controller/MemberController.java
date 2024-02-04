@@ -1,6 +1,12 @@
 package com.itwillbs.c5d2308t1_2.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -8,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +29,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.c5d2308t1_2.service.MemberService;
 import com.itwillbs.c5d2308t1_2.service.PaymentService;
@@ -347,10 +355,9 @@ public class MemberController {
 	
 	
 	// *********** 마이페이지 **************
-	// 뷰 제작 작업의 편의성을 위해 마이페이지는 임시로 서블릿 나눠서 매핑
-	// 마이페이지 상품 관련 탭(판매내역, 구매내역, 관심목록)
+	// 마이페이지로 이동
 	@GetMapping("MyPage")
-	public String MyPage(HttpSession session, Model model, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "0") String category) {
+	public String MyPage(HttpSession session, Model model, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "1") String category) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) { // 로그인 안 한 경우
 			model.addAttribute("msg", "로그인이 필요합니다!");
@@ -366,9 +373,22 @@ public class MemberController {
 		PageDTO page = new PageDTO(pageNum, 15);
 		// 전체 게시글 갯수 조회
 		int listCount = service.getMyPageListCount(category, sId);
-		System.out.println(listCount);
 		// 페이징 처리
 		PageInfo pageInfo = new PageInfo(page, listCount, 3);
+		
+		// 프로필 영역에 불러올 회원 정보 조회
+		MemberVO MyProfileMember = service.getMyProfileMember(sId);
+		System.out.println("프로필 찍어낼 멤버정보 확인 : " + MyProfileMember);
+		int MyProfileCountProductSold = service.getCountProductSold(sId); 
+		System.out.println("프로필 찍어낼 상품판매횟수 확인 : " + MyProfileCountProductSold);
+		int MyProfileCountCommunity = service.getCountCommunity(sId);
+		System.out.println("프로필 찍어낼 커뮤니티 글 개수 확인 : " + MyProfileCountCommunity);
+		int MyProfileCountCommunityReply = service.getCountCommunityReply(sId);
+		System.out.println("프로필 찍어낼 커뮤니티 댓글 개수 확인 : " + MyProfileCountCommunityReply);
+		int MyProfileCountCommunityLike = service.getCountCommunityLike(sId);
+		System.out.println("프로필 찍어낼 커뮤니티 좋아요 개수 확인 : " + MyProfileCountCommunityLike);
+		
+		
 		
 		// 한 페이지에 불러올 게시글 목록 조회
 		List<HashMap<String, Object>> MyPageList = service.getMyPageList(sId, category, page);
@@ -385,10 +405,8 @@ public class MemberController {
         for(HashMap<String, Object> map : MyPageList) {
 //        	System.out.println(map.get("product_datetime").getClass().getName());
 //        	System.out.println();
-        	if(category.equals("1") || category.equals("3")) {
+        	if(category.equals("1") || category.equals("2") || category.equals("3")) {
         		datetime = (LocalDateTime)map.get("product_datetime");
-        	} else if(category.equals("2")) {
-        		datetime = (LocalDateTime)map.get("order_date");
         	} else if(category.equals("4")) {
         		datetime = (LocalDateTime)map.get("community_datetime");
         	} else if(category.equals("5")) {
@@ -433,15 +451,78 @@ public class MemberController {
         	
     	}
 		
+        model.addAttribute("MyProfileMember", MyProfileMember);
+        model.addAttribute("MyProfileCountProductSold", MyProfileCountProductSold);
+        model.addAttribute("MyProfileCountCommunity", MyProfileCountCommunity);
+        model.addAttribute("MyProfileCountCommunityReply", MyProfileCountCommunityReply);
+        model.addAttribute("MyProfileCountCommunityLike", MyProfileCountCommunityLike);
         model.addAttribute("MyPageList", MyPageList);
+        model.addAttribute("category", category);
 		
 		return "member/myPage";
 	}
 
-	// 마이페이지 커뮤니티 관련 탭(커뮤니티 작성글, 커뮤니티 작성 댓글)
-	@GetMapping("MyPage2")
-	public String MyPage2() {
-		return "member/myPage2";
+	// 회원 정보 수정
+	@PostMapping("ModifyMyInfo")
+	public String modifyMyInfo(MemberVO member, HttpSession session) {
+		System.out.println("폼파라미터 확인 : " + member);
+		
+		// 파일업로드를 위한 준비
+		// resources 디렉토리 내에 upload 파일 생성
+		String uploadDir = "/resources/upload"; // 가상 디렉토리
+		String saveDir = session.getServletContext().getRealPath(uploadDir); // 실제 디렉토리
+		System.out.println("실제디렉터리 : " + saveDir);
+		// D:\Spring\workspace_spring5\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Sosimin\resources/upload
+		String subDir = "";
+//		
+		// 날짜별로 서브디렉토리 생성하기
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		subDir = now.format(dtf);
+		
+		saveDir += File.separator + subDir;
+		
+		// 해당 디렉토리가 존재하지 않을 때에만 자동생성
+		try {
+			Path path = Paths.get(saveDir); // 업로드 경로
+			Files.createDirectories(path); // Path 객체
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+//		// MultipartFile 타입 객체 꺼내기
+		MultipartFile mFile = member.getFile();
+		
+		// 파일명 중복을 방지하기 위해 난수 생성하기
+		member.setMember_profile("");
+		String fileName = UUID.randomUUID().toString() + "_" + mFile.getOriginalFilename();
+		
+		if(!mFile.getOriginalFilename().equals("")) {
+			member.setMember_profile(subDir + "/" + fileName);
+		}
+		
+		System.out.println("업로드 파일명 확인 : " + member.getMember_profile());
+		
+//		int updateCount = service.modifyMyInfo(member);
+		
+		
+		// 게시물 등록 작업 요청 결과 판별
+//		if(updateCount > 0) {
+			// 파일이 있을 경우에만 파일 생성
+//			try {
+//				if(!mFile.getOriginalFilename().equals("")) {
+//					mFile.transferTo(new File(saveDir, fileName));
+//				}
+//			} catch (IllegalStateException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+				
+
+		
+		
+		return "member/myPage";
 	}
 
 	// *********** 판매자 페이지 **************

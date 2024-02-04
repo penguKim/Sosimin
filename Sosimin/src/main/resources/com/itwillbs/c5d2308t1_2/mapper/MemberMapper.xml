@@ -120,7 +120,7 @@
 					FROM Product WHERE member_id = #{sId}
 				</when>
 				<when test="category == 2">
-					FROM OrderList WHERE buyer = #{sId}
+					FROM OrderList WHERE product_buyer = #{sId}
 				</when>
 				<when test="category == 3">
 					FROM productLike WHERE member_id = #{sId}
@@ -131,10 +131,53 @@
 				<when test="category == 5">
 					FROM CommunityReply WHERE reply_writer = #{sId}
 				</when>
+<!-- 				<otherwise> -->
+<!-- 					FROM Product WHERE member_id = #{sId} -->
+<!-- 				</otherwise> -->
+<!-- 				<when test="category.equals('')"> -->
+<!-- 					FROM Product WHERE member_id = #{sId} -->
+<!-- 				</when> -->
 			</choose>
 	</select>
 	
-	<!-- 한 페이지에 표시할 게시물 목록 조회 작업 -->
+	<!-- 프로필 회원 정보 조회 SELECT -->
+	<select id="selectMyProfileMember" resultType="member">
+		SELECT *
+		FROM Member
+		WHERE member_id = #{sId} 
+	</select>
+	
+	<!-- 상품판매 횟수 조회 SELECT -->
+	<select id="selectCountProductSold" resultType="int">
+		SELECT COUNT(*) 
+		FROM OrderList
+		WHERE product_buyer = #{sId};
+	</select>
+	
+	<!-- 커뮤니티 글 개수 조회 SELECT -->
+	<select id="selectCountCommunity" resultType="int">
+		SELECT COUNT(*) 
+		FROM Community
+		WHERE community_writer = #{sId}
+	</select>
+
+	<!-- 커뮤니티 댓글 개수 조회 SELECT -->
+	<select id="selectCountCommunityReply" resultType="int">
+		SELECT COUNT(*) 
+		FROM CommunityReply
+		WHERE reply_writer = #{sId}
+	</select>
+
+	<!-- 커뮤니티 좋아요 개수 조회 SELECT -->
+	<select id="selectCountCommunityLike" resultType="int">
+		SELECT SUM(IFNULL(clc.count, 0))
+		FROM Community c
+		LEFT JOIN CommunityLikeCount clc
+		ON c.community_id = clc.community_num
+		WHERE c.community_writer  = #{sId}
+	</select>
+	
+	<!-- 한 페이지에 표시할 게시물 목록 조회 SELECT -->
 	<select id="selectMyPageList" resultType="hashmap">
 		SELECT *
 			<choose>
@@ -147,7 +190,7 @@
 					FROM OrderList
 					JOIN Product 
 					ON OrderList.product_id = Product.product_id 
-					WHERE buyer = #{sId}
+					WHERE product_buyer = #{sId}
 					ORDER BY product_datetime DESC
 				</when>
 				<when test="category == 3">
@@ -168,6 +211,16 @@
 					WHERE reply_writer = #{sId}
 					ORDER BY reply_datetime DESC
 				</when>
+<!-- 				<otherwise> -->
+<!-- 					FROM Product  -->
+<!-- 					WHERE member_id = #{sId} -->
+<!-- 					ORDER BY product_datetime DESC -->
+<!-- 				</otherwise> -->
+<!-- 				<when test="category.equals('')"> -->
+<!-- 					FROM Product  -->
+<!-- 					WHERE member_id = #{sId} -->
+<!-- 					ORDER BY product_datetime DESC -->
+<!-- 				</when> -->
 			</choose>
 			LIMIT #{page.startRow}, #{page.listLimit}
 	</select>

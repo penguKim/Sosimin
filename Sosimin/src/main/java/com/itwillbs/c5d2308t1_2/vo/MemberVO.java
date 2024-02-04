@@ -3,6 +3,8 @@ package com.itwillbs.c5d2308t1_2.vo;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -30,6 +32,8 @@ public class MemberVO {
 	private int report_real_count;
 	private String product_id;
 	
+	private MultipartFile file;
+
 	
 	
 	

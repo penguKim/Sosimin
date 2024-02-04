@@ -389,6 +389,7 @@ input[readonly] {
 /* 내 정보 수정 모달 */
 #myPageModifyInfoModal .modal-content {
 	width: 150%;
+	margin-left: -25%;
 }
 
 #formGroupForProfilePic {
@@ -401,13 +402,21 @@ input[readonly] {
 }
 
 #modifyMyInfo .form-control {
-	font-size: 0.7rem;
-	
+	font-size: 0.85rem;
+	width: 52% !important;
 }
 
 #modifyMyInfo .form-group {
 	width: 900px !important;
 }
+
+#modifyMyInfo #myMap {
+	font-size: 0.7rem !important;
+	height: auto !important;
+	padding: 0.375rem 0.75rem !important;
+	
+}
+
 
 .btnProfilePicModify {
 	margin-top: 0px;
@@ -499,10 +508,10 @@ input[readonly] {
 /* } */
 
 #filterArea {
-	width: 1200px;
-	height: 25px;
-	margin: 0 auto;
-	margin-top: 60px;
+	width: 1200px !important;
+	height: 25px !important;
+	margin: 0 auto !important;
+	margin-top: 60px !important;
 }
 
 #filterArea ul {

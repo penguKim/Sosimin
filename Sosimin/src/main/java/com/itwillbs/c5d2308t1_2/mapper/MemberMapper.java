@@ -46,12 +46,34 @@ public interface MemberMapper {
 
 	// 탈퇴 회원 정보 삭제
 	void deleteMemberInfo(String member_id);
+	
 	// =========================== 마이페이지 작업 =============================
 	// 마이페이지 목록 개수 조회
 	int selectMyPageListCount(@Param("category")String category, @Param("sId") String sId);
 
+	// 마이페이지 프로필 회원 정보 조회
+	MemberVO selectMyProfileMember(String sId);
+
+	// 상품판매횟수 조회 
+	int selectCountProductSold(String sId);
+	
+	// 커뮤니티 글 개수 조회
+	int selectCountCommunity(String sId);
+	
+	// 커뮤니티 댓글 개수 조회
+	int selectCountCommunityReply(String sId);
+	
+	// 커뮤니티 좋아요 개수 조회
+	int selectCountCommunityLike(String sId);
+
 	// 마이페이지 목록 조회
 	List<HashMap<String, Object>> selectMyPageList(@Param("sId")String sId, @Param("category")String category, @Param("page") PageDTO page);
+
+
+
+
+
+
 
 
 

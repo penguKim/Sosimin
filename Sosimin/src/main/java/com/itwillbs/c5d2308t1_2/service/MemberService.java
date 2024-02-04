@@ -84,10 +84,46 @@ public class MemberService {
 		return mapper.selectMyPageListCount(category, sId);
 	}
 
+	// 마이페이지 프로필 회원 정보 조회
+	public MemberVO getMyProfileMember(String sId) {
+		return mapper.selectMyProfileMember(sId);
+	}
+	
+	// 상품판매횟수 조회 
+	public int getCountProductSold(String sId) {
+		return mapper.selectCountProductSold(sId);
+	}
+	
+	// 커뮤니티 글 개수
+	public int getCountCommunity(String sId) {
+		return mapper.selectCountCommunity(sId);
+	}
+
+	// 커뮤니티 댓글 개수
+	public int getCountCommunityReply(String sId) {
+		return mapper.selectCountCommunityReply(sId);
+	}
+	
+	// 커뮤니티 좋아요 개수
+	public int getCountCommunityLike(String sId) {
+		return mapper.selectCountCommunityLike(sId);
+	}
+
 	// 마이페이지 목록 조회
 	public List<HashMap<String, Object>> getMyPageList(String sId, String category, PageDTO page) {
 		return mapper.selectMyPageList(sId, category, page);
 	}
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
