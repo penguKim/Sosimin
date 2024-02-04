@@ -39,8 +39,9 @@ $(function() {
 	<%-- 필터링을 위한 변수 초기화 --%>
 	let pageNum = "";
 	let price = "";
-	let status="";
-	let word="";
+	let status ="";
+	let word = "";
+	let sort = "";
 	<%-- 필터링을 위한 변수 초기화 --%>
 	let keyword = "${param.keyword}";
 	let category = "${param.product_category}";
@@ -95,11 +96,20 @@ $(function() {
 				);
 			}
 			
+			let url = "";
+		    if(keyword != "") url += '&keyword=' + keyword;
+		    if(category != "") url += '&product_category=' + category;
+			if(price != "") url += '&price=' + price;
+			if(status != "") url += '&status=' + status;
+			if(word != "") url += '&word=' + word;
+			if(sort != "") url += '&sort=' + sort;
+		    alert("현재 주소는 : " + url );
+			
 			let pages = '';
 			pages += '<nav aria-label="Page navigation">'
 			    + '<ul class="pagination justify-content-center">'
 			    + '<li class="page-item" id="prevPage">'
-			   		 + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + '" class="page-link">&laquo;</a>'
+			   		 + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + url + '" class="page-link">&laquo;</a>'
 			    + '</li>';
 			   
 	        for (let i = pageInfo.startPage; i < pageInfo.endPage+1; i++) {
@@ -107,19 +117,19 @@ $(function() {
 	                pages += '<li class="page-item active"><span class="page-link">' + i + '</span></li>';
 	            } else {
 	                pages += '<li class="page-item">'
-	                    + '<a href="SearchProduct?pageNum=' + i + '" class="page-link">' + i + '</a>'
+	                    + '<a href="SearchProduct?pageNum=' + i + url + '" class="page-link">' + i + '</a>'
 	                    + '</li>';
 	            }
 	        }
 	        
 		    pages += '<li class="page-item" id="nextPage">'
-			    + '<a href="SearchProduct?pageNum=' + (pageNum + 1) +'" class="page-link">&raquo;</a>'
+			    + '<a href="SearchProduct?pageNum=' + (pageNum + 1) + url + '" class="page-link">&raquo;</a>'
 			    + '</li>'
 			    + '</ul>'
 			    + '</nav>';
 			
 			<%-- 페이징 처리 --%>
-			$(".productList").after(pages);	
+			$(".pageing").append(pages);	
 			
 			<%-- pageNum 버튼 최소 최대 제한--%> 
 			if(pageNum <= 1) {
@@ -147,6 +157,16 @@ $(function() {
 	});
 	
 });
+
+	<%-- 카테고리 선택 시 이동--%>
+	$(function() {
+		$("#submenu-1-3>li").on("click", function() {
+			let length =  $("#submenu-1-3>li").length;
+			let	category = $(this).text();
+			
+			location.href="SearchProduct?product_category=" + category;
+		});
+	});
 </script>
 
 <script type="text/javascript">
@@ -175,44 +195,32 @@ function wordDel() {
 	$("#wordExclude").val("");
 }
 	
-function filtering(sortNum) {
-	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
-	let pageNum = "";
-	let category = "";
+function filtering(data) {
+	let pageNum = 1;
+	let category = "${param.keyword}";
 	let keyword = "${param.keyword}";
 	let price = "";
 	let	word = "";
 	
-	if(keyword != "") {
-		category = $(".selcategory").val();
-		alert(category);
-	} else {
-		category = "${param.product_category}";
-	}
-
-	if($("#wordExclude").val() != "") {
-		word = $("#wordExclude").val();
-	}
-	
+	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
 	
 	<%-- 정렬 방식 설정--%>
 	let sort = 1;
-	if(sortNum > 1) {
-		sort = sortNum; 
+	if(data > 1) {
+		sort = data; 
 	} else {
 		sort = 1;
 	}
-	
 	
 	<%-- 가격 필터 선택 시 값 설정 --%>
 	price = $("input[name='priceRadio']:checked").val() || "";
 	
 	<%-- 상품 상태 버튼 선택시 내용 저장 --%> 
-	let productStatus = "";  
+	let status = "";  
     $("input[name=productStatus]:checked").each(function(index) {  
-    	productStatus += $(this).val() + ",";  
+    	status += $(this).val() + ",";  
     });  
-    productStatus = productStatus.slice(0, -1);
+    status = status.slice(0, -1);
     
     if("${param.pageNum}" > 1) {
 		pageNum = "${param.pageNum}";
@@ -220,93 +228,111 @@ function filtering(sortNum) {
 		pageNum = $("#pageNum").val();
 	}
     
-	<%-- 상품 필터링을 위한 ajax --%>    
-	$.ajax({
-		url: "StoreProductList",
-		data: {
-			pageNum: pageNum,
-			keyword:keyword,
-			category:category,
-			price: price,
-			status: productStatus,
-			word: word,
-			sort: sort
-		},
-		dataType: 'json',
-		success: function(data) {
-			alert("확인");
-			let productList = data[0];
-		    let pageInfo = data[1];
-		    let pageNum = data[2];
-		    $(".productList").empty();
-		    for(let i = 0; i < productList.length; i++) {
-				$(".productList").append(
-					'<div class="col-lg-4-1 col-md-6 col-12" >'
-						+ ' <div class="single-product" >'
-							+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
-								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
-							+ ' </a>'
-							+ ' <div class="product-info">'
-								+ '<h6>' + productList[i].product_name + '</h6>'
-							+ ' <div class="heart position-absolute bottom-0 start-0"></div>'
-									+ ' <ul class="review">'
-										+ ' <li><span>' +  productList[i].dong + '</span></li>'
-										+ ' <li><span>|</span></li>'
-										+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
-									+ ' </ul>'
-								+ ' <div class="price">'
-									+ ' <span>' + productList[i].product_price + '원</span>'
-								+ ' </div>'
-								+ ' <div>'
-									+ '	<span>Pay</span>' 
+    if($("#wordExclude").val() != "") {
+		word = $("#wordExclude").val();
+	}
+    
+	if(data == 0) {
+		location.href="SearchProduct";
+	}
+		<%-- 상품 필터링을 위한 ajax --%>    
+			$.ajax({
+				url: "StoreProductList",
+				data: {
+					pageNum: pageNum,
+					keyword: keyword,
+					category: category,
+					price: price,
+					status: status,
+					word: word,
+					sort: sort
+				},
+				dataType: 'json',
+				success: function(data) {
+					alert("확인");
+					let productList = data[0];
+				    let pageInfo = data[1];
+				    let pageNum = data[2];
+				    $(".productList").empty();
+				    $(".pageing").empty();
+				    for(let i = 0; i < productList.length; i++) {
+						$(".productList").append(
+							'<div class="col-lg-4-1 col-md-6 col-12" >'
+								+ ' <div class="single-product" >'
+									+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+										+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+									+ ' </a>'
+									+ ' <div class="product-info">'
+										+ '<h6>' + productList[i].product_name + '</h6>'
+									+ ' <div class="heart position-absolute bottom-0 start-0"></div>'
+											+ ' <ul class="review">'
+												+ ' <li><span>' +  productList[i].dong + '</span></li>'
+												+ ' <li><span>|</span></li>'
+												+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
+											+ ' </ul>'
+										+ ' <div class="price">'
+											+ ' <span>' + productList[i].product_price + '원</span>'
+										+ ' </div>'
+										+ ' <div>'
+											+ '	<span>Pay</span>' 
+										+ ' </div>'
+									+ ' </div>'
 								+ ' </div>'
 							+ ' </div>'
-						+ ' </div>'
-					+ ' </div>'
-				);
+						);
+					}
+					
+				    let url = "";
+				    if(keyword != "") url += '&keyword=' + keyword;
+				    if(category != "") url += '&product_category=' + category;
+					if(price != "") url += '&price=' + price;
+					if(status != "") url += '&status=' + status;
+					if(word != "") url += '&word=' + word;
+					if(sort != "") url += '&sort=' + sort;
+				   
+				    
+					alert("현제 url은" + url);
+					
+				    let pages = '';
+					pages += '<nav aria-label="Page navigation">'
+					    + '<ul class="pagination justify-content-center">'
+					    + '<li class="page-item" id="prevPage">'
+					   		 + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + url + '" class="page-link">&laquo;</a>'
+					    + '</li>';
+					   
+			        for (let i = pageInfo.startPage; i < pageInfo.endPage+1; i++) {
+			            if (pageNum == i) {
+			                pages += '<li class="page-item active"><span class="page-link">' + i + '</span></li>';
+			            } else {
+			                pages += '<li class="page-item">'
+			                    + '<a href="SearchProduct?pageNum=' + i + url +  '" class="page-link">' + i + '</a>'
+			                    + '</li>';
+			            }
+			        }
+			        
+				    pages += '<li class="page-item" id="nextPage">'
+					    + '<a href="SearchProduct?pageNum=' + (pageNum + 1) + url + '" class="page-link">&raquo;</a>'
+					    + '</li>'
+					    + '</ul>'
+					    + '</nav>';
+					
+					<%-- 페이징 처리 --%>
+				$(".pageing").append(pages);	
+				
+				<%-- pageNum 버튼 최소 최대 제한--%> 
+				if(pageNum <= 1) {
+					$("#prevPage").addClass("disabled");
+				}
+				if(pageNum >= pageInfo.maxPage) {
+					$("#nextPage").addClass("disabled");
+				}
+			
+			},
+			error: function() {
+				alert("실패");
 			}
 			
-		    let pages = '';
-			pages += '<nav aria-label="Page navigation">'
-			    + '<ul class="pagination justify-content-center">'
-			    + '<li class="page-item" id="prevPage">'
-			   		 + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + '" class="page-link">&laquo;</a>'
-			    + '</li>';
-			   
-	        for (let i = pageInfo.startPage; i < pageInfo.endPage+1; i++) {
-	            if (pageNum == i) {
-	                pages += '<li class="page-item active"><span class="page-link">' + i + '</span></li>';
-	            } else {
-	                pages += '<li class="page-item">'
-	                    + '<a href="SearchProduct?pageNum=' + i + '" class="page-link">' + i + '</a>'
-	                    + '</li>';
-	            }
-	        }
-	        
-		    pages += '<li class="page-item" id="nextPage">'
-			    + '<a href="SearchProduct?pageNum=' + (pageNum + 1) +'" class="page-link">&raquo;</a>'
-			    + '</li>'
-			    + '</ul>'
-			    + '</nav>';
-			
-			<%-- 페이징 처리 --%>
-			$(".productList").after(pages);	
-			
-			<%-- pageNum 버튼 최소 최대 제한--%> 
-			if(pageNum <= 1) {
-				$("#prevPage").addClass("disabled");
-			}
-			if(pageNum >= pageInfo.maxPage) {
-				$("#nextPage").addClass("disabled");
-			}
-		
-		},
-		error: function() {
-			alert("실패");
-		}
-		
-	});
-	
+		}); // ajax 끝
 }
 
 </script>
@@ -352,39 +378,39 @@ function filtering(sortNum) {
                         	<div class="filter">
 		                        <span class="filter_title">필터</span>
 	                        	<span class="filter_reset">
-	                        		<a href="javascript:void(0)" style="text-decoration: underline; color: grey;">초기화</a>
+	                        		<a href="javascript:void(0)" onclick="filtering(0)" style="text-decoration: underline; color: grey;">초기화</a>
 	                        	</span>
                         	</div>
                             <div style="margin-bottom: 20px;"></div>
 		                    <h3>가격</h3>
 		                    <!-- Start Single Widget -->
 		                    <div class="form-check">
-                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="" id="priceCheck" onclick="filtering()">
-                                <label class="form-check-label" for="priceCheck" >
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="" id="priceCheck1" onclick="filtering()">
+                                <label class="form-check-label" for="priceCheck1" >
                                     전체
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="0~100000" id="priceCheck" onclick="filtering()">
-                                <label class="form-check-label" for="priceCheck" >
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="0~100000" id="priceCheck2" onclick="filtering()">
+                                <label class="form-check-label" for="priceCheck2" >
                                     10만원 이하
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="100000~300000" id="priceCheck" onclick="filtering()">
-                                <label class="form-check-label" for="priceCheck">
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="100000~300000" id="priceCheck3" onclick="filtering()">
+                                <label class="form-check-label" for="priceCheck3">
                                    	10만원 이상 - 30만원 이하
                                 </label>
                             </div>
                             <div class="form-check"> 
-                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="300000~500000"  id="priceCheck" onclick="filtering()">
-                                <label class="form-check-label" for="priceCheck">
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="300000~500000"  id="priceCheck4" onclick="filtering()">
+                                <label class="form-check-label" for="priceCheck4">
                                     30만원 이상 - 50만원 이하 
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="500000" id="priceCheck" onclick="filtering()">
-                                <label class="form-check-label" for="priceCheck">
+                                <input class="form-check-input clickfunc" type="radio" name="priceRadio" value="500000" id="priceCheck5" onclick="filtering()">
+                                <label class="form-check-label" for="priceCheck5">
                                     50만원 이상
                                 </label>
                             </div>
@@ -422,40 +448,26 @@ function filtering(sortNum) {
 		                    </form>
 		                    <div style="margin-bottom: 20px;"></div>
 		                    
-		                    <h3>카테고리</h3>
-                            <ul class="list">
-                                <li>
-                                    <a href="javascript:filtering()" class="selcategory">상의 </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:filtering()" class="selcategory">하의</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:filtering()" class="selcategory">아우터</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:filtering()" class="selcategory">아동복</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:filtering()" class="selcategory">셋업/세트</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:filtering()" class="selcategory">패션/잡화</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:filtering()" class="selcategory">신발</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:filtering()" class="selcategory">기타</a>
-                                </li>
-                            </ul>
+		                    <c:if test="${empty param.product_category}">
+			                    <h3>카테고리</h3>
+	                            <ul class="list" id="submenu-1-3">
+	                                <li><a href="javascript:void(0)" class="selcategory">상의</a></li>
+	                                <li><a href="javascript:void(0)" class="selcategory">하의</a></li>
+	                                <li><a href="javascript:void(0)" class="selcategory">아우터</a></li>
+	                                <li><a href="javascript:void(0)"  class="selcategory">아동복</a></li>
+	                                <li><a href="javascript:void(0)" class="selcategory">셋업/세트</a></li>
+	                                <li><a href="javascript:void(0)" class="selcategory">패션/잡화</a></li>
+	                                <li><a href="javascript:void(0)" class="selcategory">신발</a></li>
+	                                <li><a href="javascript:void(0)" class="selcategory">기타</a></li>
+	                            </ul>
+                       		</c:if>
                         <%-- 3. 신고하기 기능 버튼 --%>
                         <button type="button" class="btn btn-primary" id="testBtn" value="테스트중입니다">
 								테스트버튼
 						</button>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
                         		data-bs-target="#reportModal" >
-								게시글 신고하기
+								신고하기
 						</button>
 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" 
                         		data-bs-target="#memberModal">
@@ -524,6 +536,9 @@ function filtering(sortNum) {
 <!--                                             </div> -->
 <!--                                         </div> -->
                                         <!-- End Single Product -->
+                                    </div>
+                                    <div class="pageing"> 
+                                    
                                     </div>
                                 </div>
 <!--                                 <div class="row"> -->

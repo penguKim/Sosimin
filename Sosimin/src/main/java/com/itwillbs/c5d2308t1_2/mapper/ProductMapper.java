@@ -13,7 +13,7 @@ import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 public interface ProductMapper {
 	
 	
-	// 미로그인 상품 목록 조회
+	// 상품 목록 조회
 	List<Map<String, Object>> selectProductList(Map<String, Object> map);
 	
 	// 상품 목록 카운트
@@ -77,5 +77,9 @@ public interface ProductMapper {
 	int removeProductBoard(Map<String, String> map);
 
 	int removeProduct(Map<String, String> map);
+	
+	
+	// 관리자 페이지 상품목록
+	List<Map<String, Object>> adminProductList();
 
 }

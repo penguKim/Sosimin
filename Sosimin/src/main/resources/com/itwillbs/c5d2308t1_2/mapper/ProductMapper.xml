@@ -13,8 +13,9 @@
 		</if>
 		<!-- 로그인시 회원 구별 조회 -->
 		<if test="sId != null" >
-			gu = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(member_address, ' ', -2), ' ', 1) AS member_address
-			FROM Member
+			gu = (SELECT gu
+			FROM Member m JOIN Town t 
+			ON  m.town_id = t.town_id
 			WHERE member_id = #{sId})		
 		</if>
 		<if test="sId != null and !category.equals('') or sId != null and !keyword.equals('')">
@@ -35,7 +36,7 @@
 		</if>
 		<if test="!price.equals('')">product_price between #{minPrice} AND #{maxPrice}</if>
 		<!-- 상품 상태별 조회 -->
-		<if test="(sId != null or !category.equals('') or !keyword.equals('')) and !status.equals('')">
+		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('')) and !status.equals('')">
 			AND
 		</if>
 		<if test="!status.equals('')">
@@ -74,8 +75,9 @@
 			WHERE 
 		</if>
 		<if test="sId != null" >
-			gu = (SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(member_address, ' ', -2), ' ', 1) AS member_address
-			FROM Member
+			gu = (SELECT gu
+			FROM Member m JOIN Town t 
+			ON  m.town_id = t.town_id
 			WHERE member_id = #{sId})		
 		</if>
 		<!-- 카테고리 및 키워드 별 조회 -->
@@ -96,7 +98,7 @@
 		</if>
 		<if test="!price.equals('')">product_price between #{minPrice} AND #{maxPrice}</if>
 		<!-- 상품 상태별 조회 -->
-		<if test="(sId != null or !category.equals('') or !keyword.equals('')) and !status.equals('')">
+		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('')) and !status.equals('')">
 			AND
 		</if>
 		<if test="!status.equals('')">
@@ -132,6 +134,11 @@
 		LIMIT #{page.startRow}, #{page.listLimit}
 	</select>
 	
+	<!-- 어드민 페이지 상품 목록 -->
+	<select id="adminProductList" resultType="map">
+		SELECT *
+		FROM Product
+	</select>
 	
 	
 	<!-- ================================================================================= -->

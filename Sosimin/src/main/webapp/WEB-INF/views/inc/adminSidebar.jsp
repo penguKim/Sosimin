@@ -18,7 +18,7 @@
 	</li><!-- End Profile Page Nav -->
 
 	<li class="nav-item">
-		<a class="nav-link collapsed" href="ProductBoardList">
+		<a class="nav-link collapsed" href="ProductList">
 			<i class="bi bi-archive"></i>
 			<span>상품관리</span>
 		</a>

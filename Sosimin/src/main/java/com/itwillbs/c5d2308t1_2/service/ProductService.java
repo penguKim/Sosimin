@@ -15,15 +15,15 @@ public class ProductService {
 	@Autowired
 	ProductMapper mapper;
 	
+	// 페이지 카운트 조회
+	public int getProductListCount(Map<String, Object> map) {
+		return mapper.productListCount(map);
+	}
 	// 미로그인 시 날짜 최신순으로 상목 목록 조회
 	public List<Map<String, Object>> selectProductList(Map<String, Object> map) {
 		return mapper.selectProductList(map);
 	}
 	
-	// 페이지 카운트 조회
-	public int getProductListCount(Map<String, Object> map) {
-		return mapper.productListCount(map);
-	}
 
 	// ========================================================================================
 	
@@ -157,6 +157,12 @@ public class ProductService {
 		    // 모든 삭제 작업이 성공적으로 완료됨
 		    return true;
 		
+	}
+	
+	//=============================================================
+	// 관리자페이지 상품 목록
+	public List<Map<String, Object>> adminProductList() {
+		return mapper.adminProductList();
 	}
 	
 }

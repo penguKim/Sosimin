@@ -1,49 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Sosimin</title>
-  <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+<title>Sosimin</title>
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<meta content="" name="description">
+<meta content="" name="keywords">
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+<!-- Favicons -->
+<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <link href="${pageContext.request.contextPath}/resources/css/admin/bootstrap.min.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/resources/css/admin/bootstrap-icons.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/resources/css/admin/boxicons.min.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/resources/css/admin/quill.snow.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/resources/css/admin/quill.bubble.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/resources/css/admin/remixicon.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/resources/css/admin/style2.css" rel="stylesheet">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
+<!-- Vendor CSS Files -->
+<link href="${pageContext.request.contextPath}/resources/css/admin/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/admin/bootstrap-icons.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/admin/boxicons.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/admin/quill.snow.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/admin/quill.bubble.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/admin/remixicon.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/admin/style2.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 
-
-  <!-- Template Main CSS File -->
-  <link href="${pageContext.request.contextPath}/resources/css/admin/style.css" rel="stylesheet">
-	<%-- sweetalert --%>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Jan 09 2024 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<!-- Template Main CSS File -->
+<link href="${pageContext.request.contextPath}/resources/css/admin/style.css" rel="stylesheet">
+<!-- sweetalert -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<!-- bootstrap-icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<!-- =======================================================
+* Template Name: NiceAdmin
+* Updated: Jan 09 2024 with Bootstrap v5.3.2
+* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+======================================================== -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
 function reportStatus() {
 	
@@ -82,237 +83,167 @@ function reportStatus() {
 </head>
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
-	<jsp:include page="../inc/adminTop.jsp"></jsp:include>	
-  </header><!-- End Header -->
+	<!-- ======= Header ======= -->
+	<header id="header" class="header fixed-top d-flex align-items-center">
+		<jsp:include page="../inc/adminTop.jsp"></jsp:include>	
+	</header><!-- End Header -->
 
-  <!-- ======= Sidebar ======= -->
-  <aside id="sidebar" class="sidebar">
-	<jsp:include page="../inc/adminSidebar.jsp"></jsp:include>	
-  </aside><!-- End Sidebar-->
+	<!-- ======= Sidebar ======= -->
+	<aside id="sidebar" class="sidebar">
+		<jsp:include page="../inc/adminSidebar.jsp"></jsp:include>	
+	</aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
-  	<div class="pagetitle">
-		<h1>게시물 신고 관리</h1>
-	</div>
+	<main id="main" class="main">
+
+		<div class="pagetitle">
+			<h1>회원 신고관리</h1>
+			<nav>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
+					<li class="breadcrumb-item active">신고관리</li>
+					<li class="breadcrumb-item active">회원신고관리</li>
+				</ol>
+			</nav>
+		</div><!-- End Page Title -->
 	
-  	<section class="section">
+		<section class="section">
 			<div class="row">
 				<div class="col-lg-12">
-
 					<div class="card">
 						<div class="card-body">
 							<!-- Table with stripped rows -->
-							<div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
-								<div class="datatable-top">
-									<div class="datatable-dropdown">
-									</div>
-									<div class="datatable-search">
-										<select class="datatable-selector">
-											<option>전체</option>
-											<option>아이디</option>
-											<option>거래방법</option>
-											<option>거래장소</option>
-											<option>상품상태</option>
-											<option>거래상태</option>
-										</select>
-										<input class="datatable-input" placeholder="정보를 검색하세요"
-											type="search" title="Search within table">
-										<input type="submit" value="조회" class="btn btn-outline-primary">
-									</div>
-								</div>
-								<div class="datatable-container">
-									<table class="table datatable datatable-table" id="memberManagementTable">
-										<thead>
-											<tr>
-												<th data-sortable="true" aria-sort="descending" class="datatable-descending">
-													<button class="datatable-sorter">신고번호</button>
-												</th>
-												<th data-sortable="true" aria-sort="descending" class="datatable-descending">
-													<button class="datatable-sorter">신고자</button>
-												</th>
-												<th data-sortable="true">
-													<button class="datatable-sorter">피신고자</button>
-												</th>
-												<th data-sortable="true">
-													<button class="datatable-sorter">신고사유</button>
-												</th>
-												<th data-sortable="true">
-													<button class="datatable-sorter">신고내용</button>
-												</th>
-												<th data-format="YYYY/DD/MM" data-sortable="true" data-type="date">
-													<button class="datatable-sorter">신고날짜</button>
-												</th>
-												<th data-sortable="true" class="red">
-													<button class="datatable-sorter">비고</button>
-												</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr data-index="0">
-												<td>신고번호</td>
-												<td>신고자</td>
-												<td>피신고자</td>
-												<td>신고사유</td>
-												<td>신고내용</td>
-												<td>2024/01/28</td>
-												<td class="green">
-													<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" 
-							                        		data-bs-target="#productListModal">
-															상세
-													</button>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-								<div class="datatable-bottom">
-<!-- 									<div class="datatable-info">Showing 1 to 10 of 100 -->
-<!-- 										entries</div> -->
-									<nav class="datatable-pagination">
-										<ul class="datatable-pagination-list">
-											<li class="datatable-pagination-list-item datatable-hidden datatable-disabled">
-												<button data-page="1" class="datatable-pagination-list-item-link" aria-label="Page 1">
-												‹
+							<table class="table datatable">
+								<thead>
+									<tr>
+										<th>신고번호</th>
+										<th>신고자</th>
+										<th>피신고자</th>
+										<th>신고날짜</th>
+										<th>신고사유</th>
+										<th>신고내용</th>
+										<th>처리상태</th>
+										<th>상세보기</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="reportList" items="${boardReportList}">
+										<tr>
+											<td>${reportList.report_id}</td>
+											<td>${reportList.reporter_id}</td>
+											<td>${reportList.reportee_id}</td>
+											<td>
+												<c:set var="datetime" value="${fn:split(reportList.report_datetime, 'T')}" />
+												<c:set var="date" value="${datetime[0]}" />
+												${date}
+											</td>
+											<td>${reportList.report_reason}</td>
+											<td>${reportList.report_content}</td>
+											<td>
+												<c:choose>
+													<c:when test="${reportList.report_status eq 0}">처리진행중</c:when>
+													<c:when test="${reportList.report_status eq 1}">처리완료</c:when>
+													<c:when test="${reportList.report_status eq 2}">문제없음</c:when>
+												</c:choose>
+											</td>
+											<td class="green">
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${reportList.report_id}">
+													상세보기
 												</button>
-											</li>
-											<li class="datatable-pagination-list-item datatable-active">
-												<button data-page="1" class="datatable-pagination-list-item-link" aria-label="Page 1">
-												1
-												</button>
-											</li>
-											<li class="datatable-pagination-list-item">
-												<button data-page="2" class="datatable-pagination-list-item-link" aria-label="Page 2">
-												2
-												</button>
-											</li>
-											<li class="datatable-pagination-list-item">
-												<button data-page="3" class="datatable-pagination-list-item-link" aria-label="Page 3">
-												3
-												</button>
-											</li>
-											<li class="datatable-pagination-list-item">
-												<button data-page="4" class="datatable-pagination-list-item-link" aria-label="Page 4">
-												4
-												</button>
-											</li>
-											<li class="datatable-pagination-list-item">
-												<button data-page="5" class="datatable-pagination-list-item-link" aria-label="Page 5">
-												5
-												</button>
-											</li>
-											<li class="datatable-pagination-list-item">
-												<button data-page="6" class="datatable-pagination-list-item-link" aria-label="Page 6">
-												6
-												</button>
-											</li>
-											<li class="datatable-pagination-list-item">
-												<button data-page="7" class="datatable-pagination-list-item-link" aria-label="Page 7">
-												7
-												</button>
-											</li>
-											<li class="datatable-pagination-list-item datatable-ellipsis datatable-disabled">
-												<button class="datatable-pagination-list-item-link">
-												…
-												</button>
-											</li>
-											<li class="datatable-pagination-list-item">
-												<button data-page="10" class="datatable-pagination-list-item-link" aria-label="Page 10">
-												10
-												</button>
-											</li>
-											<li class="datatable-pagination-list-item">
-												<button data-page="2" class="datatable-pagination-list-item-link" aria-label="Page 2">
-												›
-												</button>
-											</li>
-										</ul>
-									</nav>
-								</div>
-							</div>
+												<!-- Basic Modal -->
+												<div class="modal fade" id="modal-${reportList.report_id}" tabindex="-1">
+													<div class="modal-dialog">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h5 class="modal-title">게시물 신고 상세</h5><!-- 모달 제목 -->
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+															</div>
+															<div class="modal-body">
+																<!-- 모달 내용이 들어가는 부분 -->
+																<table class="table modal_table">
+																	<tr>
+																		<th scope="row">신고번호</th>
+																		<td>${reportList.report_id}</td>
+																	</tr>
+																	<tr>
+																		<th scope="row">신고자</th>
+																		<td>${reportList.reporter_id}</td>
+																	</tr>
+																	<tr>
+																		<th scope="row">피신고자</th>
+																		<td>${reportList.reportee_id}</td>
+																	</tr>
+																	<tr>
+																		<th scope="row">신고사유</th>
+																		<td>${reportList.report_reason}</td>
+																	</tr>
+																	<tr>
+																		<th scope="row">신고내용</th>
+																		<td>${reportList.report_content}</td>
+																	</tr>
+																	<tr>
+																		<th scope="row">신고날짜</th>
+																		<c:set var="datetime" value="${fn:split(reportList.report_datetime, 'T')}" />
+																		<td>${datetime}</td>
+																	</tr>
+																	<tr>
+																		<th>신고처리 상태</th>
+																		<td>
+																			<c:choose>
+																				<c:when test="${reportList.report_status eq 0}">처리진행중</c:when>
+																				<c:when test="${reportList.report_status eq 1}">처리완료</c:when>
+																				<c:when test="${reportList.report_status eq 2}">문제없음</c:when>
+																			</c:choose>
+																			<select>
+																				<optgroup label="신고상태">
+																					<option>처리중</option>
+																					<option>처리완료</option>
+																					<option>문제없음</option>
+																				</optgroup>
+																			</select>
+																		</td>
+																	</tr>
+																</table>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+																<button type="button" class="btn btn-primary">변경하기</button>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- End Basic Modal-->
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
 							<!-- End Table with stripped rows -->
-
 						</div>
-					</div>
-
+	 				</div>
 				</div>
 			</div>
 		</section>
-  </main>
+	</main><!-- End #main -->
 
-	<div class="modal fade review-modal" id="productListModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="reportsubject">게시물 신고 상세</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="modalDismiss"></button>
-				</div>
-				<div class="modal-body">
-					<table border="1" class="table datatable datatable-table">
-						<tr>
-							<th>신고번호</th>
-							<td>1</td>
-						</tr>
-						<tr>
-							<th>신고자</th>
-							<td>신고</td>
-						</tr>
-						<tr>
-							<th>피신고자</th>
-							<td>피신</td>
-						</tr>
-						<tr>
-							<th>신고사유</th>
-							<td>기타</td>
-						</tr>
-						<tr>
-							<th>신고내용</th>
-							<td>키보드가 아닌걸 팔고 있어요</td>
-						</tr>
-						<tr>
-							<th>신고날짜</th>
-							<td>2024-01-28 16:55:24</td>
-						</tr>
-						<tr>
-							<th>신고처리 상태</th>
-							<td>
-								<span class="reportResultStatus">처리중</span>
-								<select>
-									<optgroup label="신고상태">
-										<option>처리중</option>
-										<option>문제없음</option>
-										<option>처리완료</option>
-									</optgroup>
-								</select>
-							</td>
-						</tr>
-					</table>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal" id="modalDismiss">창닫기</button>
-					<button type="submit" class="btn btn-outline-primary" onclick="reportStatus()">변경저장</button>
-				</div>
-			</div>
-		</div>
-	</div>	
-  <footer id="footer" class="footer">
-	<jsp:include page="../inc/adminBottom.jsp"></jsp:include>	
-  </footer><!-- End Footer -->
+	<!-- ======= Footer ======= -->
+	<footer id="footer" class="footer">
+		<jsp:include page="../inc/adminBottom.jsp"></jsp:include>	
+	</footer><!-- End Footer -->
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+	<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Vendor JS Files -->
-  <script src="${pageContext.request.contextPath}/resources/js/admin/apexcharts.min.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/js/admin/bootstrap.bundle.min.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/js/admin/chart.umd.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/js/admin/echarts.min.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/js/admin//quill.min.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/js/admin/simple-datatables.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/js/admin/tinymce.min.js"></script>
-  <script src="${pageContext.request.contextPath}/resources/js/admin/validate.js"></script>
-
-  <!-- Template Main JS File -->
-  <script src="${pageContext.request.contextPath}/resources/js/admin/main.js"></script>	
+	<!-- Vendor JS Files -->
+	<script src="${pageContext.request.contextPath}/resources/js/admin/apexcharts.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/admin/bootstrap.bundle.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/admin/chart.umd.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/admin/echarts.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/admin//quill.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/admin/simple-datatables.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/admin/tinymce.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/admin/validate.js"></script>
+	
+	<!-- Template Main JS File -->
+	<script src="${pageContext.request.contextPath}/resources/js/admin/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </body>
 </html>

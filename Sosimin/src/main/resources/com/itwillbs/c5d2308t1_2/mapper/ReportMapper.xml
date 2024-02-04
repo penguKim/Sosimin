@@ -17,4 +17,18 @@
 			, #{report_type}
 		)
 	</insert>
+	
+	<!-- 회원 신고 목록 조회 -->
+	<select id="memberReportList" resultType="map">
+		SELECT *
+		FROM Report  
+		WHERE report_type = 1
+	</select>
+	
+	<select id="boardReportList">
+		SELECT *
+		FROM Report  
+		WHERE report_type = 0
+	</select>
+	
 </mapper>

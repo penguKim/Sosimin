@@ -1,5 +1,6 @@
 package com.itwillbs.c5d2308t1_2.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -48,7 +49,11 @@ public class ReportController {
 	@GetMapping("MemberReport")
 	public String reportMember(@RequestParam Map<String, String> map, HttpSession session, Model model) {
 		
+		List<Map<String, Object>> memberReportList = service.memberReportList();
 		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + memberReportList);
+		
+		model.addAttribute("memberReportList", memberReportList);
 		
 		return "admin/reportMember";
 	}
@@ -63,7 +68,11 @@ public class ReportController {
 	@GetMapping("BoardReport")
 	public String reportBoard(@RequestParam Map<String, String> map, HttpSession session, Model model) {
 		
+		List<Map<String, Object>> boardReportList = service.boardReportList();
 		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + boardReportList);
+		
+		model.addAttribute("boardReportList", boardReportList);
 		
 		return "admin/reportBoard";
 	}

@@ -83,12 +83,8 @@ public class ProductController {
 		}
 		
 		// =============================================================
-		
-		
-		
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 후" + map);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>페이지 넘버 : " + pageNum);
-		
 		
 		List<Map<String, Object>> productList = null;
 		 
@@ -154,12 +150,33 @@ public class ProductController {
 		JSONObject jPage = new JSONObject(pageInfo); 
 		jsonArray.put(jPage);
 		jsonArray.put(pageNum);
+		
 //		System.out.println(">>>>>>>>>>>>>>>>>>>>> 리스트" + productList);
 //		System.out.println(">>>>>>>>>>>>>>>>>>>> 페이징" + jPage);
 //		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> : " + jsonArray);
 		
 		return jsonArray.toString();
 	}
+	
+	// =============================== 관리자 페이지
+		// 등록 상품 목록
+		@GetMapping("ProductList")
+		public String productList(HttpSession session, Model model) {
+			
+			List<Map<String, Object>> productList = service.adminProductList();
+			
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>" + productList);
+			
+			model.addAttribute("productList", productList);
+			
+			return "admin/productList";
+		}
+		
+		@GetMapping("ProductListDetail")
+		public String productListDetail() {
+			
+			return "admin/productListDetail";
+		}
 	
 	
 	
@@ -661,19 +678,7 @@ public class ProductController {
 		return"products/AddressMap";
 	}
 	
-	// =============================== 관리자 페이지
-	// 등록 상품 목록
-	@GetMapping("ProductList")
-	public String productList() {
-		
-		return "admin/productList";
-	}
 	
-	@GetMapping("ProductListDetail")
-	public String productListDetail() {
-		
-		return "admin/productListDetail";
-	}
 	
 }	
 
