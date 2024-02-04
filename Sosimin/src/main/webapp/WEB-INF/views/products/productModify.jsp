@@ -1191,7 +1191,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <!-- 								</button> -->
 <!-- 					  	</span> -->
 					</div>
-				</div>						
+										
 				<hr>
 				<!-- 현재 등록돼 있는 카테고리 목록 호출, 사용자가 추가 가능 -->
 				
@@ -1350,6 +1350,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <!-- 					<input type="submit" id="buttonBox" value="상품등록"> -->
 					<input type="button" id="buttonBox" value="수정" onclick="submitFiles()">
 				</div>
+			</div>
 			</form>
 		</div>
 	</div>
