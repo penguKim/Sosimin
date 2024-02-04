@@ -9,6 +9,7 @@ public class CommunityVO {
 	private int community_id;
 	private String community_category;
 	private String community_writer;
+	private int community_town_id;
 	private String community_subject;
 	private String community_content;
 	private String community_image1;

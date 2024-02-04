@@ -12,6 +12,7 @@
 			null
 			, #{community_category}
 			, #{community_writer}
+			, #{community_town_id}
 			, #{community_subject}
 			, #{community_content}
 			, #{community_image1}
@@ -37,50 +38,26 @@
 			</otherwise>
 		</choose>
 		WHERE
-			<choose>
-				<when test="category == 1">
-					community_category = 1
-				</when>
-				<when test="category == 2">
-					community_category = 2
-				</when>
-				<when test="category == 3">
-					community_category = 3
-				</when>
-				<when test="category == 4">
-					 count > 5
-				</when>
-				<when test="category.equals('')">
-					1=1 
-				</when>
-			</choose>
-<!-- 		<choose> -->
-<!-- 			<when test="category.equals('hot')"> -->
-<!-- 				FROM Community com JOIN CommunityLikeCount clc -->
-<!-- 				ON com.community_id = clc.community_num  -->
-<!-- 			</when> -->
-<!-- 			<otherwise> -->
-<!-- 				FROM Community -->
-<!-- 			</otherwise> -->
-<!-- 		</choose> -->
-<!-- 		WHERE -->
-<!-- 			<choose> -->
-<!-- 				<when test="category.equals('info')"> -->
-<!-- 					community_category = 1 -->
-<!-- 				</when> -->
-<!-- 				<when test="category.equals('question')"> -->
-<!-- 					community_category = 2 -->
-<!-- 				</when> -->
-<!-- 				<when test="category.equals('daily')"> -->
-<!-- 					community_category = 3 -->
-<!-- 				</when> -->
-<!-- 				<when test="category.equals('hot')"> -->
-<!-- 					 count > 5 -->
-<!-- 				</when> -->
-<!-- 				<when test="category.equals('')"> -->
-<!-- 					1=1  -->
-<!-- 				</when> -->
-<!-- 			</choose> -->
+		<choose>
+			<when test="category == 1">
+				community_category = 1
+			</when>
+			<when test="category == 2">
+				community_category = 2
+			</when>
+			<when test="category == 3">
+				community_category = 3
+			</when>
+			<when test="category == 4">
+				 count > 5
+			</when>
+			<when test="category.equals('')">
+				1=1 
+			</when>
+		</choose>
+		<if test="townId != 0">
+			AND community_town_id = #{townId}
+		</if>
 		<if test="!searchKeyword.equals('')">
 			<choose>
 				<when test="searchType.equals('subject')">
@@ -114,23 +91,26 @@
 			</otherwise>
 		</choose>
 		WHERE
-			<choose>
-				<when test="category == 1">
-					community_category = 1
-				</when>
-				<when test="category == 2">
-					community_category = 2
-				</when>
-				<when test="category == 3">
-					community_category = 3
-				</when>
-				<when test="category == 4">
-					 count > 5
-				</when>
-				<when test="category.equals('')">
-					1=1 
-				</when>
-			</choose>
+		<choose>
+			<when test="category == 1">
+				community_category = 1
+			</when>
+			<when test="category == 2">
+				community_category = 2
+			</when>
+			<when test="category == 3">
+				community_category = 3
+			</when>
+			<when test="category == 4">
+				 count > 5
+			</when>
+			<when test="category.equals('')">
+				1=1 
+			</when>
+		</choose>
+		<if test="townId != 0">
+			AND community_town_id = #{townId}
+		</if>
 		<if test="!searchKeyword.equals('')">
 			<choose>
 				<when test="searchType.equals('subject')">
@@ -156,7 +136,7 @@
 	<!-- 게시글 조회 -->
 	<select id="selectCommunity" resultType="map">
 		SELECT *
-		FROM Community com JOIN Member m
+		FROM CommunityView com JOIN Member m
 		ON com.community_writer = m.member_id
 		WHERE community_id = #{community_id}
 	</select>
@@ -308,7 +288,7 @@
 		)
 	</insert>
 	
-	<!-- 상세 개시글 좋아요 갯수 -->
+	<!-- 상세 게시글 좋아요 갯수 -->
 	<select id="selectLikeCount" resultType="int">
 		SELECT IFNULL(COUNT(*), 0) 
 		FROM CommunityLike
@@ -502,6 +482,35 @@
 		DELETE FROM TempCommunity
 		WHERE temp_id = #{temp_id}
 	</delete>
+	
+	<!-- 회원의 현재 지역 정보 가져오기 -->
+	<select id="selectTownId" resultType="int">
+		SELECT town_id
+		FROM Member
+		WHERE member_id = #{community_writer}
+	</select>
+	
+	<select id="getTownName" resultType="map">
+		SELECT t.town_id, t.gu, t.dong
+		FROM Member m JOIN Town t
+		ON m.town_id = t.town_id 
+		WHERE member_id = #{id}
+	</select>
+	
+	<!-- ====================== 관리자 게시판 ====================== -->
+	<!-- 커뮤니티 게시판 조회 -->
+	<select id="selectAllList" resultType="map">
+		SELECT *
+		FROM Community
+	</select>
+	
+	<!-- 커뮤니티 댓글 조회 -->
+	<select id="selectAllReList">
+		SELECT *
+		FROM CommunityReply
+	</select>
+	
+	
 </mapper>
 
 

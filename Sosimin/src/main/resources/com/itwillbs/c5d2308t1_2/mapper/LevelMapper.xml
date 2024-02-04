@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.c5d2308t1_2.mapper.LevelMapper">
+
+	<!-- 상대방 아이디 조회 -->
+	<select id="selectTargetId" >
+		SELECT
+		    CONCAT(product_buyer, ",", product_seller) AS buyer_seller
+		FROM OrderList
+		WHERE order_id = #{order_id}
+	</select>
+	<!-- 회원 조회 -->
+	<select id="selectMemberLevel">
+		SELECT *
+		FROM MemberLevelView
+		WHERE member_id = #{targetId}
+	</select>
+	
+	<!-- 이전 레벨 정보 조회 -->
+	<select id="selectLevel" resultType="map">
+		SELECT *
+		FROM MemberLevel
+		WHERE level_id = #{level}
+	</select>
+	
+	<!-- 최대 레벨 조회 -->
+	<select id="selectMaxLevel">
+		SELECT MAX(level_id)
+		FROM MemberLevel
+	</select>
+	
+	<!-- 회원 레벨 업데이트 -->
+	<update id="updateMemberLevel">
+		UPDATE Member
+		SET
+			member_level = #{member_level}
+			, member_exp = #{member_exp}
+		WHERE member_id = #{member_id}
+	</update>
+	
+	<!-- 회원 리뷰 등록 -->
+	<insert id="insertReview">
+		INSERT INTO Review
+		VALUES(
+			null
+			, #{member_id}
+			, #{target_member_id}
+			, #{order_id}
+			, #{review_status}
+			, IFNULL(#{review_check1}, 'off')
+			, IFNULL(#{review_check2}, 'off')
+			, IFNULL(#{review_check3}, 'off')
+			, IFNULL(#{review_check4}, 'off')
+		)
+	</insert>
+</mapper>

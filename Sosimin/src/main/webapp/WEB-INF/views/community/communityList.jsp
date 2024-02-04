@@ -38,6 +38,26 @@
 			$("#nextPage").addClass("disabled");
 		}
 		
+		// 회원의 지역 정보 가져오기
+		$.ajax({
+			type: "POST",
+			url: "TownCheck",
+			dataType: "json",
+			success: function(data) {
+				if(typeof data.gu !== 'undefined') {
+					$(".breadcrumbs-content").html(
+							'<h1 class="page-title">' + data.gu + '의 커뮤니티</h1>'
+							);
+				} else {
+					$(".breadcrumbs-content").html(
+							'<h1 class="page-title">부산광역시의 커뮤니티</h1>'
+							);
+				}
+
+			}
+		});
+		
+		
 		<%-- 후기 코드 --%>
 		$("#reviewCheckFrom").on("click", function() {
 			$("#staticBackdropLabel").text("후기 등록");
@@ -47,26 +67,26 @@
 					
 					'<ul class="list-group">'
 						+ '<li class="list-group-item">'
-							+ '<input class="form-check-input me-1" type="checkbox" name="hugi1" id="hugi1">'
-							+ '<label class="form-check-label" for="hugi1" id="hugiLabel1">'
+							+ '<input class="form-check-input me-1" type="checkbox" name="review_check1" id="review_check1">'
+							+ '<label class="form-check-label" for="review_check1" id="hugiLabel1">'
 								+ '제가 있는곳까지 와서 거래했어요'
 							+ '</label>'
 						+ '</li>'
 						+ '<li class="list-group-item">'
-							+ '<input class="form-check-input me-1" type="checkbox" name="hugi2" id="hugi2">'
-							+ '<label class="form-check-label" for="hugi2" id="hugiLabel2">'
+							+ '<input class="form-check-input me-1" type="checkbox" name="review_check2" id="review_check2">'
+							+ '<label class="form-check-label" for="review_check2" id="hugiLabel2">'
 								+ '친절하고 매너가 좋아요'
 							+ '</label>'
 						+ '</li>'
 						+ '<li class="list-group-item">'
-							+ '<input class="form-check-input me-1" type="checkbox" name="hugi3" id="hugi3">'
-							+ '<label class="form-check-label" for="hugi3" id="hugiLabel3">'
+							+ '<input class="form-check-input me-1" type="checkbox" name="review_check3" id="review_check3">'
+							+ '<label class="form-check-label" for="review_check3" id="hugiLabel3">'
 								+ '시간 약속을 잘 지켜요'
 							+ '</label>'
 						+ '</li>'
 						+ '<li class="list-group-item">'
-							+ '<input class="form-check-input me-1" type="checkbox" name="hugi4" id="hugi4">'
-							+ '<label class="form-check-label" for="hugi4" id="hugiLabel4">'
+							+ '<input class="form-check-input me-1" type="checkbox" name="review_check4" id="review_check4">'
+							+ '<label class="form-check-label" for="review_check4" id="hugiLabel4">'
 								+ '응답이 빨라요'
 							+ '</label>'
 						+ '</li>'
@@ -256,7 +276,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">XX동 커뮤니티</h1>
+                        <h1 class="page-title">&nbsp;</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
@@ -283,7 +303,8 @@
 					<form action="" id="CommunityForm">
 			<div class="row mb-5 mx-auto">
 				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
-					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" checked>
+<%-- 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>> --%>
 					<label class="btn btn-outline-primary" for="allCategory">전체</label>
 					<input type="radio" class="btn-check" name="category" id="hotCategory" value="4" autocomplete="off" <c:if test="${param.category eq '4' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="hotCategory">인기글</label>
@@ -293,16 +314,6 @@
 					<label class="btn btn-outline-primary" for="questionCategory">동네질문</label>
 					<input type="radio" class="btn-check" name="category" id="dailyCategory" value="3" autocomplete="off" <c:if test="${param.category eq '3' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="dailyCategory">일상</label>
-<%-- 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>> --%>
-<!-- 					<label class="btn btn-outline-primary" for="allCategory">전체</label> -->
-<%-- 					<input type="radio" class="btn-check" name="category" id="hotCategory" value="hot" autocomplete="off" <c:if test="${param.category eq 'hot' }">checked</c:if>> --%>
-<!-- 					<label class="btn btn-outline-primary" for="hotCategory">인기글</label> -->
-<%-- 					<input type="radio" class="btn-check" name="category" id="infoCategory" value="info" autocomplete="off" <c:if test="${param.category eq 'info' }">checked</c:if>> --%>
-<!-- 					<label class="btn btn-outline-primary" for="infoCategory">동네소식</label> -->
-<%-- 					<input type="radio" class="btn-check" name="category" id="questionCategory" value="question" autocomplete="off" <c:if test="${param.category eq 'question' }">checked</c:if>> --%>
-<!-- 					<label class="btn btn-outline-primary" for="questionCategory">동네질문</label> -->
-<%-- 					<input type="radio" class="btn-check" name="category" id="dailyCategory" value="daily" autocomplete="off" <c:if test="${param.category eq 'daily' }">checked</c:if>> --%>
-<!-- 					<label class="btn btn-outline-primary" for="dailyCategory">일상</label> -->
 				</div>
 				<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
 	<!-- 					<div class="form-group row row-cols-1 row-cols-sm-2 row-cols-md-2"> -->
@@ -446,9 +457,9 @@
 					</div>
 					<div class="modal-body">
 						<div class="d-flex justify-content-center">
-							<input type="radio" class="btn-check" name="options" id="option1" value="bad" autocomplete="off">
+							<input type="radio" class="btn-check" name="review_status" id="option1" value="bad" autocomplete="off">
 							<label class="btn btn-outline-primary mx-4" for="option1">별로예요</label>
-							<input type="radio" class="btn-check" name="options" id="option2" value="good" autocomplete="off" checked>
+							<input type="radio" class="btn-check" name="review_status" id="option2" value="good" autocomplete="off" checked>
 							<label class="btn btn-outline-primary mx-4" for="option2">최고예요</label>
 						</div>
 						<div id="reviewCheck" class="mx-auto my-5 w-75">

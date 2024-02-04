@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
+import com.itwillbs.c5d2308t1_2.vo.ReviewVO;
 
 @Mapper
 public interface CommunityMapper {
@@ -18,10 +19,10 @@ public interface CommunityMapper {
 	int insertCommunity(CommunityVO com);
 	
 	// 페이징 처리를 위한 게시물 개수 조회 작업
-	int selectCommunityListCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("category") String category);
+	int selectCommunityListCount(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("category") String category, @Param("townId") int townId);
 
 	// 한 페이지에 표시할 게시글 목록 조회 작업 요청 
-	List<CommunityVO> selectCommunityList(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("category") String category, @Param("page") PageDTO page);
+	List<CommunityVO> selectCommunityList(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("category") String category, @Param("page") PageDTO page, @Param("townId") int townId);
 
 	// 게시글 조회
 	Map<String, Object> selectCommunity(CommunityVO com);
@@ -106,5 +107,27 @@ public interface CommunityMapper {
 
 	// 스케쥴러가 판별한 임시저장글 삭제
 	int removeTempCommunity(String temp_id);
+
+	// 회원의 현재 지역 정보 가져오기
+	int selectTownId(CommunityVO com);
+	
+	// 게시판 입장시 지역정보 판별
+	Map<String, Object> getTownName(String id);
+	
+	// ===================== 관리자 페이지 =====================
+	// 커뮤니티 게시판 조회
+	List<Map<String, String>> selectAllList();
+
+	// 커뮤니티 댓글 조회
+	List<Map<String, String>> selectAllReList();
+
+	
+
+
 	
 }
+
+
+
+
+

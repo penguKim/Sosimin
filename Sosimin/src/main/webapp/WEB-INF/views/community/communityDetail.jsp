@@ -26,7 +26,42 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
 <script type="text/javascript">
 	$(function() {
-		console.log("세션에 저장된 아이디 ; " + '${sessionScope.sId}');
+		console.log(${percentage});
+		memberExp(${percentage});
+		
+		// 관리자 페이지 댓글 클릭시
+	    var hashTag = window.location.hash;
+	    if(hashTag) { // 스크롤 이동
+	        var targetOffset = $(hashTag).offset().top - $(window).height()/2; // 영역의 중간으로 이동
+	        $('html, body').animate({
+	            scrollTop: targetOffset
+	        }, 300, function() { // 댓글 표시
+	            $(hashTag).addClass('highlight');
+	            setTimeout(function() {
+	                $(hashTag).removeClass('highlight');
+	            }, 2000);
+	        });
+	    }
+	    
+		// 회원의 지역 정보 가져오기
+		$.ajax({
+			type: "POST",
+			url: "TownCheck",
+			dataType: "json",
+			success: function(data) {
+				if(typeof data.gu !== 'undefined') {
+					$(".breadcrumbs-content").html(
+							'<h1 class="page-title">' + data.gu + '의 커뮤니티</h1>'
+							);
+				} else {
+					$(".breadcrumbs-content").html(
+							'<h1 class="page-title">부산광역시의 커뮤니티</h1>'
+							);
+				}
+
+			}
+		});
+		
 		// 찜정보 가져오기
 		$.ajax({
 			type: "POST",
@@ -38,11 +73,9 @@
 			dataType: "json",
 			success: function(result) {
 				console.log(result);
-// 				if(Object.keys(result) == 0) {
-					if(result.community_num == ${param.community_id}) {
-						$(".heart").addClass("is-active");
-					}
-// 				}
+				if(result.community_num == ${param.community_id}) {
+					$(".heart").addClass("is-active");
+				}
 			},
 			error: function(xhr, textStatus, errorThrown) {
 					alert("찜 불러오기를 실패했습니다.\n새로고침을 해주세요.");
@@ -285,10 +318,10 @@
 	}
 	
 	// 대댓글 입력창
+	var tempBubble;
 	function reReplyWriteForm(reply_id, reply_re_ref, reply_re_lev, reply_re_seq) {
 		console.log(reply_id, reply_re_ref, reply_re_lev, reply_re_seq);
-		// 대댓글 말풍선 제거
-		$("#reReplyBtn").remove();
+    
 		// 기존 대댓글 제거
 		$("#reReplyTr").remove();
 		
@@ -375,6 +408,25 @@
 		});
 		
 	}
+	
+	// 회원 경험치 프로그레스바
+	function memberExp(percent) {
+		  
+
+		  // 스타일 요소를 만들고, @keyframes 규칙을 추가합니다.
+		  $('<style>')
+		    .prop('type', 'text/css')
+		    .html(`
+		      @keyframes progress-animation {
+		        0%   {width: 0%;}
+		        100% {width: percent + '%';}
+		      }
+		    `)
+		    .appendTo('head');
+
+		  // 프로그레스바 애니메이션을 시작합니다.
+		  $('.progress-bar').css('width', percent + '%').attr('aria-valuenow', percent + '%').text(percent + '%');
+	}
 </script>
 </head>
 <body>
@@ -408,7 +460,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">XX동 커뮤니티</h1>
+                        <h1 class="page-title">&nbsp;</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
@@ -444,12 +496,23 @@
 				        	<i class="fa fa-github-alt" style="font-size:48px"></i>
 				        </div>
 				        <div class="col">
-				        	<div class="row">
-						        <p class="col-xl-3 col-4">${com.community_writer }</p>
-						        <p class="col">LV. ${com.member_level }</p>
+				        	<div class="row align-items-center">
+						        <p class="col-auto">${com.community_writer }</p>
+						        <p class="col-auto">${com. dong}</p>
+<%-- 						        <p class="col-xl-3 col-4">${com.community_writer }</p> --%>
+<%-- 						        <p class="col-xl-2 col-2">${com. dong}</p> --%>
+						        <div class="col-xl-1 col-2">
+						        	LV. ${com.member_level }
+					        	</div>
+					        	<div class="col-xl-4 col-3">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">75%</div>
+									</div>
+					        	</div>
 				        	</div>
 				        	<div class="row">
-						        <p class="col-xl-3 col-4" id="comDate">${com.community_datetime }</p>
+						        <p class="col-auto" id="comDate">${com.community_datetime }</p>
+<%-- 						        <p class="col-xl-3 col-4" id="comDate">${com.community_datetime }</p> --%>
 						        <p class="col">조회수 ${com.community_readcount }</p>
 				        	</div>
 				        </div>
@@ -468,7 +531,6 @@
 			    		</c:if>
 			    	</c:forEach>
 					</div>
-<!-- 					<div class="d-flex justify-content-between" style="height: 80px;"> -->
 					<div class="row" style="height: 80px;">
 						<c:choose>
 							<c:when test="${com.community_writer ne sessionScope.sId}">
@@ -482,16 +544,9 @@
 								<div class="col-1"></div>
 							</c:otherwise>
 						</c:choose>
-<%-- 						<c:if test="${com.community_writer ne sessionScope.sId}"> --%>
-<!-- 							<div class="col-1"> -->
-<!-- 								<div class="heart"></div> -->
-<!-- 							</div> -->
-<%-- 							<span class="likeCount col-1 align-self-end ps-0" style="font-size: 20px;">${likeCount }</span> --%>
-<%-- 						</c:if> --%>
 						<div class="col align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn">
 							댓글 숨기기
 						</div>
-<!-- 						  <button class="align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn" type="button" data-bs-toggle="collapse" data-bs-target="#replyArea" aria-expanded="false" aria-controls="collapseExample">댓글 숨기기</button> -->
 						<c:choose>
 							<c:when test="${com.community_writer ne sessionScope.sId and sessionScope.sId ne 'admin' }">
 								<div class="col-1 align-self-end" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i></div>
@@ -500,9 +555,6 @@
 								<div class="col-2"></div>
 							</c:otherwise>
 						</c:choose>
-<%-- 						<c:if test="${com.community_writer ne sessionScope.sId and sessionScope.sId ne 'admin' }"> --%>
-<!-- 							<div class="col-1 align-self-end" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i></div> -->
-<%-- 						</c:if> --%>
 					</div>
 			    </div>
 			</div>
@@ -511,7 +563,6 @@
 				<form action="CommunityReplyWrite" method="post" class="needs-validation replyForm d-flex justify-content-center">
 					<input type="hidden" name="community_id" value="${com.community_id }">
 					<input type="hidden" name="pageNum" value="${param.pageNum }">
-<%-- 					<input type="hidden" name="reply_writer" value="${sessionScope.sId }"> --%>
 					<c:choose>
 						<c:when test="${empty sessionScope.sId }">
 							<textarea class="form-control" id="replyTextarea" name="reply_content" placeholder="로그인 한 사용자만 작성 가능합니다" disabled></textarea>
@@ -527,7 +578,7 @@
 				<div id="replyListArea">
 					<table class="table">
 					<c:forEach var="reply" items="${replyList }">
-						<tr id="replyTr_${reply.reply_id }">
+						<tr id="replyTr_${reply.reply_id }" class="replyArea">
 							<td class="replyContent">
 								<div class="row">
 									<c:forEach var="i" begin="1" end="${reply.reply_re_lev }">
@@ -537,11 +588,14 @@
 										<div class="row">
 											<div class="col">
 												<span class="me-2 mb-2">${reply.reply_writer }</span>
-												<c:if test="${reply.reply_writer eq sessionScope.sId }"> <%-- 댓글 작성자 표시 --%>
-													<span class="badge rounded-pill text-bg-secondary">작성자</span>
-<!-- 													<span class="writerInfo border rounded-3 me-3 align-middle">작성자</span> -->
-												</c:if>
-<%-- 												<span class="float-end">${reply.reply_datetime }</span> --%>
+												<c:choose>
+													<c:when test="${reply.reply_writer eq 'admin' }">
+														<span class="badge rounded-pill text-bg-secondary" style="background-color: #000;">관리자</span>
+													</c:when>
+													<c:when test="${reply.reply_writer eq sessionScope.sId }">
+														<span class="badge rounded-pill text-bg-secondary">작성자</span>
+													</c:when>
+												</c:choose>
 											</div>
 										</div>
 										<div class="row">
@@ -566,6 +620,7 @@
 										</div>							
 										<div class="row">
 											<c:choose>
+												<c:when test="${reply.reply_writer eq 'admin' }"><span></span></c:when>
 												<c:when test="${empty sessionScope.sId or sessionScope.sId ne reply.reply_writer and sessionScope.sId ne 'admin' }">
 													<span class="text-end">
 														<i class="reportBtn fa fa-warning" style="font-size:18px"></i>

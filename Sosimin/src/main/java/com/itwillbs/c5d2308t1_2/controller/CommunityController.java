@@ -32,15 +32,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
 import com.itwillbs.c5d2308t1_2.service.CommunityService;
+import com.itwillbs.c5d2308t1_2.service.LevelService;
 import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.PageInfo;
+import com.itwillbs.c5d2308t1_2.vo.ReviewVO;
 
 @Controller
 public class CommunityController {
 	
 	@Autowired
 	CommunityService communityService;
+	
+	@Autowired
+	LevelService levelService;
 
 	// 커뮤니티 게시판으로 이동
 	@GetMapping("Community")
@@ -54,15 +59,25 @@ public class CommunityController {
 		System.out.println("검색으로 넘어온 셀렉트박스" + searchType);
 		System.out.println("검색으로 넘어온 카테고리" + category);
 		
+		String id = (String)session.getAttribute("sId");
+		
+		int townId = 0;
+		
+		if (id != null) {
+			Map<String, Object> map = communityService.getTownName(id);
+			townId = (int)map.get("town_id");
+		}
+		
+		
 		// 페이지 번호와 글의 개수를 파라미터로 전달
 		PageDTO page = new PageDTO(pageNum, 15);
 		// 전체 게시글 갯수 조회
-		int listCount = communityService.getCommunityListCount(searchKeyword, searchType, category);
+		int listCount = communityService.getCommunityListCount(searchKeyword, searchType, category, townId);
 		System.out.println(listCount);
 		// 페이징 처리
 		PageInfo pageInfo = new PageInfo(page, listCount, 3);
 		// 한 페이지에 불러올 게시글 목록 조회
-		List<CommunityVO> communityList = communityService.getCommunityList(searchKeyword, searchType, category, page);
+		List<CommunityVO> communityList = communityService.getCommunityList(searchKeyword, searchType, category, page, townId);
 		
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -112,6 +127,20 @@ public class CommunityController {
 		return "community/communityList";
 	}
 	
+	// 게시판 입장 시 지역정보 판별
+	@ResponseBody
+	@PostMapping("TownCheck")
+	public String townCheck(HttpSession session) {
+		String id = (String)session.getAttribute("sId");
+		
+		Map<String, Object> map = communityService.getTownName(id);
+		
+		JSONObject jo = new JSONObject(map);
+		
+		return jo.toString();
+		
+	}
+	
 	// 커뮤니티 글쓰기로 이동
 	@GetMapping("CommunityWrite")
 	public String communityWrite(HttpSession session, Model model) {
@@ -145,91 +174,12 @@ public class CommunityController {
 		
 		com.setCommunity_writer(sId);
 		
-//		String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
-//		String saveDir = session.getServletContext().getRealPath(uploadDir);
-//		
-//		// 서브 디렉토리
-//		String subDir = "";
-//		
-//		LocalDate now = LocalDate.now();
-//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-//		subDir = now.format(dtf);
-//		
-//		saveDir += File.separator + subDir; // File.separator 대신 / 또는 \ 지정도 가능
-//		System.out.println(saveDir);
-//		try {
-//			Path path = Paths.get(saveDir); // 파라미터로 업로드 경로 전달
-//			Files.createDirectories(path); // 파라미터로 Path 객체 전달
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		// -------------------
-//		// BoardVO 객체에 전달(저장)된 실제 파일 정보가 관리되는 MultipartFile 타입 객체 꺼내기
-//		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
-//		mFiles.add(com.getFile1());
-//		mFiles.add(com.getFile2());
-//		mFiles.add(com.getFile3());
-//		mFiles.add(com.getFile4());
-//		mFiles.add(com.getFile5());
-//		
-//		List<String> fileNames = new ArrayList<String>();
-//		fileNames.add("");
-//		fileNames.add("");
-//		fileNames.add("");
-//		fileNames.add("");
-//		fileNames.add("");
-//		
-//		// UUID 를 변수에 저장해서 똑같은 난수를 넣어주는것보다 매번 호출하여
-//		// 다른 난수를 파일마다 붙여주면 한번에 파일명이 같은 파일이 업로드되도 중복되지 않는다.
-//		for(int i = 0; i < 5; i++) {
-//			MultipartFile mFile = mFiles.get(i);
-//			if(mFile != null && !mFile.getOriginalFilename().equals("")) {
-//				String fileName = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile.getOriginalFilename();
-//				fileNames.set(i, subDir + "/" + fileName);
-//			}
-//		}
-//		
-//		// 서브디렉토리 + 파일명을 저장
-//		com.setCommunity_image1(fileNames.get(0));
-//		com.setCommunity_image2(fileNames.get(1));
-//		com.setCommunity_image3(fileNames.get(2));
-//		com.setCommunity_image4(fileNames.get(3));
-//		com.setCommunity_image5(fileNames.get(4));
-//		
-//		System.out.println("실제 업로드 파일명1 : " + com.getCommunity_image1());
-//		System.out.println("실제 업로드 파일명2 : " + com.getCommunity_image2());
-//		System.out.println("실제 업로드 파일명3 : " + com.getCommunity_image3());
-//		System.out.println("실제 업로드 파일명4 : " + com.getCommunity_image4());
-//		System.out.println("실제 업로드 파일명5 : " + com.getCommunity_image5());
-		
-		// ----------------------------------------------------------------------
-
 		// 게시글 등록 작업
 		int insertCount = communityService.registCommunity(com);
 		
 		// 게시물 등록 작업 요철 결과 판별
 		if(insertCount > 0) {
-//			try {
-				// 임시저장된 게시글 삭제
-//				communityService.removeTempCommunity(com, session);
-				
-				// 파일명이 존재하는 파일만 이동 처리 작업 수행
-//				for(int i = 0; i < 5; i++) {
-//					MultipartFile mFile = mFiles.get(i);
-//					String fileName = fileNames.get(i);
-//					if(!fileName.equals("")) {
-//						// 년월일 다음의 '/'를 인덱스로 지정 
-//						fileName = fileName.substring(fileName.indexOf("/", 9));
-//						mFile.transferTo(new File(saveDir, fileName));
-//					}
-//					
-//				}
-//			} catch (IllegalStateException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-			
+			levelService. updateComExp(com);
 			// 글목록(BoardList) 서블릿 리다이렉트
 			return "redirect:/Community";
 		} else {
@@ -333,10 +283,20 @@ public class CommunityController {
             datetime.setReply_datetime(timeAgo);
             
         }
-		
+        
+        // 회원 경험치 조회
+        Map<String, Integer> levelExp = communityService.getMemberLevel((String)map.get("community_writer")); 
+        // 경험치 퍼센트 계산
+        float percentage = (float)levelExp.get("member_exp") / levelExp.get("level_max_exp") * 100;
+        
+        System.out.println("회원의 경험치는 : " + (float)levelExp.get("member_exp"));
+        System.out.println("최대 경험치는 : " + levelExp.get("level_max_exp"));
+        System.out.println("퍼센트는 : " + percentage);
+        
 		model.addAttribute("com", map);
 		model.addAttribute("likeCount", likeCount);
 		model.addAttribute("replyList", replyList);
+		model.addAttribute("percentage", percentage);
 		
 		return "community/communityDetail";
 	}
@@ -1008,30 +968,69 @@ public class CommunityController {
 	
 	@ResponseBody
 	@PostMapping("reviewRegist")
-	public String reviewRegist(@RequestParam Map<String, Object> map) {
-		System.out.println(map);
+	public String reviewRegist(ReviewVO re, HttpSession session) {
+		System.out.println(re);
 		
-//		if(map.get("options").equals("good")) {
-//			System.out.println("좋은 후기입니다.");
-//		} else if(map.get("options").equals("bas")) {
-//			System.out.println("나쁜 후기입니다.");
-//		}
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "login";
+		}
+
+		re.setMember_id(sId);
 		
-		return "true";
+		// 임시로 결제번호 등록 =========================================================================
+		re.setOrder_id(16);
+		
+		
+		// 리뷰 등록
+		int insertCount = levelService.registReview(re);
+		
+		if(insertCount > 0) {
+			return "true";
+		}
+		
+		return "false";
 	}
 	
-	// ============= 관리자 페이지 ==============
+	// ===================== 관리자 페이지 =====================
 	
 	@GetMapping("CommunityList")
-	public String adminCommunityList() {
+	public String adminCommunityList(HttpSession session, Model model) {
+		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다!");
+//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+//			model.addAttribute("msg3", "error");
+//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+//			return "fail_back";
+//		}
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
 		
+		List<Map<String, String>> comList = communityService.getAllList();
 		
+		model.addAttribute("comList", comList);
 		return "admin/communityList";
 	}
 	
 	@GetMapping("CommunityReplyList")
-	public String adminCommunityReply() {
+	public String adminCommunityReply(HttpSession session, Model model) {
+		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다!");
+//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+//			model.addAttribute("msg3", "error");
+//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+//			return "fail_back";
+//		}
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
 		
+		List<Map<String, String>> comReList = communityService.getAllReList();
+		
+		model.addAttribute("comReList", comReList);
 		
 		return "admin/communityReplyList";
 	}

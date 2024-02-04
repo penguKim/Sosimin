@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.itwillbs.c5d2308t1_2.HomeController;
 import com.itwillbs.c5d2308t1_2.mapper.CommunityMapper;
+import com.itwillbs.c5d2308t1_2.mapper.LevelMapper;
 import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
@@ -34,14 +34,24 @@ public class CommunityService {
 	@Autowired
 	CommunityMapper mapper;
 	
+	@Autowired
+	LevelMapper levelMapper;
+	
 	// 게시글 목록
-	public int getCommunityListCount(String searchKeyword, String searchType, String category) {
-		return mapper.selectCommunityListCount(searchKeyword, searchType, category);
+	public int getCommunityListCount(String searchKeyword, String searchType, String category, int townId) {
+		return mapper.selectCommunityListCount(searchKeyword, searchType, category, townId);
+	}
+	
+	// 게시판 입장시 지역정보 판별
+	public Map<String, Object> getTownName(String id) {
+		CommunityVO com = new CommunityVO();
+		com.setCommunity_writer(id);
+		return mapper.getTownName(id);
 	}
 	
 	// 한 페이지에 표시할 게시글 목록 조회 작업 요청 
-	public List<CommunityVO> getCommunityList(String searchKeyword, String searchType, String category, PageDTO page) {
-		return mapper.selectCommunityList(searchKeyword, searchType, category, page);
+	public List<CommunityVO> getCommunityList(String searchKeyword, String searchType, String category, PageDTO page, int townId) {
+		return mapper.selectCommunityList(searchKeyword, searchType, category, page, townId);
 	}
 	
 	// 게시글 등록
@@ -50,15 +60,19 @@ public class CommunityService {
 		// 임시게시글 조회
 		Map<String, Object> map = mapper.selectTempCommunity(com);
 		System.out.println("임시게시글 조회 : " + map); 
-		
-		com.setCommunity_image1((String)map.get("temp_image1"));
-		com.setCommunity_image2((String)map.get("temp_image2"));
-		com.setCommunity_image3((String)map.get("temp_image3"));
-		com.setCommunity_image4((String)map.get("temp_image4"));
-		com.setCommunity_image5((String)map.get("temp_image5"));
+		if(map != null) {
+			com.setCommunity_image1((String)map.get("temp_image1"));
+			com.setCommunity_image2((String)map.get("temp_image2"));
+			com.setCommunity_image3((String)map.get("temp_image3"));
+			com.setCommunity_image4((String)map.get("temp_image4"));
+			com.setCommunity_image5((String)map.get("temp_image5"));
+		}
 		
 		// 임시게시글 삭제
 		mapper.deleteTempCommunity(com);
+		
+		// 회원의 현재 지역 정보 가져오기
+		com.setCommunity_town_id(mapper.selectTownId(com));
 		
 		// 게시글 등록
 		return mapper.insertCommunity(com);
@@ -77,6 +91,11 @@ public class CommunityService {
 		}
 		
 		return map;
+	}
+	
+	// 회원 레벨과 경험치 조회
+	public Map<String, Integer> getMemberLevel(String targetId) {
+		return levelMapper.selectMemberLevel(targetId);
 	}
 
 	// 게시글 삭제 작업
@@ -325,6 +344,28 @@ public class CommunityService {
 		
 		return mapper.moveCommunityImage(map);
 	}
+
+	
+	
+	
+	
+	
+	
+	// ===================== 관리자 페이지 =====================
+	
+	// 커뮤니티 관리 게시판 
+	public List<Map<String, String>> getAllList() {
+		return mapper.selectAllList();
+	}
+
+	// 커뮤니티 댓글 관리 게시판
+	public List<Map<String, String>> getAllReList() {
+		return mapper.selectAllReList();
+	}
+
+
+
+
 
 
 

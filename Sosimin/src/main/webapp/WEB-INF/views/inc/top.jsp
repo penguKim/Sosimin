@@ -517,10 +517,10 @@
 								<a href="Community">커뮤니티</a>
                                 <ul class="sub-menu collapse" id="submenu-1-2">
                                     <li class="nav-item"><a href="AboutUs">About Us</a></li>
-                                    <li class="nav-item"><a href="Community?category=hot">인기글</a></li>
-                                    <li class="nav-item"><a href="Community?category=info">동네소식</a></li>
-                                    <li class="nav-item"><a href="Community?category=question">동네질문</a></li>
-                                    <li class="nav-item"><a href="Community?category=daily">일상</a></li>
+                                    <li class="nav-item"><a href="Community?category=4">인기글</a></li>
+                                    <li class="nav-item"><a href="Community?category=1">동네소식</a></li>
+                                    <li class="nav-item"><a href="Community?category=2">동네질문</a></li>
+                                    <li class="nav-item"><a href="Community?category=3">일상</a></li>
                                     <li class="nav-item"><a href="SosimLocker">소심함 위치 안내</a></li>
                                 </ul>
                             </li>

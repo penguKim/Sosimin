@@ -104,6 +104,20 @@
 	color: black;
 }
 
+/* 회원 경험치바 */
+/* @keyframes progress-animation { */
+/*   0%   {width: 0%;} */
+/*   100% {width: 100%;} */
+/* } */
+
+.progress-bar {
+  animation-name: progress-animation;
+  animation-duration: 2s; 
+  /* 애니메이션 지속 시간을 설정합니다. */
+  animation-timing-function: ease-out; 
+  /* 애니메이션 속도 곡선을 설정합니다. */
+}
+
 /* 게시글 내용 */
 .contentText {
 	color: black;
@@ -261,6 +275,17 @@ textarea.form-control {
 	transition: 0.5s;
 }
 
+/* 관리자 페이지에서 이동시 하이라이트 */
+.replyArea {
+    background-color: white; /* 기본 배경색 */
+    transition: background-color 1s ease-out; /* 배경색 변경에 0.5초 동안 효과 적용 */
+}
+
+#replyListArea .highlight {
+	background-color: #f5f5f5;
+	transition: background-color 1s;
+}
+
 
 
 /* ========= 등록 페이지 ============ */
@@ -308,6 +333,27 @@ textarea.form-control {
 }
     
     
+/* ==================== 관리자 게시판 ====================== */
+/* .datatable-table > thead > tr > th { */
+/* 	text-align: center; */
+/* } */
+
+.comAdmin th {
+	min-width: 100px;
+}
+
+.comAdmin .admin-title {
+	cursor: pointer;
+} 
+
+.comAdmin .admin-title:hover {
+	color: #4154f1;
+}
+
+.comAdmin .ellipsis {
+	max-width: 600px !important;
+}
+
 /* ==================== 반응형 설정 ====================== */    
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -319,6 +365,14 @@ textarea.form-control {
 		width: 200px !important; 
 	}
 	
+	/* ----- 관리자 게시판 ----- */
+	.comAdmin th {
+	min-width: 50px;
+	}  
+	
+	.comAdmin .ellipsis {
+		max-width: 300px !important;
+	}
 }
 
 @media only screen and (max-width: 767px) {
@@ -350,5 +404,18 @@ textarea.form-control {
 	/* 댓글버튼 */
 	#replySubmit {
 		width: 20% !important;
+	}
+	
+	/* ----- 관리자 게시판 ----- */
+	.comAdmin th {
+		min-width: 30px !important;
+	}  
+	
+	.comAdmin .tadmin-title-th {
+		width: 30% !important;
+	}
+	
+	.comAdmin .ellipsis {
+			max-width: 100px !important;
 	}
 }
