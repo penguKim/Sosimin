@@ -37,6 +37,9 @@
 <script type="text/javascript">
 $(function() {
 	<%-- 필터링을 위한 변수 초기화 --%>
+	let id = "${sessionScope.sId}"; 
+	
+	alert(id);
 	let pageNum = "";
 	let price = "";
 	let status ="";
@@ -139,38 +142,35 @@ $(function() {
 				$("#nextPage").addClass("disabled");
 			}
 			
-			if()
-				<%-- 관심 목록 불러오기 --%> 
-				$.ajax({
-					url: 'ProductLikeList',
-					dataType: 'json',
-					success: function(data) {
-						for(let i = 0; i < productList.length; i++) {
-							if(productList[i].product_id == data[i].product_id) {
-								alert("확인");
-								$("#heartLike" + i).addClass("is-active");
-							} else {
-								alert("실패");
-							}
-							
+			<%-- 관심 목록 불러오기 --%> 
+			$.ajax({
+				url: 'ProductLikeList',
+				dataType: 'json',
+				success: function(data) {
+					for(let i = 0; i < productList.length; i++) {
+						if(productList[i].product_id == data[i].product_id) {
+							alert("확인");
+							$("#heartLike" + i).addClass("is-active");
+						} else {
+							alert("실패");
 						}
 						
-					},
-					error: function() {
-						const Toast = Swal.mixin({
-						    toast: true,
-						    position: 'center-center',
-						    showConfirmButton: false,
-						    timer: 1000,
-						    timerProgressBar: false,
-						})
-						Toast.fire({
-						    icon: 'error',
-						    title: '관심목록 불러오기 실패했습니다'
-						})					
 					}
-				}); <%-- 관심목록 ajax 끝 --%>
-			}	
+				},
+				error: function() {
+					const Toast = Swal.mixin({
+					    toast: true,
+					    position: 'center-center',
+					    showConfirmButton: false,
+					    timer: 1000,
+					    timerProgressBar: false,
+					})
+					Toast.fire({
+					    icon: 'error',
+					    title: '관심목록 불러오기 실패했습니다'
+					})					
+				}
+			}); <%-- 관심목록 ajax 끝 --%>
 			
 		},
 		error: function() {

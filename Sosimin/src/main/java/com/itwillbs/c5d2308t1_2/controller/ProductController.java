@@ -173,8 +173,8 @@ public class ProductController {
 			System.out.println(">>>>>>>>>>>>>>>>>>>> : jo " + jo);
 			return jo.toString();
 		}
-		
-		return "";
+		System.out.println("관심 목록이 없습니다!");
+		return "[]";
 	}
 	
 	// =============================== 관리자 페이지
