@@ -1024,7 +1024,7 @@ public class PaymentController {
 		return "payment/useComplete";
 	}
 	
-	// 페이 사용 완료 페이지로 이동
+	// 페이 사용 실패 페이지로 이동
 	@GetMapping("PaymentRefuse")
 	public String paymentRefuse(HttpSession session, Model model) {
 		String member_id = (String)session.getAttribute("sId");
@@ -1061,11 +1061,7 @@ public class PaymentController {
 		map.put("product_buyer", product_buyer);
 		
 		if(product_buyer == null) {
-			model.addAttribute("msg", "로그인을 해주세요!");
-			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
-			model.addAttribute("msg3", "warning");
-			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
-			return "forward";
+			return "not-login";
 		}
 		
 		// Orders 테이블의 product_buyer를 조회하여 세션아이디와 비교
@@ -1171,9 +1167,7 @@ public class PaymentController {
 		
 	}
 	
-	
-	
-	
+
 // =============================== 관리자페이지 =======================================	
 	
 	// 페이정보관리 페이지로 이동

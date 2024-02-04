@@ -281,6 +281,7 @@
 		SET
 			order_status = 1 -- 거래완료 상태로 변경
 			, seller_pay_history_id = #{seller_pay_history_id}
+			, order_date = now()
 		WHERE product_buyer = #{product_buyer}
 			AND product_id = #{product_id}
 	</insert>

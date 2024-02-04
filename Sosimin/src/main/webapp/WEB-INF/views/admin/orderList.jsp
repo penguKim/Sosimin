@@ -121,8 +121,8 @@ function openModal(order_id) {
 													</c:otherwise>
 												</c:choose>
 											</td>
-											<td>${order_list.seller}</td>
-											<td>${order_list.buyer}</td>
+											<td>${order_list.product_seller}</td>
+											<td>${order_list.product_buyer}</td>
 											<td>
 												<c:choose>
 													<c:when test="${order_list.order_status eq 0}">거래진행</c:when>
@@ -134,7 +134,7 @@ function openModal(order_id) {
 											<c:choose>
 												<c:when test="${order_list.order_status eq 0}">거래진행중</c:when>
 												<c:otherwise>
-													<c:set var="datetime" value="${fn:split(order_list.pay_history_date, 'T')}" />
+													<c:set var="datetime" value="${fn:split(order_list.order_date, 'T')}" />
 													<c:set var="date" value="${datetime[0]}" />
 													${date}
 												</c:otherwise>
@@ -173,11 +173,11 @@ function openModal(order_id) {
 																	</tr>
 																	<tr>
 																		<th scope="row">판매자</th>
-																		<td>${order_list.seller}</td>
+																		<td>${order_list.product_seller}</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">구매자</th>
-																		<td>${order_list.buyer}</td>
+																		<td>${order_list.product_buyer}</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">거래금액</th>
@@ -209,7 +209,7 @@ function openModal(order_id) {
 																			<c:choose>
 																				<c:when test="${order_list.order_status eq 0}">거래진행중</c:when>
 																				<c:otherwise>
-																					<c:set var="datetime" value="${fn:split(order_list.pay_history_date, 'T')}" />
+																					<c:set var="datetime" value="${fn:split(order_list.order_date, 'T')}" />
 																					<c:set var="date" value="${datetime[0]}" />
 																					${date}
 																				</c:otherwise>
