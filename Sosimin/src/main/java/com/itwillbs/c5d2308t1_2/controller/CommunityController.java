@@ -174,11 +174,18 @@ public class CommunityController {
 		
 		com.setCommunity_writer(sId);
 		
+		com.setCommunity_image1("");
+		com.setCommunity_image2("");
+		com.setCommunity_image3("");
+		com.setCommunity_image4("");
+		com.setCommunity_image5("");
+		
 		// 게시글 등록 작업
 		int insertCount = communityService.registCommunity(com);
 		
-		// 게시물 등록 작업 요철 결과 판별
+		// 게시물 등록 작업 요청 결과 판별
 		if(insertCount > 0) {
+			// 회원 경험치 증가
 			levelService. updateComExp(com);
 			// 글목록(BoardList) 서블릿 리다이렉트
 			return "redirect:/Community";
@@ -837,7 +844,7 @@ public class CommunityController {
 		}
 		com.setCommunity_writer(sId);
 		
-		String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+		String uploadDir = "/resources/tempUpload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
 		String saveDir = session.getServletContext().getRealPath(uploadDir);
 		
 		// 서브 디렉토리

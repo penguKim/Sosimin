@@ -411,22 +411,20 @@
 	
 	// 회원 경험치 프로그레스바
 	function memberExp(percent) {
-		  
-
-		  // 스타일 요소를 만들고, @keyframes 규칙을 추가합니다.
-		  $('<style>')
-		    .prop('type', 'text/css')
-		    .html(`
-		      @keyframes progress-animation {
-		        0%   {width: 0%;}
-		        100% {width: percent + '%';}
-		      }
-		    `)
-		    .appendTo('head');
-
-		  // 프로그레스바 애니메이션을 시작합니다.
-		  $('.progress-bar').css('width', percent + '%').attr('aria-valuenow', percent + '%').text(percent + '%');
-	}
+	// 스타일 요소를 만들고, @keyframes 규칙을 추가합니다.
+	$('<style>')
+	.prop('type', 'text/css')
+	.html(`
+		@keyframes progress-animation {
+			0%   {width: 0%;}
+			100% {width: percent + '%';}
+		}
+	`)
+	.appendTo('head');
+	
+	// 프로그레스바 애니메이션을 시작합니다.
+	$('.progress-bar').css('width', percent + '%').attr('aria-valuenow', percent + '%').text(percent + '%');
+}
 </script>
 </head>
 <body>
@@ -526,7 +524,7 @@
 			    	<c:forEach var="image" items="${imageArr }">
 			    		<c:if test="${not empty image }">
 	 						<div class="file my-1">
-								<img src="${pageContext.request.contextPath }/resources/upload/${image}" class="imgFIle" onclick="imageModal(this)">
+								<img src="${pageContext.request.contextPath }/resources/upload/${image}" style="width:40%; height:40%;" class="imgFIle" onclick="imageModal(this)">
 							</div>
 			    		</c:if>
 			    	</c:forEach>

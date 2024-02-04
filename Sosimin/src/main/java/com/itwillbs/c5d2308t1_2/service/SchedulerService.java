@@ -62,7 +62,7 @@ public class SchedulerService {
 					// -------------------------------------------------------------
 					// [ 서버에서 파일 삭제 ]
 					// 실제 업로드 경로 알아내기
-					String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+					String uploadDir = "/resources/tempUpload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
 					String saveDir = servletContext.getRealPath(uploadDir);
 					// -----------------------------------------------------------
 					

@@ -79,42 +79,42 @@
 		});
 	});
 	
-	function deleteFile(community_id, image, index) {
+// 	function deleteFile(community_id, image, index) {
 		
-		Swal.fire({
-	        title: '이미지를 삭제하시겠습니까?',
-	        text: "삭제한 이미지는 복구할 수 없습니다.",
-	        icon: 'question',
-	        showCancelButton: true,
-	        confirmButtonColor: '#39d274',
-	        cancelButtonColor: '#d33',
-	        confirmButtonText: '등록',
-	        cancelButtonText: '취소',
-	        reverseButtons: true,
-	    }).then((result) => {
-	        if (result.isConfirmed) {
-	        	$.ajax({
-					type: "POST",
-					url: "CommunityDeleteFile",
-					data: {
-						community_id: community_id,
-						community_image1: image
-					},
-					success: function(result) {
-						console.log("파일 삭제 요청 결과 : " + result + ", " + typeof(result));
-						if(result == 'true') { // 삭제 성공 시
-							$("#fileItemArea" + index).html("<input type='file' name='file" + index + "'>");
-						} else if(result == 'false') {
-							console.log("파일 삭제 실패!");	
-						}
-					}
-				});
-	        } else {
-	        	$(this).blur();
-	        }
-	    });
+// 		Swal.fire({
+// 	        title: '이미지를 삭제하시겠습니까?',
+// 	        text: "삭제한 이미지는 복구할 수 없습니다.",
+// 	        icon: 'question',
+// 	        showCancelButton: true,
+// 	        confirmButtonColor: '#39d274',
+// 	        cancelButtonColor: '#d33',
+// 	        confirmButtonText: '등록',
+// 	        cancelButtonText: '취소',
+// 	        reverseButtons: true,
+// 	    }).then((result) => {
+// 	        if (result.isConfirmed) {
+// 	        	$.ajax({
+// 					type: "POST",
+// 					url: "CommunityDeleteFile",
+// 					data: {
+// 						community_id: community_id,
+// 						community_image1: image
+// 					},
+// 					success: function(result) {
+// 						console.log("파일 삭제 요청 결과 : " + result + ", " + typeof(result));
+// 						if(result == 'true') { // 삭제 성공 시
+// 							$("#fileItemArea" + index).html("<input type='file' name='file" + index + "'>");
+// 						} else if(result == 'false') {
+// 							console.log("파일 삭제 실패!");	
+// 						}
+// 					}
+// 				});
+// 	        } else {
+// 	        	$(this).blur();
+// 	        }
+// 	    });
 		
-	}
+// 	}
 	
 	
 
@@ -163,23 +163,18 @@
 	    	var reader = new FileReader();
 	        var fileId = input.id; // input의 id 요소
             
-			var data = new FormData();
-			data.append(fileId, input.files[0]);
-	        console.log("파일아이디 알려줘 ㅣ " + fileId);
+// 	        console.log("파일아이디 알려줘 ㅣ " + fileId);
 	        
 			reader.onload = function (e) {
  	            var thumbnail = $(
-	 	            		'<div class="thumbnail col-auto mx-2 pt-3 px-1">').html(
- 	 	            				'<div class="imageArea ' + fileId + ' position-relative">'
+	 	            		'<div class="thumbnail col-auto mx-2 pt-3 px-1 ' + fileId + '">').html(
+ 	 	            				'<div class="imageArea position-relative">'
   	 	            			   +'	<img class="border rounded-3" src="' 
   	 	            			  		 + e.target.result + '" style=\"width: 80px; height: 80px;\">'
   	 	            			   +'	<i class="delBtn material-icons position-absolute translate-middle"'
   	 	            			   +"onclick='removeThumbnail(this, \"" + fileId + "\", \"false\" )'>cancel</i>"
 	 	            			   +'</div>'
   	 	            			   );
-  	 	        thumbnail.find('i').click(function() { // thumnail 안의 i 태그에 클릭 이벤트 추가
-	   	 	    removeThumbnail($(this).parent(), fileId); // imageArea 요소, fileId를 지정
-		   	 	});
 		   	 	$('#thumbnailArea > div').append(thumbnail);
    						
    			}
@@ -193,6 +188,48 @@
 	}
 	
 	// 썸네일 제거하여 파일 제거
+// 	function removeThumbnail(del, fileId , path) {
+//    	    var imageArea = $(del).parent(); // x버튼의 부모인 imageArea 클래스 지정
+//    	    var thumbnail = imageArea.parent(); // imageArea의 부모인 thumnail 클래스 지정
+// 		var currentFileIndex = Number(fileId.replace('file', ''));
+// 		var nextFileIndex = currentFileIndex + 1; 
+// 		var newIdAndName;
+		
+// 		if(path != "false") {
+// 			console.log("false가 아니야");
+// 			Swal.fire({
+// 				title: '기존의 사진을 삭제하시겠습니까?',
+// 				text: "삭제한 사진은 복구하지 못합니다.",
+// 				icon: 'question',
+// 				showCancelButton: true,
+// 				confirmButtonColor: '#d33',
+// 				cancelButtonColor: '#6c757d',
+// 				confirmButtonText: '삭제',
+// 				cancelButtonText: '취소',
+// 				reverseButtons: true,
+// 			}).then((result) => {
+// 				if (result.isConfirmed) {
+// 					$.ajax({
+// 						type: "POST",
+// 						url: "CommunityImageDelete",
+// 						data: {
+// 							community_id: ${param.community_id},
+// 							['community_image' + fileId.substring(4)]: path
+// 						},
+// 						success: function(result) {
+// 							console.log(result);
+// 						}
+// 					}); // ajax
+// 				} else {
+// 					$(this).blur();
+// 				}
+// 			}); // alert 콜백
+// 		} // 서버 업로드 파일이면 ajax로 삭제
+		
+// 		// 인풋 파일 비우기
+// 		$("#" + fileId).val("");
+// 	}
+	
 	function removeThumbnail(del, fileId , path) {
         console.log("파일아이디 알려줘 ㅣ " + fileId);
         console.log("파일아이디 숫자만 알려줘 ㅣ " + fileId.substring(4));
@@ -208,7 +245,7 @@
 				var nextFile = $("#file" + nextFileIndex);
 				let src = $(".file" + nextFileIndex + " img").attr("src");
 				console.log(src);
-				if(src.startsWith("data:image/")) {
+				if(src && src.startsWith("data:image/")) {
 					$(".file" + nextFileIndex + " i").attr("onclick", "removeThumbnail(this, 'file" + currentFileIndex + "', 'false')");
 				} else {
 					$(".file" + nextFileIndex + " i").attr("onclick", "removeThumbnail(this, 'file" + currentFileIndex + "')");
@@ -236,7 +273,7 @@
 		} else {
 			console.log("파일의 경로는? : " + path);
 			Swal.fire({
-				title: '사진을 삭제하시겠습니까?',
+				title: '기존의 사진을 삭제하시겠습니까?',
 				text: "삭제한 사진은 복구하지 못합니다.",
 				icon: 'question',
 				showCancelButton: true,
@@ -262,7 +299,7 @@
 								var nextFile = $("#file" + nextFileIndex);
 								let src = $(".file" + nextFileIndex + " img").attr("src");
 								console.log(src);
-								if(src.startsWith("data:image/")) {
+								if(src && src.startsWith("data:image/")) {
 									$(".file" + nextFileIndex + " i").attr("onclick", "removeThumbnail(this, 'file" + currentFileIndex + "', 'false')");
 								} else {
 									$(".file" + nextFileIndex).addClass('file' + currentFileIndex).removeClass("file" + nextFileIndex);
@@ -279,6 +316,7 @@
 				
 							// 인풋 태그의 파일 제거(동일 파일 제거 후 재업로드시 onchange를 위함)
 							var oldFileInput = $("#file" + thisIndex);
+							oldFileInput.val('');
 							var newFileInput = oldFileInput.clone(true);
 							oldFileInput.replaceWith(newFileInput);
 							newFileInput.attr({"id": 'file5', "name": 'file5'});
@@ -401,10 +439,10 @@
 								<div class="scrolling-wrapper row flex-nowrap mx-auto h-100">
 									<c:forEach var="image" items="${imageList}" varStatus="status">
 									    <c:if test="${image ne null and image ne ''}">
-									        <div class="thumbnail col-auto mx-2 pt-3 px-1">
-									            <div class="imageArea file${status.index + 1} position-relative">
+									        <div class="thumbnail col-auto mx-2 pt-3 px-1 file${status.index + 1}">
+									            <div class="imageArea  position-relative">
 									                <img class="border rounded-3" src="${pageContext.request.contextPath}/resources/upload/${image}" style="width: 80px; height: 80px;">
-									                <i class="delBtn material-icons position-absolute translate-middle" onclick='removeThumbnail(this, "file${status.index + 1}", "${image }")'>cancel</i>
+									                <i class="delBtn material-icons position-absolute translate-middle" onclick='removeThumbnail(this, "file${status.index + 1}", "${image}")'>cancel</i>
 									            </div>
 									        </div>
 									    </c:if>

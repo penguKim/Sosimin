@@ -5,11 +5,13 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -37,6 +39,9 @@ public class CommunityService {
 	@Autowired
 	LevelMapper levelMapper;
 	
+	@Autowired
+	private ServletContext servletContext; // 세션 대신 컨텍스트 경로찾기
+	
 	// 게시글 목록
 	public int getCommunityListCount(String searchKeyword, String searchType, String category, int townId) {
 		return mapper.selectCommunityListCount(searchKeyword, searchType, category, townId);
@@ -57,19 +62,43 @@ public class CommunityService {
 	// 게시글 등록
 	@Transactional
 	public int registCommunity(CommunityVO com) {
+		
 		// 임시게시글 조회
 		Map<String, Object> map = mapper.selectTempCommunity(com);
 		System.out.println("임시게시글 조회 : " + map); 
-		if(map != null) {
+		if(map != null) { // 임시게시글이 있다면
 			com.setCommunity_image1((String)map.get("temp_image1"));
 			com.setCommunity_image2((String)map.get("temp_image2"));
 			com.setCommunity_image3((String)map.get("temp_image3"));
 			com.setCommunity_image4((String)map.get("temp_image4"));
 			com.setCommunity_image5((String)map.get("temp_image5"));
+			
+			String[] imageKeys = {com.getCommunity_image1(), com.getCommunity_image2(), 
+					com.getCommunity_image3(), com.getCommunity_image4(), com.getCommunity_image5() };
+			
+			// 임시게시글 삭제
+			int deleteCount = mapper.deleteTempCommunity(com);
+			if(deleteCount > 0) {
+				String tempSaveDir = servletContext.getRealPath("/resources/tempUpload");
+				String saveDir = servletContext.getRealPath("/resources/upload");
+				
+				for(int i = 0; i < 5; i++) {
+					if(!imageKeys[i].equals("")) {
+						try {
+							Path tempPath = Paths.get(tempSaveDir, imageKeys[i]);
+							Path path = Paths.get(saveDir, imageKeys[i]);
+							Files.createDirectories(path.getParent()); // 실제 업로드 폴더 생성
+							
+							Files.move(tempPath, path, StandardCopyOption.REPLACE_EXISTING); // 파일 이동
+							// => move() 메서드는 디렉토리가 존재해야 이동이 가능하다.
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				
+			}
 		}
-		
-		// 임시게시글 삭제
-		mapper.deleteTempCommunity(com);
 		
 		// 회원의 현재 지역 정보 가져오기
 		com.setCommunity_town_id(mapper.selectTownId(com));
@@ -196,7 +225,7 @@ public class CommunityService {
 		// 임시저장 게시글이 있는 경우
 		if(map != null) {
 			try {
-				String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+				String uploadDir = "/resources/tempUpload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
 				String saveDir = session.getServletContext().getRealPath(uploadDir);
 				
 				String[] imageKeys = {"temp_image1", "temp_image2", "temp_image3", "temp_image4", "temp_image5"};
@@ -269,7 +298,7 @@ public class CommunityService {
 		mapper.removeTempImage(map);
 		
 		try {
-			String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+			String uploadDir = "/resources/tempUpload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
 			String saveDir = session.getServletContext().getRealPath(uploadDir);
 			
 			Path path = Paths.get(saveDir + "/" + imageNames[index-1]);

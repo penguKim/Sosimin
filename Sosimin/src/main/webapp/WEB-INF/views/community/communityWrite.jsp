@@ -52,7 +52,7 @@
 				        showCancelButton: true,
 				        confirmButtonColor: '#39d274',
 				        cancelButtonColor: '#d33',
-				        confirmButtonText: '등록',
+				        confirmButtonText: '입력',
 				        cancelButtonText: '취소',
 				        reverseButtons: true,
 				        allowOutsideClick: false
@@ -69,8 +69,21 @@
 				        	// 내용 등록
 				        	$("#content").val(temp.temp_content);
 				        	$('#contentLength').text('내용 (' + temp.temp_content.length + '/1000)');
+				        	// 이미지 등록
+				        	for (let i = 1; i <= 5; i++) {
+				        	    if (temp['temp_image' + i] != '') {
+				        	        var thumbnail = $('<div class="thumbnail col-auto mx-2 pt-3 px-1 file' + i + '">').html(
+				        	            '<div class="imageArea position-relative">'
+				        	            + '	<img class="border rounded-3" src="${pageContext.request.contextPath}/resources/tempUpload/' 
+				        	            + temp['temp_image' + i] + '" style="width: 80px; height: 80px;">'
+				        	            + '	<i class="delBtn material-icons position-absolute translate-middle"'
+				        	            + "onclick='removeThumbnail(this, \"file" + i + "\")'>cancel</i>"
+				        	            + '</div>'
+				        	        );
+				        	        $('#thumbnailArea > div').append(thumbnail);
+				        	    }
+				        	}
 				        	
-				        	console.log(temp);
 				        	// 인터벌 시작
 				        	tempSave = setInterval(tempToast, 30000);
 				        } else {
@@ -364,17 +377,14 @@
     				console.log(result);
     				if(result != 'false') {
 	   	 	            var thumbnail = $(
-  	 	            		'<div class="thumbnail col-auto mx-2 pt-3 px-1">').html(
-  	 	            				'<div class="imageArea ' + fileId + ' position-relative">'
-  	 	            			   +'	<img class="border rounded-3" src="${pageContext.request.contextPath}/resources/upload/' 
+  	 	            		'<div class="thumbnail col-auto mx-2 pt-3 px-1 ' + fileId + '">').html(
+  	 	            				'<div class="imageArea position-relative">'
+  	 	            			   +'	<img class="border rounded-3" src="${pageContext.request.contextPath}/resources/tempUpload/' 
   	 	            			  		 + result + '" style=\"width: 80px; height: 80px;\">'
   	 	            			   +'	<i class="delBtn material-icons position-absolute translate-middle"'
   	 	            			   +"onclick='removeThumbnail(this, \"" + fileId + "\")'>cancel</i>"
 	 	            			   +'</div>'
   	 	            			   );
-// 	   	 	            thumbnail.find('i').click(function() { // thumnail 안의 i 태그에 클릭 이벤트 추가
-// 	   	 	                removeThumbnail($(this).parent(), fileId); // imageArea 요소, fileId를 지정
-// 	   	 	            });
 	   	 	            $('#thumbnailArea > div').append(thumbnail);
     				}
 					
