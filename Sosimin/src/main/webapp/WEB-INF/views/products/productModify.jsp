@@ -884,40 +884,40 @@ function submitFiles(event) {
 	}
 	
 function ProductDelete(event) {
-	
-	var form = document.querySelector('form');
-	var formData = new FormData();
-	var formElements = form.elements;
-	  for (var i = 0; i < formElements.length; i++) {
-	    var element = formElements[i];
-	    if (element.name && element.name != 'product_image') {  // 'product_image' 필드 제외
-	      formData.append(element.name, element.value);
-	    }
-	  }
+    if (confirm("삭제하시겠습니까?")) {
+        var form = document.querySelector('form');
+        var formData = new FormData();
+        var formElements = form.elements;
+        for (var i = 0; i < formElements.length; i++) {
+            var element = formElements[i];
+            if (element.name && element.name != 'product_image') {  // 'product_image' 필드 제외
+                formData.append(element.name, element.value);
+            }
+        }
 
-	  for (var i = 0; i < selectedFiles.length; i++) {
-	    formData.append('product_image', selectedFiles[i]);
-	  }
-	
-	  $.ajax({
-		    url: 'ProductDelete',
-		    type: 'POST',
-		    data: formData,
-		    processData: false,
-		    contentType: false,
-		    success: function(data) {
-		        alert("삭제되었습니다.");
-		        console.log('File upload successful!');
-		        location.href =  "./"
-		    },
-		    error: function(jqXHR, textStatus, errorThrown) {
-		        // 파일 업로드에 실패했을 때 실행되는 코드
-		        alert('실패');
-		        console.log(jqXHR, textStatus, errorThrown);
-		    }
-		});
-	}
-	
+        for (var i = 0; i < selectedFiles.length; i++) {
+            formData.append('product_image', selectedFiles[i]);
+        }
+    
+        $.ajax({
+            url: 'ProductDelete',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                alert("삭제되었습니다.");
+                console.log('File upload successful!');
+                location.href =  "./"
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                // 파일 업로드에 실패했을 때 실행되는 코드
+                alert('실패');
+                console.log(jqXHR, textStatus, errorThrown);
+            }
+        });
+    }
+}
 	
 
 // // 제출 버튼 클릭 시 서버로 모든 파일 전송

@@ -178,6 +178,7 @@
 			, #{tag_name2}
 			, #{tag_name3}
 			, #{tag_name4}
+			, 0
 		)
 	</insert>	
 	<insert id="productBoardInsert">
@@ -331,24 +332,49 @@
 		FROM Product
 		WHERE member_id = #{member_id}
 	</select>
-	<!-- 판매글 조회 -->
+	
+	<!-- ===========================================================  -->
+	<!-- product_board 테이블 사용할때 -->
+	
+<!-- 	 판매글 조회 --> 
+<!-- 	<select id="selectProductCount" resultType="map"> -->
+<!-- 		SELECT * -->
+<!-- 		FROM Product_board -->
+<!-- 		WHERE product_id = #{product_id} -->
+<!-- 	</select> -->
+	
+<!-- 	판매글 조회수 증가 작업 --> 
+<!-- 		<update id="updateReadcount"> -->
+<!-- 		<selectKey keyProperty="product_readcount" resultType="int" order="AFTER"> -->
+<!-- 			SELECT product_readcount -->
+<!-- 			FROM Product_board -->
+<!-- 			WHERE product_id = #{product_id} -->
+<!-- 		</selectKey> -->
+<!-- 		UPDATE Product_board -->
+<!-- 		SET product_readcount = product_readcount + 1 -->
+<!-- 		WHERE product_id = #{product_id} -->
+<!-- 	</update> -->
+	<!-- ===========================================================  -->
+
+<!-- 	판매글 조회 -->
 	<select id="selectProductCount" resultType="map">
 		SELECT *
-		FROM Product_board
+		FROM Product
 		WHERE product_id = #{product_id}
 	</select>
-	
-	<!-- 판매글 조회수 증가 작업 -->
+
+<!-- 	판매글 조회수 증가 작업 -->
 		<update id="updateReadcount">
 		<selectKey keyProperty="product_readcount" resultType="int" order="AFTER">
 			SELECT product_readcount
-			FROM Product_board
+			FROM Product
 			WHERE product_id = #{product_id}
 		</selectKey>
-		UPDATE Product_board
+		UPDATE Product
 		SET product_readcount = product_readcount + 1
 		WHERE product_id = #{product_id}
 	</update>
+	
 	<!-- 이미지조회 -->
 	<select id="getProductImage" resultType="map">
 		SELECT *
@@ -366,5 +392,4 @@
 		DELETE FROM Product
 		WHERE product_id = #{product_id}
 	</delete>
-	
 </mapper>
