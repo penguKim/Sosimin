@@ -104,14 +104,24 @@ public class ProductController {
 		// 상품 등록 시간 계산 처리 
 		// ===============================================================================================
 		LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		
+		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
 		
 		for(Map<String, Object> datetime : productList) {
+			LocalDateTime comDateTime;
 //			System.out.println(datetime);
-			
-			LocalDateTime comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter);
+			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>  몇 인가요: " + datetime.get("product_datetime").toString().split(":").length);
+			if(datetime.get("product_datetime").toString().split(":").length > 2) {
+				comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter1);
+				System.out.println(">>>>>>>>>>>>>>>>>>> 날짜1111111111111 : " + comDateTime);
+			} else {
+				comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter2);
+				
+				System.out.println(">>>>>>>>>>>>>>>>>>> 날짜 22222222222222222222: " + comDateTime);
+			}
 			Duration duration = Duration.between(comDateTime, now);
 			
 			Period period = Period.between(comDateTime.toLocalDate(), now.toLocalDate());
@@ -152,7 +162,7 @@ public class ProductController {
 		jsonArray.put(jPage);
 		jsonArray.put(pageNum);
 		
-//		System.out.println(">>>>>>>>>>>>>>>>>>>>> 리스트" + productList);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>> 리스트" + productList);
 //		System.out.println(">>>>>>>>>>>>>>>>>>>> 페이징" + jPage);
 //		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> : " + jsonArray);
 		
