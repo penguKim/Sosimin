@@ -186,6 +186,14 @@
 		WHERE product_id = #{product_id}
 	</select>
 	
+	<!-- 구매 기록이 있는지 체크 -->
+	<select id="selectOrderCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM Orders
+		WHERE product_buyer = #{product_buyer}
+			AND product_id = #{product_id}
+	</select>
+	
 	<!-- 구매 기록 생성 -->
 	<insert id="insertOrder">
 		INSERT INTO Orders

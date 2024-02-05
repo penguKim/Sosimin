@@ -127,7 +127,6 @@ function openModal(order_id) {
 												<c:choose>
 													<c:when test="${order_list.order_status eq 0}">거래진행</c:when>
 													<c:when test="${order_list.order_status eq 1}">거래완료</c:when>
-													<c:when test="${order_list.order_status eq 2}">거래취소</c:when>
 												</c:choose>
 											</td>
 											<td>
@@ -199,7 +198,6 @@ function openModal(order_id) {
 																			<c:choose>
 																				<c:when test="${order_list.order_status eq 0}">거래진행</c:when>
 																				<c:when test="${order_list.order_status eq 1}">거래완료</c:when>
-																				<c:when test="${order_list.order_status eq 2}">거래취소</c:when>
 																			</c:choose>
 																		</td>
 																	</tr>
@@ -216,17 +214,11 @@ function openModal(order_id) {
 																			</c:choose>
 																		</td>
 																	</tr>
-																	<c:if test="${order_list.order_status eq 2}">
-																		<tr>
-																			<th scope="row">취소일</th>
-																			<td>${order_list.order_cancel_date}</td>
-																		</tr>
-																	</c:if>
 																</table>
 															</div>
 															<div class="modal-footer">
 																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-																<button type="button" class="btn btn-primary">취소하기</button>
+<!-- 																<button type="button" class="btn btn-primary">취소하기</button> -->
 															</div>
 														</div>
 													</div>

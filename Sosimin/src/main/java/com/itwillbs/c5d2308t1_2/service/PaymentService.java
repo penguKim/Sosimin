@@ -138,6 +138,11 @@ public class PaymentService {
 		return mapper.selectProductInfo(map);
 	}
 
+	// 거래 수락 전에 이미 수락한 적이 있는 지확인
+	public int orderCheck(Map<String, Object> map) {
+		return mapper.selectOrderCheck(map);
+	}
+	
 	// 거래수락
 	@Transactional
 	public int orderProduct(Map<String, Object> map) {
@@ -214,6 +219,7 @@ public class PaymentService {
 	public List<Map<String, Object>> getOrderList() {
 		return mapper.selectOrderList();
 	}
+
 
 
 }

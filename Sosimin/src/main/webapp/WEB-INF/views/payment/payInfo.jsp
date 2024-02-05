@@ -405,7 +405,7 @@ function acceptPayment() {
 		type: "GET",
 		url: "AcceptPayment",
 		data: {
-			"product_id": 356,
+			"product_id": 358,
 			"product_buyer": "leess"
 		},
 		success:  function(data) {
@@ -417,6 +417,15 @@ function acceptPayment() {
 					allowOutsideClick: false
 				}).then((result) => {
 						location.href="MemberLogin";
+				});	
+			} else if(data == "ordered") {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '이미 수락한 거래입니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
 				});	
 			} else if(data == "true") {
 				Swal.fire({
@@ -457,7 +466,7 @@ function acceptPayment() {
 // 임시로 테스트용 결제하기 버튼 추가
 function payment() {
 	// 채팅방에서 produtct_id 들고오기
-	location.href="Payment?product_id=356";
+	location.href="Payment?product_id=358";
 }
 
 // 임시로 테스트용 구매확정 버튼 추가(에이젝스)
@@ -470,7 +479,7 @@ function confirmPayment() {
 		type: "GET",
 		url: "ConfirmPayment",
 		data: {
-			"product_id": 356,
+			"product_id": 358,
 		},
 		success:  function(data) {
 			if(data == "not-login") {
@@ -556,13 +565,6 @@ function confirmPayment() {
 	
 }
 
-// 임시로 테스트용 결제취소 버튼 추가(에이젝스)
-function cancelPayment() {
-	// 마이페이지 상품목록에서 order_id 들고오기
-	location.href="CancelPayment?product_id=356";
-}
-
-
 </script>
 </head>
 <body>
@@ -602,7 +604,6 @@ function cancelPayment() {
     <input type="button" value="(임시)거래수락" onclick="acceptPayment()">
     <input type="button" value="(임시)결제하기" onclick="payment()">
     <input type="button" value="(임시)구매확정" onclick="confirmPayment()">
-    <input type="button" value="(임시)결제취소" onclick="cancelPayment()">
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
 	 <div class="account-login section">

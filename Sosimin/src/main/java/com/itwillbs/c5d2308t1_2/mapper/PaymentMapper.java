@@ -51,6 +51,9 @@ public interface PaymentMapper {
 	// 구매하려는 상품 정보 조회
 	Map<String, Object> selectProductInfo(Map<String, Object> map);
 	
+	// 거래 수락 전에 중복이 없는지 체크
+	int selectOrderCheck(Map<String, Object> map);
+
 	// 거래수락 시 거래 정보 생성
 	int insertOrder(Map<String, Object> map);
 	
@@ -99,7 +102,6 @@ public interface PaymentMapper {
 	List<Map<String, Object>> selectPaySpentRevenue();
 
 	List<Map<String, Object>> selectOrderList();
-
 
 
 

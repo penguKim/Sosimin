@@ -743,6 +743,13 @@ public class PaymentController {
 			return "inconsistency";
 		}
 		
+		// 이미 거래를 수락한 적이 있는지 확인하기
+		int orderCheck = service.orderCheck(map);
+		if(orderCheck > 0) {
+			return "ordered";
+		}
+		
+		
 		// 거래수락하면 거래가 시작됨
 		// 상품의 거래 상태도 바꿔주기
 		int orderCount = service.orderProduct(map);
@@ -806,6 +813,8 @@ public class PaymentController {
 		// 일치하지 않으면 돌려보내기
 		Map<String, Object> orderInfo = service.getOrderInfo(map);
 		
+		log.info("orderInfo" + orderInfo);
+		
 		if(orderInfo == null) {
 			model.addAttribute("msg", "결제 가능한 상품이 없습니다!");
 			model.addAttribute("msg3", "error");
@@ -814,9 +823,14 @@ public class PaymentController {
 			model.addAttribute("msg", "구매자 정보가 일치하지 않습니다!");
 			model.addAttribute("msg3", "error");
 			return "fail_back";
+		} else if(orderInfo.get("buyer_pay_history_id") == null || orderInfo.get("buyer_pay_history_id").toString().equals("")) {
+			return "payment/use";
+		} else {
+			model.addAttribute("msg", "이미 결제하셨습니다!");
+			model.addAttribute("msg3", "error");
+			return "fail_back";			
 		}
 		
-		return "payment/use";
 	}
 	
 	// 페이 사용 처리
