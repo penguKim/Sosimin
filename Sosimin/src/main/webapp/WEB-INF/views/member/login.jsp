@@ -76,13 +76,12 @@
                             </div>
                             <div class="social-login" id="socialLoginArea">
                                 <div class="row">
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                    	<a class="btn facebook-btn" id="joinWithNaver" href="javascript:void(0)">
-                                    		<img id="socialIcons" src="${pageContext.request.contextPath}/resources/images/member/naver_circle.png" width="20px" height="20px">
-<!--                                     		<i class="lni lni-twitter-original"></i>  -->
-                                    		네이버로 로그인
-                                   		</a>
-                                 	</div>
+                                	<div class="col-lg-4 col-md-4 col-12" id="naver_id_login">
+                                		<a class="btn facebook-btn" id="joinWithNaver" href="${url}">
+                                			<img id="socialIcons" src="${pageContext.request.contextPath}/resources/images/member/naver_circle.png" width="20px" height="20px"/>
+	                                		네이버로 로그인
+                                		</a>
+                                	</div>
                                     <div class="col-lg-4 col-md-4 col-12">
 	                                    <a class="btn twitter-btn" id="joinWithKakao" href="javascript:void(0)">
 	                                    	<img id="socialIcons" src="${pageContext.request.contextPath}/resources/images/member/kakao_circle.png" width="20px" height="20px">

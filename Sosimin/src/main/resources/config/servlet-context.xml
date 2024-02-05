@@ -57,5 +57,8 @@
 	</websocket:handlers>
 	<beans:bean id="wsHandler" class="com.itwillbs.c5d2308t1_2.handler.ChatHandler"></beans:bean>
 <!-- 'websocketHandler'라는 id를 가진 빈을 설정하는 부분.클래스가 실제 WebSocket 요청을 처리하는 핸들러의 역할을 합니다. -->
+
+	<!-- NaverLoginVO Class에 대한 Bean설정 추가 -->
+	<beans:bean id="NaverLoginVO" class="com.itwillbs.c5d2308t1_2.vo.NaverLoginVO" />
 	
 </beans:beans>
