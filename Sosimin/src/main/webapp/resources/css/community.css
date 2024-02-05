@@ -47,6 +47,7 @@
 
 
 /* ========== 커뮤니티 게시판 ========== */
+
 .categoryBtn .btn {
 	background-color: #fff;
 	font-weight: 900;	
@@ -63,9 +64,11 @@
 /* 제목 행 검은색 */
 .contentList a {
 	color: #000;
+	-webkit-transition: none;
+	transition: none;
 }
 
-#subject:hover a, .mobileArea:hover .title {
+#subject:hover div, .mobileArea:hover .title {
 	color: #39d274;
 }
 

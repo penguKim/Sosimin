@@ -55,7 +55,7 @@ public class CommunityService {
 	}
 	
 	// 한 페이지에 표시할 게시글 목록 조회 작업 요청 
-	public List<CommunityVO> getCommunityList(String searchKeyword, String searchType, String category, PageDTO page, int townId) {
+	public List<Map<String, Object>> getCommunityList(String searchKeyword, String searchType, String category, PageDTO page, int townId) {
 		return mapper.selectCommunityList(searchKeyword, searchType, category, page, townId);
 	}
 	

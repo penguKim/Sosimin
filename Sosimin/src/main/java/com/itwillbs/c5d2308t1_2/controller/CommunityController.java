@@ -77,15 +77,15 @@ public class CommunityController {
 		// 페이징 처리
 		PageInfo pageInfo = new PageInfo(page, listCount, 3);
 		// 한 페이지에 불러올 게시글 목록 조회
-		List<CommunityVO> communityList = communityService.getCommunityList(searchKeyword, searchType, category, page, townId);
+		List<Map<String, Object>> communityList = communityService.getCommunityList(searchKeyword, searchType, category, page, townId);
 		
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 //        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
         
-        for(CommunityVO com : communityList) {
-        	LocalDateTime comDateTime = LocalDateTime.parse(com.getCommunity_datetime().toString(), formatter);
+        for(Map<String, Object> com : communityList) {
+        	LocalDateTime comDateTime = LocalDateTime.parse(com.get("community_datetime").toString(), formatter);
         	// 시분초 차이 계산
     		Duration duration = Duration.between(comDateTime, now);
     		// 년월일 차이 계산
@@ -116,7 +116,7 @@ public class CommunityController {
             }
             
             // 계산한 시간 목록
-            com.setCommunity_datetime(timeAgo);
+            com.put("community_datetime", timeAgo);
             
         }
         
@@ -192,6 +192,8 @@ public class CommunityController {
 		} else {
 			// "글쓰기 실패!" 메세지 처리
 			model.addAttribute("msg", "글쓰기 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
 			return "fail_back";
 		}
 	}
@@ -203,6 +205,8 @@ public class CommunityController {
 		System.out.println("파라미터로 넘어온 com은 : " + com);
 		if(com == null || com.getCommunity_id() == 0) {
 			model.addAttribute("msg", "존재하지 않는 게시물입니다.");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
 			return "fail_back";
 		}
 		
@@ -315,9 +319,11 @@ public class CommunityController {
 		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "로그인이 필요합니다!");
+			model.addAttribute("msg", "비정상적인 접근입니다!");
+			model.addAttribute("msg", "메인 페이지로 이동합니다");
+			model.addAttribute("msg3", "error");
 			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-			model.addAttribute("targetURL", "MemberLogin");
+			model.addAttribute("targetURL", "./");
 			return "forward";
 		}
 		
@@ -330,6 +336,8 @@ public class CommunityController {
 		// 게시글이 없거나 작성자와 관리자가 아닐 경우 fail_back
 		if(map == null || !sId.equals(map.get("community_writer")) && !sId.equals("admin")) {
 			model.addAttribute("msg", "잘못된 접근입니다.");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
 			return "fail_back";
 		}
 		
@@ -364,6 +372,8 @@ public class CommunityController {
 			return "redirect:/Community?pageNum=" + pageNum;
 		} else {
 			model.addAttribute("msg", "글 삭제 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
 			return "fail_back";
 		}
 		
@@ -375,9 +385,11 @@ public class CommunityController {
 		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
-			model.addAttribute("msg", "로그인이 필요합니다!");
+			model.addAttribute("msg", "비정상적인 접근입니다!");
+			model.addAttribute("msg2", "메인 페이지로 이동합니다");
+			model.addAttribute("msg3", "error");
 			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-			model.addAttribute("targetURL", "MemberLogin");
+			model.addAttribute("targetURL", "./");
 			return "forward";
 		}
 		
@@ -441,12 +453,16 @@ public class CommunityController {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			model.addAttribute("msg", "로그인이 필요합니다!");
-			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "MemberLogin");
 			return "forward";
 		} else if(!sId.equals(com.getCommunity_writer()) && !sId.equals("admin")) {
-			model.addAttribute("msg", "잘못된 접근입니다");
-			return "fail_back";
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("msg2", "메인 페이지로 이동합니다.");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "./");
+			return "forward";
 		}
 		
 		String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
@@ -527,6 +543,8 @@ public class CommunityController {
 		} else {
 			// "글 수정 실패!" 처리
 			model.addAttribute("msg", "글 수정 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
 			return "fail_back";
 		}
 		
@@ -588,8 +606,10 @@ public class CommunityController {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			model.addAttribute("msg", "로그인이 필요합니다!");
+			model.addAttribute("msg2", "메인 페이지로 이동합니다");
+			model.addAttribute("msg3", "error");
 			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-			model.addAttribute("targetURL", "MemberLogin");
+			model.addAttribute("targetURL", "./");
 			return "forward";
 		}
 		
@@ -604,6 +624,8 @@ public class CommunityController {
 					+ reply.getCommunity_id() + "&pageNum=" + pageNum;
 		} else 	{
 			model.addAttribute("msg", "댓글 작성 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
 			return "fail_back";
 		}
 		

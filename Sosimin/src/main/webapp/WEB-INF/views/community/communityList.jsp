@@ -344,12 +344,20 @@
 				<table class="table table-hover contentList text-center">
 					<thead>
 						<tr class="table-light">
-							<th width=5%><span class="d-none d-md-inline">번호</span><span class="d-sm-block d-md-none">게시글</span></th>
-							<th class="d-none d-md-table-cell" width=15%>유형</th>
-							<th class="d-none d-md-table-cell">제목</th>
-							<th class="d-none d-md-table-cell" width=15%>작성자</th>
-							<th class="d-none d-md-table-cell" width=20%>게시시간</th>
-							<th class="d-none d-md-table-cell" width=8%>조회수</th>
+							<th class="col-1"><span class="d-none d-md-inline">번호</span><span class="d-sm-block d-md-none">게시글</span></th>
+							<th class="col-1 d-none d-md-table-cell">동네</th>
+							<th class="col-1 d-none d-md-table-cell">유형</th>
+							<th class="col-5 d-none d-md-table-cell">제목</th>
+							<th class="col-1 d-none d-md-table-cell">작성자</th>
+							<th class="col-1 d-none d-md-table-cell">게시시간</th>
+							<th class="col-1 d-none d-md-table-cell">조회수</th>
+							<th class="col-1 d-none d-md-table-cell">좋아요</th>
+<!-- 							<th width=5%><span class="d-none d-md-inline">번호</span><span class="d-sm-block d-md-none">게시글</span></th> -->
+<!-- 							<th class="d-none d-md-table-cell" width=15%>유형</th> -->
+<!-- 							<th class="d-none d-md-table-cell">제목</th> -->
+<!-- 							<th class="d-none d-md-table-cell" width=15%>작성자</th> -->
+<!-- 							<th class="d-none d-md-table-cell" width=20%>게시시간</th> -->
+<!-- 							<th class="d-none d-md-table-cell" width=8%>조회수</th> -->
 						</tr>
 					</thead>
 					<c:choose>
@@ -360,37 +368,38 @@
 						<c:forEach var="com" items="${communityList }" varStatus="status">
 						<tr>
 							<td>
-								<div class="d-none d-md-table-cell px-2"><span>${com.community_id }</span></div>
 								<div class="d-sm-block d-md-none">
-								<a class="mobileArea row" href="CommunityDetail?category=${com.community_category }&community_id=${com.community_id }&pageNum=${pageNum}">
-									<div class="col">
-										<div class="row mb-2">
-<!-- 											<div class="col-3 text-start"> -->
-											<span class="col-3 text-start">
-											<c:choose>
-												<c:when test="${com.community_category eq '1' }">[동네소식]</c:when>
-												<c:when test="${com.community_category eq '2' }">[동네질문]</c:when>
-												<c:when test="${com.community_category eq '3' }">[일상]</c:when>
-											</c:choose>
-											</span>
-<!-- 											</div> -->
-<!-- 											<div class="col text-start"> -->
-												<span class="title col text-start px-0 ellipsis">${com.community_subject }</span>
-<!-- 											</div> -->
-										</div>
-										<div class="row">
-											<div class="col text-start">
-												<span class="mobileComInfo">${com.community_writer } | ${com.community_datetime } | 조회수 ${com.community_readcount }</span>
+									<a class="mobileArea row" href="CommunityDetail?category=${com.community_category }&community_id=${com.community_id }&pageNum=${pageNum}">
+										<div class="col">
+											<div class="row mb-2">
+	<!-- 											<div class="col-3 text-start"> -->
+												<span class="col-3 text-start">
+												<c:choose>
+													<c:when test="${com.community_category eq '1' }">[동네소식]</c:when>
+													<c:when test="${com.community_category eq '2' }">[동네질문]</c:when>
+													<c:when test="${com.community_category eq '3' }">[일상]</c:when>
+												</c:choose>
+												</span>
+													<span class="title col text-start px-0 fw-bold ellipsis">${com.community_subject } (${com.reply_count })</span>
+											</div>
+											<div class="row">
+												<div class="col text-start">
+													<span class="mobileComInfo">${com.community_writer } | ${com.dong} | 
+														${com.community_datetime } | 조회수 ${com.community_readcount } | 좋아요 ${com.like_count }</span>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="col-2">
-										<c:if test="${com.community_image1 ne null and com.community_image1 ne ''}">
-											<img src="${pageContext.request.contextPath }/resources/upload/${com.community_image1}" style="max-height: 50px;">
-										</c:if>
-									</div>
-								</a>
+										<div class="col-2">
+											<c:if test="${com.community_image1 ne null and com.community_image1 ne ''}">
+												<img src="${pageContext.request.contextPath }/resources/upload/${com.community_image1}" style="max-height: 50px;">
+											</c:if>
+										</div>
+									</a>
 								</div>
+								<div class="d-none d-md-table-cell px-2"><span>${com.community_id }</span></div>
+							</td>
+							<td class="d-none d-md-table-cell">
+								${com.dong }
 							</td>
 							<td class="d-none d-md-table-cell">
 								<c:choose>
@@ -402,8 +411,7 @@
 							<td id="subject" class="text-start d-none d-md-table-cell" onclick="location.href='CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}'">
 								<a href="CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}">
 									<div class="row">
-										<span class="col ellipsis pe-1">${com.community_subject }
-										</span>
+										<span class="col ellipsis fw-bold pe-1">${com.community_subject } (${com.reply_count })</span>
 										<c:if test="${com.community_image1 ne null and com.community_image1 ne ''}">
 											<i class="fa fa-image col-1 px-0 py-1"></i>
 										</c:if>
@@ -416,6 +424,7 @@
 <%-- 								<fmt:formatDate value="${com.community_datetime }" pattern="yy-MM-dd HH:mm"/> --%>
 							</td>
 							<td class="d-none d-md-table-cell">${com.community_readcount }</td>
+							<td class="d-none d-md-table-cell">${com.like_count }</td>
 						</tr>
 					</c:forEach>
 						</c:otherwise>
