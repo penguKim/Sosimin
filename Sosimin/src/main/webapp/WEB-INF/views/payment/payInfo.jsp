@@ -405,8 +405,8 @@ function acceptPayment() {
 		type: "GET",
 		url: "AcceptPayment",
 		data: {
-			"product_id": 358,
-			"product_buyer": "leess"
+			"product_id": 388,
+			"product_buyer": "eri1112"
 		},
 		success:  function(data) {
 			if(data == "not-login") {
@@ -466,7 +466,7 @@ function acceptPayment() {
 // 임시로 테스트용 결제하기 버튼 추가
 function payment() {
 	// 채팅방에서 produtct_id 들고오기
-	location.href="Payment?product_id=358";
+	location.href="Payment?product_id=388";
 }
 
 // 임시로 테스트용 구매확정 버튼 추가(에이젝스)
@@ -479,7 +479,7 @@ function confirmPayment() {
 		type: "GET",
 		url: "ConfirmPayment",
 		data: {
-			"product_id": 358,
+			"product_id": 388,
 		},
 		success:  function(data) {
 			if(data == "not-login") {
