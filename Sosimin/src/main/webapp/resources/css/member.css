@@ -516,12 +516,6 @@ input[readonly] {
 	display: flex !important;
 }
 
-.filter-4 {
-    margin-left: 60% !important;
-    margin-top: 1% !important;
-    max-width: 61% !important;
-}
-
 .filter-3 {
     margin-left: 68% !important;
     margin-top: 1% !important;
@@ -532,9 +526,17 @@ input[readonly] {
 	margin-top: 1.5% !important;
 }
 
+.allFilter a {
+	color: #888 !important;
+}
+
+.allFilter a:hover {
+	color: #39d274 !important;
+}
+
 .eachFilter {
 	display: inline-block !important;
-	max-width: 13.5% !important;
+	max-width: 16.5% !important;
 }
 /* .filterArea ul { */
 /* 	float: right; */
@@ -573,28 +575,6 @@ input[readonly] {
 	position: relative;
 }
 
-/* 가상영역 opacity 처리 */
-#singleProductArea::before {
-    content: " " ;
-	width: 290px;
-	height: 400px;
-	position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-	opacity: 0.7;
-	transform: scale(1.0);
-	display: inline-block;
-	margin-bottom: 10px !important;
-	margin-left: 2px !important;
-	margin-right: 2px !important;
-	box-sizing: content-box !important;
-	padding: 0 !important;
-	background-color: white;
-	z-index: 999;
-}
-
 /* 거래완료인 상품 opacity */
 /* 부모요소 opacity 적용되어있음 */
 #singleProductAreaDealComplete {
@@ -610,6 +590,30 @@ input[readonly] {
 /* 	background-color: rgba(0, 0, 0, 0.5); */
 /* 	opacity: 0.4; */
 }
+
+/* 가상영역 opacity 처리 */
+#singleProductAreaDealComplete::before {
+	border: none;
+	width: 290px;
+	height: 400px;
+	display: inline-block;
+	margin-right: 2px !important;
+	margin-top: 0px;
+	box-sizing: content-box !important;
+	padding: 0 !important;
+	position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+	opacity: 0.7;
+    content: " " ;
+	transform: scale(1.0);
+	background-color: white;
+	z-index: 999;
+}
+
+
 
 
 /* 자식 요소 - 부모 요소의 opacity를 무시해야함 */

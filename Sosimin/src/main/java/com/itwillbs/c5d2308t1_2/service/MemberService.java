@@ -80,8 +80,8 @@ public class MemberService {
 
 	// ============================== 마이페이지 작업 =====================================
 	// 마이페이지 목록 개수 조회
-	public int getMyPageListCount(String category, String sId) {
-		return mapper.selectMyPageListCount(category, sId);
+	public int getMyPageListCount(String category, String sId, String filter) {
+		return mapper.selectMyPageListCount(category, sId, filter);
 	}
 
 	// 마이페이지 프로필 회원 정보 조회
@@ -110,10 +110,20 @@ public class MemberService {
 	}
 
 	// 마이페이지 목록 조회
-	public List<HashMap<String, Object>> getMyPageList(String sId, String category, PageDTO page) {
-		return mapper.selectMyPageList(sId, category, page);
+	public List<HashMap<String, Object>> getMyPageList(String sId, String category, PageDTO page, String filter) {
+		return mapper.selectMyPageList(sId, category, page, filter);
 	}
 
+
+	// 마이페이지 모달 내 정보수정
+	public int modifyMyInfo(MemberVO member) {
+		return mapper.updateMyInfo(member);
+	}
+
+	// 관리자페이지 회원 정보 목록 조회
+	public List<Map<String, Object>> getAllMemberList(MemberVO member) {
+		return mapper.selectAllMemberList(member);
+	}
 
 
 

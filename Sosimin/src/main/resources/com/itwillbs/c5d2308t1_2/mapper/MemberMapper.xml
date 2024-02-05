@@ -24,8 +24,8 @@
 			, #{member_phone}
 			, 1 -- 회원 상태
 			, #{member_password}
-			, null -- 프로필 임시로 null
-			, null -- 소개글 임시로 null
+			, "" -- 프로필사진 기본값 ""
+			, "" -- 소개글 기본값 ""
 			, null -- 탈퇴시간 null
 			, 1 -- 문자인증 여부(가입 성공 시 인증)
 			, 1 -- 동네인증여부(가입 시 인증하므로 1)
@@ -116,17 +116,42 @@
 	<select id="selectMyPageListCount" resultType="int">
 		SELECT COUNT(*)
 			<choose>
-				<when test="category == 0">
-					FROM Product WHERE member_id = #{sId}
-				</when>
 				<when test="category == 1">
-					FROM Product WHERE member_id = #{sId}
+					<choose>
+						<when test="filter == 0">
+							FROM Product 
+							WHERE member_id = #{sId}
+						</when>
+						<when test="filter == 1">
+							FROM Product 
+							WHERE member_id = #{sId}
+							AND trade_status = 0
+						</when>
+						<when test="filter == 2">
+							FROM ProductView
+							WHERE member_id = #{sId}
+							AND trade_status = 2
+						</when>
+					</choose>
+					ORDER BY product_datetime DESC
 				</when>
 				<when test="category == 2">
-					FROM OrderList WHERE product_buyer = #{sId}
+					FROM ProductView
+					WHERE product_buyer = #{sId}
 				</when>
 				<when test="category == 3">
-					FROM productLike WHERE member_id = #{sId}
+					FROM ProductLike
+					JOIN Product
+					ON ProductLike.product_id = Product.product_id
+					WHERE ProductLike.member_id = #{sId}
+					<choose>
+						<when test="filter == 1">
+							AND trade_status = 0
+						</when>
+						<when test="filter == 2">
+							AND trade_status = 2
+						</when>
+					</choose>
 				</when>
 				<when test="category == 4">
 					FROM Community WHERE community_writer = #{sId}
@@ -178,28 +203,43 @@
 	<select id="selectMyPageList" resultType="hashmap">
 		SELECT *
 			<choose>
-				<when test="category == 0">
-					FROM Product 
-					WHERE member_id = #{sId}
-					ORDER BY product_datetime DESC
-				</when>
 				<when test="category == 1">
-					FROM Product 
-					WHERE member_id = #{sId}
+					<choose>
+						<when test="filter == 0">
+							FROM Product 
+							WHERE member_id = #{sId}
+						</when>
+						<when test="filter == 1">
+							FROM Product 
+							WHERE member_id = #{sId}
+							AND trade_status = 0
+						</when>
+						<when test="filter == 2">
+							FROM ProductView
+							WHERE member_id = #{sId}
+							AND trade_status = 2
+						</when>
+					</choose>
 					ORDER BY product_datetime DESC
 				</when>
 				<when test="category == 2">
-					FROM OrderList
-					JOIN Product 
-					ON OrderList.product_id = Product.product_id 
+					FROM ProductView
 					WHERE product_buyer = #{sId}
 					ORDER BY product_datetime DESC
 				</when>
 				<when test="category == 3">
-					FROM productLike 
+					FROM ProductLike 
 					JOIN Product
-					ON productLike.product_id = Product.product_id
-					WHERE productLike.member_id = #{sId}
+					ON ProductLike.product_id = Product.product_id
+					WHERE ProductLike.member_id = #{sId}
+					<choose>
+						<when test="filter == 1">
+							AND trade_status = 0
+						</when>
+						<when test="filter == 2">
+							AND trade_status = 2
+						</when>
+					</choose>
 					ORDER BY product_datetime DESC
 				</when>
 				<when test="category == 4">
@@ -217,6 +257,30 @@
 			LIMIT #{page.startRow}, #{page.listLimit}
 	</select>
 	
+	<!-- 모달 내정보수정 UPDATE -->
+	<update id="updateMyInfo">
+		UPDATE Member
+		SET 
+		member_profile = #{member_profile}
+		, member_intro = #{member_intro}
+		<if test="member_password != null and !member_password.equals('')">
+			, member_password = #{member_password}
+		</if>
+		, member_nickname = #{member_nickname}
+		, member_email = #{member_email}
+		, member_phone = #{member_phone}
+		<if test="member_status != null and !member_status.equals('')">
+			, member_status = #{member_status}
+		</if>
+		WHERE member_id = #{member_id}
+	</update>	
 
+	<!-- 관리자페이지 회원정보 목록 조회 SELECT -->
+	<select id="selectAllMemberList" resultType="hashmap">
+		SELECT *
+		FROM Member
+		LEFT OUTER JOIN Town
+		ON Town.town_id = Member.town_id
+	</select>
 	
 </mapper>

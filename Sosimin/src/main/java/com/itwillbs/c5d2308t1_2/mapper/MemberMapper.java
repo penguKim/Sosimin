@@ -49,7 +49,7 @@ public interface MemberMapper {
 	
 	// =========================== 마이페이지 작업 =============================
 	// 마이페이지 목록 개수 조회
-	int selectMyPageListCount(@Param("category")String category, @Param("sId") String sId);
+	int selectMyPageListCount(@Param("category")String category, @Param("sId") String sId, @Param("filter") String filter);
 
 	// 마이페이지 프로필 회원 정보 조회
 	MemberVO selectMyProfileMember(String sId);
@@ -67,7 +67,13 @@ public interface MemberMapper {
 	int selectCountCommunityLike(String sId);
 
 	// 마이페이지 목록 조회
-	List<HashMap<String, Object>> selectMyPageList(@Param("sId")String sId, @Param("category")String category, @Param("page") PageDTO page);
+	List<HashMap<String, Object>> selectMyPageList(@Param("sId")String sId, @Param("category")String category, @Param("page") PageDTO page, @Param("filter") String filter);
+
+	// 마이페이지 모달 내 정보수정
+	int updateMyInfo(MemberVO member);
+
+	// 관리자페이지 회원 정보 목록 조회
+	List<Map<String, Object>> selectAllMemberList(MemberVO member);
 
 
 

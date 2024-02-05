@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
-<title>Sosimin</title>
+<title>소시민</title>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -168,16 +168,10 @@
 		// 파일 change 이벤트 처리
         $("#profilePicFile").on("change", showPreviewImage);
 		
-		// "삭제" 영역 클릭 이벤트 처리
-        $(".btnProfilePicModify").on("click", function() {
-			let fileInput = $("#profilePicFile");
-			let previewImage = $("#formGroupForProfilePic img");
-			
-			// 파일 입력 요소 초기화
-			fileInput.val("");
-			
-			// 이미지 미리보기 초기화
-			previewImage.attr("src", "");
+		// 필터 선택
+		$("#myPageFilter a").on("click", function(event) {
+			event.preventDefault();
+			$("#myPageFilter").submit();
 		});
 		
 		
@@ -197,7 +191,7 @@
 		
 		// 파일 미선택 시 미리보기 초기화
 		if(!fileInput.files || !fileInput.files[0]) {
-			previewImage.attr("src", "");
+// 			previewImage.attr("src", src);
 			return;
 		}
 		
@@ -212,6 +206,37 @@
 	// 내정보수정 모달 수정버튼 클릭 시 호출되는 함수
 	function submitForm() {
 		$("#MyInfoForm").submit();
+	}
+	
+	// 회원 경험치 프로그레스바
+	function memberExp(percent) {
+		// 스타일 요소를 만들고, @keyframes 규칙을 추가합니다.
+		$('<style>')
+		.prop('type', 'text/css')
+		.html(`
+			@keyframes progress-animation {
+				0%   {width: 0%;}
+				100% {width: percent + '%';}
+			}
+		`)
+		.appendTo('head');
+		
+		// 프로그레스바 애니메이션을 시작합니다.
+		$('.progress-bar').css('width', percent + '%').attr('aria-valuenow', percent + '%').text(percent + '%');
+	}
+	
+	// 프로필 삭제 버튼 클릭 시 이미지 초기화
+	function resetProfilePic(src) {
+		let fileInput = $("#profilePicFile");
+		let previewImage = $("#formGroupForProfilePic img");
+		
+		// 파일 입력 요소 초기화
+		fileInput.val("");
+		
+		// 이미지 미리보기 초기화
+		previewImage.attr("src", src);
+		
+		$("#profile_name").val("");
 	}
 	
 </script>
@@ -285,7 +310,14 @@
         <div class="container">
             <div class="top-area" id="profileArea">
 				<div id="profileLeft">
-					<img src="${pageContext.request.contextPath}/resources/upload/${MyProfileMember.member_profile}">
+					<c:choose>
+						<c:when test="${empty MyProfileMember.member_profile }">
+							<img src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg">
+						</c:when>
+						<c:otherwise>
+							<img src="${pageContext.request.contextPath}/resources/upload/${MyProfileMember.member_profile}">
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div id="profileRight">
 					<div id="profileRightUpperLeft">
@@ -325,12 +357,17 @@
 							내 정보 수정
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
 					</div>
-					<section id="profileRightMiddle">
-						<span>Lv. ${MyProfileMember.member_level }</span>
-						<span>상품 판매 ${MyProfileCountProductSold }회</span>
-						<span>커뮤니티 글 ${MyProfileCountCommunity }개</span>
-						<span>커뮤니티 댓글 ${MyProfileCountCommunityReply }개</span>
-						<span>받은 좋아요 ${MyProfileCountCommunityLike }개</span>
+					<section id="profileRightMiddle" class="row align-items-center">
+						<span class="col auto">Lv. ${MyProfileMember.member_level }</span>
+			        	<div class="col-xl-2 col-3">
+							<div class="progress">
+								<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+			        	</div>						
+			        	<span class="col auto">상품 판매 ${MyProfileCountProductSold }회</span>
+						<span class="col auto">커뮤니티 글 ${MyProfileCountCommunity }개</span>
+						<span class="col auto">커뮤니티 댓글 ${MyProfileCountCommunityReply }개</span>
+						<span class="col auto">받은 좋아요 ${MyProfileCountCommunityLike }개</span>
 					</section>
 					<div id="profileRightBottom">
 						<p>
@@ -368,30 +405,28 @@
 <!--          </ul> -->
 <!--      </div> -->
 
-<%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 표시 --%>
-   	<div class="filterArea">
-		<c:choose>
-	   		<%-- 필터 옵션1 : 판매 내역 탭일 경우 --%>
-			<c:when test="${category eq '0' or category eq '1'}">
-		   		<ul class="row allFilter filter-4">
-		   			<li class="col-3 eachFilter"><a href="">전체</a></li>
-		   			<li class="col-3 eachFilter"><a href="">판매중</a></li>
-		   			<li class="col-3 eachFilter"><a href="">거래완료</a></li>
-		   			<li class="col-3 eachFilter"><a href="">취소/환불</a></li>
-		   		</ul>
-			</c:when>
-	   		<%-- 필터 옵션2 : 찜목록 탭일 경우 --%>
-			<c:when test="${param.category eq '3'}">
-	    		<ul ul class="row allFilter filter-3">
-	    			<li class="col-3 eachFilter"><a href="">전체</a></li>
-	    			<li class="col-3 eachFilter"><a href="">판매중</a></li>
-	    			<li class="col-3 eachFilter"><a href="">거래완료</a></li>
-	    		</ul>
-			</c:when>
-		</c:choose>   		
-
-	</div>
-            
+	<%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 표시 --%>
+	<c:if test="${category eq '0' or category eq '1' or category eq '3'}">
+	   	<div class="filterArea">
+	   		<ul class="row allFilter filter-3">
+	   			<li class="col-3 eachFilter">
+	   				<a href="MyPage?filter=0&category=${category }">
+	   					전체
+	   				</a>
+   				</li>
+	   			<li class="col-3 eachFilter">
+	   				<a href="MyPage?filter=1&category=${category }">
+	   					판매중
+	   				</a>
+   				</li>
+	   			<li class="col-3 eachFilter">
+	   				<a href="MyPage?filter=2&category=${category }">
+	   					거래완료
+	   				</a>
+   				</li>
+	   		</ul>
+		</div>
+	</c:if>            
             
 	<section class="item-details section wholeProductSection">
 	    <div class="product-details-info row" id="wholeProductArea">
@@ -426,8 +461,6 @@
 									<c:choose>
 										<c:when test="${mypage.trade_status eq '0' }"> <%-- 거래 대기 --%>
 											<input type="button" value="수정">
-					<!-- 						<input type="button" value="UP">  -->
-											<!-- 끌올 가능할때만 판별해서 보이게 -->
 										</c:when>
 										<c:when test="${mypage.trade_status eq '1' }"> <%-- 거래 중 --%>
 											<input type="button" value="구매확정요청">
@@ -460,9 +493,15 @@
 										채팅 n회
 									</div>
 									<div id="singleProductButtonArea">
-										<input type="button" value="거래후기작성">
+										<c:choose>
+											<c:when test="${empty mypage.review_id }">
+												<input type="button" value="거래후기작성">
+											</c:when>
+											<c:otherwise>
+												<input type="button" value="거래후기보기">
+											</c:otherwise>
+										</c:choose>
 		<!-- 								거래 후기 작성 이후 판별해서 보이기 -->
-										<input type="button" value="거래후기보기">
 									</div>
 								</div>	
 							</c:when>
@@ -522,9 +561,14 @@
 									채팅 n회
 								</div>
 								<div id="singleProductButtonArea">
-									<input type="button" value="거래후기작성">
-									<!-- 후기 있는지 없는지 판별해 보이기 -->
-									<input type="button" value="거래후기보기">
+									<c:choose>
+										<c:when test="${empty mypage.review_id }">
+											<input type="button" value="거래후기작성">
+										</c:when>
+										<c:otherwise>
+											<input type="button" value="거래후기보기">
+										</c:otherwise>
+									</c:choose>
 								</div>
 					        </div>
 							</c:when>
@@ -586,9 +630,14 @@
 										채팅 n회
 									</div>
 									<div id="singleProductButtonArea">
-										<input type="button" value="거래후기작성">
-		<!-- 								거래 후기 작성 이후 판별해서 보이기 -->
-										<input type="button" value="거래후기보기">
+										<c:choose>
+											<c:when test="${empty mypage.review_id }">
+												<input type="button" value="거래후기작성">
+											</c:when>
+											<c:otherwise>
+												<input type="button" value="거래후기보기">
+											</c:otherwise>
+										</c:choose>
 									</div>
 								</div>	
 							</c:when>
@@ -651,9 +700,10 @@
 								<b id="bold"><a href="">${mypage.community_content }</a></b><br>
 							</div>
 							<div id="communityReplyMiddleArea">
-								<div id="communityReplyMiddleLeft">${mypage.reply_datetime }</div>
+<%-- 								<div id="communityReplyMiddleLeft">${mypage.reply_datetime }</div> --%>
 								<div id="communityReplyMiddleRight">
-									대댓글 n개
+<!-- 									대댓글 n개 -->
+									${mypage.reply_datetime }
 								</div>
 							</div>
 							<div id="communityReplyLeftBottom">
@@ -663,22 +713,11 @@
 							</div>
 						</div> <%--singleCommunityReplyArea 끝 --%>
 					</c:when> <%-- 커뮤니티 작성글 탭 끝 --%>
-					
-			        
-			        
-		        
 		        </c:choose> <%-- 탭선택 --%>
 			</c:forEach>
-			    
-		
-	        
-
-			
-				        
-	
 	    </div>
 	    <nav aria-label="Page navigation">
-				<ul class="pagination justify-content-center">
+				<ul class="pagination d-flex justify-content-center">
 					<li class="page-item" id="prevPage">
 <%-- 						<a href="Community?pageNum=${pageNum - 1}" class="page-link">&laquo;</a> --%>
 						<a href="MyPage?category=${param.category }&pageNum=${pageNum - 1}" class="page-link">&laquo;</a>
@@ -739,22 +778,35 @@
 						<form id="MyInfoForm" action="ModifyMyInfo" class="row" method="post" enctype="multipart/form-data">
 							<div class="form-group" id="formGroupForProfilePic">
 								<label for="reg-fn" id="mgForFiveMod">프로필사진</label>
-								<img src="${pageContext.request.contextPath}/resources/upload/${MyProfileMember.member_profile}"><%-- 썸네일 처리!!!! --%>
+								<c:choose>
+									<c:when test="${empty MyProfileMember.member_profile }">
+										<img src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg">
+									</c:when>
+									<c:otherwise>
+										<img src="${pageContext.request.contextPath}/resources/upload/${MyProfileMember.member_profile}">
+									</c:otherwise>
+								</c:choose>
+								<input type="hidden" id="profile_name" name="member_profile" value="${MyProfileMember.member_profile}">
 								<label for="profilePicFile">
 <!-- 										<input type="button" class="btnProfilePicModify" value="사진 변경"> -->
-									<div class="btnProfilePicModify">사진 변경</div>
+									<div class="btnProfilePicModify" id="btnProfilePicModify">사진 변경</div>
 								</label>
 								<input type="file" name="file" id="profilePicFile" accept="image/gif, image/png, image/jpeg">
-								<div class="btnProfilePicModify">삭제</div>
+<%-- 								<input type="file" name="file" id="profilePicFile" accept="image/gif, image/png, image/jpeg" onchange="showPreviewImage('${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg')"> --%>
+								<div class="btnProfilePicModify" id="btnProfilePicDelete" onclick="resetProfilePic('${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg')">삭제</div>
+							</div>
+							<div class="form-group">
+								<label for="intro" id="mgForThreeMod">소개글</label>
+								<input class="form-control" value="${MyProfileMember.member_intro }" maxlength="20" type="text" name="member_intro" id="intro">
 							</div>
 
 							<div class="form-group">
 								<label for="name" id="mgForTwoMod">이름</label> 
-								<input class="form-control" placeholder="${MyProfileMember.member_name }" maxlength="5" type="text" name="member_name" id="name" readonly>
+								<input class="form-control" value="${MyProfileMember.member_name }" maxlength="5" type="text" name="member_name" id="name" readonly>
 							</div>
 							<div class="form-group" >
 								<label for="id" id="mgForThreeMod">아이디</label> 
-								<input class="form-control" placeholder="${MyProfileMember.member_id }" maxlength="20" type="text"  name="member_id" id="id" readonly>
+								<input class="form-control" value="${MyProfileMember.member_id }" maxlength="20" type="text"  name="member_id" id="id" readonly>
 							</div>
 							<div class="form-group">
 								<label for="password" id="mgForFiveOneMod">새 비밀번호</label> 
@@ -768,7 +820,7 @@
 							</div>
 							<div class="form-group">
 								<label for="nickname" id="mgForThreeMod">닉네임</label> 
-								<input class="form-control" type="text" placeholder="${MyProfileMember.member_nickname }" name="member_nickname" id="nickname" required>
+								<input class="form-control" type="text" value="${MyProfileMember.member_nickname }" name="member_nickname" id="nickname" required>
 								<input type="button" value="중복확인" id="checkNicknameDupButton">
 <!-- 								<input type="button" value="닉네임만들기" id="generateNicknameButton"> -->
 								<%-- 입력값이 비어있을 경우 DB에서 임의로 난수발생해 insert 처리 --%>
@@ -777,7 +829,7 @@
 
 							<div class="form-group">
 								<label for="birthdate" id="mgForFourMod">생년월일</label> 
-								<input class="form-control" type="date" name="member_birth" id="birthdate" placeholder="${MyProfileMember.member_birth }" required>
+								<input class="form-control" type="date" name="member_birth" id="birthdate" value="${MyProfileMember.member_birth }" readonly>
 								<%--회원가입과 동일하게 범위제한하고 기존 생년월일 placeholder --%>
 								<div id="checkBirthdateResult" class="resultArea"></div>
 							</div>
@@ -793,14 +845,14 @@
 							</c:if>
 							<div class="form-group">
 								<label for="email" id="mgForThreeMod">이메일</label> 
-								<input class="form-control" type="email" placeholder="${MyProfileMember.member_email }" name="member_email" id="email" required>
+								<input class="form-control" type="email" value ="${MyProfileMember.member_email }" name="member_email" id="email" required>
 								<%--회원가입과 동일하게 정규표현식 검증 및 중복확인. 기존 이메일 placeholder --%>
 								<input type="button" value="중복확인" id="checkEmailDupButton">
 								<div id="checkEmailResult" class="resultArea"></div>
 							</div>
 							<div class="form-group">
 								<label for="phone" id="mgForFiveMod">휴대폰번호</label> 
-								<input class="form-control" placeholder="${MyProfileMember.member_phone }" type="tel" name="member_phone" id="phone" required>
+								<input class="form-control" value="${MyProfileMember.member_phone }" type="tel" name="member_phone" id="phone" required>
 								<%--회원가입과 동일하게 인증, 정규표현식 검증, 중복확인(회원아이디 일치하고 휴대폰 번호 동일한 경우 자바스크립트 처리?). 기존 폰번호 placeholder --%>
 								<input type="button" value="인증코드발급" id="requestPhoneAuthCodeButton">
 								<div id="checkPhoneResult" class="resultArea"></div>

@@ -373,7 +373,7 @@ public class MemberController {
 	// *********** 마이페이지 **************
 	// 마이페이지로 이동
 	@GetMapping("MyPage")
-	public String MyPage(HttpSession session, Model model, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "0") String category) {
+	public String MyPage(HttpSession session, Model model, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "1") String category, @RequestParam(defaultValue = "0") String filter) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) { // 로그인 안 한 경우
 			model.addAttribute("msg", "로그인이 필요합니다!");
@@ -382,13 +382,14 @@ public class MemberController {
 			model.addAttribute("targetURL", "MemberLogin");
 			return "forward";
 		}
+		System.out.println("필터 : " + filter);
 		System.out.println("카테고리 : " + category);
 		System.out.println("세션 아이디 확인 : " + sId);
 		
 		// 페이지 번호와 글의 개수를 파라미터로 전달
 		PageDTO page = new PageDTO(pageNum, 15);
 		// 전체 게시글 갯수 조회
-		int listCount = service.getMyPageListCount(category, sId);
+		int listCount = service.getMyPageListCount(category, sId, filter);
 		// 페이징 처리
 		PageInfo pageInfo = new PageInfo(page, listCount, 3);
 		
@@ -407,7 +408,7 @@ public class MemberController {
 		
 		
 		// 한 페이지에 불러올 게시글 목록 조회
-		List<HashMap<String, Object>> MyPageList = service.getMyPageList(sId, category, page);
+		List<HashMap<String, Object>> MyPageList = service.getMyPageList(sId, category, page, filter);
 		System.out.println("컨트롤러에서 넘긴 마이페이지 리스트 확인 : " + MyPageList);
 		
 		
@@ -474,116 +475,12 @@ public class MemberController {
         model.addAttribute("MyProfileCountCommunityLike", MyProfileCountCommunityLike);
         model.addAttribute("MyPageList", MyPageList);
         model.addAttribute("category", category);
+        model.addAttribute("filter", filter);
+        model.addAttribute("pageInfo", pageInfo);
 		
 		return "member/myPage";
 	}
 	
-	// 마이페이지22222222222
-	@GetMapping("MyPage2")
-	public String MyPage2(HttpSession session, Model model, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "0") String category) {
-		String sId = (String)session.getAttribute("sId");
-		if(sId == null) { // 로그인 안 한 경우
-			model.addAttribute("msg", "로그인이 필요합니다!");
-			model.addAttribute("msg2", "로그인 후 마이페이지로 이동합니다!");
-			model.addAttribute("msg3", "warning");
-			model.addAttribute("targetURL", "MemberLogin");
-			return "forward";
-		}
-		System.out.println("카테고리 : " + category);
-		System.out.println("세션 아이디 확인 : " + sId);
-		
-		// 페이지 번호와 글의 개수를 파라미터로 전달
-		PageDTO page = new PageDTO(pageNum, 15);
-		// 전체 게시글 갯수 조회
-		int listCount = service.getMyPageListCount(category, sId);
-		// 페이징 처리
-		PageInfo pageInfo = new PageInfo(page, listCount, 3);
-		
-		// 프로필 영역에 불러올 회원 정보 조회
-		MemberVO MyProfileMember = service.getMyProfileMember(sId);
-		System.out.println("프로필 찍어낼 멤버정보 확인 : " + MyProfileMember);
-		int MyProfileCountProductSold = service.getCountProductSold(sId); 
-		System.out.println("프로필 찍어낼 상품판매횟수 확인 : " + MyProfileCountProductSold);
-		int MyProfileCountCommunity = service.getCountCommunity(sId);
-		System.out.println("프로필 찍어낼 커뮤니티 글 개수 확인 : " + MyProfileCountCommunity);
-		int MyProfileCountCommunityReply = service.getCountCommunityReply(sId);
-		System.out.println("프로필 찍어낼 커뮤니티 댓글 개수 확인 : " + MyProfileCountCommunityReply);
-		int MyProfileCountCommunityLike = service.getCountCommunityLike(sId);
-		System.out.println("프로필 찍어낼 커뮤니티 좋아요 개수 확인 : " + MyProfileCountCommunityLike);
-		
-		
-		
-		// 한 페이지에 불러올 게시글 목록 조회
-		List<HashMap<String, Object>> MyPageList = service.getMyPageList(sId, category, page);
-		System.out.println("컨트롤러에서 넘긴 마이페이지 리스트 확인 : " + MyPageList);
-		
-		
-		// 시간 변환
-		LocalDateTime now = LocalDateTime.now();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
-		
-		LocalDateTime datetime = null;
-		for(HashMap<String, Object> map : MyPageList) {
-//        	System.out.println(map.get("product_datetime").getClass().getName());
-//        	System.out.println();
-			if(category.equals("0") || category.equals("1") || category.equals("2") || category.equals("3")) {
-				datetime = (LocalDateTime)map.get("product_datetime");
-			} else if(category.equals("4")) {
-				datetime = (LocalDateTime)map.get("community_datetime");
-			} else if(category.equals("5")) {
-				datetime = (LocalDateTime)map.get("reply_datetime");
-			}
-//        	productMap.put("product_datetime", productDatetime.format(formatter));
-//        	
-//        	
-//        	// 시분초 차이 계산
-			Duration duration = Duration.between(datetime, now);
-//    		// 년월일 차이 계산
-			Period period = Period.between(datetime.toLocalDate(), now.toLocalDate());
-			
-			long minutes = duration.toMinutes() % 60;
-			long hours = duration.toHours() % 24;
-			long days = duration.toDays() % 7;
-			long weeks = duration.toDays() / 7;
-			long months = period.getMonths();
-			long years = period.getYears();
-			
-			String timeAgo = "";
-			if(years > 0) {
-				timeAgo = years + "년 전";
-			} else if(months > 0) {
-				timeAgo = months + "개월 전";
-			} else if(weeks > 0 && weeks <= 4) {
-				timeAgo = weeks + "주전";
-			} else if (days > 0 && days < 7) { // 1 ~ 7 차이날 때
-				timeAgo = days + "일전";
-			} else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
-				timeAgo = hours + "시간 전";
-			} else if (minutes > 0) { // 1 ~ 59분이 차이날 때
-				timeAgo = minutes + "분 전";
-			} else {
-				timeAgo = "방금 전";
-			}
-			
-			map.put("product_datetime", timeAgo);
-			map.put("order_date", timeAgo);
-			map.put("community_datetime", timeAgo);
-			map.put("reply_datetime", timeAgo);
-			
-		}
-		
-		model.addAttribute("MyProfileMember", MyProfileMember);
-		model.addAttribute("MyProfileCountProductSold", MyProfileCountProductSold);
-		model.addAttribute("MyProfileCountCommunity", MyProfileCountCommunity);
-		model.addAttribute("MyProfileCountCommunityReply", MyProfileCountCommunityReply);
-		model.addAttribute("MyProfileCountCommunityLike", MyProfileCountCommunityLike);
-		model.addAttribute("MyPageList", MyPageList);
-		model.addAttribute("category", category);
-		
-		return "member/myPage2";
-	}
 
 	// 회원 정보 수정
 	@PostMapping("ModifyMyInfo")
@@ -615,37 +512,41 @@ public class MemberController {
 		
 //		// MultipartFile 타입 객체 꺼내기
 		MultipartFile mFile = member.getFile();
-		
-		// 파일명 중복을 방지하기 위해 난수 생성하기
-		member.setMember_profile("");
-		String fileName = UUID.randomUUID().toString() + "_" + mFile.getOriginalFilename();
-		
-		if(!mFile.getOriginalFilename().equals("")) {
-			member.setMember_profile(subDir + "/" + fileName);
+		String fileName = "";
+		if(mFile != null) {
+			// 파일명 중복을 방지하기 위해 난수 생성하기
+//		member.setMember_profile("");
+			fileName = UUID.randomUUID().toString() + "_" + mFile.getOriginalFilename();
+			
+			if(!mFile.getOriginalFilename().equals("")) {
+				member.setMember_profile(subDir + "/" + fileName);
+			}
+			
+			System.out.println("업로드 파일명 확인 : " + member.getMember_profile());
 		}
 		
-		System.out.println("업로드 파일명 확인 : " + member.getMember_profile());
-		
-//		int updateCount = service.modifyMyInfo(member);
+		int updateCount = service.modifyMyInfo(member);
 		
 		
 		// 게시물 등록 작업 요청 결과 판별
-//		if(updateCount > 0) {
-			// 파일이 있을 경우에만 파일 생성
-//			try {
-//				if(!mFile.getOriginalFilename().equals("")) {
-//					mFile.transferTo(new File(saveDir, fileName));
-//				}
-//			} catch (IllegalStateException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
+		if(updateCount > 0) {
+//			 파일이 있을 경우에만 파일 생성
+			if(mFile != null) {
+				try {
+					if(!mFile.getOriginalFilename().equals("")) {
+						mFile.transferTo(new File(saveDir, fileName));
+					}
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 				
-
+		}
 		
 		
-		return "member/myPage";
+		return "redirect:/MyPage";
 	}
 
 	// *********** 판매자 페이지 **************
@@ -665,8 +566,85 @@ public class MemberController {
 	// ********* 관리자페이지 회원관리 *************
 	// 관리자페이지 회원관리
 	@GetMapping("MemberList")
-	public String MemberList() {
+	public String MemberList(MemberVO member, HttpSession session, Model model) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		List<Map<String, Object>> allMemberList = service.getAllMemberList(member);
+		
+		model.addAttribute("allMemberList", allMemberList);
+		System.out.println("컨트롤러에서 넘긴 멤버리스트 : " + allMemberList);
 		return "admin/memberList";
 	}
+	
+	// 회원 정보 수정
+	@PostMapping("ModifyMemberInfo")
+	public String modifyMemberInfo(MemberVO member, HttpSession session) {
+		System.out.println("폼파라미터 확인 : " + member);
+		
+		// 파일업로드를 위한 준비
+		// resources 디렉토리 내에 upload 파일 생성
+		String uploadDir = "/resources/upload"; // 가상 디렉토리
+		String saveDir = session.getServletContext().getRealPath(uploadDir); // 실제 디렉토리
+		System.out.println("실제디렉터리 : " + saveDir);
+		// D:\Spring\workspace_spring5\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Sosimin\resources/upload
+		String subDir = "";
+//			
+		// 날짜별로 서브디렉토리 생성하기
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		subDir = now.format(dtf);
+		
+		saveDir += File.separator + subDir;
+		
+		// 해당 디렉토리가 존재하지 않을 때에만 자동생성
+		try {
+			Path path = Paths.get(saveDir); // 업로드 경로
+			Files.createDirectories(path); // Path 객체
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+//			// MultipartFile 타입 객체 꺼내기
+		MultipartFile mFile = member.getFile();
+		String fileName = "";
+		if(mFile != null) {
+			// 파일명 중복을 방지하기 위해 난수 생성하기
+//			member.setMember_profile("");
+			fileName = UUID.randomUUID().toString() + "_" + mFile.getOriginalFilename();
+			
+			if(!mFile.getOriginalFilename().equals("")) {
+				member.setMember_profile(subDir + "/" + fileName);
+			}
+			
+			System.out.println("업로드 파일명 확인 : " + member.getMember_profile());
+		}
+		
+		int updateCount = service.modifyMyInfo(member);
+		
+		
+		// 게시물 등록 작업 요청 결과 판별
+		if(updateCount > 0) {
+//				 파일이 있을 경우에만 파일 생성
+			if(mFile != null) {
+				try {
+					if(!mFile.getOriginalFilename().equals("")) {
+						mFile.transferTo(new File(saveDir, fileName));
+					}
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+				
+		}
+		
+		
+		return "redirect:/MemberList";
+	}
+	
 	
 }
