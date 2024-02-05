@@ -483,40 +483,46 @@ $(function() {
 		
 // 	$(document).ready(() => {
 function loadImage() {
-  var imageCount = 0;
-  
-  for(let i = 1; i <= 5; i++) {
-    var base64Image = localStorage.getItem("image" + i);
-    if(base64Image) {
-      var img = document.createElement("img");
-      img.setAttribute("src", base64Image);
-      img.setAttribute("class", "imageSize");
-
-      var closeButton = document.createElement("button");
-      closeButton.setAttribute("type", "button");
-      closeButton.setAttribute("class", "imageClose");
-      closeButton.setAttribute("onclick", "removeImage(this)");
-      
-      var imageItem = document.createElement("span");
-      imageItem.classList.add("imageItem");
-
-      imageItem.appendChild(img);
-      imageItem.appendChild(closeButton);
-
-      if(i == 1) {
-        var mainImageText = document.createElement("span");
-        mainImageText.classList.add("mainImage");
-        mainImageText.textContent = "대표이미지";
-        imageItem.appendChild(mainImageText);
-      }
-
-      document.getElementById("image_container").appendChild(imageItem);
-
-      imageCount++;
-    }
+var imageData = localStorage.getItem(sId + "_productImage");
+if (imageData) {
+    // 이미지 데이터를 img 태그의 src 속성에 설정
+    document.getElementById("productImage").src = imageData;
   }
-  document.getElementById("imageLength").textContent = imageCount.toString();
-  localStorage.setItem("imageCount", imageCount.toString());
+  var imageCount = 0; // 이미지 카운트를 초기화합니다.
+  if (localStorage.getItem(sId + "_isTempSaved") === "1") {
+    for (let i = 1 ; i <= 5; i++) {
+      var base64Image = localStorage.getItem(sId + "_image" + i);
+      if (base64Image) {
+        var img = document.createElement("img");
+        img.setAttribute("src", base64Image);
+        img.setAttribute("class", "imageSize");
+
+        var closeButton = document.createElement("button");
+        closeButton.setAttribute("type", "button");
+        closeButton.setAttribute("class", "imageClose");
+        closeButton.setAttribute("onclick", "removeImage(this)");
+
+        var imageItem = document.createElement("span");
+        imageItem.classList.add("imageItem");
+
+        imageItem.appendChild(img);
+        imageItem.appendChild(closeButton);
+
+        if(i == 1) {
+          var mainImageText = document.createElement("span");
+          mainImageText.classList.add("mainImage");
+          mainImageText.textContent = "대표이미지";
+          imageItem.appendChild(mainImageText);
+        }
+
+        document.getElementById("image_container").appendChild(imageItem);
+
+        imageCount++; // 이미지를 불러올 때마다 이미지 카운트를 증가시킵니다.
+      }
+    }
+    document.getElementById("imageLength").textContent = imageCount.toString(); // 이미지 카운트를 표시합니다.
+    localStorage.setItem(sId + "_imageCount", imageCount.toString()); // 이미지 카운트를 로컬스토리지에 저장합니다.
+  }
 }
 
 
@@ -525,7 +531,6 @@ $(document).ready(() => {
   function showConfirmMessage() {
     if (localStorage.getItem(sId + "_isTempSaved") === "1") {
       if (confirm("최근 작성한 글을 불러오시겠습니까?")) {
-    	  loadImage();
         $("#productName").val(localStorage.getItem(sId + "_productName"));
         var categoryName = localStorage.getItem(sId + "_categoryName");
         if (categoryName) {
@@ -663,29 +668,23 @@ function addTag(tagName) {
 		
 //이미지 파일 선택 시 실행되는 함수
 function handleImageUpload(event) {
-  var files = event.target.files;
+  var file = event.target.files[0];
 
-  for(let i = 0; i < files.length; i++){
-    // FileReader 객체 생성
-    var reader = new FileReader();
-    
-    // FileReader 로드 완료 후 실행되는 함수
-    reader.onload = function(event) {
-      var imageData = event.target.result;
+  // FileReader 객체 생성
+  var reader = new FileReader();
 
-      // 이미지 데이터를 로컬 스토리지에 저장
-      for(let i = 1; i <= 5; i++){
-          if(!localStorage.getItem("image" + i)){
-              localStorage.setItem("image" + i, imageData);
-              break;
-          }
-      }
-    };
-  
-    // 이미지 파일을 읽기
-    reader.readAsDataURL(files[i]);
-  }
+  // FileReader 로드 완료 후 실행되는 함수
+  reader.onload = function(event) {
+    var imageData = event.target.result;
+
+    // 이미지 데이터를 로컬 스토리지에 저장
+    localStorage.setItem(sId + "_productImage", imageData);
+  };
+
+  // 이미지 파일을 읽기
+  reader.readAsDataURL(file);
 }
+document.getElementById("imageInput").addEventListener("change", handleImageUpload);
 // 	    window.onload = () => {
 // 	        if (localStorage.getItem("productName")) {
 // 	          if (confirm("최근 작성한 글을 불러오시겠습니까?")) {

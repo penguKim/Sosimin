@@ -450,7 +450,7 @@ $(function() {
 		      
 	          
 	          $("#myMap").val(modifiedAddress);
-	          localStorage.setItem(sId + "_tradePlace", modifiedAddress);
+	          localStorage.setItem("tradePlace", modifiedAddress);
 	          
 		    } else {
 		      alert("주소를 가져오지 못했습니다.");
@@ -458,76 +458,75 @@ $(function() {
 		  });
 		});
 	
-		
-		var sId = "${sId}";
-		
 		function askForTemporarySave() {
 			  if (confirm("임시저장 하시겠습니까?")) {
 			    // '예'를 선택하면, 입력한 값을 로컬 스토리지에 저장합니다.
-			    localStorage.setItem(sId + "_productName", $("#productName").val());
+			    localStorage.setItem("productName", $("#productName").val());
 			    var categoryName = $("#categoryName").val();
 			    if (categoryName !== 'default') {
-			    	localStorage.setItem(sId + "_categoryName", categoryName);
+			      localStorage.setItem("categoryName", categoryName);
 			    }
-			    localStorage.setItem(sId + "_tradePlace", $("#myMap").val());
-			    localStorage.setItem(sId + "_productStatus", $("input[name=product_status]:checked").val());
-			    localStorage.setItem(sId + "_trade_method", $("input[name=trade_method]:checked").val());
-			    localStorage.setItem(sId + "_product_price", $("#priceInput").val());
-			    localStorage.setItem(sId + "_ProductDescription", $("#ProductDescription").val());
+			    localStorage.setItem("tradePlace", $("#myMap").val());
+			    localStorage.setItem("productStatus", $("input[name=product_status]:checked").val());
+			    localStorage.setItem("trade_method", $("input[name=trade_method]:checked").val());
+			    localStorage.setItem("product_price", $("#priceInput").val());
+			    localStorage.setItem("ProductDescription", $("#ProductDescription").val());
 			    saveTagsToLocalStorage();
-			    localStorage.setItem(sId + "_isTempSaved", "1");
+			    localStorage.setItem("isTempSaved", "1");
 			  }
 			}
+			$(document).ready(() => {
 			  // 페이지가 로드될 때마다 '최근 작성한 글을 불러오시겠습니까?'라는 메시지를 표시합니다.
+			  loadImage();
+			});
 			// 임시저장 버튼이 클릭되었을 때 askForTemporarySave 함수를 호출합니다.
 		
 // 	$(document).ready(() => {
-function loadImage() {
-  var imageCount = 0;
-  
-  for(let i = 1; i <= 5; i++) {
-    var base64Image = localStorage.getItem("image" + i);
-    if(base64Image) {
-      var img = document.createElement("img");
-      img.setAttribute("src", base64Image);
-      img.setAttribute("class", "imageSize");
+	function loadImage() {
+  var imageCount = 0; // 이미지 카운트를 초기화합니다.
+  if (localStorage.getItem("isTempSaved") === "1") {
+    for (let i = 1 ; i <= 5; i++) {
+      var base64Image = localStorage.getItem("image" + i);
+      if (base64Image) {
+        var img = document.createElement("img");
+        img.setAttribute("src", base64Image);
+        img.setAttribute("class", "imageSize");
 
-      var closeButton = document.createElement("button");
-      closeButton.setAttribute("type", "button");
-      closeButton.setAttribute("class", "imageClose");
-      closeButton.setAttribute("onclick", "removeImage(this)");
-      
-      var imageItem = document.createElement("span");
-      imageItem.classList.add("imageItem");
+        var closeButton = document.createElement("button");
+        closeButton.setAttribute("type", "button");
+        closeButton.setAttribute("class", "imageClose");
+        closeButton.setAttribute("onclick", "removeImage(this)");
 
-      imageItem.appendChild(img);
-      imageItem.appendChild(closeButton);
+        var imageItem = document.createElement("span");
+        imageItem.classList.add("imageItem");
 
-      if(i == 1) {
-        var mainImageText = document.createElement("span");
-        mainImageText.classList.add("mainImage");
-        mainImageText.textContent = "대표이미지";
-        imageItem.appendChild(mainImageText);
+        imageItem.appendChild(img);
+        imageItem.appendChild(closeButton);
+
+        if(i == 1) {
+          var mainImageText = document.createElement("span");
+          mainImageText.classList.add("mainImage");
+          mainImageText.textContent = "대표이미지";
+          imageItem.appendChild(mainImageText);
+        }
+
+        document.getElementById("image_container").appendChild(imageItem);
+
+        imageCount++; // 이미지를 불러올 때마다 이미지 카운트를 증가시킵니다.
       }
-
-      document.getElementById("image_container").appendChild(imageItem);
-
-      imageCount++;
     }
+    document.getElementById("imageLength").textContent = imageCount.toString(); // 이미지 카운트를 표시합니다.
+    localStorage.setItem("imageCount", imageCount.toString()); // 이미지 카운트를 로컬스토리지에 저장합니다.
   }
-  document.getElementById("imageLength").textContent = imageCount.toString();
-  localStorage.setItem("imageCount", imageCount.toString());
 }
-
-
 			
 $(document).ready(() => {
+	
   function showConfirmMessage() {
-    if (localStorage.getItem(sId + "_isTempSaved") === "1") {
+    if (localStorage.getItem("isTempSaved") === "1") {
       if (confirm("최근 작성한 글을 불러오시겠습니까?")) {
-    	  loadImage();
-        $("#productName").val(localStorage.getItem(sId + "_productName"));
-        var categoryName = localStorage.getItem(sId + "_categoryName");
+        $("#productName").val(localStorage.getItem("productName"));
+        var categoryName = localStorage.getItem("categoryName");
         if (categoryName) {
           $("#categoryName").val(categoryName);
           $('#selectCategory').text(categoryName); 
@@ -538,14 +537,14 @@ $(document).ready(() => {
             selectElement.removeChild(defaultOption);
           }
         }
-        $("#myMap").val(localStorage.getItem(sId + "_tradePlace"));
-        $("#priceInput").val(localStorage.getItem(sId + "_product_price"));
-        $("#ProductDescription").val(localStorage.getItem(sId + "_ProductDescription"));
-        $("input[name=product_status][value=" + localStorage.getItem(sId + "_productStatus") + "]").prop('checked', true);
-        $("input[name=trade_method][value=" + localStorage.getItem(sId + "_trade_method") + "]").prop('checked', true);
+        $("#myMap").val(localStorage.getItem("tradePlace"));
+        $("#priceInput").val(localStorage.getItem("product_price"));
+        $("#ProductDescription").val(localStorage.getItem("ProductDescription"));
+        $("input[name=product_status][value=" + localStorage.getItem("productStatus") + "]").prop('checked', true);
+        $("input[name=trade_method][value=" + localStorage.getItem("trade_method") + "]").prop('checked', true);
         loadTagsFromLocalStorage();
       } else {
-          localStorage.removeItem(sId + "_isTempSaved");  // '아니오'를 선택하면 플래그를 삭제합니다.
+          localStorage.removeItem("isTempSaved");  // '아니오'를 선택하면 플래그를 삭제합니다.
           localStorage.clear();
        // 이미지 컨테이너의 모든 이미지를 제거합니다.
           var imageContainer = document.getElementById("image_container");
@@ -553,7 +552,7 @@ $(document).ready(() => {
             imageContainer.removeChild(imageContainer.firstChild);
           }
           document.getElementById("imageLength").textContent = "0";
-          localStorage.setItem(sId + "_imageCount", "0");
+          localStorage.setItem("imageCount", "0");
           
           var mainImageText = document.querySelector(".mainImage");
           mainImageText.style.display = "none";
@@ -564,12 +563,12 @@ $(document).ready(() => {
   showConfirmMessage();
 
   $("#productName").keyup(() => {
-    localStorage.setItem(sId + "productName", $("#productName").val());
+    localStorage.setItem("productName", $("#productName").val());
   });
 
   $("#categoryName").change(() => {
     var categoryName = $("#categoryName").val();
-    localStorage.setItem(sId + "categoryName", categoryName);
+    localStorage.setItem("categoryName", categoryName);
     $('#selectCategory').text(categoryName); 
 
     var selectElement = document.getElementById("categoryName");
@@ -580,23 +579,23 @@ $(document).ready(() => {
   });
 
   $("#myMap").change(() => {
-    localStorage.setItem(sId + "_tradePlace", $("#myMap").val());
+    localStorage.setItem("tradePlace", $("#myMap").val());
   });
 
   $("input[name=product_status]").change(() => {
-    localStorage.setItem(sId + "_productStatus", $("input[name=product_status]:checked").val());
+    localStorage.setItem("productStatus", $("input[name=product_status]:checked").val());
   });
 
   $("input[name=trade_method]").change(() => {
-    localStorage.setItem(sId + "_trade_method", $("input[name=trade_method]:checked").val());
+    localStorage.setItem("trade_method", $("input[name=trade_method]:checked").val());
   });
 
   $("#priceInput").change(() => {
-    localStorage.setItem(sId + "_product_price", $("#priceInput").val());
+    localStorage.setItem("product_price", $("#priceInput").val());
   });
 
   $("#ProductDescription").change(() => {
-    localStorage.setItem(sId + "_ProductDescription", $("#ProductDescription").val());
+    localStorage.setItem("ProductDescription", $("#ProductDescription").val());
   });
 
   $("#tagName").keypress(function(e) {
@@ -627,16 +626,12 @@ function saveTagsToLocalStorage() {
   $("#tagContainer .tag").each(function() {
     tags.push($(this).text().substring(1));  // '#' 제거
   });
-  localStorage.setItem(sId + "_tag_names", JSON.stringify(tags));
+  localStorage.setItem("tag_names", JSON.stringify(tags));
 }
 
 function loadTagsFromLocalStorage() {
-  var tags = JSON.parse(localStorage.getItem(sId + "_tag_names"));
+  var tags = JSON.parse(localStorage.getItem("tag_names"));
   if (tags) {
-	    var tagContainer = document.getElementById("tagContainer");
-	    while (tagContainer.firstChild) {
-      tagContainer.removeChild(tagContainer.firstChild);
-  }
     for (var i = 0; i < tags.length; i++) {
       addTag(tags[i]);
     }
@@ -663,28 +658,21 @@ function addTag(tagName) {
 		
 //이미지 파일 선택 시 실행되는 함수
 function handleImageUpload(event) {
-  var files = event.target.files;
+  var file = event.target.files[0];
 
-  for(let i = 0; i < files.length; i++){
-    // FileReader 객체 생성
-    var reader = new FileReader();
-    
-    // FileReader 로드 완료 후 실행되는 함수
-    reader.onload = function(event) {
-      var imageData = event.target.result;
+  // FileReader 객체 생성
+  var reader = new FileReader();
 
-      // 이미지 데이터를 로컬 스토리지에 저장
-      for(let i = 1; i <= 5; i++){
-          if(!localStorage.getItem("image" + i)){
-              localStorage.setItem("image" + i, imageData);
-              break;
-          }
-      }
-    };
-  
-    // 이미지 파일을 읽기
-    reader.readAsDataURL(files[i]);
-  }
+  // FileReader 로드 완료 후 실행되는 함수
+  reader.onload = function(event) {
+    var imageData = event.target.result;
+
+    // 이미지 데이터를 로컬 스토리지에 저장
+    localStorage.setItem("productImage", imageData);
+  };
+
+  // 이미지 파일을 읽기
+  reader.readAsDataURL(file);
 }
 // 	    window.onload = () => {
 // 	        if (localStorage.getItem("productName")) {

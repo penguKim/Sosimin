@@ -27,6 +27,8 @@
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <style type="text/css">
 	article {
 		text-align: center;
@@ -225,10 +227,12 @@ h1 {
     margin-right: 1rem;
     border-radius: 2px;
     background-color: white;
+    display: inline-block;
 }
 
 #divPadding{
 	position: relative;
+	display: inline-block;
 }
 
 .categoryPadding{
@@ -290,6 +294,11 @@ padding-top: 21px;
 	position: relative;
 	padding-top: 30px;
 }
+#priceProposal{
+	display: inline-block;
+	margin-left: 10px;
+	color:red;
+}
 
 #priceProposal , #Category{
 	margin-top: 5px;
@@ -332,11 +341,11 @@ padding-top: 21px;
 	position:relative;
     height: 3.5rem;
     width: 10rem;
-    color: rgb(255, 255, 255);
+    color: white;
     font-size: 20px;
     font-weight: 700;
     border-radius: 2px;
-    background: rgb(216, 12, 24);
+    background: #39d274;
     display: inline-block;
     -webkit-box-align: center;
     align-items: center;
@@ -344,9 +353,10 @@ padding-top: 21px;
     justify-content: center;
     margin-top: 15px;
     margin-bottom: 50px;
+    border:none;
 }
 
-#save2{
+#temporarySaveButton{
 	position:relative;
     height: 3.5rem;
     width: 10rem;
@@ -392,186 +402,7 @@ padding-top: 21px;
 </head>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
-
-// 임시저장을 위한 함수
-//$(document).ready(() => {
-//var isConfirmed = false;
-
-//function showConfirmMessage() {
-//  if (!isConfirmed && (localStorage.getItem("productName") || localStorage.getItem("categoryName") || localStorage.getItem("tradePlace") || localStorage.getItem("productStatus") || localStorage.getItem("trade_method") || localStorage.getItem("product_price") || localStorage.getItem("tag_names"))) {
-//    if (confirm("최근 작성한 글을 불러오시겠습니까?")) {
-//      console.log(localStorage.getItem("productName"));
-//      $("#productName").val(localStorage.getItem("productName"));
-
-//      var categoryName = localStorage.getItem("categoryName");
-//      if (categoryName) {
-//        $('#categoryName').val(categoryName);
-//        $('#selectCategory').text(categoryName); 
-
-//        var selectElement = document.getElementById("categoryName");
-//        var defaultOption = selectElement.querySelector("option[value='default']");
-//        if (defaultOption) {
-//          selectElement.removeChild(defaultOption);
-//        }
-//      }
-
-//      if (localStorage.getItem("tradePlace")) {
-//        $("#myMap").val(localStorage.getItem("tradePlace"));
-//      }
-//      if (localStorage.getItem("product_price")) {
-//        $("#priceInput").val(localStorage.getItem("product_price"));
-//      }
-//      if (localStorage.getItem("ProductDescription")) {
-//        $("#ProductDescription").val(localStorage.getItem("ProductDescription"));
-//      }
-//      if (localStorage.getItem("productStatus")) {
-//        $("input[name=product_status][value=" + localStorage.getItem("productStatus") + "]").prop('checked', true);
-//      }
-//      if (localStorage.getItem("trade_method")) {
-//        $("input[name=trade_method][value=" + localStorage.getItem("trade_method") + "]").prop('checked', true);
-//      }
-
-//      loadTagsFromLocalStorage();
-//    } else {
-//      localStorage.clear();
-//    }
-//    isConfirmed = true;
-//  }
-//}
-
-//showConfirmMessage();
-
-//$("#productName").keydown(() => {
-//  var productName = $("#productName").val();
-//  console.log(productName);
-//  localStorage.setItem("productName", productName);
-//  showConfirmMessage();
-//});
-
-//// 카테고리 저장 코드
-//$("#categoryName").change(() => {
-//  var categoryName = $("#categoryName").val();
-//  console.log(categoryName);
-//  localStorage.setItem("categoryName", categoryName);
-//  $('#selectCategory').text(categoryName); 
-
-//  var selectElement = document.getElementById("categoryName");
-//  var defaultOption = selectElement.querySelector("option[value='default']");
-//  if (defaultOption) {
-//    selectElement.removeChild(defaultOption);
-//  }
-//  showConfirmMessage();
-//});
-
-//// 지역 설정 저장 코드
-//$("#myMap").change(() => {
-//  var tradePlace = $("#myMap").val();
-//  console.log(tradePlace);
-//  localStorage.setItem("tradePlace", tradePlace);
-//  showConfirmMessage();
-//});
-
-//// 상품 상태 라디오 버튼 상태 저장 코드
-//$("input[name=product_status]").change(() => {
-//  var productStatus = $("input[name=product_status]:checked").val();
-//  console.log(productStatus);
-//  localStorage.setItem("productStatus", productStatus);
-//  showConfirmMessage();
-//});
-
-//// 거래방법 라디오 버튼 상태 저장 코드
-//$("input[name=trade_method]").change(() => {
-//  var trade_method = $("input[name=trade_method]:checked").val();
-//  console.log(trade_method);
-//  localStorage.setItem("trade_method", trade_method);
-//  showConfirmMessage();
-//});
-
-//// 가격 설정 저장 코드
-//$("#priceInput").change(() => {
-//  var product_price = $("#priceInput").val();
-//  console.log(product_price);
-//  localStorage.setItem("product_price", product_price);
-//  showConfirmMessage();
-//});
-
-//// 설명 저장 코드
-//$("#ProductDescription").change(() => {
-//  var ProductDescription = $("#ProductDescription").val();
-//  console.log(ProductDescription);
-//  localStorage.setItem("ProductDescription", ProductDescription);
-//  showConfirmMessage();
-//});
-
-//$("#tagName").keypress(function(e) {
-//  if (e.which == 13) {  // 엔터 키
-//    $("#tagName2").click();
-//    e.preventDefault();
-//  }
-//});
-
-//$("#tagName2").click(() => {
-//  var tagName = $("#tagName").val();
-//  if (tagName) {
-//    addTag(tagName);
-//    $("#tagName").val("");
-//    saveTagsToLocalStorage();
-//    showConfirmMessage();
-//  }
-//});
-
-//$(document).on("click", ".close-button", function() {
-//  $(this).closest(".tag").remove();
-//  $("#tagName").prop("disabled", false);
-//  saveTagsToLocalStorage();
-//  showConfirmMessage();
-//});
-//});
-
-//// 로컬스토리지에 태그 저장
-//function saveTagsToLocalStorage() {
-//var tags = [];
-//$("#tagContainer .tag").each(function() {
-//  tags.push($(this).text().substring(1));  // '#' 제거
-//});
-//localStorage.setItem("tag_names", JSON.stringify(tags));
-//}
-
-//// 로컬스토리지에서 태그 불러오기
-//function loadTagsFromLocalStorage() {
-//var tags = JSON.parse(localStorage.getItem("tag_names"));
-//if (tags) {
-//  for (var i = 0; i < tags.length; i++) {
-//    addTag(tags[i]);
-//  }
-//}
-//}
-
-//// 태그 추가
-//function addTag(tagName) {
-//var tagElement = document.createElement("span");
-//tagElement.innerText = "#" + tagName;
-//tagElement.classList.add("tag");
-
-//var closeButton = document.createElement("button");
-//closeButton.innerText = "";
-//closeButton.classList.add("close-button");
-//tagElement.appendChild(closeButton);
-
-//var tagContainer = document.getElementById("tagContainer");
-//tagContainer.appendChild(tagElement);
-
-//if (tagContainer.querySelectorAll(".tag").length >= 4) {
-//  document.getElementById("tagName").disabled = true;
-//}
-//}
-
-
-
-
-
 $(function() {
-	
 	navigator.geolocation.getCurrentPosition(function(position) {
 		  var latitude = position.coords.latitude; // 현재 위치의 위도
 		  var longitude = position.coords.longitude; // 현재 위치의 경도
@@ -606,17 +437,260 @@ $(function() {
 	          
 	          var address = result[0].address.address_name; // 지번 주소
 	          
-	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          
+// 	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          
+	          if(address.split(' ')[0] == "부산" || address.split(' ')[0] == "대구" || address.split(' ')[0] == "인천" || address.split(' ')[0] == "광주" || address.split(' ')[0] == "대전" || address.split(' ')[0] == "울산"  ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else if(address.split(' ')[0] == "서울" ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "특별시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else {
+	        	  var modifiedAddress = address.split(' ')[0]  + " " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          }
+		      
 	          
 	          $("#myMap").val(modifiedAddress);
-	          
+	          localStorage.setItem(sId + "_tradePlace", modifiedAddress);
 	          
 		    } else {
 		      alert("주소를 가져오지 못했습니다.");
 		    }
 		  });
 		});
+	
 		
+		var sId = "${sId}";
+		
+		function askForTemporarySave() {
+			  if (confirm("임시저장 하시겠습니까?")) {
+			    // '예'를 선택하면, 입력한 값을 로컬 스토리지에 저장합니다.
+			    localStorage.setItem(sId + "_productName", $("#productName").val());
+			    var categoryName = $("#categoryName").val();
+			    if (categoryName !== 'default') {
+			    	localStorage.setItem(sId + "_categoryName", categoryName);
+			    }
+			    localStorage.setItem(sId + "_tradePlace", $("#myMap").val());
+			    localStorage.setItem(sId + "_productStatus", $("input[name=product_status]:checked").val());
+			    localStorage.setItem(sId + "_trade_method", $("input[name=trade_method]:checked").val());
+			    localStorage.setItem(sId + "_product_price", $("#priceInput").val());
+			    localStorage.setItem(sId + "_ProductDescription", $("#ProductDescription").val());
+			    saveTagsToLocalStorage();
+			    localStorage.setItem(sId + "_isTempSaved", "1");
+			  }
+			}
+			  // 페이지가 로드될 때마다 '최근 작성한 글을 불러오시겠습니까?'라는 메시지를 표시합니다.
+			// 임시저장 버튼이 클릭되었을 때 askForTemporarySave 함수를 호출합니다.
+		
+// 	$(document).ready(() => {
+function loadImage() {
+  var imageCount = 0;
+  for(let i = 1; i <= 5; i++) {
+    var base64Image = localStorage.getItem("image" + i);
+    if(base64Image) {
+      var img = document.createElement("img");
+      img.setAttribute("src", base64Image);
+      img.setAttribute("class", "imageSize");
+
+      var imageItem = document.createElement("span");
+      imageItem.classList.add("imageItem");
+
+      imageItem.appendChild(img);
+
+      if(i == 1) {
+        var mainImageText = document.createElement("span");
+        mainImageText.classList.add("mainImage");
+        mainImageText.textContent = "대표이미지";
+        imageItem.appendChild(mainImageText);
+      }
+
+      document.getElementById("image_container").appendChild(imageItem);
+
+      imageCount++;
+    }
+  }
+  document.getElementById("imageLength").textContent = imageCount.toString();
+  localStorage.setItem("imageCount", imageCount.toString());
+}
+
+
+			
+$(document).ready(() => {
+  function showConfirmMessage() {
+    if (localStorage.getItem(sId + "_isTempSaved") === "1") {
+      if (confirm("최근 작성한 글을 불러오시겠습니까?")) {
+    	  loadImage();
+        $("#productName").val(localStorage.getItem(sId + "_productName"));
+        var categoryName = localStorage.getItem(sId + "_categoryName");
+        if (categoryName) {
+          $("#categoryName").val(categoryName);
+          $('#selectCategory').text(categoryName); 
+
+          var selectElement = document.getElementById("categoryName");
+          var defaultOption = selectElement.querySelector("option[value='default']");
+          if (defaultOption) {
+            selectElement.removeChild(defaultOption);
+          }
+        }
+        $("#myMap").val(localStorage.getItem(sId + "_tradePlace"));
+        $("#priceInput").val(localStorage.getItem(sId + "_product_price"));
+        $("#ProductDescription").val(localStorage.getItem(sId + "_ProductDescription"));
+        $("input[name=product_status][value=" + localStorage.getItem(sId + "_productStatus") + "]").prop('checked', true);
+        $("input[name=trade_method][value=" + localStorage.getItem(sId + "_trade_method") + "]").prop('checked', true);
+        loadTagsFromLocalStorage();
+      } else {
+          localStorage.removeItem(sId + "_isTempSaved");  // '아니오'를 선택하면 플래그를 삭제합니다.
+          localStorage.clear();
+       // 이미지 컨테이너의 모든 이미지를 제거합니다.
+          var imageContainer = document.getElementById("image_container");
+          while (imageContainer.firstChild) {
+            imageContainer.removeChild(imageContainer.firstChild);
+          }
+          document.getElementById("imageLength").textContent = "0";
+          localStorage.setItem(sId + "_imageCount", "0");
+          
+          var mainImageText = document.querySelector(".mainImage");
+          mainImageText.style.display = "none";
+      }
+    }
+  }
+  $('#temporarySaveButton').click(askForTemporarySave);
+  showConfirmMessage();
+
+  $("#productName").keyup(() => {
+    localStorage.setItem(sId + "productName", $("#productName").val());
+  });
+
+  $("#categoryName").change(() => {
+    var categoryName = $("#categoryName").val();
+    localStorage.setItem(sId + "categoryName", categoryName);
+    $('#selectCategory').text(categoryName); 
+
+    var selectElement = document.getElementById("categoryName");
+    var defaultOption = selectElement.querySelector("option[value='default']");
+    if (defaultOption) {
+      selectElement.removeChild(defaultOption);
+    }
+  });
+
+  $("#myMap").change(() => {
+    localStorage.setItem(sId + "_tradePlace", $("#myMap").val());
+  });
+
+  $("input[name=product_status]").change(() => {
+    localStorage.setItem(sId + "_productStatus", $("input[name=product_status]:checked").val());
+  });
+
+  $("input[name=trade_method]").change(() => {
+    localStorage.setItem(sId + "_trade_method", $("input[name=trade_method]:checked").val());
+  });
+
+  $("#priceInput").change(() => {
+    localStorage.setItem(sId + "_product_price", $("#priceInput").val());
+  });
+
+  $("#ProductDescription").change(() => {
+    localStorage.setItem(sId + "_ProductDescription", $("#ProductDescription").val());
+  });
+
+  $("#tagName").keypress(function(e) {
+    if (e.which == 13) {
+      $("#tagName2").click();
+      e.preventDefault();
+    }
+  });
+
+  $("#tagName2").click(() => {
+    var tagName = $("#tagName").val();
+    if (tagName) {
+      addTag(tagName);
+      $("#tagName").val("");
+      saveTagsToLocalStorage();
+    }
+  });
+
+  $(document).on("click", ".close-button", function() {
+    $(this).closest(".tag").remove();
+    $("#tagName").prop("disabled", false);
+    saveTagsToLocalStorage();
+  });
+});
+
+function saveTagsToLocalStorage() {
+  var tags = [];
+  $("#tagContainer .tag").each(function() {
+    tags.push($(this).text().substring(1));  // '#' 제거
+  });
+  localStorage.setItem(sId + "_tag_names", JSON.stringify(tags));
+}
+
+function loadTagsFromLocalStorage() {
+  var tags = JSON.parse(localStorage.getItem(sId + "_tag_names"));
+  if (tags) {
+	    var tagContainer = document.getElementById("tagContainer");
+	    while (tagContainer.firstChild) {
+      tagContainer.removeChild(tagContainer.firstChild);
+  }
+    for (var i = 0; i < tags.length; i++) {
+      addTag(tags[i]);
+    }
+  }
+}
+
+function addTag(tagName) {
+  var tagElement = document.createElement("span");
+  tagElement.innerText = "#" + tagName;
+  tagElement.classList.add("tag");
+
+  var closeButton = document.createElement("button");
+  closeButton.innerText = "";
+  closeButton.classList.add("close-button");
+  tagElement.appendChild(closeButton);
+
+  var tagContainer = document.getElementById("tagContainer");
+  tagContainer.appendChild(tagElement);
+
+  if (tagContainer.querySelectorAll(".tag").length >= 4) {
+    document.getElementById("tagName").disabled = true;
+  }
+}
+		
+//이미지 파일 선택 시 실행되는 함수
+function handleImageUpload(event) {
+  var files = event.target.files;
+
+  for(let i = 0; i < files.length; i++){
+    // FileReader 객체 생성
+    var reader = new FileReader();
+    
+    // FileReader 로드 완료 후 실행되는 함수
+    reader.onload = function(event) {
+      var imageData = event.target.result;
+
+      // 이미지 데이터를 로컬 스토리지에 저장
+      for(let i = 1; i <= 5; i++){
+          if(!localStorage.getItem("image" + i)){
+              localStorage.setItem("image" + i, imageData);
+              break;
+          }
+      }
+    };
+  
+    // 이미지 파일을 읽기
+    reader.readAsDataURL(files[i]);
+  }
+}
+// 	    window.onload = () => {
+// 	        if (localStorage.getItem("productName")) {
+// 	          if (confirm("최근 작성한 글을 불러오시겠습니까?")) {
+// 	            console.log(localStorage.getItem("productName"));
+
+// 	            document.querySelector(".area").innerText =
+// 	              localStorage.getItem("productName");
+// 	          } else {
+// 	            localStorage.removeItem("productName");
+// 	          }
+// 	        }
+// 	      };
 	});
 
 // XX 자릿수 이상을 입력 못하게 하기위한 코드
@@ -669,7 +743,24 @@ function price(input) {
 	  // 숫자 이외의 값을 입력 못하게한다.
 // 	  input.value = input.value.replace(/[^0-9]/g, '');
 	  
+var priceInput = $("#priceInput");
+
+	
+priceInput.on("blur", function() {
+    var inputValue = $(this).val();
+    
+    if(inputValue < 1000) {
+        $("#priceProposal").html('최소 판매금액은 1,000원 입니다.');
+    } else {
+        $("#priceProposal").empty();
+    }
+});	
 	  var value = input.value.replace(/[^0-9]/g, '');
+	  
+		if (value.length > 9) {
+		    value = value.substring(0, 9);
+		}
+	  
 	  
 	  var formattedValue = Number(value).toLocaleString();
 	  
@@ -727,275 +818,191 @@ $(document).on("click", ".close-button", function() {
   $("#tagName").prop("disabled", false);
 });
 
-//   var imageCounter = 1;
-// // 썸네일 이미지 작업을 위한 코드
-// function setThumbnail(event) {
-//   var fileVal = event.target.value;
-//   if (fileVal != "") {
-//     var ext = fileVal.split('.').pop().toLowerCase(); // 확장자 분리
+// 썸네일 작업
+// var formData = new FormData(); // 전역 변수로 FormData 객체 생성
+// var files = []; // 사용자가 선택한 모든 파일을 저장할 배열
+// var imageCounter = 1;
 
-//     // 허용되는 확장자 리스트
-//     var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
-
-//     // 허용되지 않는 확장자일 경우 경고 메시지 출력 후 등록 취소
-//     if (!allowedExtensions.includes(ext)) {
-//       alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
-//       event.target.value = ""; // 파일 입력 필드 초기화
-//       return false;
-//     }
-//   } else {
-//     return false;
-//   }
-  
-//   var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
-//   imageLength++;
-//   document.getElementById("imageLength").textContent = imageLength;
-
-//   if (imageLength <= 5) {
-//     var reader = new FileReader();
-//     var imageContainer = document.getElementById("image_container");
-//     reader.onload = function(event) {
-//       var img = document.createElement("img");
-//       img.setAttribute("src", event.target.result);
-//       img.setAttribute("class", "imageSize");
-
-//       var imageText = document.querySelector(".mainImage");
-//       imageText.style.display = "inline";
-
-//       var closeButton = document.createElement("button");
-//       closeButton.setAttribute("type", "button");
-//       closeButton.setAttribute("class", "imageClose");
-//       closeButton.setAttribute("onclick", "removeImage(this)");
-
-//       var imageItem = document.createElement("span");
-//       imageItem.classList.add("imageItem");
-      
-//       var imageNameInput = document.createElement("input");
-//       imageNameInput.type = "hidden";
-// //       imageNameInput.name = "product_image" + imageCounter; // 컨트롤러로 전달할 name 속성 (순차적으로 증가)
-//       imageNameInput.name = "product_image" + imageCounter++;
-//       imageItem.appendChild(imageNameInput);
-      
-//       // Name 값을 가져와서 'name' 속성으로 설정합니다.
-//       var name = "itemName"; // 여기에 Name 값 설정
-//       imageItem.setAttribute("name", name);
-
-//       imageItem.appendChild(img);
-//       imageItem.appendChild(closeButton);
-
-//       imageContainer.appendChild(imageItem);
-//     };
-
-//     reader.readAsDataURL(event.target.files[0]);
-//   } else if (imageLength > 5) {
-// 	  alert("사진 첨부는 최대 5장까지 가능합니다.");
-// 	  imageLength = 5;
-// 	  document.getElementById("imageLength").textContent = imageLength;
-//   } 
-// }
-
+var selectedFiles = [];  // 사용자가 선택한 파일을 저장할 배열
 
 function setThumbnail(event) {
-  var files = event.target.files; // 등록된 모든 파일 가져오기
+	  var newFiles = event.target.files;
+	  var imageCounter = document.querySelectorAll(".imageItem").length + 1;
+	  
+	  for (var i = 0; i < newFiles.length; i++) {
+	    var file = newFiles[i];
+	    var ext = file.name.split('.').pop().toLowerCase();
+	    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
 
-  for (var i = 0; i < files.length; i++) { // 각 파일에 대해 처리
-    var file = files[i];
-    var ext = file.name.split('.').pop().toLowerCase(); // 파일 확장자 분리
+	    if (!allowedExtensions.includes(ext)) {
+	      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
+	      event.target.value = "";
+	      return false;
+	    }
 
-    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+	    var imageLength = parseInt(document.getElementById("imageLength").textContent);
+	    imageLength++;
 
-    if (!allowedExtensions.includes(ext)) {
-      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
-      event.target.value = ""; 
-      return false;
-    }
+	    if (imageLength <= 5) {
+	      selectedFiles.push(file); 
+	      document.getElementById("imageLength").textContent = imageLength;
+	      localStorage.setItem("imageCount", imageLength.toString()); // 임시 저장된 이미지의 갯수를 로컬 스토리지에 저장
 
-    var reader = new FileReader();
-    reader.onload = (function(file) { // 즉시 실행 함수를 사용하여 file 객체를 저장
-      return function(e) {
-        var img = document.createElement("img");
-        img.setAttribute("src", e.target.result);
-        img.setAttribute("class", "imageSize");
+	      var reader = new FileReader();
+	      reader.onload = (function(file) {
+	        return function(e) {
+	          var img = document.createElement("img");
+	          img.setAttribute("src", e.target.result);
+	          img.setAttribute("class", "imageSize");
 
-        var imageItem = document.createElement("span");
-        imageItem.classList.add("imageItem");
+	          localStorage.setItem("image" + imageCounter, e.target.result); // 이미지를 Base64 형식의 문자열로 변환하여 로컬스토리지에 저장
 
-        var imageNameInput = document.createElement("input");
-        imageNameInput.type = "hidden";
-        imageNameInput.name = "product_image_name"; // name 속성 수정
-        imageNameInput.value = file.name; // input 값으로 파일 이름 설정
-        imageItem.appendChild(imageNameInput);
+	          var closeButton = document.createElement("button");
+	          closeButton.setAttribute("type", "button");
+	          closeButton.setAttribute("class", "imageClose");
+	          closeButton.setAttribute("onclick", "removeImage(this)");
 
-        imageItem.appendChild(img);
+	          var imageItem = document.createElement("span");
+	          imageItem.classList.add("imageItem");
+	          imageItem.file = file;
+	          
+	          imageItem.appendChild(img);
+	          imageItem.appendChild(closeButton);
+	          document.getElementById("image_container").appendChild(imageItem);
 
-        document.getElementById("image_container").appendChild(imageItem);
-      };
-    })(file);
-
-    reader.readAsDataURL(file);
-  }
-}
-
-// ---------------------------------------------
-// 방법 2 image1 2 3 4 5 로 받아오기
-
-  var imageCounter = 1;
-// 썸네일 이미지 작업을 위한 코드
-
-function setThumbnail(event) {
-  var files = event.target.files; // 등록된 모든 파일 가져오기
-
-  if (files.length > 5) { // 파일을 5개 초과하여 선택한 경우
-    alert("사진 첨부는 최대 5장까지 가능합니다.");
-    event.target.value = ""; 
-    return false;
-  }
-
-  for (var i = 0; i < files.length; i++) { // 각 파일에 대해 처리
-    var file = files[i];
-    var ext = file.name.split('.').pop().toLowerCase(); // 파일 확장자 분리
-
-    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
-
-    if (!allowedExtensions.includes(ext)) {
-      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
-      event.target.value = ""; 
-      return false;
-    }
-
-    var reader = new FileReader();
-    reader.onload = (function(file) { // 즉시 실행 함수를 사용하여 file 객체를 저장
-      return function(e) {
-        var img = document.createElement("img");
-        img.setAttribute("src", e.target.result);
-        img.setAttribute("class", "imageSize");
-
-        var imageItem = document.createElement("span");
-        imageItem.classList.add("imageItem");
-
-        var imageNameInput = document.createElement("input");
-        imageNameInput.type = "hidden";
-        imageNameInput.name = "product_image_name" + imageCounter++; // name 속성 수정
-        imageNameInput.value = file.name; // input 값으로 파일 이름 설정
-        imageItem.appendChild(imageNameInput);
-
-        imageItem.appendChild(img);
-
-        document.getElementById("image_container").appendChild(imageItem);
-      };
-    })(file);
-
-    reader.readAsDataURL(file);
-  }
-}
-
-// 파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
+	          // 첫 번째 이미지에 "대표이미지" 텍스트를 추가합니다.
+	          if(imageCounter == 1) {
+	            var mainImageText = document.createElement("span");
+	            mainImageText.classList.add("mainImage");
+	            mainImageText.textContent = "대표이미지";
+	            imageItem.appendChild(mainImageText);
+	          }
+	          imageCounter++;
+	        };
+	      })(file);
+	      reader.readAsDataURL(file);
+	    } else if (imageLength > 5) {
+	      alert("사진 첨부는 최대 5장까지 가능합니다.");
+	      imageLength = 5;
+	      document.getElementById("imageLength").textContent = imageLength;
+	    }
+	  }
+	}
+//파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
 function addFileInput() {
-  document.getElementById("product_image").click();
-}
-// --------------------------------------------------------------------------
-
-function removeImage(button) {
-  var imageItem = button.parentNode;
-  var imageContainer = imageItem.parentNode;
-  imageContainer.removeChild(imageItem);
-  
-  var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
-  imageLength--;
-  document.getElementById("imageLength").textContent = imageLength;
-
-  // 대표 이미지가 없는 경우 숨김 처리
-  var imageText = document.querySelector(".mainImage");
-  if (imageContainer.children.length === 1) {
-    imageText.style.display = "none";
-  }
+document.getElementById("product_image").click();
 }
 
-function addFileInput() {
-	  // 파일 선택 input 요소를 선택합니다.
-	  var fileInput = document.getElementById('product_image');
+	  
+function submitFiles(event) {
+	  // 폼의 모든 필드가 채워졌는지 확인
+		 if (checkInput() === false) {
+		    return;  // 함수 실행 종료
+		  }
+	
+	  var form = document.querySelector('form');
+	  
+// 	  // 폼의 모든 필드가 채워졌는지 확인
+// 	  var formElements = form.elements;
+// 	  for (var i = 0; i < formElements.length; i++) {
+// 	    var element = formElements[i];
+// 	    if (element.name && element.value.trim() == '') {  // 필드가 비어있는 경우
+// 	      alert('모든 필드를 채워주세요.');
+// 	      return;  // 함수 실행 종료
+// 	    }
+// 	  }
+	  
+	  var formData = new FormData();
+	  var productStatus = document.querySelector('input[name="product_status"]:checked').value;
+	  var tradeMethod = document.querySelector('input[name="trade_method"]:checked').value;
+	  formData.append('product_status', productStatus);
+	  formData.append('trade_method', tradeMethod);
+	  // Form의 각 필드를 개별적으로 FormData에 추가
+	  var formElements = form.elements;
+	  for (var i = 0; i < formElements.length; i++) {
+	    var element = formElements[i];
+	    if (element.name && element.name != 'product_image') {  // 'product_image' 필드 제외
+	      formData.append(element.name, element.value);
+	    }
+	  }
+		
+	  
+	  for (var i = 0; i < selectedFiles.length; i++) {
+	    formData.append('product_image', selectedFiles[i]);
+	  }
 
-	  // 파일 선택 input 요소를 클릭합니다.
-	  fileInput.click();
+	  $.ajax({
+		    url: 'ProductRegistSuccess',
+		    type: 'POST',
+		    data: formData,
+		    processData: false,
+		    contentType: false,
+		    success: function(data) {
+		        // 서버로부터 응답을 받았을 때 실행되는 코드
+		        console.log('File upload successful!');
+		        location.href =  "ProductDetail?product_id=" + data;
+		    },
+		    error: function(jqXHR, textStatus, errorThrown) {
+		        // 파일 업로드에 실패했을 때 실행되는 코드
+		        alert('실패');
+		        console.log(jqXHR, textStatus, errorThrown);
+		    }
+		});
 	}
 
-
-
-// 3 젤 처음꺼
-
-  var imageCounter = 1;
-// 썸네일 이미지 작업을 위한 코드
-
-function setThumbnail(event) {
-  var fileVal = event.target.value;
-  if (fileVal != "") {
-    var ext = fileVal.split('.').pop().toLowerCase(); // 확장자 분리
-
-    // 허용되는 확장자 리스트
-    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
-
-    // 허용되지 않는 확장자일 경우 경고 메시지 출력 후 등록 취소
-    if (!allowedExtensions.includes(ext)) {
-      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
-      event.target.value = ""; // 파일 입력 필드 초기화
-      return false;
-    }
-  } else {
-    return false;
-  }
+// // 제출 버튼 클릭 시 서버로 모든 파일 전송
+// document.getElementById("submit").addEventListener("click", function() {
+//   var xhr = new XMLHttpRequest();
+//   xhr.open("POST", "/upload", true);
   
-  var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
-  imageLength++;
-  document.getElementById("imageLength").textContent = imageLength;
+//   var data = new FormData();
+//   for (var i = 0; i < files.length; i++) {
+//     data.append(files[i].name, files[i].file);
+//   }
+//   xhr.send(data);
+// });
 
-  if (imageLength <= 5) {
-    var reader = new FileReader();
-    var imageContainer = document.getElementById("image_container");
-    reader.onload = function(event) {
-      var img = document.createElement("img");
-      img.setAttribute("src", event.target.result);
-      img.setAttribute("class", "imageSize");
 
-      var imageText = document.querySelector(".mainImage");
-      imageText.style.display = "inline";
-
-      var closeButton = document.createElement("button");
-      closeButton.setAttribute("type", "button");
-      closeButton.setAttribute("class", "imageClose");
-      closeButton.setAttribute("onclick", "removeImage(this)");
-
-      var imageItem = document.createElement("span");
-      imageItem.classList.add("imageItem");
-      
-      var imageNameInput = document.createElement("input");
-      imageNameInput.type = "hidden";
-      imageNameInput.name = "product_image" + imageCounter++;
-      imageItem.appendChild(imageNameInput);
-      
-      // Name 값을 가져와서 'name' 속성으로 설정합니다.
-      var name = "itemName"; // 여기에 Name 값 설정
-      imageItem.setAttribute("name", name);
-
-      imageItem.appendChild(img);
-      imageItem.appendChild(closeButton);
-
-      imageContainer.appendChild(imageItem);
-    };
-
-    reader.readAsDataURL(event.target.files[0]);
-  } else if (imageLength > 5) {
-    alert("사진 첨부는 최대 5장까지 가능합니다.");
-    imageLength = 5;
-    document.getElementById("imageLength").textContent = imageLength;
-  } 
-}
 
 // 이미지 삭제
-
 function removeImage(button) {
-  var imageItem = button.parentNode;
-  var imageContainer = imageItem.parentNode;
+  var imageItem = button.parentNode; // 이미지 항목
+  var imageContainer = imageItem.parentNode; // 이미지 컨테이너
+
+  // 이미지 항목에서 input 요소(이미지 이름 값) 찾기
+  var imageNameInput = imageItem.querySelector('input[name^="image_name"]');
+  if (imageNameInput) {
+    // 이미지 이름 값 삭제
+    imageNameInput.parentNode.removeChild(imageNameInput);
+  }
+  
+  // 이미지 항목 삭제
   imageContainer.removeChild(imageItem);
+  
+//   var index = imageItem.dataset.index;  // 파일의 인덱스를 가져옵니다.
+//   selectedFiles.splice(index, 1);
+  
+  var file = imageItem.file;  // 파일 객체를 가져옵니다.
+  var index = selectedFiles.indexOf(file);  // selectedFiles 배열에서 해당 파일의 인덱스를 찾습니다.
+  if (index > -1) {
+    selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
+  }
+//   selectedFiles = Array.from(imageContainer.children)
+//   .slice(1)  // 첫 번째 요소는 이미지 추가 버튼이므로 제외합니다.
+//   .map(function(imageItem) {
+//     var index = imageItem.dataset.index;  // 이미지의 인덱스를 가져옵니다.
+//     return selectedFiles[index];  // selectedFiles 배열에서 해당 이미지를 가져옵니다.
+//   });
+  
+  if (imageItem.querySelector(".mainImage")) {
+	    var nextImageItem = imageContainer.children[1]; 
+	    if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {
+	        var mainImageText = document.createElement("span");
+	        mainImageText.classList.add("mainImage");
+	        mainImageText.textContent = "대표이미지";
+	        nextImageItem.appendChild(mainImageText);
+	      }
+	    }
   
   var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
   imageLength--;
@@ -1006,33 +1013,101 @@ function removeImage(button) {
   if (imageContainer.children.length === 1) {
     imageText.style.display = "none";
   }
+  
+  // imageCounter 감소
+  if (imageCounter > 0) {
+    imageCounter--;
+  }
 }
 
-function addFileInput() {
-	  // 파일 선택 input 요소를 선택합니다.
-	  var fileInput = document.getElementById('product_image');
+// 지도로 찾기 팝업
+function AddressMap() {
+  var width = 563; // 팝업 창의 가로 크기
+  var height = 535; // 팝업 창의 세로 크기
+  var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
+  var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
 
-	  // 파일 선택 input 요소를 클릭합니다.
-	  fileInput.click();
+  var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
+
+  window.open("AddressMap", "지도로 찾기", options);
+}
+
+// 팝업창에서 가져온 값을 뿌려준다.
+function setAddress(address) {
+	  document.getElementById('myMap').value = address;
 	}
 
 
-// -------------------------------------------------
 
 
-
-//체크된 라디오 버튼 요소 선택
-var radioButton = document.querySelector('input[name="trade_method"]:checked');
-
-// 체크된 값 가져오기
-var checkedValue = radioButton.value;
-
-
-
-
+function checkInput() {
+	var fileInput = document.getElementById('product_image');
+    var imageCount = parseInt(localStorage.getItem("imageCount") || "0");
+	  
+    var fileInput = document.getElementById('product_image');
+    if (fileInput.files.length === 0) {
+//     if (fileInput.files.length === 0 && imageCount === 0) {
+      alert('이미지파일 1개 이상 등록하셔야 됩니다.');
+      	$("#product_image").focus();
+      	$("html, body").animate({ // 페이지를 이동시켜준다.
+      	  scrollTop: $("#required").offset().top
+      	}, 500); // 스크롤 애니메이션의 속도를 나타낸다.
+      return false; // 제출 중단
+    }else if($("#productName").val() === "") {
+    	alert("상품명 등록 필수입니다.");
+    	$("#productName").focus();
+    	$("html, body").animate({
+   		  scrollTop: $("#productName").offset().top
+   		}, 500);
+    	return false;
+    }else if($("#categoryName").val() === "default") {
+    	alert("카테고리 선택 필수입니다.");
+    	$("#categoryName").focus();
+    	$("html, body").animate({
+   		  scrollTop: $("#divPadding").offset().top
+   		}, 500);
+    	return false;
+    }else if($("#myMap").val() === "") {
+    	alert("거래지역 등록 필수입니다.");
+    	$("#myMap").focus();
+    	$("html, body").animate({
+   		  scrollTop: $("#hr1").offset().top
+   		}, 500);
+    	return false;
+    }else if(!$("input[name='product_status']:checked").val()) {
+    	alert("상품상태 선택 필수입니다.");
+    	$("#productStatus1").focus();
+    	$("html, body").animate({
+   		  scrollTop: $("#hr2").offset().top
+   		}, 500);
+    	return false;
+    }else if(!$("input[name='trade_method']:checked").val()) {
+    	alert("거래방법 선택 필수입니다.");
+    	$("#productStatus1").focus();
+    	return false;
+    }else if($("#priceInput").val() === "") {
+    	alert("가격 입력 필수입니다.");
+    	$("#priceInput").focus();
+    	return false;
+    }else if($("#priceInput").val() < 1000) {
+    	alert("최소 판매금액은 1,000원 입니다.");
+    	$("#priceInput").focus();
+    	return false;
+    }else if($("#ProductDescription").val() === "") {
+    	alert("설명 입력 필수입니다.");
+    	$("#ProductDescription").focus();
+    	return false;
+    }
+    localStorage.clear();
+    return true;
+  }
+  
+  
+  // 상품등록이 성공적으로 됐을 시 로컬스토리지 초기화
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
 <body>
+				
 	
 	
 	<header class="header navbar-area">
@@ -1049,9 +1124,9 @@ var checkedValue = radioButton.value;
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="index.html">Shop</a></li>
-                        <li>Single Product</li>
+                        <li><a href="index.html"><i class="lni lni-home"></i> 홈</a></li>
+                        <li><a href="index.html">상품</a></li>
+                        <li>상품등록</li>
                     </ul>
                 </div>
             </div>
@@ -1061,28 +1136,7 @@ var checkedValue = radioButton.value;
 <div id="background">
 	<div class="container content-wrapper">
 		<div class="addBox">
-<!-- 		<form id="addForm" name="addForm" class="add-form" action="ProductRegistSuccess" method="post" enctype="multipart/form-data"> -->
-<!-- 		   <br><br> -->
-<!--     <h4>기본정보</h4><span id="required">*필수항목</span><br> -->
-<!--     <hr style="border:0; height:3px; color:black;"> -->
-<!--     <div> -->
-<!--         <div id="divImageLine"> -->
-<!--             <ul id="ulLine"> -->
-<!--                 <li class="th"><p>상품이미지<span>*</span></p></li> -->
-<!--                 <li class="td" id="image_container"></li> id 수정 -->
-<!--             </ul> -->
-<!--             <span id="imageCount"> -->
-<!--                 <span id="imageLength">0</span> -->
-<!--                 <span>/5</span> -->
-<!--             </span> -->
-<!--         </div> -->
-<%--         <img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()"> --%>
-<!--         <input class="form-control form-control-user" type="file" style="display: none;" multiple -->
-<!--             name="product_image" id="product_image" onchange="setThumbnail(event);" accept=".gif, .jpg, .png, .jpeg" > -->
-<!--     </div> -->
-		
-		
-			<form id="addForm" name="addForm" class="add-form" action="ProductRegistSuccess" method="post" enctype="multipart/form-data">
+			<form id="addForm" name="addForm" class="add-form" action="ProductRegistSuccess" method="post" enctype="multipart/form-data" onsubmit="return checkInput();">
 				<br><br>
 				<h4>기본정보</h4><span id="required">*필수항목</span><br>
 				<hr style="border:0; height:3px; color:black;">
@@ -1100,8 +1154,6 @@ var checkedValue = radioButton.value;
 					<img src="${pageContext.request.contextPath}/resources/images/이미지버튼.png" class="thumbnail" onclick="addFileInput()">
 						<input class="form-control form-control-user" type="file" style="display: none;" multiple
   						name="product_image" id="product_image" onchange="setThumbnail(event);" accept=".gif, .jpg, .png, .jpeg" >
-						<input class="form-control form-control-user" type="file" style="display: none;"
-						  name="product_image" id="product_image" onchange="setThumbnail(event);" accept=".gif, .jpg, .png, .jepg" >
 					<div class="form-group">
 					  <div id="image_container">
 					    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span>
@@ -1109,14 +1161,12 @@ var checkedValue = radioButton.value;
 					</div>
 				</div>						
 				<hr>
-				
 				<!-- 현재 등록돼 있는 카테고리 목록 호출, 사용자가 추가 가능 -->
 				
 				<div id="product_name">
 					<div id="divLine">
 						<ul>
 							<li><p id="divPadding">상품명<span>*</span></p></li>
-							<li class="td">
 						</ul>
 					</div>
 						<input type="text" id="productName" name="product_name" onkeyup="productKey()" maxlength="40" oninput="limitInputLength(this, 40)"
@@ -1127,6 +1177,7 @@ var checkedValue = radioButton.value;
 						 <span id="productNameLength">0</span><span>/40</span>
 						 </div>
 				</div>
+				
 				
 				<hr>
 				<div id="categoryDiv">
@@ -1139,13 +1190,14 @@ var checkedValue = radioButton.value;
 						<li class="td">
 							<select id="categoryName" name="product_category" class="dataTable-selector selector" onchange="addACategory();">
 								<option value="default">카테고리를 선택하세요.</option>
-								<option>패션잡화(모자/가방/지갑)</option>
-								<option>아우터</option>
 								<option>상의</option>
-								<option>하의(치마)</option>
+								<option>하의</option>
+								<option>아우터</option>
 								<option>아동복</option>
-								<option>셋업 세트(원피스)</option>
+								<option>셋업/세트</option>
+								<option>패션/잡화</option>
 								<option>신발</option>
+								<option>기타</option>
 							</select>
 							<div id="Category">
 							선택한 카테고리 : 
@@ -1154,7 +1206,7 @@ var checkedValue = radioButton.value;
 						</li>
 					</ul>
 				</div>
-				<hr>
+				<hr id="hr1">
 				
 				<div>
 					<div id="divLine">
@@ -1166,12 +1218,13 @@ var checkedValue = radioButton.value;
 							<li class="td">
 								<input type="hidden" id="map">
 									<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="내 위치"></div>
+									<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="지도로 찾기" onclick="AddressMap()"></div>
 								<input type="text" id="myMap" name="trade_place"  size="64" required readonly placeholder="지역을 설정해 주세요">
 							</li>
 						</ul>
 				</div>
 				
-					<hr>
+					<hr id="hr2">
 				<div>
 					<div id="divLine" class="productStatus">
 						<p>상품 상태<span>*</span></p>
@@ -1179,30 +1232,30 @@ var checkedValue = radioButton.value;
 					<ul id="ulLine">
 						<li class="productsStatusRadio">
 							<label id="radioChoise">
-								<input type="radio" id="productStatus1" name="productStatus" value="보통"> 보통
+								<input type="radio" id="productStatus1" name="product_status" value="0"> 보통
 							</label><br>
 							<label id="radioChoise">
-								<input type="radio" id="productStatus2" name="productStatus" value="좋은상태"> 좋은상태
+								<input type="radio" id="productStatus2" name="product_status" value="1"> 좋은상태
 							</label><br>
 							<label id="radioChoise">
-								<input type="radio" id="productStatus3" name="productStatus" value="새상품"> 새상품<br>
+								<input type="radio" id="productStatus3" name="product_status" value="2"> 새상품<br>
 							</label>
 						</li>
 					</ul>
 				</div>
-				<hr>
+				<hr id="hr3">
 				<div>
 					<div id="divLine" class="trade_methodDiv">
 						<p>거래방법<span>*</span></p>
 					</div>
 					<ul id="ulLine">
 						<li class="trade_methodRadio">
-							<label id="radioChoise">
-								<input type="radio" id="trade_method" name="trade_method" value="대면거래"> 대면거래
-							</label><br>
-							<label id="radioChoise">
-								<input type="radio" id="trade_method" name="trade_method" value=""> 소심거래
-							</label><br>
+						  <label id="radioChoise1">
+						    <input type="radio" id="trade_method1" name="trade_method" value="0"> 대면거래
+						  </label><br>
+						  <label id="radioChoise2">
+						    <input type="radio" id="trade_method2" name="trade_method" value="1"> 소심거래
+						  </label><br>
 						</li>
 					</ul>
 				</div>
@@ -1219,6 +1272,8 @@ var checkedValue = radioButton.value;
 								<input type="text" id="priceInput" name="product_price" placeholder="가격을 입력해 주세요." oninput="price(this)" maxlength="11">원
 								<div id="priceProposal">
 								</div>
+							</li>
+							<li>
 							</li>
 						</ul>
 				</div>
@@ -1257,8 +1312,9 @@ var checkedValue = radioButton.value;
 				</div>
 				<hr>
    				<div id="save">
-					<button type="button" id="save2">임시저장</button>
-					<input type="submit" id="buttonBox" value="상품등록">
+					<button type="button" id="temporarySaveButton">임시저장</button>
+<!-- 					<input type="submit" id="buttonBox" value="상품등록"> -->
+					<input type="button" id="buttonBox" value="상품등록" onclick="submitFiles();">
 				</div>
 			</form>
 		</div>
@@ -1290,9 +1346,11 @@ var checkedValue = radioButton.value;
     	<!-- Select2 -->
     	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 	</th:block>
 </body>
 </html>
+
 
 
 

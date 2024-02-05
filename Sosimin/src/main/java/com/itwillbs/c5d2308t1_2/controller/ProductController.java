@@ -230,6 +230,7 @@ public class ProductController {
 			public String productRegistSuccess(@RequestParam Map<String, String> map, HttpSession session, Model model, 
 												HttpServletRequest request, @RequestParam("product_image") MultipartFile[] files) {
 				
+				
 				String sId = (String)session.getAttribute("sId");
 				map.put("sId", sId);
 				
