@@ -440,6 +440,13 @@ $(function() {
 	          
 // 	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
 	          
+	          if (address.split(' ')[0] == "부산") {
+	              var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	            } else {
+	              alert("부산광역시에서만 가능합니다.");
+	              return;
+	            }
+	          
 	          if(address.split(' ')[0] == "부산" || address.split(' ')[0] == "대구" || address.split(' ')[0] == "인천" || address.split(' ')[0] == "광주" || address.split(' ')[0] == "대전" || address.split(' ')[0] == "울산"  ) {
 	        	  var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
 	          } else if(address.split(' ')[0] == "서울" ) {
@@ -1044,13 +1051,24 @@ function setAddress(address) {
 	  document.getElementById('myMap').value = address;
 	}
 
+function clearTempData(sId) {
+	  localStorage.removeItem(sId + "_productName");
+	  localStorage.removeItem(sId + "_categoryName");
+	  localStorage.removeItem(sId + "_tradePlace");
+	  localStorage.removeItem(sId + "_productStatus");
+	  localStorage.removeItem(sId + "_trade_method");
+	  localStorage.removeItem(sId + "_product_price");
+	  localStorage.removeItem(sId + "_ProductDescription");
+	  localStorage.removeItem(sId + "_isTempSaved");
 
-
-
+	  for(let i = 1; i <= 5; i++) {
+		    localStorage.removeItem(sId + "_image" + i);
+		  }
+		}
 function checkInput() {
 	var fileInput = document.getElementById('product_image');
     var imageCount = parseInt(localStorage.getItem("imageCount") || "0");
-	  
+	var sId = "${sId}";
     var fileInput = document.getElementById('product_image');
     if (fileInput.files.length === 0) {
 //     if (fileInput.files.length === 0 && imageCount === 0) {
@@ -1105,7 +1123,7 @@ function checkInput() {
     	$("#ProductDescription").focus();
     	return false;
     }
-    localStorage.clear();
+    clearTempData(sId);
     return true;
   }
   

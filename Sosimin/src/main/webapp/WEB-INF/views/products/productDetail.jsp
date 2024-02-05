@@ -43,8 +43,70 @@
     <%--  --%>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </head>
 <style>
+#singleProductAreaDealComplete {
+	border: none;
+	width: 290px;
+	height: 400px;
+	display: inline-block;
+	margin-right: 2px !important;
+	margin-top: 0px;
+	box-sizing: content-box !important;
+	padding: 0 !important;
+	position: relative;
+/* 	background-color: rgba(0, 0, 0, 0.5); */
+/* 	opacity: 0.4; */
+}
+
+#singleProductArea::before {
+    content: " " ;
+	width: 620px;
+	height: 620px;
+	position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+	opacity: 0.7;
+	transform: scale(1.0);
+	display: inline-block;
+	margin-bottom: 10px !important;
+	margin-left: 2px !important;
+	margin-right: 2px !important;
+	box-sizing: content-box !important;
+	padding: 0 !important;
+	background-color: white;
+	z-index: 999;
+}
+
+#checkmark{
+	border: none;
+}
+#dealComplete {
+	position: absolute;
+	z-index: 1000;
+/* 	width: 250px; */
+/* 	height: 250px; */
+	left: 200px;
+	bottom: 1180px;
+	border: none;
+/*     display: none; */
+}
+#tradeEnd {
+	color: #27B24A;
+	font-weight: bold;
+	position: relative;
+	font-size: 30px;
+	left: 83px;
+}
+
+#dealComplete img {
+	width: 300px !important;
+	height: 300px !important;
+}
 .product-info{
 	position: relative;
 	top: 28px;
@@ -141,7 +203,7 @@
 #likeImage{
 	display:inline-block;
 	position:relative;
-	right:70px;
+	right:88px;
 	bottom:4px;
 	z-index: 2;
 }
@@ -153,6 +215,7 @@
 	display: inline-block;
 }
 #productName{
+	width: 250px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
 	text-align: center;
 	color:black;
 	font-size: 15px;
@@ -342,6 +405,18 @@
 	font-size: 20px;
 	color:white;
 }
+#productTradeIng{
+	width: 600px;
+	background-color: #f9f9f9;
+	font-size: 20px;
+	color: blue;
+}
+#productTradeEnd{
+	width: 600px;
+	background-color: #f9f9f9;
+	font-size: 20px;
+	color: red;
+}
 </style>
 <script>
 
@@ -420,6 +495,7 @@
      });
 });
 
+		
 
 // 메인사진 클릭시 전체 사진 다 띄우기 <사용할지 안할지 모름> 
 
@@ -448,8 +524,13 @@ function imagePopup(src) {
   newWindow.document.write('<html><head><title>Image</title></head><body style="background-color: black; margin: 0; display: flex; justify-content: center; align-items: center;"><img src="' + src + '" style="max-width: 100%; max-height: 100%;"></body></html>');
 }
 
+
 function Proposal() {
+	var sId = "${sId}";
 	var product_id = ${Product.product_id};
+	
+	if(sId) {
+		
 	var width = 640; // 팝업 창의 가로 크기
 	var height = 480; // 팝업 창의 세로 크기
 	var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
@@ -458,67 +539,61 @@ function Proposal() {
 	var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
 
 	window.open("Proposal?product_id=" + product_id, "상품이미지", options);
-}
-	
-
-window.onload = function() {
-	  function getTimeAgo(productTime) {
-	    var pastTime = new Date(productTime);
-	    var currentTime = new Date();
-	    var duration = currentTime - pastTime;
-
-	    var minutes = Math.floor(duration / (1000 * 60));
-	    if (minutes < 60) {
-	      return minutes + "분 전";
-	    }
-
-	    var hours = Math.floor(duration / (1000 * 60 * 60));
-	    if (hours < 24) {
-	      return hours + "시간 전";
-	    }
-
-	    var days = Math.floor(duration / (1000 * 60 * 60 * 24));
-	    if (days < 7) {
-	      return days + "일 전";
-	    }
-
-	    var weeks = Math.floor(days / 7);
-	    return weeks + "주 전";
-	  }
-
-	  var productTime = "${Product.product_datetime}";
-	  var timeAgo = getTimeAgo(productTime);
-
-	  var whatTimeSpan = document.getElementById("whatTime");
-	  whatTimeSpan.innerText = timeAgo;
+	} else{
+		alert("로그인 후 사용 가능합니다.")
+		location.href = "MemberLogin";
 	}
 	
-// 	$(function() {
-		
-// 		var tag_name = "${Product2[0].tag_name}";
-// 		var product_name = "${Product2[0].product_name}";
-		
-// 		$.ajax({
-// 		    url: 'RelatedProducts',
-// 		    type: 'GET',
-// 		    data: {
-// 		    	tag_name : tag_name,
-// 		    	product_name : product_name
-// 		    },
-// 		    success: function(data) {
-// 		        // 서버로부터 응답을 받았을 때 실행되는 코드
-// 		        alert("성공")
-// 		        alert(tag_name)
-// 		        alert(product_name)
-// 		    },
-// 		    error: function(jqXHR, textStatus, errorThrown) {
-// 		        // 파일 업로드에 실패했을 때 실행되는 코드
-// 		        alert('실패');
-// 		        console.log(jqXHR, textStatus, errorThrown);
-// 		    }
-// 		});
-// 	});
+}
 	
+	
+// function Proposal() {
+	
+//     $.ajax({
+//         type: "GET",
+//         url: "Proposal", // 로그인 상태를 확인하는 서버의 URL
+//         data:{
+//         	product_id: ${param.product_id}
+//         },
+//         success: function(result) {
+//         	alert(result)
+//             // 로그인이 되어 있는 경우
+//             if(result.isLoggedIn) {
+//                 var product_id = ${Product.product_id};
+//                 var width = 640; // 팝업 창의 가로 크기
+//                 var height = 480; // 팝업 창의 세로 크기
+//                 var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
+//                 var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
+
+//                 var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
+
+//                 window.open("Proposal?product_id=" + product_id, "상품이미지", options);
+//             } 
+//             // 로그인이 안 되어 있는 경우
+//             else {
+//             	Swal.fire({
+//  	    	        title: '회원만 사용가능합니다.',
+//  	    	        text: '로그인 페이지로 이동하시겠습니까?',
+//  	    	        icon: 'error',
+//  	    	        showCancelButton: true,
+//  	    	        confirmButtonColor: '#39d274',
+//  	    	        cancelButtonColor: '#d33',
+//  	    	        confirmButtonText: '이동',
+//  	    	        cancelButtonText: '취소',
+//  	    	        reverseButtons: true,
+//  	    	        allowOutsideClick: false
+//  	    	    }).then((result) => {
+//  	    	        if (result.isConfirmed) {
+//  	    	        	location.href="MemberLogin";
+//  	    	        }
+//  	    	    });
+//             }
+//         },
+//         error: function(xhr, textStatus, errorThrown) {
+//             // 에러 처리 코드를 여기에 작성하세요.
+//         }
+//     });
+// }
 	
 </script>
 <body>
@@ -576,9 +651,23 @@ window.onload = function() {
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-images">
                             <main id="gallery">
+                            <c:choose>
+                            	<c:when test="${Product.trade_status eq 0}">
                                 <div class="main-img">
                                     <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
                                 </div>
+                            	</c:when>
+                            	<c:when test="${Product.trade_status eq 2}">
+                                <div class="main-img" id="singleProductArea">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
+                           			<span id="dealComplete">
+										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png" id="checkmark"><br>
+										<span id="tradeEnd">판매 완료</span>
+									</span>		
+                                </div>
+                            	</c:when>
+                            </c:choose>
+<!--                                 </div> -->
                                 <div class="images">
 					             <c:forEach var="i" begin="1" end="5">
 									 <c:set var="i" value="product_image${i}" />
@@ -598,10 +687,8 @@ window.onload = function() {
                             	</div>
 	                            <div>
 	                            <h3 class="price2" style="font-size: 40px"><fmt:formatNumber value="${Product.product_price}" pattern="###,###"/><span style="font-size: 20px">원</span></h3>&nbsp;&nbsp;&nbsp;
-	                            	<c:if test="${Product.trade_method == 0}">
 		                            	<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"
 	                            	style="height: 40px;" id="payImage">
-	                            	</c:if>
 	                            </div>
                             </div>
                         <hr>
@@ -675,40 +762,56 @@ window.onload = function() {
                          <div class="bottom-content" id="threeButton">
                              <div class="row align-items-end">
                              <c:choose>
-                             	<c:when test="${Product.member_id ne sessionScope.sId}">
-                                 <div class="col-lg-4 col-md-4 col-12">
-<%--                                  <c:if test="${Product.member_id != sId }"> --%>
-                                     <div class="button cart-button" id="likeButtonDiv">
-                                     	<button class="btn" style="width: 100%; height: 60px;" id="likeButton" >
-<!--                                         <button class="btn" style="width: 100%; height: 60px;" id="likeButton"  > -->
-                                        <span id="likeText">관심</span>
-                                     		<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K" width="20" height="20" id="likeImage">
-<%--                                      		<img src="${pageContext.request.contextPath}/resources/images/product-details/찜하트모양.png" width="25" height="25" id="likeImage"> --%>
-                                        <span id="likeButtonSpan">${intersetCount}</span>
-                                        </button>
-                                     </div>
-<%--                                 </c:if> --%>
-                                 </div>
-                                 <div class="col-lg-4 col-md-4 col-12">
-                                     <div class="wish-button">
-                                         <button class="btn" style="height: 60px;" id="chatButton" onclick="location.href='ChatMain?product_id=${Product.product_id}'"> 1:1채팅</button>
-                                     </div>
-                                 </div>
-	     						 <div class="col-lg-4 col-md-4 col-12">
-		                         <div class="wish-button" id="priceProposal">
-		                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="Proposal()">가격제안</button>
-	                            </div>
-                              </div>
-                           	</c:when>
-                           	<c:otherwise>
-                                 <div class="col-lg-4 col-md-4 col-12">
-                                     <div class="wish-button">
-                                     	<a href="productModify?product_id=${Product.product_id }">
-                                         <button class="btn" style="height: 60px;" id="productModify"> 상품수정</button>
-                                         </a>
-<%--                                          <input type="hidden" name="product_id" value="${Product.product_id }"> --%>
-                                     </div>
-                                 </div>
+<%--                             	 <c:if test="${Product.trade_status eq 0 }"> --%>
+	                             	<c:when test="${Product.member_id eq sessionScope.sId and Product.trade_status eq 0}">
+		                                 <div class="col-lg-4 col-md-4 col-12">
+		                                     <div class="wish-button">
+		                                     	<a href="ProductModify?product_id=${Product.product_id }">
+		                                         <button class="btn" style="height: 60px;" id="productModify"> 상품수정 </button>
+		                                         </a>
+		                                     </div>
+		                                 </div>
+                                 	</c:when>
+                                 	<c:when test="${Product.member_id ne sessionScope.sId and Product.trade_status eq 0 }">
+	                                 <div class="col-lg-4 col-md-4 col-12">
+	<%--                                  <c:if test="${Product.member_id != sId }"> --%>
+	                                     <div class="button cart-button" id="likeButtonDiv">
+	                                     	<button class="btn" style="width: 100%; height: 60px;" id="likeButton" >
+	<!--                                         <button class="btn" style="width: 100%; height: 60px;" id="likeButton"  > -->
+	                                        <span id="likeText">좋아요</span>
+	                                     		<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K" width="20" height="20" id="likeImage">
+	<%--                                      		<img src="${pageContext.request.contextPath}/resources/images/product-details/찜하트모양.png" width="25" height="25" id="likeImage"> --%>
+	                                        <span id="likeButtonSpan">${intersetCount}</span>
+	                                        </button>
+	                                     </div>
+	<%--                                 </c:if> --%>
+	                                 </div>
+	                                 <div class="col-lg-4 col-md-4 col-12">
+	                                     <div class="wish-button">
+	                                         <button class="btn" style="height: 60px;" id="chatButton" onclick="location.href='ChatMain?product_id=${Product.product_id}'"> 1:1채팅</button>
+	                                     </div>
+	                                 </div>
+		     						 <div class="col-lg-4 col-md-4 col-12">
+			                         <div class="wish-button" id="priceProposal">
+			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="Proposal()">가격제안</button>
+		                            </div>
+	                              </div>
+                                  </c:when>
+                                  <c:when  test="${Product.trade_status eq 1 }">
+	                                 <div class="col-lg-4 col-md-4 col-12">
+	                                     <div class="wish-button">
+	                                         <button class="btn" style="height: 60px;" id="productTradeIng"> 판매중 </button>
+	                                     </div>
+                                 	</div>
+                                  </c:when>
+                          	<c:otherwise>
+                             	    <c:if test="${Product.trade_status eq 2 }">
+	                                 <div class="col-lg-4 col-md-4 col-12">
+	                                     <div class="wish-button">
+	                                         <button class="btn" style="height: 60px;" id="productTradeEnd"> 판매완료 </button>
+	                                     </div>
+                                 	</div>
+                                	</c:if>
                            	</c:otherwise>
                            	</c:choose>
                            </div>
@@ -728,7 +831,7 @@ window.onload = function() {
 	                         		<img src="${pageContext.request.contextPath}/resources/images/product-details/카테고리이미지.png" width="25" height="25" id="tradeImage">
                          		</div>
                          		<div id="categoryDiv">
-                         			<a href="" id="addressDetailA" style="text-align: center;">
+                         			<a href="SearchProduct?product_category=${Product.product_category}" id="addressDetailA" style="text-align: center;">
 	                         			<span id="categoryDetail">${Product.product_category }</span>
 	                         		</a>
                          		</div>
@@ -806,7 +909,7 @@ window.onload = function() {
                                 		<span id="after"></span>
                                 	</div>
                                 	<div id="reviews">
-                                		<a href="" id="aTag">
+                                		<a href="MyPage?member_id=${SellerInfo.member_id }" id="aTag">
                                 			<span style="font-size: 17px;">후기 13</span>
                                 		</a>
                                 	</div>

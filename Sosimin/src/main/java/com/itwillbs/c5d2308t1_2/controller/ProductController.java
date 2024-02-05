@@ -451,7 +451,7 @@ public class ProductController {
 					}
 					
 					// 상품 수정 페이지
-					@GetMapping("productModify")
+					@GetMapping("ProductModify")
 					public String productModify(HttpSession session, @RequestParam Map<String, String> map, Model model) {
 						
 						System.out.println(" ======================> 뭐가들었지 : " + map);
@@ -693,8 +693,16 @@ public class ProductController {
 					}
 	// 가격 제안하기 
 	@GetMapping("Proposal")
-	public String Proposal(@RequestParam Map<String,String> map, MemberVO member, Model model) {
+	public String Proposal(@RequestParam Map<String,String> map, MemberVO member, Model model, HttpSession session) {
 		// 상품 조회
+		
+	    String sId = (String)session.getAttribute("sId");
+	    if(sId == null) {
+	        model.addAttribute("msg", "로그인 후 사용 가능합니다.");
+	        model.addAttribute("targetURL", "MemberLogin");
+	        return "forward";
+	    }
+	    
 		Map<String,String> Product = service.selectProduct(member);
 		model.addAttribute("Product", Product);
 		return"products/Proposal";

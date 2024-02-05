@@ -26,7 +26,7 @@ public class ChatController {
 		if (sId == null) {
 			model.addAttribute("msg", "로그인 후 사용 가능합니다."); // model은 뷰페이지로 들고가서 뿌릴려고
 																	// , 뤼케스트파람을 썼을때 뷰페이지 name 속성에 있는 value값 또는 주소값들을 객체로 받기 위해서 쓴다
-			model.addAttribute("targetURL", "MemberLoginForm");
+			model.addAttribute("targetURL", "MemberLogin");
 			return "forward";
 		}
 		

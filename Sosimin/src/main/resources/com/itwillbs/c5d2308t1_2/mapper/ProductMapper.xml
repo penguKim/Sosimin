@@ -236,7 +236,7 @@
     OR tag_name4 LIKE CONCAT('%', #{tag_name3}, '%')
     OR tag_name4 LIKE CONCAT('%', #{tag_name4}, '%')
     OR product_category = #{product_category}
-    OR product_name LIKE CONCAT('%', #{product_name}, '%')) AND product_id != #{product_id}
+    OR product_name LIKE CONCAT('%', #{product_name}, '%')) AND product_id != #{product_id} AND trade_status = 0
 	</select>
 	
 	<!-- 관심 갯수 판별 -->
@@ -360,7 +360,7 @@
 	<select id="selectSellerProductInfo" resultType="map">
 		SELECT *
 		FROM Product
-		WHERE member_id = #{member_id}
+		WHERE member_id = #{member_id} AND trade_status = 0
 	 </select>
 	<!-- 판매자판매 상품 갯수 조회 -->
 	<select id="selectSellerProductCount" resultType="int">
