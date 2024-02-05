@@ -336,16 +336,9 @@
 		VALUE (
 			null
 			, #{pay_id}
-			, ABS(CAST(#{pay_balance} AS SIGNED) - CAST(#{existing_balance} AS SIGNED))
+			, CAST(#{pay_balance} AS SIGNED) - CAST(#{existing_balance} AS SIGNED)
 			, #{pay_balance}
-			<choose>
-				<when test="(pay_balance - existing_balance) > 0">
-					, 1
-				</when>
-				<otherwise>
-					, 0
-				</otherwise>
-			</choose>
+			, 1
 			, now()
 			, null
 		)

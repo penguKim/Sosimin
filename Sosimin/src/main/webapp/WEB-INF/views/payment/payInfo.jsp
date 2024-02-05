@@ -163,8 +163,6 @@ $(function() {
 				toast: true
 			});
 		} 
-		
-		
 	});
 	
 
@@ -321,7 +319,10 @@ function load_list(pay_history_type, start_date, end_date) {
 					} else if(history.pay_history_type == "4") {
 						pay_history_type = "수익";
 						subject = '<a href="ProductDetail?product_id=' + history.sell_product_id +'">' + history.sell_product_name + '</a><i class="fa fa-angle-right"></i>';
-					} 
+					} else if(history.pay_history_type == "5") {
+						pay_history_type = "충전";
+						subject = "관리자의 권한으로 변경";
+					}
 					
 					let pay_amount = history.pay_amount.toLocaleString();
 					let pay_history_balance = history.pay_history_balance.toLocaleString();
@@ -405,8 +406,8 @@ function acceptPayment() {
 		type: "GET",
 		url: "AcceptPayment",
 		data: {
-			"product_id": 388,
-			"product_buyer": "eri1112"
+			"product_id": 392,
+			"product_buyer": "leess"
 		},
 		success:  function(data) {
 			if(data == "not-login") {
@@ -466,7 +467,7 @@ function acceptPayment() {
 // 임시로 테스트용 결제하기 버튼 추가
 function payment() {
 	// 채팅방에서 produtct_id 들고오기
-	location.href="Payment?product_id=388";
+	location.href="Payment?product_id=392";
 }
 
 // 임시로 테스트용 구매확정 버튼 추가(에이젝스)
@@ -479,7 +480,7 @@ function confirmPayment() {
 		type: "GET",
 		url: "ConfirmPayment",
 		data: {
-			"product_id": 388,
+			"product_id": 392,
 		},
 		success:  function(data) {
 			if(data == "not-login") {
@@ -565,6 +566,74 @@ function confirmPayment() {
 	
 }
 
+// 임시로 테스트용 거래중단 버튼 추가(에이젝스)
+function confirmPayment() {
+	// 채팅방에서 produtct_id 들고오기
+	
+	<%-- 서블릿 요청 --%>
+	$.ajax({
+		type: "GET",
+		url: "StopPayment",
+		data: {
+			"product_id": 392,
+		},
+		success:  function(data) {
+			if(data == "not-login") {
+				Swal.fire({
+					icon: 'warning',
+					title: '로그인을 해주세요!',
+					text: '로그인 페이지로 이동합니다!',
+					allowOutsideClick: false
+				}).then((result) => {
+						location.href="MemberLogin";
+				});	
+			} else if(data == "none") {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '거래 중단 가능한 상품이 없습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});				
+			} else if(data == "inconsistency") {
+					Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: '판매자 정보가 일치하지 않습니다.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+				});			
+			} else if(data == "true") {
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: '거래를 중단했습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+			} else {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '거래 중단을 실패했습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});			
+			}
+	
+		},
+		error: function(request, status, error) {
+	      // 요청이 실패한 경우 처리할 로직
+	      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+		}
+	});
+	
+}
+
 </script>
 </head>
 <body>
@@ -604,6 +673,7 @@ function confirmPayment() {
     <input type="button" value="(임시)거래수락" onclick="acceptPayment()">
     <input type="button" value="(임시)결제하기" onclick="payment()">
     <input type="button" value="(임시)구매확정" onclick="confirmPayment()">
+    <input type="button" value="(임시)거래중단" onclick="stopPayment()">
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
 	 <div class="account-login section">

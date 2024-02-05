@@ -116,18 +116,6 @@ $(function() {
 						});
 						isCorrect = false;
 						$("#new-balance").focus();
-					} else if(input_amount < existing_balance) {
-						event.preventDefault();
-						Swal.fire({
-							position: 'center',
-							icon: 'error',
-							title: '페이 차감은 불가능합니다.',
-							showConfirmButton: false,
-							timer: 2000,
-							toast: true
-						});
-						isCorrect = false;
-						$("#new-balance").focus();
 					}
 				}
 				

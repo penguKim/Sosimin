@@ -749,7 +749,6 @@ public class PaymentController {
 			return "ordered";
 		}
 		
-		
 		// 거래수락하면 거래가 시작됨
 		// 상품의 거래 상태도 바꿔주기
 		int orderCount = service.orderProduct(map);
@@ -817,6 +816,10 @@ public class PaymentController {
 		
 		if(orderInfo == null) {
 			model.addAttribute("msg", "결제 가능한 상품이 없습니다!");
+			model.addAttribute("msg3", "error");
+			return "fail_back";
+		}else if(orderInfo.get("seller_pay_id") == null || orderInfo.get("seller_pay_id").toString().equals("")) {
+			model.addAttribute("msg", "판매자가 페이 가입자가 아닙니다!");
 			model.addAttribute("msg3", "error");
 			return "fail_back";
 		} else if(!orderInfo.get("product_buyer").toString().equals(product_buyer)) {
@@ -1154,10 +1157,46 @@ public class PaymentController {
 	}
 	
 	
-	// ----------------- 결제 취소 -----------------------
-	// [PayHistory] 테이블에 거래 상태 변경 + 구매자 페이머니 다시 돌려주기, 판매자 페이머니 다시 돌려받기
-	// [Pay] 테이블 전체금액도 다시 돌려놓기
+	// ----------------- 거래중단 ----------------------- 
+	// 송금 전에 거래 중단하면 판매글 상태 판매중으로 변경하고
+	// Orders 컬럼 삭제
 	
+	// 송금 후에 거래 중단을 하면 판매글 상태 변경하고 페이 돌려주기
+	// [Pay] 테이블 전체금액도 다시 돌려놓기, 페이 충전을 payhistory에 쓰기
+	// Orders 컬럼 삭제
+
+	
+	@ResponseBody
+	@GetMapping("StopPayment")
+	public String stopPayment(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
+		String product_seller = (String)session.getAttribute("sId"); // 판매자 정보
+		
+		map.put("product_seller", product_seller);
+		
+		if(product_seller == null) {
+			return "not-login";
+		}
+		
+		// Orders 테이블의 product_buyer를 조회하여 세션아이디와 비교
+		// 일치하지 않으면 돌려보내기
+		Map<String, Object> orderInfo = service.getOrderInfo(map);
+		
+		if(orderInfo == null) {
+			return "none"; // 구매 중단 가능한 상품이 없습니다!
+		} else if(!orderInfo.get("product_buyer").toString().equals(product_seller)) {
+			return "inconsistency"; // 판매자 정보가 일치하지 않습니다!
+		} 
+		
+		
+		if(orderInfo.get("buyer_pay_history_id") != null 
+				&& !orderInfo.get("buyer_pay_history_id").toString().equals("")) { // 구매자가 이미 결제한 것이 확인되면
+			return "";
+			
+		} else { // 구매자가 아직 송금하지 않았으면 
+			return "";
+			
+		}
+	}
 	
 	
 	
