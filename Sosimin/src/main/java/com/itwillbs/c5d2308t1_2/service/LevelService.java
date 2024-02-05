@@ -127,6 +127,91 @@ public class LevelService {
 		return mapper.insertReview(re);
 	}
 
+	// 회원 상품 등록
+	// levelService.updateProExp(map); // 경험치 증가
+	public void updateProExp(Map<String, String> map) {
+		System.out.println(">>>>>>>>>>>>>>>>>>이제부터 레벨을 테스트한다.");
+		System.out.println(map);
+		System.out.println(">>>>>>>>>>>>>>>>>>이제부터 레벨을 테스트한다.");
+		
+		Map<String, Integer> member = mapper.selectMemberLevel(map.get("sId"));
+		System.out.println("회원 레벨 정보 : " + member);
+		
+		// 현재레벨
+		int level = member.get("member_level");
+		// 현재경험치
+		int currentExp = member.get("member_exp");
+		// 계산경험치
+		int exp = 20;
+		// 최대 레벨
+		int maxLevel = mapper.selectMaxLevel();
+		
+		currentExp += exp;
+		
+		if(currentExp >= member.get("level_max_exp")) { // 경험치 초과 시 레벨 업
+		    if(level < maxLevel) { // 최대 레벨 미만인 경우
+		        System.out.println("레벨을 올릴거에요");
+		        member.put("member_level", level + 1);
+		        member.put("member_exp", currentExp - member.get("level_max_exp"));
+		    } else { // 최대 레벨인 경우
+		        System.out.println("경험치를 최대로 유지할거에요");
+		        map.put("member_exp", map.get("level_max_exp"));
+		    }
+		} else { // 경험치만 증가
+			System.out.println("경험치만 올릴거에요");
+			member.put("member_exp", currentExp);
+		}
+		
+		// 회원 레벨 업데이트
+		mapper.updateMemberLevel(member);
+		
+	}
+
+	// 회원 결제
+	// levelService.updatePaymentExp(map, 10);
+	public void updatePaymentExp(Map<String, Object> map, int point) {
+		System.out.println(">>>>>>>>>>>>>>>>>>이제부터 레벨을 테스트한다.");
+		System.out.println(map);
+		System.out.println(">>>>>>>>>>>>>>>>>>이제부터 레벨을 테스트한다.");
+		// 구매자 : product_buyer
+		// 판매자 : product_seller
+		String[] memberList = {(String)map.get("product_buyer") , (String)map.get("product_seller")};
+		
+		for(String member : memberList) {
+			Map<String, Integer> memberLevel = mapper.selectMemberLevel(member);
+			System.out.println("회원 레벨 정보 : " + memberLevel);
+			
+			// 현재레벨
+			int level = memberLevel.get("member_level");
+			// 현재경험치
+			int currentExp = memberLevel.get("member_exp");
+			// 계산경험치
+			int exp = point;
+			// 최대 레벨
+			int maxLevel = mapper.selectMaxLevel();
+			
+			currentExp += exp;
+			
+			if(currentExp >= memberLevel.get("level_max_exp")) { // 경험치 초과 시 레벨 업
+			    if(level < maxLevel) { // 최대 레벨 미만인 경우
+			        System.out.println("레벨을 올릴거에요");
+			        memberLevel.put("member_level", level + 1);
+			        memberLevel.put("member_exp", currentExp - memberLevel.get("level_max_exp"));
+			    } else { // 최대 레벨인 경우
+			        System.out.println("경험치를 최대로 유지할거에요");
+			        map.put("member_exp", map.get("level_max_exp"));
+			    }
+			} else { // 경험치만 증가
+				System.out.println("경험치만 올릴거에요");
+				memberLevel.put("member_exp", currentExp);
+			}
+			
+			// 회원 레벨 업데이트
+			mapper.updateMemberLevel(memberLevel);
+		}
+		
+	}
+
 
 
 }

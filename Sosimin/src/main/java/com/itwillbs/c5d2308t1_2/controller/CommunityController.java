@@ -42,10 +42,10 @@ import com.itwillbs.c5d2308t1_2.vo.ReviewVO;
 public class CommunityController {
 	
 	@Autowired
-	CommunityService communityService;
+	private CommunityService communityService;
 	
 	@Autowired
-	LevelService levelService;
+	private LevelService levelService;
 
 	// 커뮤니티 게시판으로 이동
 	@GetMapping("Community")
@@ -299,7 +299,7 @@ public class CommunityController {
         Map<String, Integer> levelExp = communityService.getMemberLevel((String)map.get("community_writer")); 
         // 경험치 퍼센트 계산
         float percentage = (float)levelExp.get("member_exp") / levelExp.get("level_max_exp") * 100;
-        
+        percentage = Math.round(percentage * 10) / 10;
         System.out.println("회원의 경험치는 : " + (float)levelExp.get("member_exp"));
         System.out.println("최대 경험치는 : " + levelExp.get("level_max_exp"));
         System.out.println("퍼센트는 : " + percentage);
@@ -382,7 +382,6 @@ public class CommunityController {
 	// 커뮤니티 글수정으로 이동
 	@GetMapping("CommunityModify")
 	public String communityModify(CommunityVO com, HttpSession session, Model model) {
-		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			model.addAttribute("msg", "비정상적인 접근입니다!");
@@ -399,8 +398,10 @@ public class CommunityController {
 		map = communityService.getCommunity(com, false);
 		
 		// 게시글이 없거나 작성자와 관리자가 아닐 경우 fail_back
-		if(map == null || !sId.equals(com.getCommunity_writer()) && !sId.equals("admin")) {
+		if(map == null || !sId.equals(map.get("community_writer")) && !sId.equals("admin")) {
 			model.addAttribute("msg", "잘못된 접근입니다.");
+			model.addAttribute("msg2", "이전 페이지로 이동합니다");
+			model.addAttribute("msg3", "error");
 			return "fail_back";
 		}
 		
@@ -449,8 +450,8 @@ public class CommunityController {
 	@PostMapping("CommunityModifyPro")
 	public String communityModifyPro(CommunityVO com, HttpSession session, Model model, 
 									 @RequestParam(defaultValue = "1") String pageNum) {
-		
 		String sId = (String)session.getAttribute("sId");
+		com.setCommunity_writer(sId);
 		if(sId == null) {
 			model.addAttribute("msg", "로그인이 필요합니다!");
 			model.addAttribute("msg2", "로그인 페이지로 이동합니다.");
