@@ -51,13 +51,29 @@ public class MemberController {
 	
 	// 회원가입 메인페이지로 이동
 	@GetMapping("MemberJoin")
-	public String MemberJoin() {
+	public String MemberJoin(HttpSession session, Model model) {
+		// 세션 아이디가 이미 존재할 경우 이전페이지로 튕겨내기
+		String sId = (String)session.getAttribute("sId");
+		if(sId != null) {
+			model.addAttribute("msg", "이미 로그인된 상태입니다!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "error");
+			return "fail_back";
+		}
 		return "member/join";
 	}
 
 	// 회원가입 정보입력(가입폼) 페이지로 이동
 	@GetMapping("MemberJoinForm")
-	public String MemberJoinForm() {
+	public String MemberJoinForm(HttpSession session, Model model) {
+		// 세션 아이디가 이미 존재할 경우 이전페이지로 튕겨내기
+		String sId = (String)session.getAttribute("sId");
+		if(sId != null) {
+			model.addAttribute("msg", "이미 로그인된 상태입니다!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "error");
+			return "fail_back";
+		}
 		return "member/joinForm";
 	}
 	
@@ -357,7 +373,7 @@ public class MemberController {
 	// *********** 마이페이지 **************
 	// 마이페이지로 이동
 	@GetMapping("MyPage")
-	public String MyPage(HttpSession session, Model model, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "1") String category) {
+	public String MyPage(HttpSession session, Model model, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "0") String category) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) { // 로그인 안 한 경우
 			model.addAttribute("msg", "로그인이 필요합니다!");
@@ -405,7 +421,7 @@ public class MemberController {
         for(HashMap<String, Object> map : MyPageList) {
 //        	System.out.println(map.get("product_datetime").getClass().getName());
 //        	System.out.println();
-        	if(category.equals("1") || category.equals("2") || category.equals("3")) {
+        	if(category.equals("0") || category.equals("1") || category.equals("2") || category.equals("3")) {
         		datetime = (LocalDateTime)map.get("product_datetime");
         	} else if(category.equals("4")) {
         		datetime = (LocalDateTime)map.get("community_datetime");
@@ -460,6 +476,113 @@ public class MemberController {
         model.addAttribute("category", category);
 		
 		return "member/myPage";
+	}
+	
+	// 마이페이지22222222222
+	@GetMapping("MyPage2")
+	public String MyPage2(HttpSession session, Model model, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "0") String category) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) { // 로그인 안 한 경우
+			model.addAttribute("msg", "로그인이 필요합니다!");
+			model.addAttribute("msg2", "로그인 후 마이페이지로 이동합니다!");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "MemberLogin");
+			return "forward";
+		}
+		System.out.println("카테고리 : " + category);
+		System.out.println("세션 아이디 확인 : " + sId);
+		
+		// 페이지 번호와 글의 개수를 파라미터로 전달
+		PageDTO page = new PageDTO(pageNum, 15);
+		// 전체 게시글 갯수 조회
+		int listCount = service.getMyPageListCount(category, sId);
+		// 페이징 처리
+		PageInfo pageInfo = new PageInfo(page, listCount, 3);
+		
+		// 프로필 영역에 불러올 회원 정보 조회
+		MemberVO MyProfileMember = service.getMyProfileMember(sId);
+		System.out.println("프로필 찍어낼 멤버정보 확인 : " + MyProfileMember);
+		int MyProfileCountProductSold = service.getCountProductSold(sId); 
+		System.out.println("프로필 찍어낼 상품판매횟수 확인 : " + MyProfileCountProductSold);
+		int MyProfileCountCommunity = service.getCountCommunity(sId);
+		System.out.println("프로필 찍어낼 커뮤니티 글 개수 확인 : " + MyProfileCountCommunity);
+		int MyProfileCountCommunityReply = service.getCountCommunityReply(sId);
+		System.out.println("프로필 찍어낼 커뮤니티 댓글 개수 확인 : " + MyProfileCountCommunityReply);
+		int MyProfileCountCommunityLike = service.getCountCommunityLike(sId);
+		System.out.println("프로필 찍어낼 커뮤니티 좋아요 개수 확인 : " + MyProfileCountCommunityLike);
+		
+		
+		
+		// 한 페이지에 불러올 게시글 목록 조회
+		List<HashMap<String, Object>> MyPageList = service.getMyPageList(sId, category, page);
+		System.out.println("컨트롤러에서 넘긴 마이페이지 리스트 확인 : " + MyPageList);
+		
+		
+		// 시간 변환
+		LocalDateTime now = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+		
+		LocalDateTime datetime = null;
+		for(HashMap<String, Object> map : MyPageList) {
+//        	System.out.println(map.get("product_datetime").getClass().getName());
+//        	System.out.println();
+			if(category.equals("0") || category.equals("1") || category.equals("2") || category.equals("3")) {
+				datetime = (LocalDateTime)map.get("product_datetime");
+			} else if(category.equals("4")) {
+				datetime = (LocalDateTime)map.get("community_datetime");
+			} else if(category.equals("5")) {
+				datetime = (LocalDateTime)map.get("reply_datetime");
+			}
+//        	productMap.put("product_datetime", productDatetime.format(formatter));
+//        	
+//        	
+//        	// 시분초 차이 계산
+			Duration duration = Duration.between(datetime, now);
+//    		// 년월일 차이 계산
+			Period period = Period.between(datetime.toLocalDate(), now.toLocalDate());
+			
+			long minutes = duration.toMinutes() % 60;
+			long hours = duration.toHours() % 24;
+			long days = duration.toDays() % 7;
+			long weeks = duration.toDays() / 7;
+			long months = period.getMonths();
+			long years = period.getYears();
+			
+			String timeAgo = "";
+			if(years > 0) {
+				timeAgo = years + "년 전";
+			} else if(months > 0) {
+				timeAgo = months + "개월 전";
+			} else if(weeks > 0 && weeks <= 4) {
+				timeAgo = weeks + "주전";
+			} else if (days > 0 && days < 7) { // 1 ~ 7 차이날 때
+				timeAgo = days + "일전";
+			} else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+				timeAgo = hours + "시간 전";
+			} else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+				timeAgo = minutes + "분 전";
+			} else {
+				timeAgo = "방금 전";
+			}
+			
+			map.put("product_datetime", timeAgo);
+			map.put("order_date", timeAgo);
+			map.put("community_datetime", timeAgo);
+			map.put("reply_datetime", timeAgo);
+			
+		}
+		
+		model.addAttribute("MyProfileMember", MyProfileMember);
+		model.addAttribute("MyProfileCountProductSold", MyProfileCountProductSold);
+		model.addAttribute("MyProfileCountCommunity", MyProfileCountCommunity);
+		model.addAttribute("MyProfileCountCommunityReply", MyProfileCountCommunityReply);
+		model.addAttribute("MyProfileCountCommunityLike", MyProfileCountCommunityLike);
+		model.addAttribute("MyPageList", MyPageList);
+		model.addAttribute("category", category);
+		
+		return "member/myPage2";
 	}
 
 	// 회원 정보 수정

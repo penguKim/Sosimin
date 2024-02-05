@@ -369,35 +369,35 @@
 <!--      </div> -->
 
 <%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 표시 --%>
-   	<div id="filterArea">
-<%-- 		<c:choose> --%>
+   	<div class="filterArea">
+		<c:choose>
 	   		<%-- 필터 옵션1 : 판매 내역 탭일 경우 --%>
-<%-- 			<c:when test="${param.category eq '1'}"> --%>
-		   		<ul>
-		   			<li><a href="">전체</a></li>
-		   			<li><a href="">판매중</a></li>
-		   			<li><a href="">거래완료</a></li>
-		   			<li><a href="">취소/환불</a></li>
+			<c:when test="${category eq '0' or category eq '1'}">
+		   		<ul class="row allFilter filter-4">
+		   			<li class="col-3 eachFilter"><a href="">전체</a></li>
+		   			<li class="col-3 eachFilter"><a href="">판매중</a></li>
+		   			<li class="col-3 eachFilter"><a href="">거래완료</a></li>
+		   			<li class="col-3 eachFilter"><a href="">취소/환불</a></li>
 		   		</ul>
-<%-- 			</c:when> --%>
+			</c:when>
 	   		<%-- 필터 옵션2 : 찜목록 탭일 경우 --%>
-<%-- 			<c:when test="${param.category eq '3'}"> --%>
-	    		<ul>
-	    			<li><a href="">전체</a></li>
-	    			<li><a href="">판매중</a></li>
-	    			<li><a href="">거래완료</a></li>
+			<c:when test="${param.category eq '3'}">
+	    		<ul ul class="row allFilter filter-3">
+	    			<li class="col-3 eachFilter"><a href="">전체</a></li>
+	    			<li class="col-3 eachFilter"><a href="">판매중</a></li>
+	    			<li class="col-3 eachFilter"><a href="">거래완료</a></li>
 	    		</ul>
-<%-- 			</c:when> --%>
-<%-- 		</c:choose>   		 --%>
+			</c:when>
+		</c:choose>   		
 
 	</div>
             
             
-	<section class="item-details section" id="wholeProductSection">
+	<section class="item-details section wholeProductSection">
 	    <div class="product-details-info row" id="wholeProductArea">
 			<c:forEach var="mypage" items="${MyPageList }">
 				<c:choose> <%-- 탭선택 --%>
-					<c:when test="${param.category eq '1' }"> <%-- 판매내역 탭 시작--%>
+					<c:when test="${category eq '0' or category eq '1' }"> <%-- 판매내역 탭 시작--%>
 						<div class="single-block col-4" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
@@ -470,8 +470,9 @@
 				        </div> <%--singleProductArea 끝 --%>
 					</c:when> <%-- 판매내역탭 끝 --%>
 					
+					
 			       
-					<c:when test="${param.category eq '2' }"> <%-- 구매내역 탭 시작 --%>
+					<c:when test="${category eq '2' }"> <%-- 구매내역 탭 시작 --%>
 				        <div class="single-block col-4" id="singleProductArea">
 				        <c:choose>
 							<c:when test="${mypage.order_status eq '0'}"> <%-- 거래(구매) 중 --%>
@@ -531,7 +532,7 @@
 				        </div> <%--singleProductArea 끝 --%>
 					</c:when> <%-- 구매내역 탭 끝 --%>
 					
-					<c:when test="${param.category eq '3' }"> <%-- 찜목록 탭 시작--%>
+					<c:when test="${category eq '3' }"> <%-- 찜목록 탭 시작--%>
 						<div class="single-block col-4" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
@@ -597,7 +598,7 @@
 					
 					
 					
-					<c:when test="${param.category eq '4' }"> <%-- 커뮤니티 작성글 탭 시작--%>
+					<c:when test="${category eq '4' }"> <%-- 커뮤니티 작성글 탭 시작--%>
 					    <div class="single-block col-1" id="singleCommunityArea">
 							<div id="communityLeft">
 								<div id="communityLeftUpperLeft">
@@ -633,7 +634,7 @@
 				        </div> <%--singleCommunityArea 끝 --%>
 					</c:when> <%-- 커뮤니티 작성글 탭 끝 --%>
 					
-					<c:when test="${param.category eq '5' }"> <%-- 커뮤니티 작성댓글 탭 시작--%>
+					<c:when test="${category eq '5' }"> <%-- 커뮤니티 작성댓글 탭 시작--%>
 					    <div class="single-block col-1" id="singleCommunityReplyArea">
 							<div id="communityReplyTitleArea">
 								<c:choose>
@@ -806,7 +807,7 @@
 							</div>
 							<div class="form-group">
 								<label for="phoneAuthCode" id="mgForFourMod">인증코드</label> 
-								<input class="form-control" placeholder="코드를 입력한 후 인증 버튼을 눌러주세요" type="text" name="phone_auth_code" id="phoneAuthCode" maxlength="4" required>
+								<input class="form-control" placeholder="코드를 입력한 후 인증 버튼을 눌러주세요" type="text" name="phone_auth_code" id="phoneAuthCode" maxlength="4">
 								<input type="button" value="인증" id="completePhoneAuthButton">
 								<div id="checkPhoneAuthCodeResult" class="resultArea"></div>
 							</div>
