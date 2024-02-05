@@ -47,6 +47,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </head>
 <style>
+/* 판매 완료 */
 #singleProductAreaDealComplete {
 	border: none;
 	width: 290px;
