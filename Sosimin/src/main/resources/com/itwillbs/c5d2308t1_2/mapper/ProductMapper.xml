@@ -189,7 +189,6 @@
 			 FROM Product)
 			,0
 			,0
-			,0
 		);
 	</insert>
 	<select id="selectProductId" resultType="int">

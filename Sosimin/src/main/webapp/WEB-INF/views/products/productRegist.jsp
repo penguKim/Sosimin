@@ -458,6 +458,7 @@ $(function() {
 		  });
 		});
 	
+		
 		function askForTemporarySave() {
 			  if (confirm("임시저장 하시겠습니까?")) {
 			    // '예'를 선택하면, 입력한 값을 로컬 스토리지에 저장합니다.
