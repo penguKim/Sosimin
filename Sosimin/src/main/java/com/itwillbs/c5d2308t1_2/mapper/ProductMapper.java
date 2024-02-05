@@ -84,6 +84,8 @@ public interface ProductMapper {
 	
 	// 관리자 페이지 상품목록
 	List<Map<String, Object>> adminProductList();
+
+	Map<String, String> getGuDong(Map<String, String> map);
 	
 	 
 	

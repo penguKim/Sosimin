@@ -1252,7 +1252,7 @@ document.addEventListener("DOMContentLoaded", function() {
 								<input type="hidden" id="map">
 									<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="내 위치"></div>
 									<div id="divPadding" class="myMapButtonPadding"><input type="button" id="myMapButton" value="지도로 찾기" onclick="AddressMap()"></div>
-								<input type="text" id="myMap" name="trade_place"  size="64" required readonly placeholder="지역을 설정해 주세요" value="부산광역시 ${productModify.gu} ${productModify.dong}">
+								<input type="text" id="myMap" name="trade_place"  size="64" required readonly placeholder="지역을 설정해 주세요" value="부산광역시 ${guDong.gu} ${guDong.dong}">
 							</li>
 						</ul>
 				</div>

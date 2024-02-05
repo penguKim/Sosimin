@@ -654,7 +654,7 @@ window.onload = function() {
                         				<div id="productStatus">거래지역</div>
 	                        	 </div>
 	                        	 <div id="productStatusData">
-									${Product.gu }  ${Product.dong }	                        	 
+									${guDong.gu}  ${guDong.dong }	                        	 
 	                        	 </div>
                         	 </div>
                         	 <div>
@@ -720,7 +720,7 @@ window.onload = function() {
 	                         		<span id="tradeAddressSpan">거래지역</span>
 	                         		<img src="${pageContext.request.contextPath}/resources/images/product-details/거래지역.png" width="25" height="25" id="tradeImage">
                          		</div>
-                         		<div id="addressDetail">${Product.gu }  ${Product.dong }</div>
+                         		<div id="addressDetail">${guDong.gu }  ${guDong.dong }</div>
                          	</div>
                          	<div id="tradeAddress" style="text-align: center">
                          		<div id="tradeAddressName">

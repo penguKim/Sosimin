@@ -132,32 +132,33 @@ public class ProductService {
 		
 		return mapper.getProductImage(map);
 	}
-	@Transactional
-	public boolean removeProduct(Map<String, String> map) {
-		
-//		int result = mapper.removeProduct(map); 
-		 try {
-		        // 먼저 Product_board를 삭제한다.
-		        int result = mapper.removeProductBoard(map); 
-		        if (result <= 0) {
-		            // 삭제 실패 시 롤백
-		            return false;
-		        }
-		        // 그 다음 Product를 삭제한다.
-		        int result2 = mapper.removeProduct(map);
-		        if (result2 <= 0) {
-		            // 삭제 실패 시 롤백
-		            return false;
-		        }
-		    } catch (Exception e) {
-		        // 예외 발생 시 롤백
-		        return false;
-		    }
-
-		    // 모든 삭제 작업이 성공적으로 완료됨
-		    return true;
-		
-	}
+//	@Transactional
+//	public boolean removeProduct(Map<String, String> map) {
+//		
+////		int result = mapper.removeProduct(map); 
+//		 try {
+//		        // 먼저 Product_board를 삭제한다.
+//		        int result = mapper.removeProductBoard(map); 
+//		        if (result <= 0) {
+//		            // 삭제 실패 시 롤백
+//		            return false;
+//		        }
+//		        // 그 다음 Product를 삭제한다.
+//		        int result2 = mapper.removeProduct(map);
+//		        if (result2 <= 0) {
+//		            // 삭제 실패 시 롤백
+//		            return false;
+//		        }
+//		    } catch (Exception e) {
+//		        // 예외 발생 시 롤백
+//		        return false;
+//		    }
+//
+//		    // 모든 삭제 작업이 성공적으로 완료됨
+//		    return true;
+//		
+//	}
+	
 	
 	//=============================================================
 	// 관리자페이지 상품 목록
@@ -166,6 +167,14 @@ public class ProductService {
 	}
 	public List<Map<String, Object>> getLikeList(Map<String, String> map) {
 		return mapper.selectLikeList(map);
+	}
+	public int removeProduct(Map<String, String> map) {
+		
+		return mapper.removeProduct(map);
+	}
+	public Map<String, String> getGuDong(Map<String, String> map) {
+		
+		return mapper.getGuDong(map);
 	}
 	
 }

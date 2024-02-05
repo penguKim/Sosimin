@@ -9,7 +9,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <style>
 	#mapButton{
-    width: 485px;
+    width: 495px;
     height: 50px;
     font-size: 20px;
     margin-top: 10px;
@@ -108,7 +108,11 @@ $(function() {
 }); // $(document).ready() 끝	
 
 function submitAddress() {
-// 	  var address = result[0].address.address_name; // result는 주소 정보를 담고 있는 변수라고 가정합니다.
+	  var selectedAddress = $("#myMap").val(); // 내가 선택한 주소
+	  if (!selectedAddress.startsWith("부산광역시")) { // 부산광역시로 시작하지않으면 안된다
+	    alert("불가능한 지역입니다"); // 
+	    return; 
+	  }
 	  var address = $("#myMap").val();
 	  window.opener.setAddress(address);
 	  window.close();

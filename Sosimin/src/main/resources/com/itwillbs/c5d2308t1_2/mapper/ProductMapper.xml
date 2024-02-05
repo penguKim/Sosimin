@@ -155,34 +155,39 @@
 	<!-- ================================================================================= -->
 	<!-- 상품 등록 - INSERT -->
 	<insert id="productInsert">
-		INSERT INTO Product
-		VALUES (
-			null
-			, #{sId}
-			, #{product_name}
-			, #{product_price}
-			, #{product_txt}
-			, #{product_category}
-			, #{product_image1} 
-	        , <if test="product_image2 != null">#{product_image2}</if><if test="product_image2 == null">NULL</if> 
-	        , <if test="product_image3 != null">#{product_image3}</if><if test="product_image3 == null">NULL</if>
-	        , <if test="product_image4 != null">#{product_image4}</if><if test="product_image4 == null">NULL</if>
-	        , <if test="product_image5 != null">#{product_image5}</if><if test="product_image5 == null">NULL</if>
-			, now()
-			, #{trade_method}
-			, #{product_status}
-			, #{gu}
-			, #{dong}
-			, 0
-			, #{tag_name1}
-			, #{tag_name2}
-			, #{tag_name3}
-			, #{tag_name4}
-			, 0
-		)
-	</insert>	
+        <selectKey keyProperty="town_id" order="BEFORE" resultType="int">
+            SELECT town_id
+            FROM Town t 
+            WHERE gu = #{gu}
+            AND dong = #{dong}
+        </selectKey> 
+        INSERT INTO Product
+        VALUES (
+            null
+            , #{sId}
+            , #{product_name}
+            , #{product_price}
+            , #{product_txt}
+            , #{product_category}
+            , #{product_image1} 
+            , <if test="product_image2 != null">#{product_image2}</if><if test="product_image2 == null">NULL</if> 
+            , <if test="product_image3 != null">#{product_image3}</if><if test="product_image3 == null">NULL</if>
+            , <if test="product_image4 != null">#{product_image4}</if><if test="product_image4 == null">NULL</if>
+            , <if test="product_image5 != null">#{product_image5}</if><if test="product_image5 == null">NULL</if>
+            , now()
+            , #{trade_method}
+            , #{product_status}
+            , #{town_id}
+            , 0
+            , #{tag_name1}
+            , #{tag_name2}
+            , #{tag_name3}
+            , #{tag_name4}
+            , 0
+        )
+    </insert>
 	<insert id="productBoardInsert">
-		INSERT INTO Product_board
+		INSERT INTO ProductBoard
 		values (
 			null
 			,(SELECT max(product_id)
@@ -237,7 +242,7 @@
 	<!-- 관심 갯수 판별 -->
 	<select id="selectInterestCount" resultType="int">
 		SELECT IFNULL(COUNT(*),0)
-		FROM productLike
+		FROM ProductLike
 		WHERE
 			product_id = #{product_id}
 	</select>
@@ -245,7 +250,7 @@
 	<!-- 상품 관심 판별 -->
 	<select id="selectInterest" resultType="map">
 	SELECT *
-	FROM productLike
+	FROM ProductLike
 	WHERE 
 		member_id = #{member_id}
 		AND product_id = #{product_id}
@@ -253,14 +258,14 @@
 	
 	<!-- 관심 삭제 -->
 	<delete id="deleteInterest">
-		DELETE FROM productLike
+		DELETE FROM ProductLike
 		WHERE 
 			member_id = #{member_id}
 			AND product_id = #{product_id}
 	</delete>
 	<!-- 관심 등록 -->
 	<insert id="insertInterest">
-		INSERT INTO productLike
+		INSERT INTO ProductLike
 		VALUES(
 			null
 			, #{product_id}
@@ -270,7 +275,7 @@
 	<!-- 관심 가져오기 -->
 	<select id="selectMemberInterset" resultType="map">
 		SELECT *
-		FROM productLike
+		FROM ProductLike
 		WHERE
 			member_id = #{member_id}
 			AND product_id = #{product_id}	
@@ -292,7 +297,40 @@
 			product_id = #{product_id}
 	</select>
 	<!-- 상품 수정 등록 -->
+<!-- <update id="updateProduct"> -->
+<!--   UPDATE Product -->
+<!--   SET  -->
+<!--     product_name = #{product_name} -->
+<!--     , product_price = #{product_price} -->
+<!--     , product_txt = #{product_txt} -->
+<!--     , product_category = #{product_category} -->
+<!--     , product_image1 = #{product_image1}  -->
+<!--     <if test="product_image2 != null">, product_image2 = #{product_image2}</if> -->
+<!--     <if test="product_image2 == null">, product_image2 = NULL</if>  -->
+<!--     <if test="product_image3 != null">, product_image3 = #{product_image3}</if> -->
+<!--     <if test="product_image3 == null">, product_image3 = NULL</if> -->
+<!--     <if test="product_image4 != null">, product_image4 = #{product_image4}</if> -->
+<!--     <if test="product_image4 == null">, product_image4 = NULL</if> -->
+<!--     <if test="product_image5 != null">, product_image5 = #{product_image5}</if> -->
+<!--     <if test="product_image5 == null">, product_image5 = NULL</if> -->
+<!--     , trade_method = #{trade_method} -->
+<!--     , product_status = #{product_status} -->
+<!--     , gu = #{gu} -->
+<!--     , dong = #{dong} -->
+<!--     , tag_name1 = <choose><when test="tag_name1 != null and tag_name1 != ''">#{tag_name1}</when><otherwise>NULL</otherwise></choose> -->
+<!--     , tag_name2 = <choose><when test="tag_name2 != null and tag_name2 != ''">#{tag_name2}</when><otherwise>NULL</otherwise></choose> -->
+<!--     , tag_name3 = <choose><when test="tag_name3 != null and tag_name3 != ''">#{tag_name3}</when><otherwise>NULL</otherwise></choose> -->
+<!--     , tag_name4 = <choose><when test="tag_name4 != null and tag_name4 != ''">#{tag_name4}</when><otherwise>NULL</otherwise></choose> -->
+<!--   WHERE -->
+<!--     product_id = #{product_id} -->
+<!-- </update> -->
 <update id="updateProduct">
+    <selectKey keyProperty="town_id" order="BEFORE" resultType="int">
+        SELECT town_id
+        FROM Town t 
+        WHERE gu = '부산진구'
+        AND dong = '부전동'
+    </selectKey> 
   UPDATE Product
   SET 
     product_name = #{product_name}
@@ -310,8 +348,7 @@
     <if test="product_image5 == null">, product_image5 = NULL</if>
     , trade_method = #{trade_method}
     , product_status = #{product_status}
-    , gu = #{gu}
-    , dong = #{dong}
+    , town_id = #{town_id}
     , tag_name1 = <choose><when test="tag_name1 != null and tag_name1 != ''">#{tag_name1}</when><otherwise>NULL</otherwise></choose>
     , tag_name2 = <choose><when test="tag_name2 != null and tag_name2 != ''">#{tag_name2}</when><otherwise>NULL</otherwise></choose>
     , tag_name3 = <choose><when test="tag_name3 != null and tag_name3 != ''">#{tag_name3}</when><otherwise>NULL</otherwise></choose>
@@ -382,13 +419,19 @@
 	</select>
 	
 	<!-- 글 삭제 -->
-	<delete id="removeProductBoard">
-		DELETE FROM Product_board
-		WHERE product_id = #{product_id}
-	</delete>
+<!-- 	<delete id="removeProductBoard"> -->
+<!-- 		DELETE FROM Product_board -->
+<!-- 		WHERE product_id = #{product_id} -->
+<!-- 	</delete> -->
 	
 	<delete id="removeProduct">
 		DELETE FROM Product
 		WHERE product_id = #{product_id}
 	</delete>
+	
+	<select id="getGuDong" resultType="map">
+		SELECT *
+		FROM ProductData
+		WHERE product_id = #{product_id}
+	</select>
 </mapper>

@@ -366,6 +366,7 @@ public class ProductController {
 						Map<String, Object> count = new HashMap<String, Object>();
 						count = service.getCount(map,true);
 						
+						Map<String,String> guDong = service.getGuDong(map);
 						
 						System.out.println(" >>>>>>>>>>>>>>>> 몇개 들었노: " + SellerProductCount);
 						System.out.println(" >>>>>>>>>>>>>>>> 판매자정보 : " + SellerInfo);
@@ -426,6 +427,7 @@ public class ProductController {
 //									model.addAttribute("SellerProductInfo", SellerProductInfo);
 									model.addAttribute("SellerProductCount", SellerProductCount);
 									model.addAttribute("count", count);
+									model.addAttribute("guDong", guDong);
 									// 리스트를 무작위로 섞어 조회한 상품중 랜덤한 값 뿌리기
 									
 									RelatedProducts = service.selectRelatedProducts(Product);
@@ -436,6 +438,7 @@ public class ProductController {
 									model.addAttribute("RelatedProducts", RelatedProducts);
 									
 									System.out.println("카운트엔 뭐가 들었지! :" + count);
+									System.out.println("구 동 들어있니 ? : " + guDong);
 									// 랜덤한 값의 이미지 뿌리기
 									Collections.shuffle(SellerProductInfo); 
 									if (SellerProductInfo.size() > 2) {
@@ -459,9 +462,9 @@ public class ProductController {
 					    map.put("tag_name4", "#" + map.get("tag_name4"));
 						
 						Map<String, String> productModify = service.selectProductModify(map);
-						
+						Map<String,String> guDong = service.getGuDong(map);
 						System.out.println("<<<<<<<<<<<<<< 뭐가 돌아왔지 " + productModify);
-						
+						model.addAttribute("guDong", guDong);
 						model.addAttribute("productModify", productModify);
 						return "products/productModify";
 					}
@@ -481,11 +484,11 @@ public class ProductController {
 						
 						map = service.selectProduct(member);
 						
-						boolean deleteCount = service.removeProduct(map);
+						int deleteCount = service.removeProduct(map);
 						
 						System.out.println("여기엔 뭐가 들었지? 삭제하기전에는?" + map);
 						System.out.println(" 삭제에 성공했니? " + deleteCount);
-						if(deleteCount) {
+						if(deleteCount > 0) {
 //							String[] arrFileNames = {map.get("product_image1").toString(), map.get("product_image2").toString(), 
 //									map.get("product_image3").toString(), map.get("product_image4").toString(), map.get("product_image5").toString()};
 							
@@ -598,11 +601,11 @@ public class ProductController {
 					    String product_price =  map.get("product_price").replace(",", "");
 					    String address = map.get("trade_place"); // 가져온 주소값 
 					    String[] addressSplit = address.split(" "); // 공백으로 나눈다
-					    String gu = addressSplit[1]; // 구 가져오기
-					    String dong = addressSplit[2]; // 동 가져오기
+//					    String gu = addressSplit[1]; // 구 가져오기
+//					    String dong = addressSplit[2]; // 동 가져오기
 					    map.put("product_price" , product_price);
-					    map.put("gu", gu);
-					    map.put("dong", dong);
+//					    map.put("gu", gu);
+//					    map.put("dong", dong);
 //					    map.put("tag_name1", "#" + map.get("tag_name1"));
 //					    map.put("tag_name2", "#" + map.get("tag_name2"));
 //					    map.put("tag_name3", "#" + map.get("tag_name3"));
