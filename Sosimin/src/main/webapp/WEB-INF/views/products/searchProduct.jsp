@@ -44,11 +44,12 @@
 	text-overflow: ellipsis;
 }
 
-/* 판매 완료 */
+/* 거래완료인 상품 opacity */
+/* 부모요소 opacity 적용되어있음 */
 #singleProductAreaDealComplete {
 	border: none;
-	width: 290px;
-	height: 400px;
+	width: 200px;
+	height: 200px;
 	display: inline-block;
 	margin-right: 2px !important;
 	margin-top: 0px;
@@ -59,51 +60,50 @@
 /* 	opacity: 0.4; */
 }
 
-#singleProductArea::before {
-    content: " " ;
-	width: 620px;
-	height: 620px;
+/* 가상영역 opacity 처리 */
+#singleProductAreaDealComplete::before {
+	border: none;
+	width: 200px;
+	height: 200px;
+	display: inline-block;
+	margin-right: 2px !important;
+	margin-top: 0px;
+	box-sizing: content-box !important;
+	padding: 0 !important;
 	position: absolute;
     top: 0px;
     left: 0px;
     right: 0px;
     bottom: 0px;
 	opacity: 0.7;
+    content: " " ;
 	transform: scale(1.0);
-	display: inline-block;
-	margin-bottom: 10px !important;
-	margin-left: 2px !important;
-	margin-right: 2px !important;
-	box-sizing: content-box !important;
-	padding: 0 !important;
 	background-color: white;
 	z-index: 999;
 }
 
-#checkmark{
-	border: none;
-}
+
+
+
+/* 자식 요소 - 부모 요소의 opacity를 무시해야함 */
 #dealComplete {
 	position: absolute;
 	z-index: 1000;
-/* 	width: 250px; */
-/* 	height: 250px; */
-	left: 200px;
-	bottom: 1180px;
-	border: none;
+	width: 130px;
+	height: 130px;
+	left:60px;
+	top:50px;
 /*     display: none; */
 }
-#tradeEnd {
+
+#dealComplete b {
 	color: #27B24A;
-	font-weight: bold;
-	position: relative;
-	font-size: 30px;
-	left: 83px;
 }
 
 #dealComplete img {
-	width: 300px !important;
-	height: 300px !important;
+	display: inline-block;
+	width: 80px !important;
+	height: 80px !important;
 }
 
 </style>
@@ -152,27 +152,25 @@ $(function() {
 				singleProduct +='<div class="col-lg-4-1 col-md-6 col-12" >'
 						+ ' <div class="single-product" >'
 						
-							if(productList[i].trade_status == 0) {
-								singleProduct +=  ' <div class="main-img">'
-												+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
-													+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
-												+ ' </a>'
-											+'</div>'
-							} else if(productList[i].trade_status == 2) {
-								singleProduct += '<div class="main-img" id="singleProductArea">' 
-									+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
-									+ '<img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
-									+ '<span id="dealComplete">'
-										+ '<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png" id="checkmark"><br>'
-										+ '<span id="tradeEnd">판매 완료</span>'
-									+ '</span>'
-								+ ' </a>'
-								+ '</div>'
-							}
+						if(productList[i].trade_status == 0) {
+						    singleProduct += ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+						        + ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+						    + ' </a>'
+						} else if(productList[i].trade_status == 2) {
+						    singleProduct += '<div class="single-block" id="singleProductAreaDealComplete">'
+						        + ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+						        + '     <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+						        + ' </a>'
+						        + '<span id="dealComplete">'
+						        + '     <img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>'
+						        + '     <b>판매 완료</b>'
+						        + '</span>'
+						        + '</div>'
+						}
  							
 							singleProduct += ' <div class="product-info heartPosition">'
 								+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
-								+ ' <div class="heart" id="heartLike '+ i +'" onclick="heartLike(this)"></div>'
+								+ ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ')"></div>'
 								+ ' <ul class="review">'
 									+ ' <li><span>' +  productList[i].dong + '</span></li>'
 									+ ' <li><span>|</span></li>'
@@ -288,14 +286,14 @@ $(function() {
 
 <%-- 좋아요 등록 --%>
 function heartLike(heart) {
-    alert("좋아요 선택");
     $.ajax({
     	url:"ProductLikeRegist",
     	data: {
     		
     	},
     	success: function(result) {
-    		$(this).toggleClass("is-active");
+    		alert("하트 값 :" + heart);
+    		$("#heartLike"+heart).toggleClass("is-active");
 		},
 		error: function() {
 			
@@ -445,27 +443,27 @@ function filtering(data) {
 					singleProduct +='<div class="col-lg-4-1 col-md-6 col-12" >'
 							+ ' <div class="single-product" >'
 							
-								if(productList[i].trade_status == 0) {
-									singleProduct +=  ' <div class="main-img">'
-													+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
-														+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
-													+ ' </a>'
-												+'</div>'
-								} else if(productList[i].trade_status == 2) {
-									singleProduct += '<div class="main-img" id="singleProductArea">' 
-										+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
-										+ '<img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
-										+ '<span id="dealComplete">'
-											+ '<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png" id="checkmark"><br>'
-											+ '<span id="tradeEnd">판매 완료</span>'
-										+ '</span>'
-									+ ' </a>'
-									+ '</div>'
-								}
+							if(productList[i].trade_status == 0) {
+							    singleProduct += ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+							        + ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+							    + ' </a>'
+							} else if(productList[i].trade_status == 2) {
+							    singleProduct 
+							        += ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+							        + '<div class="single-block" id="singleProductAreaDealComplete">'
+							        + '     <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+							        
+							        + '<span id="dealComplete">'
+							        + '     <img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>'
+							        + '     <b>판매 완료</b>'
+							        + '</span>'
+							        + '</div>'
+							        + ' </a>'
+							}
 	 							
 								singleProduct += ' <div class="product-info heartPosition">'
 									+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
-									+ ' <div class="heart" id="heartLike '+ i +'" onclick="heartLike(this)"></div>'
+									+ ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ')"></div>'
 									+ ' <ul class="review">'
 										+ ' <li><span>' +  productList[i].dong + '</span></li>'
 										+ ' <li><span>|</span></li>'
