@@ -8,17 +8,23 @@
 	<select id="productListCount" resultType="int">
 		SELECT COUNT(*)
 		FROM ProductData
-		<if test="sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('') or !word.equals('')">
-			WHERE  
-		</if>
+		WHERE 
+		<choose>
+			<when test="trade == 0">trade_status = 0</when>
+			<when test="trade == 2">trade_status IN (0 , 2)</when>
+			<otherwise>
+				1 + 1
+			</otherwise>
+		</choose>
 		<!-- 로그인시 회원 구별 조회 -->
-		<if test="sId != null" >
+		<if test="sId != null">
+			AND 
 			gu = (SELECT gu
 			FROM Member m JOIN Town t 
 			ON  m.town_id = t.town_id
-			WHERE member_id = #{sId})		
+			WHERE member_id = #{sId})	
 		</if>
-		<if test="sId != null and !category.equals('') or sId != null and !keyword.equals('')">
+		<if test="!category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('') or !word.equals('')">
 			AND
 		</if>
 		<!-- 카테고리 및 키워드 별 조회 -->
@@ -66,22 +72,28 @@
 	<!-- 상품 목록 조회 -->
 	<select id="selectProductList" resultType="map"> 
 		SELECT p.product_id, product_category, p.member_id, product_board_id, product_name, product_price, gu, p.dong  
-		, product_datetime, product_image1
+		, product_datetime, product_image1, trade_status 
 		FROM ProductData p JOIN ProductBoard pb
 		ON p.product_id = pb.product_id
 		JOIN Member m
 		ON p.member_id = m.member_id
-		<if test="sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('') or !word.equals('')">
-			WHERE 
-		</if>
-		<if test="sId != null" >
+		WHERE 
+		<choose>
+			<when test="trade == 0">trade_status = 0</when>
+			<when test="trade == 2">trade_status IN (0 , 2)</when>
+			<otherwise>
+				1 + 1
+			</otherwise>
+		</choose>
+		<!-- 로그인시 회원 구별 조회 -->
+		<if test="sId != null">
+			AND 
 			gu = (SELECT gu
 			FROM Member m JOIN Town t 
 			ON  m.town_id = t.town_id
-			WHERE member_id = #{sId})		
-		</if>
-		<!-- 카테고리 및 키워드 별 조회 -->
-		<if test="sId != null and category != '' or sId != null and keyword != ''">
+			WHERE member_id = #{sId})	
+		</if> 
+		<if test="!category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('') or !word.equals('')">
 			AND
 		</if>
 		<choose>

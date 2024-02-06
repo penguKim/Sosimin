@@ -30,10 +30,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
     
      <!-- ========================= JS here ========================= -->
-     <%-- 신고하기 아코디언 부서짐 필요하면 다시 살리기 --%>
-<%--     <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script> --%>
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>

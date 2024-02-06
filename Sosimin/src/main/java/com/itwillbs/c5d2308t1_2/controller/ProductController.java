@@ -53,13 +53,13 @@ public class ProductController {
 	}
 	
 	// 상품 목록 출력 ajax
-	@ResponseBody
+	@ResponseBody 
 	@GetMapping("StoreProductList")
 	public String productList(@RequestParam(defaultValue = "") Map<String, Object> map, HttpSession session,  Model model
 			, @RequestParam(defaultValue = "1") int pageNum) {
 		String id = (String)session.getAttribute("sId");
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 저장 전" + map);
-		
+		 
 		map.put("sId", id);
 		map.put("pageNum", pageNum);
 		// ==========================================================

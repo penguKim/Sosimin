@@ -33,19 +33,92 @@
 	height: 200px;
 	width: 200px;
 }
+
+.tradeStatus {
+	color: red;
+}
+
+.txtChange {
+	white-space: nowrap; 
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* 판매 완료 */
+#singleProductAreaDealComplete {
+	border: none;
+	width: 290px;
+	height: 400px;
+	display: inline-block;
+	margin-right: 2px !important;
+	margin-top: 0px;
+	box-sizing: content-box !important;
+	padding: 0 !important;
+	position: relative;
+/* 	background-color: rgba(0, 0, 0, 0.5); */
+/* 	opacity: 0.4; */
+}
+
+#singleProductArea::before {
+    content: " " ;
+	width: 620px;
+	height: 620px;
+	position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+	opacity: 0.7;
+	transform: scale(1.0);
+	display: inline-block;
+	margin-bottom: 10px !important;
+	margin-left: 2px !important;
+	margin-right: 2px !important;
+	box-sizing: content-box !important;
+	padding: 0 !important;
+	background-color: white;
+	z-index: 999;
+}
+
+#checkmark{
+	border: none;
+}
+#dealComplete {
+	position: absolute;
+	z-index: 1000;
+/* 	width: 250px; */
+/* 	height: 250px; */
+	left: 200px;
+	bottom: 1180px;
+	border: none;
+/*     display: none; */
+}
+#tradeEnd {
+	color: #27B24A;
+	font-weight: bold;
+	position: relative;
+	font-size: 30px;
+	left: 83px;
+}
+
+#dealComplete img {
+	width: 300px !important;
+	height: 300px !important;
+}
+
 </style>
 <script type="text/javascript">
 $(function() {
 	
 	<%-- 필터링을 위한 변수 초기화 --%>
 	let id = "${sessionScope.sId}"; 
-	
-	alert(id);
 	let pageNum = "";
 	let price = "";
 	let status ="";
 	let word = "";
 	let sort = "";
+	let trade = "";
+	
 	<%-- 필터링을 위한 변수 초기화 --%>
 	let keyword = "${param.keyword}";
 	let category = "${param.product_category}";
@@ -65,23 +138,40 @@ $(function() {
 			category: category,
 			price: price,
 			status: status,
-			word:word
+			word:word,
+			trade: 0
 		},
 		dataType: 'json',
 		success: function(data) {
 		    let productList = data[0];
 		    let pageInfo = data[1];
 		    let pageNum = data[2];
+			let singleProduct = '';
 		    
 			for(let i = 0; i < productList.length; i++) {
-				$(".productList").append(
-					'<div class="col-lg-4-1 col-md-6 col-12" >'
+				singleProduct +='<div class="col-lg-4-1 col-md-6 col-12" >'
 						+ ' <div class="single-product" >'
-							+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
-								+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
-							+ ' </a>'
-							+ ' <div class="product-info heartPosition">'
-								+ '<h6>' + productList[i].product_name + '</h6>'
+						
+							if(productList[i].trade_status == 0) {
+								singleProduct +=  ' <div class="main-img">'
+												+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+													+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+												+ ' </a>'
+											+'</div>'
+							} else if(productList[i].trade_status == 2) {
+								singleProduct += '<div class="main-img" id="singleProductArea">' 
+									+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+									+ '<img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+									+ '<span id="dealComplete">'
+										+ '<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png" id="checkmark"><br>'
+										+ '<span id="tradeEnd">판매 완료</span>'
+									+ '</span>'
+								+ ' </a>'
+								+ '</div>'
+							}
+ 							
+							singleProduct += ' <div class="product-info heartPosition">'
+								+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
 								+ ' <div class="heart" id="heartLike '+ i +'" onclick="heartLike(this)"></div>'
 								+ ' <ul class="review">'
 									+ ' <li><span>' +  productList[i].dong + '</span></li>'
@@ -89,16 +179,18 @@ $(function() {
 									+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
 								+ ' </ul>'
 								+ ' <div class="price">'
-									+ ' <span>' + productList[i].product_price + '원</span>'
+									+ ' <span>' + productList[i].product_price.toLocaleString() + '원</span>'
 								+ ' </div>'
 								+ ' <div>'
-									+ '	<span>Pay</span>' 
+									+ '<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"'
+	                            	+ 'style="height: 20px;" id="payImage">' 
 								+ ' </div>'
 							+ ' </div>'
 						+ ' </div>'
 				+ ' </div>'
-				);
 			}
+			
+			$(".productList").append(singleProduct);
 			
 			let url = "";
 		    if(keyword != "") url += '&keyword=' + keyword;
@@ -107,6 +199,8 @@ $(function() {
 			if(status != "") url += '&status=' + status;
 			if(word != "") url += '&word=' + word;
 			if(sort != "") url += '&sort=' + sort;
+			if(trade != "") url += '&trade=' + trade;
+			
 		    alert("현재 주소는 : " + url );
 			
 			let pages = '';
@@ -189,33 +283,24 @@ $(function() {
 		}
 	}); <%-- 상품목록 조회 ajax 끝 --%>
 	
-	<%-- 관심 클릭 이벤트 --%>
-// 	$(".heart").on("click", function () {
-// 		alert("좋아요!!");
-// 	    $(this).toggleClass("is-active");
-	
-// 	});
-	
-	
-	
-	
-	
 	
 }); // ready 끝
 
+<%-- 좋아요 등록 --%>
 function heartLike(heart) {
-	alert("ㅎㅇ");
-	
+    $(this).toggleClass("is-active");
 }
 
 <%-- 카테고리 선택 시 이동--%>
 $(function() {
+	let word = "";
 	$("#submenu-1-3>li").on("click", function() {
 		let length =  $("#submenu-1-3>li").length;
 		let	category = $(this).text();
 		
 		location.href="SearchProduct?product_category=" + category;
 	});
+		
 });
 </script>
 
@@ -245,15 +330,47 @@ function wordDel() {
 	$("#wordExclude").val("");
 }
 	
+function wordPress(event) {
+    alert("제외할 모달");
+    let key = event.key;
+    let word = $("#wordExclude").val();
+    alert("제외할 단어11 :" +  word);
+        
+	if (key === 'Enter') { 
+    alert("제외할 단어22 :" +  word);
+		<%-- 미포함 단어 없을경우 모달 출력 --%>
+		if(word != "") {
+		} else {
+			const Toast = Swal.mixin({
+			    toast: true,
+			    position: 'center-center',
+			    showConfirmButton: false,
+			    timer: 2000,
+			    timerProgressBar: false,
+			})
+			Toast.fire({
+			    icon: 'error',
+			    title: '제외할 단어를 입력해주세요!'
+			})
+			return false;
+		}
+	}
+}
+
 function filtering(data) {
+	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
 	let pageNum = 1;
 	let category = "${param.keyword}";
 	let keyword = "${param.keyword}";
 	let price = "";
 	let	word = "";
+	let trade = 0;
 	
-	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
+	if(!($("#tradeCheck").prop("checked"))) {
+		trade = 2;	
+	}
 	
+	alert("트레이드 값 : " + trade);
 	<%-- 정렬 방식 설정--%>
 	let sort = 1;
 	if(data > 1) {
@@ -272,117 +389,140 @@ function filtering(data) {
     });  
     status = status.slice(0, -1);
     
+    <%-- 제외된 단어 입력 시 저장될 단어 --%>
+    if($("#wordExclude").val() != "") {
+		word = $("#wordExclude").val();
+	}
+    
+    <%-- 초기화 버튼 --%>
+	if(data == 0) {
+		location.href="SearchProduct";
+	}
+    
+    <%-- 페이징 넘버 변수 지정 --%>
     if("${param.pageNum}" > 1) {
 		pageNum = "${param.pageNum}";
 	} else {
 		pageNum = $("#pageNum").val();
 	}
     
-    if($("#wordExclude").val() != "") {
-		word = $("#wordExclude").val();
-	}
-    
-	if(data == 0) {
-		location.href="SearchProduct";
-	}
-		<%-- 상품 필터링을 위한 ajax --%>    
-			$.ajax({
-				url: "StoreProductList",
-				data: {
-					pageNum: pageNum,
-					keyword: keyword,
-					category: category,
-					price: price,
-					status: status,
-					word: word,
-					sort: sort
-				},
-				dataType: 'json',
-				success: function(data) {
-					alert("확인");
-					let productList = data[0];
-				    let pageInfo = data[1];
-				    let pageNum = data[2];
-				    $(".productList").empty();
-				    $(".pageing").empty();
-				    for(let i = 0; i < productList.length; i++) {
-						$(".productList").append(
-							'<div class="col-lg-4-1 col-md-6 col-12" >'
-								+ ' <div class="single-product" >'
-									+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
-										+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+	<%-- 상품 필터링을 위한 ajax --%>    
+		$.ajax({
+			url: "StoreProductList",
+			data: {
+				pageNum: pageNum,
+				keyword: keyword,
+				category: category,
+				price: price,
+				status: status,
+				word: word,
+				sort: sort,
+				trade: trade
+			},
+			dataType: 'json',
+			success: function(data) {
+				let productList = data[0];
+			    let pageInfo = data[1];
+			    let pageNum = data[2];
+			    $(".productList").empty();
+			    $(".pageing").empty();
+			    let singleProduct = '';
+			    
+				for(let i = 0; i < productList.length; i++) {
+					singleProduct +='<div class="col-lg-4-1 col-md-6 col-12" >'
+							+ ' <div class="single-product" >'
+							
+								if(productList[i].trade_status == 0) {
+									singleProduct +=  ' <div class="main-img">'
+													+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+														+ ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+													+ ' </a>'
+												+'</div>'
+								} else if(productList[i].trade_status == 2) {
+									singleProduct += '<div class="main-img" id="singleProductArea">' 
+										+ ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+										+ '<img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+										+ '<span id="dealComplete">'
+											+ '<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png" id="checkmark"><br>'
+											+ '<span id="tradeEnd">판매 완료</span>'
+										+ '</span>'
 									+ ' </a>'
-									+ ' <div class="product-info">'
-										+ '<h6>' + productList[i].product_name + '</h6>'
-									+ ' <div class="heart position-absolute bottom-0 start-0"></div>'
-											+ ' <ul class="review">'
-												+ ' <li><span>' +  productList[i].dong + '</span></li>'
-												+ ' <li><span>|</span></li>'
-												+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
-											+ ' </ul>'
-										+ ' <div class="price">'
-											+ ' <span>' + productList[i].product_price + '원</span>'
-										+ ' </div>'
-										+ ' <div>'
-											+ '	<span>Pay</span>' 
-										+ ' </div>'
+									+ '</div>'
+								}
+	 							
+								singleProduct += ' <div class="product-info heartPosition">'
+									+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
+									+ ' <div class="heart" id="heartLike '+ i +'" onclick="heartLike(this)"></div>'
+									+ ' <ul class="review">'
+										+ ' <li><span>' +  productList[i].dong + '</span></li>'
+										+ ' <li><span>|</span></li>'
+										+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
+									+ ' </ul>'
+									+ ' <div class="price">'
+										+ ' <span>' + productList[i].product_price.toLocaleString() + '원</span>'
+									+ ' </div>'
+									+ ' <div>'
+										+ '<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"'
+		                            	+ 'style="height: 20px;" id="payImage">' 
 									+ ' </div>'
 								+ ' </div>'
 							+ ' </div>'
-						);
-					}
-					
-				    let url = "";
-				    if(keyword != "") url += '&keyword=' + keyword;
-				    if(category != "") url += '&product_category=' + category;
-					if(price != "") url += '&price=' + price;
-					if(status != "") url += '&status=' + status;
-					if(word != "") url += '&word=' + word;
-					if(sort != "") url += '&sort=' + sort;
-				   
-				    
-					alert("현제 url은" + url);
-					
-				    let pages = '';
-					pages += '<nav aria-label="Page navigation">'
-					    + '<ul class="pagination justify-content-center">'
-					    + '<li class="page-item" id="prevPage">'
-					   		 + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + url + '" class="page-link">&laquo;</a>'
-					    + '</li>';
-					   
-			        for (let i = pageInfo.startPage; i < pageInfo.endPage+1; i++) {
-			            if (pageNum == i) {
-			                pages += '<li class="page-item active"><span class="page-link">' + i + '</span></li>';
-			            } else {
-			                pages += '<li class="page-item">'
-			                    + '<a href="SearchProduct?pageNum=' + i + url +  '" class="page-link">' + i + '</a>'
-			                    + '</li>';
-			            }
-			        }
-			        
-				    pages += '<li class="page-item" id="nextPage">'
-					    + '<a href="SearchProduct?pageNum=' + (pageNum + 1) + url + '" class="page-link">&raquo;</a>'
-					    + '</li>'
-					    + '</ul>'
-					    + '</nav>';
-					
-					<%-- 페이징 처리 --%>
-				$(".pageing").append(pages);	
+					+ ' </div>'
+				}
 				
-				<%-- pageNum 버튼 최소 최대 제한--%> 
-				if(pageNum <= 1) {
-					$("#prevPage").addClass("disabled");
-				}
-				if(pageNum >= pageInfo.maxPage) {
-					$("#nextPage").addClass("disabled");
-				}
+				$(".productList").append(singleProduct);
+				
+			    let url = "";
+			    if(keyword != "") url += '&keyword=' + keyword;
+			    if(category != "") url += '&product_category=' + category;
+				if(trade != "") url += '&trade=' + trade;
+				if(price != "") url += '&price=' + price;
+				if(status != "") url += '&status=' + status;
+				if(word != "") url += '&word=' + word;
+				if(sort != "") url += '&sort=' + sort;
+			    
+				alert("현제 url은" + url);
+				
+			    let pages = '';
+				pages += '<nav aria-label="Page navigation">'
+				    + '<ul class="pagination justify-content-center">'
+				    + '<li class="page-item" id="prevPage">'
+				   		 + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + url + '" class="page-link">&laquo;</a>'
+				    + '</li>';
+				   
+		        for (let i = pageInfo.startPage; i < pageInfo.endPage+1; i++) {
+		            if (pageNum == i) {
+		                pages += '<li class="page-item active"><span class="page-link">' + i + '</span></li>';
+		            } else {
+		                pages += '<li class="page-item">'
+		                    + '<a href="SearchProduct?pageNum=' + i + url +  '" class="page-link">' + i + '</a>'
+		                    + '</li>';
+		            }
+		        }
+		        
+			    pages += '<li class="page-item" id="nextPage">'
+				    + '<a href="SearchProduct?pageNum=' + (pageNum + 1) + url + '" class="page-link">&raquo;</a>'
+				    + '</li>'
+				    + '</ul>'
+				    + '</nav>';
+				
+				<%-- 페이징 처리 --%>
+			$(".pageing").append(pages);	
 			
-			},
-			error: function() {
-				alert("실패");
+			<%-- pageNum 버튼 최소 최대 제한--%> 
+			if(pageNum <= 1) {
+				$("#prevPage").addClass("disabled");
 			}
-			
-		}); // ajax 끝
+			if(pageNum >= pageInfo.maxPage) {
+				$("#nextPage").addClass("disabled");
+			}
+		
+		},
+		error: function() {
+			alert("실패");
+		}
+		
+	}); // ajax 끝
 }
 
 </script>
@@ -424,6 +564,7 @@ function filtering(data) {
                     <!-- Start Product Sidebar -->
                     <div class="product-sidebar">
                         <!-- Start Single Widget -->
+                        
                         <div class="single-widget">
                         	<div class="filter">
 		                        <span class="filter_title">필터</span>
@@ -431,6 +572,7 @@ function filtering(data) {
 	                        		<a href="javascript:void(0)" onclick="filtering(0)" style="text-decoration: underline; color: grey;">초기화</a>
 	                        	</span>
                         	</div>
+                        	<div><input type="checkbox" class="form-check-input productCheckbox" id="tradeCheck" checked onclick="filtering()">&nbsp; <b class="tradeStatus">거래 가능한 상품만 보기</b></b></div>
                             <div style="margin-bottom: 20px;"></div>
 		                    <h3>가격</h3>
 		                    <!-- Start Single Widget -->
@@ -490,10 +632,10 @@ function filtering(data) {
 		                    <h3>결과내 검색</h3>
 		                    <form action="javascript:filtering()">
 			                    <p>제외할 단어</p>
-			                    <input type="text" placeholder="제외 단어 입력" size="20" id="wordExclude">
+			                    <input type="text" placeholder="제외 단어 입력" size="20" id="wordExclude" onkeypress="wordPress()">
 			                    <div class="resultSearch">
 				                   	<button class="reset-btn" style="margin-left: 10%;"onclick="wordDel()">초기화</button>
-				                   	<button type="submit" class="resultSearch-btn" style="margin-left: 10%;" onclick="wordDis()">적용하기</button>
+				                   	<button type="submit" class="resultSearch-btn" style="margin-left: 10%;" onclick="wordDis()" >적용하기</button>
 			                    </div>
 		                    </form>
 		                    <div style="margin-bottom: 20px;"></div>
