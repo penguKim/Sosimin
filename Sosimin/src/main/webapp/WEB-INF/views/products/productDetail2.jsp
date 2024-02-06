@@ -763,11 +763,9 @@ function Proposal() {
 	                        	<%-- 신고하기 --%>
 					        <div class="reportBtn2">
 								<button class="col-1 align-self-end police" style="width: 80px;" data-bs-toggle="modal" data-bs-target="#reportModal">
-									<span id="reportBtn3">
-										<i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i>
-										<span id="policeText">신고하기</span>
-									</span>
-									</button>
+									<i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i>
+									<span id="policeText">신고하기</span>
+								</button>
 							</div>
 	                        </div>
                         </div>

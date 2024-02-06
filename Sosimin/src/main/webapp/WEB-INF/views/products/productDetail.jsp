@@ -52,47 +52,26 @@
 	bottom:48px;
 	left:128px;
 }
-.reportBtn {
+.reportBtn2 {
+	display:inline-block;
 	position:relative;
 	color: #888;
 	cursor: pointer;
 	transition: 0.5s;
-	left: 110px;
-	bottom:24px;
+	left: 350px;
 	width:10px;
 }
 
-.reportBtn:hover{
+.reportBtn2:hover{
 	color: #f00;
 	transform: scale(1.2);
 	transition: 0.5s;
 }
-#reportBtn3{
-	display: inline-block;
-	position: relative;
-	
-}
-/* .reportBtn:hover, */
-/* .reportBtn2:hover .reportBtn, */
-/* #policeText:hover ~ .reportBtn { */
-/* 	color: #f00; */
-/* 	transform: scale(1.2); */
-/* 	transition: 0.5s; */
-/* }
 
-/* .reportBtn2:hover{ */
-/* 	color: #f00; */
-/* 	transform: scale(1.2); */
-/* 	transition: 0.5s; */
-/* } */
-/* .reportBtn2:hover #policeText { */
-/* 	color: #f00; */
-/* } */
-/* #reportBtn2{ */
-/* 	position: relative; */
-/* 	left:500px; */
-/* 	bottom:300px; */
-/* } */
+.reportBtn2:hover .reportBtn,
+.reportBtn2:hover #policeText{
+	color: #f00;
+}
 
 /* 판매 완료 */
 #singleProductAreaDealComplete {
@@ -761,16 +740,13 @@ location.href = "MemberLogin";
 	                        		</c:forEach>
 	                        	</div>
 	                        	<%-- 신고하기 --%>
-					        <div class="reportBtn2">
-								<button class="col-1 align-self-end police" style="width: 80px;" data-bs-toggle="modal" data-bs-target="#reportModal">
-									<span id="reportBtn3">
-										<i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i>
-										<span id="policeText">신고하기</span>
-									</span>
-									</button>
-							</div>
 	                        </div>
                         </div>
+                        	<c:if test="${Product.member_id ne sessionScope.sId}">
+                        	<div class="reportBtn2">
+								<span class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size:20px; white-space: nowrap">신고하기</span>
+							</div>
+							</c:if>
                         <br><br>
                         <div>
                         	<div id="productStatusDiv">
