@@ -38,7 +38,6 @@ import com.itwillbs.c5d2308t1_2.vo.PageDTO;
 import com.itwillbs.c5d2308t1_2.vo.PageInfo;
 import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 
-import lombok.ToString;
 
 @Controller
 public class ProductController {
@@ -166,7 +165,7 @@ public class ProductController {
 		return jsonArray.toString();
 	}
 	
-	// 관심 상품 목록
+	// 좋아요 상품 목록
 	@ResponseBody
 	@GetMapping("ProductLikeList")
 	public String productLikeList(@RequestParam Map<String, String> map, HttpSession session, Model model) {
@@ -184,23 +183,33 @@ public class ProductController {
 		return "[]";
 	}
 	
-	// =============================== 관리자 페이지
-		// 등록 상품 목록
-		@GetMapping("ProductList")
-		public String productList(HttpSession session, Model model) {
-			List<Map<String, Object>> productList = service.adminProductList();
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>" + productList);
-			
-			model.addAttribute("productList", productList);
-			
-			return "admin/productList";
-		}
+	// 상품 좋아요 
+	@ResponseBody
+	@GetMapping("ProductLikeRegist")
+	public String productLikeRegist() {
 		
-		@GetMapping("ProductListDetail")
-		public String productListDetail() {
-			
-			return "admin/productListDetail";
-		}
+		
+		return "true";
+	}
+	
+	
+	// =============================== 관리자 페이지
+	// 등록 상품 목록
+	@GetMapping("ProductList")
+	public String productList(HttpSession session, Model model) {
+		List<Map<String, Object>> productList = service.adminProductList();
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>" + productList);
+		
+		model.addAttribute("productList", productList);
+		
+		return "admin/productList";
+	}
+	
+	@GetMapping("ProductListDetail")
+	public String productListDetail() {
+		
+		return "admin/productListDetail";
+	}
 	
 	
 	

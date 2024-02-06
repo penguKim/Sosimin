@@ -288,7 +288,20 @@ $(function() {
 
 <%-- 좋아요 등록 --%>
 function heartLike(heart) {
-    $(this).toggleClass("is-active");
+    alert("좋아요 선택");
+    $.ajax({
+    	url:"ProductLikeRegist",
+    	data: {
+    		
+    	},
+    	success: function(result) {
+    		$(this).toggleClass("is-active");
+		},
+		error: function() {
+			
+		}
+    	
+    }); // ajax 끝
 }
 
 <%-- 카테고리 선택 시 이동--%>
