@@ -742,11 +742,52 @@ window.onload = function() {
 // var imageCounter = 1;
 
 var selectedFiles = [];  // 사용자가 선택한 파일을 저장할 배열
+var deleteImages = [];
+
+function removeImage(button) {
+  var imageItem = button.parentNode; // 이미지 항목
+  var imageContainer = imageItem.parentNode; // 이미지 컨테이너
+  var imageIndex = Array.prototype.indexOf.call(imageContainer.children, imageItem);
+
+  // 이미지 항목에서 input 요소(이미지 이름 값) 찾기
+  var imageNameInput = imageItem.querySelector('input[name^="image_name"]');
+  if (imageNameInput) {
+    // 이미지 이름 값 삭제
+    imageNameInput.parentNode.removeChild(imageNameInput);
+  }
+
+  // 삭제할 이미지의 인덱스를 배열에 추가
+  deleteImages.push(imageIndex);
+
+  // 이미지 항목 삭제
+  imageContainer.removeChild(imageItem);
+
+  var file = imageItem.file;  // 파일 객체를 가져옵니다.
+  var index = selectedFiles.indexOf(file);  // selectedFiles 배열에서 해당 파일의 인덱스를 찾습니다.
+  if (index > -1) {
+    selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
+  }
+
+  // 이미지 개수 감소
+  var imageLength = parseInt(document.getElementById("imageLength").textContent);
+  imageLength--;
+  document.getElementById("imageLength").textContent = imageLength;
+
+  if (imageItem.querySelector(".mainImage")) {
+    var nextImageItem = imageContainer.children[1];
+    if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {
+      var mainImageText = document.createElement("span");
+      mainImageText.classList.add("mainImage");
+      mainImageText.textContent = "대표이미지";
+      nextImageItem.appendChild(mainImageText);
+    }
+  }
+}
 
 function setThumbnail(event) {
   var newFiles = event.target.files;
   var imageCounter = document.querySelectorAll(".imageItem").length + 1;
-  
+
   for (var i = 0; i < newFiles.length; i++) {
     var file = newFiles[i];
     var ext = file.name.split('.').pop().toLowerCase();
@@ -758,14 +799,12 @@ function setThumbnail(event) {
       return false;
     }
 
-
     var imageLength = parseInt(document.getElementById("imageLength").textContent);
     imageLength++;
 
     if (imageLength <= 5) {
-    selectedFiles.push(file);  // 사용자가 선택한 파일을 배열에 추가
-    document.getElementById("imageLength").textContent = imageLength;
-    
+      selectedFiles.push(file);
+
       var reader = new FileReader();
       reader.onload = (function(file) {
         return function(e) {
@@ -780,24 +819,29 @@ function setThumbnail(event) {
 
           var imageItem = document.createElement("span");
           imageItem.classList.add("imageItem");
+          imageItem.file = file;
 
           imageItem.appendChild(img);
           imageItem.appendChild(closeButton);
           document.getElementById("image_container").appendChild(imageItem);
 
-          if(imageCounter == 1) {
-            var mainImageText = document.querySelector(".mainImage");
-            mainImageText.style.display = "inline";
+          var firstImageItem = document.querySelector(".imageItem");
+          var mainImageText = firstImageItem ? firstImageItem.querySelector(".mainImage") : null;
+
+          if (!mainImageText && imageCounter === 1) {
+            mainImageText = document.createElement("span");
+            mainImageText.classList.add("mainImage");
+            mainImageText.textContent = "대표이미지";
+            imageItem.appendChild(mainImageText);
           }
-          imageCounter++;
         };
       })(file);
       reader.readAsDataURL(file);
     } else if (imageLength > 5) {
       alert("사진 첨부는 최대 5장까지 가능합니다.");
       imageLength = 5;
-      document.getElementById("imageLength").textContent = imageLength;
     }
+    document.getElementById("imageLength").textContent = imageLength;
   }
 }
 //파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
@@ -824,6 +868,7 @@ function submitFiles(event) {
 		    formData.append('tag_name' + i, tagInput.value);
 		  }
 		}
+	  
 	  // Form의 각 필드를 개별적으로 FormData에 추가
 	    var formElements = form.elements;
 	    for (var i = 0; i < formElements.length; i++) {
@@ -839,7 +884,7 @@ function submitFiles(event) {
 	        }
 	    }
 	  // 삭제된 이미지의 인덱스를 서버로 전송
-	    formData.append('delete_image', deleteImages.join(','));
+	   formData.append('delete_image', deleteImages.join(','));
 	  // 사용자가 새 이미지를 선택하지 않았을 경우, 기존 이미지의 경로를 서버로 전송
 	  if (selectedFiles.length === 0) {
 	    var imageData = document.getElementById("image_data");
@@ -993,33 +1038,62 @@ function ProductDelete(event) {
 	    // 이미지 이름 값 삭제
 	    imageNameInput.parentNode.removeChild(imageNameInput);
 	  }
-
+		
 	  // 삭제할 이미지의 인덱스를 배열에 추가
 	  deleteImages.push(imageIndex);
 
 	  // 이미지 항목 삭제
 	  imageContainer.removeChild(imageItem);
-
+	
+	  var file = imageItem.file;  // 파일 객체를 가져옵니다.
+	  var index = selectedFiles.indexOf(file);  // selectedFiles 배열에서 해당 파일의 인덱스를 찾습니다.
+	  if (index > -1) {
+	    selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
+	  }
+	  
+// 	  var fileIndex = selectedFiles.findIndex(function(file) {
+// 		    return file.name === imageItem.file.name;
+// 		  });
+// 		  if (fileIndex > -1) {
+// 		    selectedFiles.splice(fileIndex, 1);
+// 		  }
+		  
+		    if (imageItem.querySelector(".mainImage")) {
+	    var nextImageItem = imageContainer.children[1]; 
+	    if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {
+	        var mainImageText = document.createElement("span");
+	        mainImageText.classList.add("mainImage");
+	        mainImageText.textContent = "대표이미지";
+	        nextImageItem.appendChild(mainImageText);
+	      }
+	    }
+		    
 	  // 이미지 개수 감소
 	  var imageLength = parseInt(document.getElementById("imageLength").textContent);
 	  imageLength--;
 	  document.getElementById("imageLength").textContent = imageLength;
 
+	  var imageText = document.querySelector(".mainImage");
+	  if (imageContainer.children.length === 1) {
+	    imageText.style.display = "none";
+	  }
+	  
+	  
 	  // 이미지 URL 삭제
 // 	  imageUrls[imageIndex] = '';
-	  if (imageLength === 0) {
-		    var mainImageSpan = document.querySelector('.mainImage');
-		    if (mainImageSpan) {
-		      mainImageSpan.parentNode.removeChild(mainImageSpan);
-		    }
-		  }
+// 	  if (imageLength === 0) {
+// 		    var mainImageSpan = document.querySelector('.mainImage');
+// 		    if (mainImageSpan) {
+// 		      mainImageSpan.parentNode.removeChild(mainImageSpan);
+// 		    }
+// 		  }
 		  
-		  // 이미지가 하나만 남았을 경우 "대표이미지" 텍스트 삭제
-		  if (imageContainer.children.length === 1) {
-		    if (mainImageSpan) {
-		      mainImageSpan.parentNode.removeChild(mainImageSpan);
-		    }
-		  }
+// 		  // 이미지가 하나만 남았을 경우 "대표이미지" 텍스트 삭제
+// 		  if (imageContainer.children.length === 1) {
+// 		    if (mainImageSpan) {
+// 		      mainImageSpan.parentNode.removeChild(mainImageSpan);
+// 		    }
+// 		  }
 		}
 //   // imageCounter 감소
 //   if (imageCounter > 0) {

@@ -447,6 +447,14 @@
 .main-img{
 	position: relative;
 }
+
+.progress-bar {
+  animation-name: progress-animation;
+  animation-duration: 2s; 
+  /* 애니메이션 지속 시간을 설정합니다. */
+  animation-timing-function: ease-out; 
+  /* 애니메이션 속도 곡선을 설정합니다. */
+}
 </style>
 <script>
 
@@ -625,7 +633,6 @@ location.href = "MemberLogin";
 // }
 //});
 //}
-	
 </script>
 <body>
 
@@ -970,7 +977,12 @@ location.href = "MemberLogin";
                                 		<span id="productCount">${SellerProductCount }개</span>
 	                                	<span style="color: black;">상품 더보기 ></span>
                                 	</a>
-                                </div>
+                                </div> 
+                                <div class="col-xl-4 col-3">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">75%</div>
+									</div>
+			        		    </div>
                                 <hr>
                                 <br>
                             </div>
