@@ -160,6 +160,7 @@
 				</otherwise>
 			</choose>
 			, #{pay_history_type}
+			, #{pay_history_message}
 			, now()
 			, #{bank_tran_id}
 		)
@@ -234,7 +235,8 @@
 			, #{pay_id}
 			, #{order_amount}
 			, #{pay_balance} - CAST(#{order_amount} AS SIGNED)
-			, 3
+			, #{pay_history_type}
+			, #{pay_history_message}
 			, now()
 			, null
 		)
@@ -276,7 +278,8 @@
 			, #{seller_pay_id}
 			, #{payment_amount}
 			, #{pay_balance} + CAST(#{payment_amount} AS SIGNED)
-			, 4
+			, #{pay_history_type}
+			, #{pay_history_message}
 			, now()
 			, null
 		)
@@ -292,6 +295,21 @@
 		WHERE product_buyer = #{product_buyer}
 			AND product_id = #{product_id}
 	</insert>
+	
+	<!-- 상품 거래 상태를 거래대기(0)로 변경 -->
+	<update id="updateTradeStatus0">
+		UPDATE Product
+		SET trade_status = 0
+		WHERE product_id = #{product_id}
+	</update>
+	
+	<delete id="deleteOrders">
+		DELETE FROM Orders
+		WHERE product_buyer = #{product_buyer}
+			AND product_id = #{product_id}
+	</delete>
+	
+	
 	
 	<!-- ================ 관리자페이지 ====================== -->	
 	
@@ -338,7 +356,8 @@
 			, #{pay_id}
 			, CAST(#{pay_balance} AS SIGNED) - CAST(#{existing_balance} AS SIGNED)
 			, #{pay_balance}
-			, 1
+			, #{pay_history_type}
+			, #{pay_history_message}
 			, now()
 			, null
 		)

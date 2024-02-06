@@ -260,7 +260,7 @@ function load_list(pay_history_type, start_date, end_date) {
 		dataType: "json",
 		success:  function(data) {
 			
-			console.log(data);
+			console.log(data.payHistory);
 			
 			if(data.listCount == 0) {
 				$("#payHistoryList").append("<div id='list_none'>사용 내역이 없습니다</div>");
@@ -298,8 +298,7 @@ function load_list(pay_history_type, start_date, end_date) {
 				const paymentArray = groupedData[year]; // 데이터 배열
 
 				for (let history of paymentArray) {
-					console.log("pay_history_id:", history.pay_history_id);
-					
+					console.log("history:" + history.buy_product_id);
 					// pay_history_date 값을 분리하여 날짜와 시간을 추출
 					let date = history.pay_history_date.slice(5, 10);
 					let time = history.pay_history_date.slice(11, 16);
@@ -309,19 +308,20 @@ function load_list(pay_history_type, start_date, end_date) {
 					let subject = "";
 					if(history.pay_history_type == "1") {
 						pay_history_type = "충전";
-						subject = "페이충전";
+						subject = history.pay_history_message;
 					} else if(history.pay_history_type == "2") {
 						pay_history_type = "환급";
-						subject = "페이환급";
+						subject = history.pay_history_message;
 					} else if(history.pay_history_type == "3") {
 						pay_history_type = "사용";
-						subject = '<a href="ProductDetail?product_id=' + history.buy_product_id +'">' + history.buy_product_name + '</a><i class="fa fa-angle-right"></i>';
+						if (!history.buy_product_id || history.buy_product_id === 'null') {
+						    subject = "취소된 거래입니다";
+						} else {
+							subject = '<a href="ProductDetail?product_id=' + history.buy_product_id +'">' + history.buy_product_name + '</a><i class="fa fa-angle-right"></i>';
+						}
 					} else if(history.pay_history_type == "4") {
 						pay_history_type = "수익";
 						subject = '<a href="ProductDetail?product_id=' + history.sell_product_id +'">' + history.sell_product_name + '</a><i class="fa fa-angle-right"></i>';
-					} else if(history.pay_history_type == "5") {
-						pay_history_type = "충전";
-						subject = "관리자의 권한으로 변경";
 					}
 					
 					let pay_amount = history.pay_amount.toLocaleString();
@@ -406,7 +406,7 @@ function acceptPayment() {
 		type: "GET",
 		url: "AcceptPayment",
 		data: {
-			"product_id": 392,
+			"product_id": 32,
 			"product_buyer": "leess"
 		},
 		success:  function(data) {
@@ -467,7 +467,7 @@ function acceptPayment() {
 // 임시로 테스트용 결제하기 버튼 추가
 function payment() {
 	// 채팅방에서 produtct_id 들고오기
-	location.href="Payment?product_id=392";
+	location.href="Payment?product_id=32";
 }
 
 // 임시로 테스트용 구매확정 버튼 추가(에이젝스)
@@ -480,7 +480,7 @@ function confirmPayment() {
 		type: "GET",
 		url: "ConfirmPayment",
 		data: {
-			"product_id": 392,
+			"product_id": 32
 		},
 		success:  function(data) {
 			if(data == "not-login") {
@@ -567,7 +567,7 @@ function confirmPayment() {
 }
 
 // 임시로 테스트용 거래중단 버튼 추가(에이젝스)
-function confirmPayment() {
+function stopPayment() {
 	// 채팅방에서 produtct_id 들고오기
 	
 	<%-- 서블릿 요청 --%>
@@ -575,7 +575,7 @@ function confirmPayment() {
 		type: "GET",
 		url: "StopPayment",
 		data: {
-			"product_id": 392,
+			"product_id": 32
 		},
 		success:  function(data) {
 			if(data == "not-login") {
@@ -670,10 +670,12 @@ function confirmPayment() {
         </div>
     </div>
     <!-- End Breadcrumbs -->
-    <input type="button" value="(임시)거래수락" onclick="acceptPayment()">
-    <input type="button" value="(임시)결제하기" onclick="payment()">
-    <input type="button" value="(임시)구매확정" onclick="confirmPayment()">
-    <input type="button" value="(임시)거래중단" onclick="stopPayment()">
+    <div id="buttonArea">
+    	<input type="button" id="acceptBtn" value="(임시)거래수락" onclick="acceptPayment()">    	
+	    <input type="button" value="(임시)결제하기" onclick="payment()">
+	    <input type="button" value="(임시)구매확정" onclick="confirmPayment()">
+   		<input type="button" id="stopBtn" value="거래중단" onclick="stopPayment()">
+    </div>
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
 	 <div class="account-login section">

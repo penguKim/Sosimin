@@ -53,14 +53,19 @@ $(function() {
 	});
     
 	// 금액에 자동으로 , 입력
-	$("#pay-amount").blur(function() {
-		if(!$('#pay-amount').val() == "") {
-			input_amount = parseInt($('#pay-amount').val().replace(/,/g, '')); // 인풋텍스트에 있는 값 숫자로 변환하여 대입			
-		}
-
-		let formattedValue = input_amount.toLocaleString(); // 1000단위마다 ,
-        $('#pay-amount').val(formattedValue);
+	$("#pay-amount").keyup(function() {
+	    var inputText = $(this).val();
+	    var formattedText = formatNumber(inputText);
+	    $(this).val(formattedText);
 	});
+
+	function formatNumber(number) {
+	    // 숫자에서 쉼표 제거
+	    var plainNumber = number.replace(/,/g, '');
+	    // 숫자를 1000단위로 쉼표로 구분하여 포맷팅
+	    var formattedNumber = plainNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	    return formattedNumber;
+	}
 
 	
 	// 비밀번호를 입력하고 등록버튼을 눌렀을 때 
@@ -266,8 +271,9 @@ function openModal() {
 	                            <br>
 	                            <div class="form-group input-group">
 	                                <label for="pay-amount">결제금액</label>
-	                                <input class="form-control" type="text" id="pay-amount" name="order_amount"
-	                                	value="${productInfo.product_price}">
+	                                <fmt:formatNumber value="${productInfo.product_price}" pattern="###,###" var="formattedPrice" />
+									<input class="form-control" type="text" id="pay-amount" name="order_amount"
+										value="${formattedPrice}">
 	                            </div>
 	                            <div class="btn-group">
 							        <input type="button" class="btn-check" id="btn-check1" value="10000" autocomplete="off">

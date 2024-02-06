@@ -69,10 +69,10 @@ public interface PaymentMapper {
 	// 구매자 정보 불러오기
 	Map<String, Object> selectOrderInfo(Map<String, Object> map);
 	
-	// 상품 거래 상태 2로 변경
+	// 상품 거래 상태 2로 변경(판매완료)
 	void updateTradeStatus2(Map<String, Object> map);
 	
-	// 상품 결제 상태를 1로 변경
+	// 상품 결제 상태를 1로 변경(거래중)
 	int updateOrderStatus(Map<String, Object> map);
 	
 	// 페이 수익 내역
@@ -80,7 +80,13 @@ public interface PaymentMapper {
 	
 	// 판매자 수익 정보 넣기
 	void updateOrderSeller(Map<String, Object> map);
-	
+
+	// 상품 결제 상태를 0로 변경(거래대기)
+	void updateTradeStatus0(Map<String, Object> map);
+
+	// Order 테이블의 해당 거래기록 삭제
+	int deleteOrders(Map<String, Object> map);
+
 	// ====================== 관리자페이지 ==================
 	
 	// 페이 가입 내역 불러오기

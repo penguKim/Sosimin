@@ -264,6 +264,8 @@ $(function() {
 		
 	}
 	
+	
+	
 </script>
 </head>
 <body>
@@ -366,9 +368,37 @@ $(function() {
 										<!-- End Basic Modal-->
 									</td>
 									<td class="green">
-										<button type="button" id="modify" class="btn btn-primary" >
-											페이환불
+										<button type="button" id="refund" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal2-${pay_list.pay_history_id}">
+											페이환급
 										</button>
+									
+										<!-- Basic Modal -->
+										<div class="modal fade" id="modal2-${pay_list.pay_history_id}" tabindex="-1">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title">소심페이환급</h5><!-- 모달 제목 -->
+														<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+													</div>
+													<div class="modal-body">
+														<!-- 모달 내용이 들어가는 부분 -->
+														<table class="table modal_table">
+															<tr>
+																<th scope="row">환급 금액</th>
+																<td>
+																	<input type="text" id="new-balance" value="${payList.pay_balance}">
+																</td>
+															</tr>
+														</table>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">뒤로가기</button>
+														<button type="button" class="btn btn-primary" onclick="refundPay(${payList.pay_id})">환급하기</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- End Basic Modal-->
 									</td>
 								</tr>
 							</table>

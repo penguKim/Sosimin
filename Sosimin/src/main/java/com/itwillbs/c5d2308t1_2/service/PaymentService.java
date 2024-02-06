@@ -183,6 +183,28 @@ public class PaymentService {
 		return mapper.updatePayBalance(map); // 페이 잔액 올리기
 	}
 	
+	// 거래중단(결제가 이루어진 경우)
+	@Transactional
+	public int getdeleteAllCount(Map<String, Object> map) {
+		// 판매글 상태 변경하고 Orders 컬럼 삭제
+		// 페이 돌려주고 payhistory에 쓰기
+		// [Pay] 테이블 전체금액도 다시 돌려놓기
+		mapper.insertPayHistory(map);
+		mapper.updatePayBalance(map);
+		mapper.updateTradeStatus0(map);
+		
+		return mapper.deleteOrders(map);
+	}
+
+	// 거래중단(결제 이루어지지 않은 경우)
+	@Transactional
+	public int getdeleteCount(Map<String, Object> map) {
+		// 판매글 상태 판매중으로 변경하고 Orders 컬럼 삭제
+		mapper.updateTradeStatus0(map);
+	
+		return mapper.deleteOrders(map);
+	}
+
 	// ============= 관리자 페이지 ======================
 	
 	// 페이 가입 내역 불러오기
@@ -219,7 +241,5 @@ public class PaymentService {
 	public List<Map<String, Object>> getOrderList() {
 		return mapper.selectOrderList();
 	}
-
-
 
 }

@@ -433,6 +433,7 @@ public class PaymentController {
 			
 			// pay_history_type을 충전으로 지정
 			map.put("pay_history_type", 1);
+			map.put("pay_history_message", "페이충전");
 			
 			if(withdrawResult.get("rsp_code").equals("A0000")) {
 				log.info("이거임 >>>>>>>>>>>>>>>" + map.toString());
@@ -654,6 +655,7 @@ public class PaymentController {
 		
 		// pay_history_type을 환급으로 지정
 		map.put("pay_history_type", 2);
+		map.put("pay_history_message", "페이환급");
 		
 		if(depositResult.get("rsp_code").equals("A0000")) {
 //			log.info("이거임 >>>>>>>>>>>>>>>" + map.toString());
@@ -1001,6 +1003,7 @@ public class PaymentController {
 		
 		// pay_history_type을 사용으로 지정
 		map.put("pay_history_type", 3);
+		map.put("pay_history_message", "상품구매");
 		log.info("뭐가들었니 : " + map.toString());
 		
 		
@@ -1141,6 +1144,8 @@ public class PaymentController {
 				
 				log.info("orderInfo 확인 : " + orderInfo);
 				
+				orderInfo.put("pay_history_type", 4);
+				orderInfo.put("pay_history_message", "판매수익");
 				orderInfo.put("pay_balance", sellerInfo.get("pay_balance"));
 				orderInfo.put("fintech_use_num", sellerInfo.get("fintech_use_num"));
 				
@@ -1177,23 +1182,51 @@ public class PaymentController {
 			return "not-login";
 		}
 		
-		// Orders 테이블의 product_buyer를 조회하여 세션아이디와 비교
+		// Orders 테이블의 product_seller를 조회하여 세션아이디와 비교
 		// 일치하지 않으면 돌려보내기
 		Map<String, Object> orderInfo = service.getOrderInfo(map);
 		
 		if(orderInfo == null) {
 			return "none"; // 구매 중단 가능한 상품이 없습니다!
-		} else if(!orderInfo.get("product_buyer").toString().equals(product_seller)) {
+		} else if(!orderInfo.get("product_seller").toString().equals(product_seller)) {
 			return "inconsistency"; // 판매자 정보가 일치하지 않습니다!
 		} 
 		
+		log.info("orderInfo : " + orderInfo);
+		map.put("product_buyer", orderInfo.get("product_buyer"));
 		
 		if(orderInfo.get("buyer_pay_history_id") != null 
 				&& !orderInfo.get("buyer_pay_history_id").toString().equals("")) { // 구매자가 이미 결제한 것이 확인되면
-			return "";
+			// 판매글 상태 변경하고 Orders 컬럼 삭제
+			// 페이 돌려주고 payhistory에 쓰기		
+			// [Pay] 테이블 전체금액도 다시 돌려놓기
+			// 구매자 페이 정보 가져오기
+			Map<String, Object> payInfo = service.getPayInfo(orderInfo.get("product_buyer").toString());
+			
+			map.put("tran_amt", orderInfo.get("payment_amount"));
+			map.put("pay_history_type", 1);
+			map.put("pay_history_message", "구매취소");
+			map.put("fintech_use_num", payInfo.get("fintech_use_num"));
+			map.put("pay_id", payInfo.get("pay_id"));
+			
+			int deletCount = service.getdeleteAllCount(map);
+			
+			if(deletCount > 0) { // 성공시
+				return "true";	
+			} else {
+				return "false";					
+			}		
 			
 		} else { // 구매자가 아직 송금하지 않았으면 
-			return "";
+			// 판매글 상태 판매중으로 변경하고 Orders 컬럼 삭제
+			int deletCount = service.getdeleteCount(map);
+			
+			if(deletCount > 0) { // 성공시
+				return "true";	
+			} else {
+				return "false";					
+			}		
+			
 			
 		}
 	}
@@ -1274,6 +1307,9 @@ public class PaymentController {
 			
 			map.put("pay_password", securePasswd);
 		}
+		
+		map.put("pay_history_type", 1);
+		map.put("pay_history_message", "관리자 권한으로 변경");
 		
 		int updateCount = service.updatePayInfo(map);
 		
