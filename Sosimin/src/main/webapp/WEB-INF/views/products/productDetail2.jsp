@@ -30,9 +30,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
     
      <!-- ========================= JS here ========================= -->
+     <%-- 신고하기 아코디언 부서짐 필요하면 다시 살리기 --%>
+<%--     <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script> --%>
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
@@ -472,180 +473,179 @@
 <script>
 
 
-
-$(function() {
-	console.log("세션에 저장된 아이디 ; " + '${sessionScope.sId}');
-	// 찜정보 가져오기
-	$.ajax({
-		type: "POST",
-		url: "interestShow", <%-- 회원의 관심 정보 가져오기 --%>
-			data: {
-				product_id: ${param.product_id}
-			},
-			dataType: "json",
-			success: function(result) {
-				console.log(result);
-// 				if(Object.keys(result) == 0) {
-					if(result.product_id == ${param.product_id}) {
-						$("#Like").text(result.intersetCount);
-						$("#likeButtonSpan").text(result.intersetCount);
-						$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGNzJGMzMiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
-						$("#likeButton").css("background-color", "rgb(51, 51, 51)");
+		$(function() {
+			console.log("세션에 저장된 아이디 ; " + '${sessionScope.sId}');
+			// 찜정보 가져오기
+			$.ajax({
+				type: "POST",
+				url: "interestShow", <%-- 회원의 관심 정보 가져오기 --%>
+					data: {
+						product_id: ${param.product_id}
+					},
+					dataType: "json",
+					success: function(result) {
+						console.log(result);
+//		 				if(Object.keys(result) == 0) {
+							if(result.product_id == ${param.product_id}) {
+								$("#Like").text(result.intersetCount);
+								$("#likeButtonSpan").text(result.intersetCount);
+								$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGNzJGMzMiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
+								$("#likeButton").css("background-color", "rgb(51, 51, 51)");
+							}
+//		 				}
+					},
+					error: function(xhr, textStatus, errorThrown) {
+							alert("관심 불러오기를 실패했습니다.\n새로고침을 해주세요.");
 					}
-// 				}
-			},
-			error: function(xhr, textStatus, errorThrown) {
-					alert("관심 불러오기를 실패했습니다.\n새로고침을 해주세요.");
-			}
-		});
- 
-$("#likeButton").on("click", function () {
-	$.ajax({
-		type: "POST",
-		url: "interestCheck", 
-		data: {
-//			community_like_status: 0,
-			product_id: ${param.product_id}
-		},
-		dataType: "json",
-		success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-			if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
-				alert("관심ㄱㅅ");
-			$("#likeText").addClass("is-active");
-				$("#likeButtonSpan").text(result.intersetCount);
-				$("#Like").text(result.intersetCount);
-				$("#likeButton").css("background-color", "rgb(51, 51, 51)");
-				$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGNzJGMzMiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
-			} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
-			alert("관심ㄲㅈ");
-			$("#likeText").removeClass("is-active");
-				$("#likeButtonSpan").text(result.intersetCount);
-				$("#Like").text(result.intersetCount);
-				$("#likeButton").css("background-color", "rgb(204, 204, 204)");
-				$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
-			}
-		},
-		error: function(xhr, textStatus, errorThrown) {
-			Swal.fire({
- 	        title: '회원만 사용가능합니다.',
- 	        text: '로그인 페이지로 이동하시겠습니까?',
- 	        icon: 'error',
- 	        showCancelButton: true,
- 	        confirmButtonColor: '#39d274',
- 	        cancelButtonColor: '#d33',
- 	        confirmButtonText: '이동',
- 	        cancelButtonText: '취소',
- 	        reverseButtons: true,
- 	        allowOutsideClick: false
- 	    }).then((result) => {
- 	        if (result.isConfirmed) {
- 	        	location.href="MemberLogin";
- 	        }
- 	    });
-		}
-	});
-});
+				});
+		 
+	 $("#likeButton").on("click", function () {
+ 		$.ajax({
+ 			type: "POST",
+ 			url: "interestCheck", 
+ 			data: {
+//  				community_like_status: 0,
+ 				product_id: ${param.product_id}
+ 			},
+ 			dataType: "json",
+ 			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+ 				if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
+	 				alert("관심ㄱㅅ");
+					$("#likeText").addClass("is-active");
+ 					$("#likeButtonSpan").text(result.intersetCount);
+ 					$("#Like").text(result.intersetCount);
+ 					$("#likeButton").css("background-color", "rgb(51, 51, 51)");
+ 					$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGNzJGMzMiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
+ 				} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
+ 				alert("관심ㄲㅈ");
+					$("#likeText").removeClass("is-active");
+ 					$("#likeButtonSpan").text(result.intersetCount);
+ 					$("#Like").text(result.intersetCount);
+ 					$("#likeButton").css("background-color", "rgb(204, 204, 204)");
+ 					$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
+ 				}
+ 			},
+ 			error: function(xhr, textStatus, errorThrown) {
+ 				Swal.fire({
+ 	    	        title: '회원만 사용가능합니다.',
+ 	    	        text: '로그인 페이지로 이동하시겠습니까?',
+ 	    	        icon: 'error',
+ 	    	        showCancelButton: true,
+ 	    	        confirmButtonColor: '#39d274',
+ 	    	        cancelButtonColor: '#d33',
+ 	    	        confirmButtonText: '이동',
+ 	    	        cancelButtonText: '취소',
+ 	    	        reverseButtons: true,
+ 	    	        allowOutsideClick: false
+ 	    	    }).then((result) => {
+ 	    	        if (result.isConfirmed) {
+ 	    	        	location.href="MemberLogin";
+ 	    	        }
+ 	    	    });
+ 			}
+ 		});
+     });
 });
 
+		
 
+// 메인사진 클릭시 전체 사진 다 띄우기 <사용할지 안할지 모름> 
 
-//메인사진 클릭시 전체 사진 다 띄우기 <사용할지 안할지 모름> 
-
-//function openPopup() {
-//var images = document.querySelectorAll('.images img');
-//var imageSrcs = [];
-
-//images.forEach(function(image) {
-// imageSrcs.push(image.src);
-//});
-
-//var popupWindow = window.open('', '_blank', 'width=900,height=620');
-
-//popupWindow.document.write('<div style="display:flex; flex-direction: row;">');
-
-//imageSrcs.forEach(function(src) {
-// popupWindow.document.write('<img src="' + src + '" style="width: 540px; height: 540px; margin-right: 10px; margin-top : 20px;">');
-//});
-
-//popupWindow.document.write('</div>');
-//popupWindow.document.close();
-//}
+// function openPopup() {
+//     var images = document.querySelectorAll('.images img');
+//     var imageSrcs = [];
+    
+//     images.forEach(function(image) {
+//         imageSrcs.push(image.src);
+//     });
+    
+//     var popupWindow = window.open('', '_blank', 'width=900,height=620');
+    
+//     popupWindow.document.write('<div style="display:flex; flex-direction: row;">');
+    
+//     imageSrcs.forEach(function(src) {
+//         popupWindow.document.write('<img src="' + src + '" style="width: 540px; height: 540px; margin-right: 10px; margin-top : 20px;">');
+//     });
+    
+//     popupWindow.document.write('</div>');
+//     popupWindow.document.close();
+// }
 
 function imagePopup(src) {
-var newWindow = window.open('', '_blank', 'width=800,height=600');
-newWindow.document.write('<html><head><title>Image</title></head><body style="background-color: black; margin: 0; display: flex; justify-content: center; align-items: center;"><img src="' + src + '" style="max-width: 100%; max-height: 100%;"></body></html>');
+  var newWindow = window.open('', '_blank', 'width=800,height=600');
+  newWindow.document.write('<html><head><title>Image</title></head><body style="background-color: black; margin: 0; display: flex; justify-content: center; align-items: center;"><img src="' + src + '" style="max-width: 100%; max-height: 100%;"></body></html>');
 }
 
 
 function Proposal() {
-var sId = "${sId}";
-var product_id = ${Product.product_id};
+	var sId = "${sId}";
+	var product_id = ${Product.product_id};
+	
+	if(sId) {
+		
+	var width = 640; // 팝업 창의 가로 크기
+	var height = 480; // 팝업 창의 세로 크기
+	var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
+	var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
 
-if(sId) {
+	var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
 
-var width = 640; // 팝업 창의 가로 크기
-var height = 480; // 팝업 창의 세로 크기
-var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
-var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
-
-var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
-
-window.open("Proposal?product_id=" + product_id, "상품이미지", options);
-} else{
-alert("로그인 후 사용 가능합니다.")
-location.href = "MemberLogin";
+	window.open("Proposal?product_id=" + product_id, "상품이미지", options);
+	} else{
+		alert("로그인 후 사용 가능합니다.")
+		location.href = "MemberLogin";
+	}
+	
 }
+	
+	
+// function Proposal() {
+	
+//     $.ajax({
+//         type: "GET",
+//         url: "Proposal", // 로그인 상태를 확인하는 서버의 URL
+//         data:{
+//         	product_id: ${param.product_id}
+//         },
+//         success: function(result) {
+//         	alert(result)
+//             // 로그인이 되어 있는 경우
+//             if(result.isLoggedIn) {
+//                 var product_id = ${Product.product_id};
+//                 var width = 640; // 팝업 창의 가로 크기
+//                 var height = 480; // 팝업 창의 세로 크기
+//                 var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
+//                 var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
 
-}
+//                 var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
 
-
-//function Proposal() {
-
-//$.ajax({
-// type: "GET",
-// url: "Proposal", // 로그인 상태를 확인하는 서버의 URL
-// data:{
-// 	product_id: ${param.product_id}
-// },
-// success: function(result) {
-// 	alert(result)
-//     // 로그인이 되어 있는 경우
-//     if(result.isLoggedIn) {
-//         var product_id = ${Product.product_id};
-//         var width = 640; // 팝업 창의 가로 크기
-//         var height = 480; // 팝업 창의 세로 크기
-//         var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
-//         var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
-
-//         var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
-
-//         window.open("Proposal?product_id=" + product_id, "상품이미지", options);
-//     } 
-//     // 로그인이 안 되어 있는 경우
-//     else {
-//     	Swal.fire({
-//  	        title: '회원만 사용가능합니다.',
-//  	        text: '로그인 페이지로 이동하시겠습니까?',
-//  	        icon: 'error',
-//  	        showCancelButton: true,
-//  	        confirmButtonColor: '#39d274',
-//  	        cancelButtonColor: '#d33',
-//  	        confirmButtonText: '이동',
-//  	        cancelButtonText: '취소',
-//  	        reverseButtons: true,
-//  	        allowOutsideClick: false
-//  	    }).then((result) => {
-//  	        if (result.isConfirmed) {
-//  	        	location.href="MemberLogin";
-//  	        }
-//  	    });
-//     }
-// },
-// error: function(xhr, textStatus, errorThrown) {
-//     // 에러 처리 코드를 여기에 작성하세요.
+//                 window.open("Proposal?product_id=" + product_id, "상품이미지", options);
+//             } 
+//             // 로그인이 안 되어 있는 경우
+//             else {
+//             	Swal.fire({
+//  	    	        title: '회원만 사용가능합니다.',
+//  	    	        text: '로그인 페이지로 이동하시겠습니까?',
+//  	    	        icon: 'error',
+//  	    	        showCancelButton: true,
+//  	    	        confirmButtonColor: '#39d274',
+//  	    	        cancelButtonColor: '#d33',
+//  	    	        confirmButtonText: '이동',
+//  	    	        cancelButtonText: '취소',
+//  	    	        reverseButtons: true,
+//  	    	        allowOutsideClick: false
+//  	    	    }).then((result) => {
+//  	    	        if (result.isConfirmed) {
+//  	    	        	location.href="MemberLogin";
+//  	    	        }
+//  	    	    });
+//             }
+//         },
+//         error: function(xhr, textStatus, errorThrown) {
+//             // 에러 처리 코드를 여기에 작성하세요.
+//         }
+//     });
 // }
-//});
-//}
 	
 </script>
 <body>
