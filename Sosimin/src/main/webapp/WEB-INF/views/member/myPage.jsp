@@ -28,6 +28,509 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script type="text/javascript">
+	// 기존 회원 정보 저장
+	//	let member_intro = $("#intro").val();
+	let member_password = "";
+	let member_nickname = "";
+	let member_email = "";
+	let member_phone = "";
+	
+	// 중복, 정규표현식, 안전도, 일치여부 저장 변수 선언
+	//	let isCorrectIntro = false;
+	let iscorrectPassword = false; <%-- 비밀번호 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
+	let isSamePassword = false; <%-- 패스워드 일치 여부를 저장할 변수 선언 --%>
+	let isSafePassword = false; <%-- 패스워드 안전도를 저장하는 변수 --%>
+	let iscorrectNickname = false; <%-- 닉네임 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
+	let isDuplicateNickname = false; <%-- 닉네임 중복 여부를 저장할 변수 선언 --%>
+	let iscorrectEmail = false; <%-- 이메일 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
+	let isDuplicateEmail = false; <%-- 이메일 중복 여부를 저장할 변수 선언 --%>
+	let iscorrectPhone = false; <%-- 휴대폰번호입력 여부 저장할 변수 선언 --%>
+	let isDuplicatePhone = false; <%-- 휴대폰번호 중복 여부를 저장할 변수 선언 --%>
+	let iscorrectPhoneAuthCode = false; <%-- 휴대폰번호 인증코드 입력 여부 저장할 변수 선언 --%>
+
+
+
+	$(function(){
+		// 페이징 처리
+		if(${pageInfo.page.pageNum <= 1 }) {
+			$("#prevPage").addClass("disabled");
+		}
+		if(${pageInfo.page.pageNum >= pageInfo.maxPage }) {
+			$("#nextPage").addClass("disabled");
+		}
+		
+		// 카테고리 선택
+		$("#categoryArea input[type='radio']").on("click", function() {
+	//			alert("확인");
+			$("#myPageCategory").submit();
+		});
+	
+		// 받은 후기 클릭 이벤트
+		$("#reviewViewFrom").on("click", function() {
+			openReceivedReviewModal();
+		});
+	
+		// 내 정보 수정 클릭 이벤트
+		$("#myPageModifyInfoFrom").on("click", function() {
+			openModifyMyInfoModal();
+		});
+			
+		// 찜 버튼 클릭 이벤트
+	    $(".heart").on("click", function () {
+	        $(this).toggleClass("is-active");
+		    Swal.fire({
+				title: '찜했습니다!',         // Alert 제목
+				text: "감사합니다!",  // Alert 내용
+				icon:'success',                         // Alert 타입
+			});
+	    });
+		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
+		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
+		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
+		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
+		
+		// 파일 change 이벤트 처리
+	    $("#profilePicFile").on("change", showPreviewImage);
+		
+		// 필터 선택
+		$("#myPageFilter a").on("click", function(event) {
+			event.preventDefault();
+			$("#myPageFilter").submit();
+		});
+		
+		// 기존 회원 정보 저장
+// 		let member_intro = $("#intro").val();
+		member_password = $("#member_password").val();
+		member_nickname = $("#nickname").val();
+		member_email = $("#email").val();
+		member_phone = $("#phone").val();
+		
+		// 중복, 정규표현식, 안전도, 일치여부 저장 변수 선언
+// 		let isCorrectIntro = false;
+		iscorrectPassword = true; <%-- 비밀번호 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
+		isSamePassword = true; <%-- 패스워드 일치 여부를 저장할 변수 선언 --%>
+		isSafePassword = true; <%-- 패스워드 안전도를 저장하는 변수 --%>
+		iscorrectNickname = true; <%-- 닉네임 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
+		isDuplicateNickname = false; <%-- 닉네임 중복 여부를 저장할 변수 선언 --%>
+		iscorrectEmail = true; <%-- 이메일 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
+		isDuplicateEmail = false; <%-- 이메일 중복 여부를 저장할 변수 선언 --%>
+		iscorrectPhone = true; <%-- 휴대폰번호입력 여부 저장할 변수 선언 --%>
+		isDuplicatePhone = false; <%-- 휴대폰번호 중복 여부를 저장할 변수 선언 --%>
+		iscorrectPhoneAuthCode = true; <%-- 휴대폰번호 인증코드 입력 여부 저장할 변수 선언 --%>
+		
+		// 소개글 블러 이벤트 처리
+// 		$("#intro").on("blur", function() {
+// 			let newIntro = $("#intro").val();
+// 			if(member_intro == newIntro) { // 기존 소개글과 동일할 경우
+// 				$("#checkIntroResult").text("기존과 동일한 소개글입니다").css("color", "#FFB400");
+// 				isCorrectIntro = true;
+// 			}
+// 		});
+		
+		// 새 비밀번호 블러 이벤트처리
+		<%-- 비밀번호 정규표현식 검증 --%>
+		$("#newPassword").blur(function() {	
+			let newPassword = $("#newPassword").val();
+			
+			$.ajax({
+				url: "PasswordCheck",
+				data: {
+					member_password: member_password,
+					newPassword: newPassword
+				},
+				success: function(isExistingPassword) {
+					console.log(isExistingPassword);
+					if(isExistingPassword == "true") {
+						$("#checkPasswordResult").text("기존과 동일한 비밀번호입니다").css("color", "#FFB400");
+						isSafePassword = true;
+						iscorrectPassword = true;
+					} else {
+						<%-- 비밀번호 길이, 문자종류 검증 --%>
+						let regPassword = /^[A-Za-z0-9!@#%^&*]{8,16}$/; <%-- 8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
+						if(!regPassword.exec(newPassword)) { <%-- 비밀번호 길이, 문자종류 위반 --%>
+							$("#checkPasswordResult").text("8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*)만 사용 가능합니다").css("color", "red");
+							iscorrectPassword = false;
+						} else { <%-- 통과했을 때 복잡도 검증 실행 --%>
+							let count = 0; <%-- 복잡도 점수를 저장할 변수 선언 --%>
+							
+							let regEngUpper = /[A-Z]/; <%-- 대문자 --%>
+							let regEngLower = /[a-z]/; <%-- 소문자 --%>
+							let regNum = /[0-9]/; <%-- 숫자 --%>
+							let regSpec = /[!@#%^&*]/; <%-- 특수문자(!@#%^&*) --%>
+						
+							if(regEngUpper.exec(newPassword)) count++; <%-- 대문자가 있으면 +1점 --%>
+							if(regEngLower.exec(newPassword)) count++; <%-- 소문자가 있으면 +1점 --%>
+							if(regNum.exec(newPassword)) count++; <%-- 숫자가 있으면 +1점 --%>
+							if(regSpec.exec(newPassword)) count++; <%-- 특수문자가 있으면 +1점 --%>
+							
+							switch (count) {
+								case 4: 
+									$("#checkPasswordResult").text("사용할 수 있는 비밀번호입니다!(안전)").css("color", "green");
+									isSafePassword = true;
+									iscorrectPassword = true;
+									break;
+								case 3: 
+									$("#checkPasswordResult").text("사용할 수 있는 비밀번호입니다!(보통)").css("color", "#FFB400");
+									isSafePassword = true;
+									iscorrectPassword = true;
+									break;
+								case 2: 
+									$("#checkPasswordResult").text("사용할 수 없는 비밀번호입니다!(주의)").css("color", "#E56D29");
+									isSafePassword = false;
+									iscorrectPassword = false;
+									break;
+								case 1: 
+								case 0: 
+									$("#checkPasswordResult").text("사용할 수 없는 비밀번호입니다!(위험)").css("color", "red");
+									isSafePassword = false;
+									iscorrectPassword = false;
+									break;
+							}
+						
+						}
+						
+					}
+				}
+			});
+		}); // 비밀번호 blur 이벤트 끝
+		
+		<%-- 비밀번호와 비밀번호 확인 입력값 일치 여부 검사 --%>
+		$("#newPassword").on("keyup", function() {	
+		    if(iscorrectPassword && $("#newPassword").val() == $("#passwordConfirm").val()) { // 일치
+		    	$("#checkPasswordConfirmResult").text("비밀번호가 일치합니다").css("color", "green");
+		    	isSamePassword = true;
+		    } else if(!iscorrectPassword && $("#newPassword").val() == $("#passwordConfirm").val()) { // 불일치
+		    	$("#checkPasswordConfirmResult").text("비밀번호가 올바른지 확인해주세요").css("color", "red");
+		    	isSamePassword = false;
+		    } else { // 불일치
+		    	$("#checkPasswordConfirmResult").text("비밀번호가 일치하지 않습니다").css("color", "red");
+		    	isSamePassword = false;
+		    }
+			
+		}); // 비밀번호 keyup 이벤트 끝
+		
+		$("#passwordConfirm").on("keyup", function() {	
+		    if(iscorrectPassword && $("#newPassword").val() == $("#passwordConfirm").val()) { // 일치
+		    	$("#checkPasswordConfirmResult").text("비밀번호가 일치합니다").css("color", "green");
+		    	isSamePassword = true;
+		    } else if(!iscorrectPassword && $("#newPassword").val() == $("#passwordConfirm").val()) { // 불일치
+		    	$("#checkPasswordConfirmResult").text("비밀번호가 올바른지 확인해주세요").css("color", "red");	
+		    	isSamePassword = false;
+		    }  else { // 불일치
+		    	$("#checkPasswordConfirmResult").text("비밀번호가 일치하지 않습니다").css("color", "red");		     	
+		    	isSamePassword = false;
+		    }
+			
+		}); // 비밀번호 확인 keyup 이벤트 끝
+		
+		
+		// 닉네임 블러 이벤트 처리
+		$("#nickname").on("blur", function() {
+			let newNickname = $("#nickname").val();
+			let regNickname = /^[가-힣0-9]{2,10}$/; <%-- 2~10자의 한글, 숫자 --%>
+			if(member_nickname == newNickname) {
+				$("#checkNicknameResult").text("기존과 동일한 닉네임입니다").css("color", "#FFB400");
+				iscorrectNickname = true;
+				isDuplicateNickname = false;
+			} else {
+				if(!regNickname.exec(newNickname)) {
+					$("#checkNicknameResult").text("2~10자의 한글, 숫자를 입력해주세요").css("color", "red");
+					iscorrectNickname = false;
+				} else {
+					$("#checkNicknameResult").text("오른쪽 버튼을 눌러 중복확인을 진행해주세요").css("color", "black");
+					$("#checkNicknameDupButton").focus();
+					$("#checkNicknameDupButton").on("click", function() {
+						
+						<%-- AJAX를 통해 아이디 중복값 확인 --%>
+						$.ajax({
+							url: "checkDupMemberInfo",
+							data: {
+								"member_nickname" : newNickname
+							},
+							dataType: "json",
+							success: function(result) {
+								if(result) { // 중복
+		 							$("#checkNicknameResult").text("이미 사용 중인 닉네임입니다").css("color", "red");
+		 							iscorrectNickname = false;
+		 							isDuplicateNickname = true;
+								} else { // 사용가능
+									$("#checkNicknameResult").text("사용 가능한 닉네임입니다").css("color", "green");
+									$("#checkNicknameDupButton").blur();
+									iscorrectNickname = true;
+									isDuplicateNickname = false;
+								}
+									
+							},
+							error: function(xhr,textStatus,errorThrown) {
+							    // 요청이 실패한 경우 처리할 로직
+// 							    alert("닉네임 중복 판별 AJAX 요청 실패!");
+							    Swal.fire({
+									title: 'AJAX 요청 실패!',         // Alert 제목
+									text: "닉네임 중복 판별에 실패했습니다!",  // Alert 내용
+									icon:'error',
+								});
+								console.log(xhr + ", " + textStatus + ", " + errorThrown);
+	
+							}
+						}); // 중복 판별 ajax 요청 끝
+					}); // 중복확인 버튼 클릭 이벤트 끝
+				}
+			}
+			
+		});
+		
+		// 닉네임 입력 값이 없는데 중복 확인 버튼을 클릭했을 경우
+		$("#checkNicknameDupButton").on("click", function() {
+			if($("#nickname").val() == "") {
+// 				alert("닉네임을 입력해야 중복 확인이 가능합니다!");
+				Swal.fire({
+					title: '입력값이 없어요!',         // Alert 제목
+					text: "닉네임 입력해야 중복 확인이 가능합니다!",  // Alert 내용
+					icon:'warning',
+				});
+				$("#nickname").focus();
+			} else if(!iscorrectNickname) {
+				$("#checkNicknameResult").text("2~10자의 한글, 숫자를 입력해주세요").css("color", "red");
+				$("#nickname").focus();
+			}
+		});
+		
+		
+		// 이메일 블러 이벤트 처리
+		$("#email").on("blur", function() {
+			let newEmail = $("#email").val();
+			let regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+			if(member_email == newEmail) {
+				$("#checkEmailResult").text("기존과 동일한 이메일 주소입니다").css("color", "#FFB400");
+				iscorrectEmail = true;
+				isDuplicateEmail = false;
+			} else {
+				if(!regEmail.exec(newEmail)) {
+					$("#checkEmailResult").text("이메일 주소가 올바른지 확인해주세요").css("color", "red");
+					iscorrectEmail = false;
+				} else {
+					$("#checkEmailResult").text("오른쪽 버튼을 눌러 중복확인을 진행해주세요").css("color", "black");
+					$("#checkEmailDupButton").focus();
+					$("#checkEmailDupButton").on("click", function() {
+						
+						<%-- AJAX를 통해 아이디 중복값 확인 --%>
+						$.ajax({
+							url: "checkDupMemberInfo",
+							data: {
+								"member_email" : newEmail
+							},
+							dataType: "json",
+							success: function(result) {
+								if(result) { // 중복
+		 							$("#checkEmailResult").text("이미 사용 중인 이메일입니다").css("color", "red");
+		 							iscorrectEmail = false;
+		 							isDuplicateEmail = true;
+								} else { // 사용가능
+									$("#checkEmailResult").text("사용 가능한 이메일입니다").css("color", "green");
+									$("#checkNicknameDupButton").blur();
+									iscorrectEmail = true;
+									isDuplicateEmail = false;
+								}
+									
+							},
+							error: function(xhr,textStatus,errorThrown) {
+							    // 요청이 실패한 경우 처리할 로직
+							    Swal.fire({
+									title: 'AJAX 요청 실패!',         // Alert 제목
+									text: "이메일 중복 판별에 실패했습니다!",  // Alert 내용
+									icon:'error',
+								});
+								console.log(xhr + ", " + textStatus + ", " + errorThrown);
+	
+							}
+						}); // 중복 판별 ajax 요청 끝
+					}); // 중복확인 버튼 클릭 이벤트 끝
+				}
+			}
+			
+		});
+		
+		// 이메일 입력 값이 없는데 중복 확인 버튼을 클릭했을 경우
+		$("#checkEmailDupButton").on("click", function() {
+			if($("#email").val() == "") {
+// 				alert("이메일을 입력해야 중복 확인이 가능합니다!");
+				Swal.fire({
+					title: '입력값이 없어요!',         // Alert 제목
+					text: "이메일을 입력해야 중복 확인이 가능합니다!",  // Alert 내용
+					icon:'warning',
+				});
+				$("#email").focus();
+			} else if(!iscorrectEmail) {
+				$("#checkEmailResult").text("이메일 주소가 올바른지 확인해주세요").css("color", "red");
+				$("#email").focus();
+			}
+		});
+		
+		<%-- 전화번호에 자동 "-" 입력 --%>
+		$("#phone").keyup(function(){
+			var val = $(this).val().replace(/[^0-9]/g, ''); // 숫자만 입력 가능
+			if(val.length > 3 && val.length < 6) {
+				$(this).val(val.substring(0,3) + "-" + val.substring(3));
+			} else if (val.length > 7) {
+				$(this).val(val.substring(0,3) + "-" + val.substring(3, 7) + "-" + val.substring(7));
+			}
+		});
+		
+		// 휴대폰번호 블러 이벤트 처리
+		<%-- 휴대폰 번호 정규표현식 검증, 중복 확인 및 인증 처리 --%>
+		$("#phone").on("blur", function() {		
+			let newPhone = $("#phone").val();
+			let regPhone = /^010-\d{4}-\d{4}$/; <%-- 010으로 시작하는 11자리 숫자 --%>
+				
+			if(member_phone == newPhone) {
+				$("#checkPhoneResult").text("기존과 동일한 번호입니다").css("color", "#FFB400");
+				iscorrectPhone = true;
+				isDuplicatePhone = false;
+			} else {
+				if(!regPhone.test(newPhone)) {
+					$("#checkPhoneResult").text("휴대폰 번호를 확인해주세요").css("color", "red");
+					iscorrectPhone = false;
+				} else {
+					iscorrectPhone = true;
+					<%-- 인증 코드 발송 전 AJAX를 통해 휴대폰번호 중복 여부 확인 --%>
+					$.ajax({
+						url: "checkDupMemberInfo",
+						data: {
+							"member_phone" : newPhone
+						},
+						dataType: "json",
+						success: function(result) {
+							if(result) { // 중복
+	 							$("#checkPhoneResult").text("이미 사용 중인 휴대폰 번호입니다").css("color", "red");
+	 							iscorrectPhone = false;
+	 							isDuplicatePhone = true;
+							} else { // 사용가능
+								$("#checkPhoneResult").text("사용 가능한 번호입니다. 버튼을 눌러 인증코드를 받아주세요.").css("color", "green");
+								$("#requestPhoneAuthCodeButton").focus();
+								iscorrectPhone = true;
+								isDuplicatePhone = false;
+								
+								// 인증코드발급 버튼 클릭 시 이벤트 처리
+								$("#requestPhoneAuthCodeButton").on("click", function() {
+//	 								alert("인증코드 발송 완료");
+									Swal.fire({
+										title: '인증코드 발송 완료!',         // Alert 제목
+										text: "인증 코드를 확인해주세요!",  // Alert 내용
+										icon:'success',
+									});
+//	 								$("#requestPhoneAuthCodeButton").blur();
+									$.ajax({
+										url: "requestPhoneAuthCode",
+										data: {
+											"member_phone": newPhone
+										},
+										dataType: "json",
+										success: function(result) {
+											console.log("result : " + result);
+											
+											// 인증 버튼 클릭 시 코드값 비교해 인증 완료 처리해야함
+											$("#completePhoneAuthButton").on("click", function() {
+												let phone_auth_code = $("#phoneAuthCode").val(); 	
+											
+												if(phone_auth_code == "") {
+													$("#checkPhoneAuthCodeResult").text("인증코드를 입력해주세요").css("color", "red");
+													iscorrectPhoneAuthCode = false;
+												} else {
+													if($.trim(result) == phone_auth_code) {
+//	 													alert("휴대폰 인증이 정상적으로 완료되었습니다!");
+														Swal.fire({
+															title: '인증 완료!',         // Alert 제목
+															text: "휴대폰 인증이 정상적으로 완료되었습니다!",  // Alert 내용
+															icon:'success',
+														});
+														iscorrectPhoneAuthCode = true;
+													} else {
+														Swal.fire({
+															title: '인증 코드 불일치!',         // Alert 제목
+															text: "인증 코드가 올바르지 않습니다. 다시 인증해주세요!",  // Alert 내용
+															icon:'error',
+														});
+//	 													alert("인증 코드가 올바르지 않습니다. 다시 인증해주세요!");
+													}
+												}
+											});
+											
+											
+										},
+										error: function(xhr,textStatus,errorThrown) {
+										    // 요청이 실패한 경우 처리할 로직
+//	 									    alert("휴대폰 인증 코드 발급 AJAX 요청 실패!");
+										    Swal.fire({
+												title: 'AJAX 요청 실패!',         // Alert 제목
+												text: "휴대폰 인증 코드 발급에 실패했습니다!",  // Alert 내용
+												icon:'error',
+											});
+										    console.log(xhr + ", " + textStatus + ", " + errorThrown);
+										}
+									}); // 인증코드 발급 ajax 끝			
+									
+								
+								
+								});
+								
+							}
+								
+						}, // 중복 체크 ajax success 끝
+						error: function(xhr,textStatus,errorThrown) {
+						    // 요청이 실패한 경우 처리할 로직
+//	 					    alert("휴대폰 번호 중복 판별 AJAX 요청 실패!");
+						    Swal.fire({
+								title: 'AJAX 요청 실패!',         // Alert 제목
+								text: "휴대폰 번호 중복 판별에 실패했습니다!",  // Alert 내용
+								icon:'error',
+							});
+						    console.log(xhr + ", " + textStatus + ", " + errorThrown);
+						}
+					});// 중복 체크 ajax 끝
+		        }
+				
+			}
+			
+			
+			
+			
+
+		});	// 휴대폰번호 blur 이벤트 끝
+		
+		// 휴대폰번호 입력 값이 없는데 인증코드발급 버튼을 클릭했을 경우
+		$("#requestPhoneAuthCodeButton").on("click", function() {
+			if($("#phone").val() == "") {
+				Swal.fire({
+					title: '입력값이 없어요!',         // Alert 제목
+					text: "휴대폰번호를 입력해야 인증코드 발급이 가능합니다!",  // Alert 내용
+					icon:'warning',
+				});
+// 				alert("휴대폰번호를 입력해야 인증코드 발급이 가능합니다!");
+				$("#phone").focus();
+			} 
+// 			else if() {
+				
+// 			}
+		});
+		
+		// 인증코드 입력 값이 없는데 인증 버튼을 클릭했을 경우
+		$("#completePhoneAuthButton").on("click", function() {
+			if($("#phoneAuthCode").val() == "") {
+				Swal.fire({
+					title: '입력값이 없어요!',         // Alert 제목
+					text: "인증코드를 입력해야 인증 확인이 가능합니다!",  // Alert 내용
+					icon:'warning',
+				});
+// 				alert("인증코드를 입력해야 인증 확인이 가능합니다!");
+				$("#phoneAuthCode").focus();
+			}
+		});
+		
+		
+	}); // document.ready 끝
+
+
+
 
 	// 받은 후기 클릭 시 모달 띄우는 함수 정의
 	function openReceivedReviewModal() {
@@ -126,57 +629,6 @@
 		);
 	}
 	
-	$(function(){
-		// 페이징 처리
-		if(${pageInfo.page.pageNum <= 1 }) {
-			$("#prevPage").addClass("disabled");
-		}
-		if(${pageInfo.page.pageNum >= pageInfo.maxPage }) {
-			$("#nextPage").addClass("disabled");
-		}
-		
-		// 카테고리 선택
-		$("#categoryArea input[type='radio']").on("click", function() {
-// 			alert("확인");
-			$("#myPageCategory").submit();
-		});
-
-		// 받은 후기 클릭 이벤트
-		$("#reviewViewFrom").on("click", function() {
-			openReceivedReviewModal();
-		});
-
-		// 내 정보 수정 클릭 이벤트
-		$("#myPageModifyInfoFrom").on("click", function() {
-			openModifyMyInfoModal();
-		});
-			
-		// 찜 버튼 클릭 이벤트
-        $(".heart").on("click", function () {
-            $(this).toggleClass("is-active");
-    	    Swal.fire({
-    			title: '찜했습니다!',         // Alert 제목
-    			text: "감사합니다!",  // Alert 내용
-    			icon:'success',                         // Alert 타입
-    		});
-        });
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		
-		// 파일 change 이벤트 처리
-        $("#profilePicFile").on("change", showPreviewImage);
-		
-		// 필터 선택
-		$("#myPageFilter a").on("click", function(event) {
-			event.preventDefault();
-			$("#myPageFilter").submit();
-		});
-		
-		
-	}); // document.ready 끝
-	
 	// 내 정보 수정 클릭 시 모달 띄우는 함수 정의
 	function openModifyMyInfoModal() {
 	    var memberBirth = "${MyProfileMember.member_birth}"; // EL 표현식에서 값을 가져옴
@@ -204,8 +656,98 @@
 	}
 	
 	// 내정보수정 모달 수정버튼 클릭 시 호출되는 함수
-	function submitForm() {
-		$("#MyInfoForm").submit();
+	function submitForm(event) {
+// 	function submitForm(event) {
+		<%-- submit 동작을 수행할 때 값을 올바르게 입력했는지 확인 --%>
+// 		$("#MyInfoForm").on("submit", function(event) {
+			if(!iscorrectNickname) { // 닉네임 미입력 또는 정규표현식 위배
+				$("#checkNicknameResult").text("2~10글자의 한글, 숫자를 입력해주세요").css("color", "red");
+				$("#nickname").focus();
+			} else if(isDuplicateNickname) { // 닉네임 중복
+				$("#checkNicknameResult").text("이미 사용 중인 닉네임입니다").css("color", "red");
+				$("#nickname").focus();
+				return false; // submit 동작 취소
+			} else if(!iscorrectPassword) { // 비밀번호 미입력 또는 정규표현식 위배 
+				$("#checkPasswordResult").text("8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*)만 사용 가능합니다").css("color", "red");
+				$("#password").focus();
+				return false; // submit 동작 취소
+			} else if(!isSafePassword) { // 비밀번호 안전도 검사 위배
+				$("#checkPasswordResult").text("더 안전한 비밀번호를 설정해주세요").css("color", "red");
+				$("#newPassword").focus();
+				return false; // submit 동작 취소
+			} else if(!isSamePassword) { // 비밀번호 불일치
+				$("#passwordConfirm").focus();
+				return false; // submit 동작 취소
+			} else if($("#myMap").val() == "") { // 주소 미 입력(동네 미인증)
+				$("#checkAddressResult").text("동네 인증을 완료해주세요").css("color", "red");
+				$("#myMap").focus();
+				return false; // submit 동작 취소
+			} else if(!iscorrectEmail) { // 이메일 미입력 또는 정규표현식 위배 
+				$("#checkEmailResult").text("이메일 주소를 확인해주세요").css("color", "red");
+				$("#email").focus();
+				return false; // submit 동작 취소
+			} else if(isDuplicateEmail) { // 이메일 중복
+				$("#checkEmailResult").text("이미 사용 중인 이메일입니다").css("color", "red");
+				$("#email").focus();
+				return false; // submit 동작 취소
+			} else if(!iscorrectPhone) { // 휴대폰번호 미입력 또는 정규표현식 위배
+				$("#checkPhoneResult").text("휴대폰번호를 확인해주세요").css("color", "red");
+				$("#phone").focus();
+				return false; // submit 동작 취소
+			} else if(isDuplicatePhone) { // 휴대폰번호 중복
+				$("#checkPhoneResult").text("이미 사용 중인 휴대폰번호입니다").css("color", "red");
+				$("#phone").focus();
+				return false; // submit 동작 취소
+			} else if(!iscorrectPhoneAuthCode) { // 휴대폰 인증코드 미입력
+				$("#checkPhoneAuthCodeResult").text("인증 코드를 확인해주세요").css("color", "red");
+				$("#phoneAuthCode").focus();
+				return false; // submit 동작 취소
+			}  else {
+// 				confirm("가입 완료 버튼을 누르면 회원가입이 완료됩니다");
+// 	 			event.preventDefault();
+				Swal.fire({
+					title: '정말로 수정하시겠어요?',
+					text: '확인을 누르면 정보가 수정됩니다',
+					icon: 'info',
+					showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+					confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+					cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+					confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+					cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+					reverseButtons: true, // 버튼 순서 거꾸로
+				}).then(result => {
+					
+					// true 리턴을 안받아도 바로 넘어감
+					// true 리턴을 안받아도 바로 넘어감
+					// true 리턴을 안받아도 바로 넘어감
+					// true 리턴을 안받아도 바로 넘어감
+					// true 리턴을 안받아도 바로 넘어감
+					// 만약 Promise리턴을 받으면,
+					if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+						
+						$("#MyInfoForm").off("submit");
+						$("#MyInfoForm").submit();
+						return true;
+					} else {
+						return false;
+					} // else 문 끝
+					
+				}); // Swal-then 끝
+			
+// 				return true;
+			}
+			
+			
+// 			return true; // submit 동작 수행(생략 가능)
+			
+			
+// 		});
+		
+		
+		
+		
+		
+// 		$("#MyInfoForm").submit();
 	}
 	
 	// 회원 경험치 프로그레스바
@@ -238,6 +780,9 @@
 		
 		$("#profile_name").val("");
 	}
+	
+	
+	
 	
 </script>
 </head>
@@ -371,7 +916,14 @@
 					</section>
 					<div id="profileRightBottom">
 						<p>
-						${MyProfileMember.member_intro }
+						<c:choose>
+							<c:when test="${not empty MyProfileMember.member_intro }">
+								${MyProfileMember.member_intro }
+							</c:when>
+							<c:otherwise>
+								등록된 소개글이 없습니다.
+							</c:otherwise>
+						</c:choose>
 						</p>
 					</div>
 				</div>
@@ -406,7 +958,7 @@
 <!--      </div> -->
 
 	<%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 표시 --%>
-	<c:if test="${category eq '0' or category eq '1' or category eq '3'}">
+	<c:if test="${category eq '1' or category eq '3'}">
 	   	<div class="filterArea">
 	   		<ul class="row allFilter filter-3">
 	   			<li class="col-3 eachFilter">
@@ -432,7 +984,7 @@
 	    <div class="product-details-info row" id="wholeProductArea">
 			<c:forEach var="mypage" items="${MyPageList }">
 				<c:choose> <%-- 탭선택 --%>
-					<c:when test="${category eq '0' or category eq '1' }"> <%-- 판매내역 탭 시작--%>
+					<c:when test="${category eq '1' }"> <%-- 판매내역 탭 시작--%>
 						<div class="single-block col-4" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
@@ -797,7 +1349,8 @@
 							</div>
 							<div class="form-group">
 								<label for="intro" id="mgForThreeMod">소개글</label>
-								<input class="form-control" value="${MyProfileMember.member_intro }" maxlength="20" type="text" name="member_intro" id="intro">
+								<input class="form-control" value="${MyProfileMember.member_intro }" maxlength="50" type="text" name="member_intro" id="intro" required>
+								<div id="checkIntroResult" class="resultArea"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
 							</div>
 
 							<div class="form-group">
@@ -809,8 +1362,9 @@
 								<input class="form-control" value="${MyProfileMember.member_id }" maxlength="20" type="text"  name="member_id" id="id" readonly>
 							</div>
 							<div class="form-group">
-								<label for="password" id="mgForFiveOneMod">새 비밀번호</label> 
-								<input class="form-control" maxlength="16" placeholder="비밀번호를 수정할 경우에만 입력해주세요" type="password"  name="member_password" id="password" required>
+								<label for="newPassword" id="mgForFiveOneMod">새 비밀번호</label> 
+								<input type="hidden" name="member_password" id="member_password" value="${MyProfileMember.member_password }">	
+								<input class="form-control" maxlength="16" placeholder="비밀번호를 수정할 경우에만 입력해주세요" type="password"  name="newPassword" id="newPassword" required>
 								<div id="checkPasswordResult" class="resultArea"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
 							</div>
 							<div class="form-group">
@@ -820,7 +1374,7 @@
 							</div>
 							<div class="form-group">
 								<label for="nickname" id="mgForThreeMod">닉네임</label> 
-								<input class="form-control" type="text" value="${MyProfileMember.member_nickname }" name="member_nickname" id="nickname" required>
+								<input class="form-control" type="text" value="${MyProfileMember.member_nickname }" name="member_nickname" id="nickname" maxlength="10" required>
 								<input type="button" value="중복확인" id="checkNicknameDupButton">
 <!-- 								<input type="button" value="닉네임만들기" id="generateNicknameButton"> -->
 								<%-- 입력값이 비어있을 경우 DB에서 임의로 난수발생해 insert 처리 --%>
@@ -830,8 +1384,6 @@
 							<div class="form-group">
 								<label for="birthdate" id="mgForFourMod">생년월일</label> 
 								<input class="form-control" type="date" name="member_birth" id="birthdate" value="${MyProfileMember.member_birth }" readonly>
-								<%--회원가입과 동일하게 범위제한하고 기존 생년월일 placeholder --%>
-								<div id="checkBirthdateResult" class="resultArea"></div>
 							</div>
 							<c:if test="${MyProfileMember.member_neighbor_auth eq 0 }">
 								<div class="form-group">
@@ -852,7 +1404,7 @@
 							</div>
 							<div class="form-group">
 								<label for="phone" id="mgForFiveMod">휴대폰번호</label> 
-								<input class="form-control" value="${MyProfileMember.member_phone }" type="tel" name="member_phone" id="phone" required>
+								<input class="form-control" maxlength="13" value="${MyProfileMember.member_phone }" type="tel" name="member_phone" id="phone" required>
 								<%--회원가입과 동일하게 인증, 정규표현식 검증, 중복확인(회원아이디 일치하고 휴대폰 번호 동일한 경우 자바스크립트 처리?). 기존 폰번호 placeholder --%>
 								<input type="button" value="인증코드발급" id="requestPhoneAuthCodeButton">
 								<div id="checkPhoneResult" class="resultArea"></div>

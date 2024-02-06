@@ -824,7 +824,7 @@
 							</div>
 							<div class="form-group">
 								<label for="reg-ln" id="mgForThree">닉네임</label> 
-								<input class="form-control" type="text" placeholder="2~10글자의 한글, 숫자(선택입력)" name="member_nickname" id="nickname" required>
+								<input class="form-control" maxlength="10" type="text" placeholder="2~10글자의 한글, 숫자" name="member_nickname" id="nickname" required>
 								<input type="button" value="중복확인" id="checkNicknameDupButton">
 <!-- 								<input type="button" value="닉네임만들기" id="generateNicknameButton"> -->
 								<%-- 입력값이 비어있을 경우 DB에서 임의로 난수발생해 insert 처리 --%>

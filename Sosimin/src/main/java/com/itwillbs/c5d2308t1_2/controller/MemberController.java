@@ -548,7 +548,26 @@ public class MemberController {
 		
 		return "redirect:/MyPage";
 	}
-
+	
+	
+	// 정보 수정 시 DB의 정보와 일치 여부 판별
+	// 기존 비밀번호와 새 비밀번호 일치 여부 확인
+	@ResponseBody
+	@GetMapping("PasswordCheck")
+	public String passwordCheck(String member_password, String newPassword) {
+		System.out.println("기존 비밀번호 : " + member_password);
+		System.out.println("새 비밀번호 : " + newPassword);
+		
+	    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	    
+	    if(passwordEncoder.matches(newPassword, member_password)) {
+	    	return "true";
+	    } else {
+	    	return "false";
+	    }
+	}
+	
+	
 	// *********** 판매자 페이지 **************
 	// 뷰 제작 작업의 편의성을 위해 판매자 페이지는 임시로 서블릿 나눠서 매핑
 	// 판매자 페이지 상품 관련 탭(판매내역, 구매내역, 관심목록)
