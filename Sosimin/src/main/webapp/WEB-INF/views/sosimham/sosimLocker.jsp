@@ -86,33 +86,9 @@
    	<!-- End Breadcrumbs -->
 	<div class="about-section">
 	  <h1>소심함이란?</h1>
-	  <p>소심한 시민들을 위한 중고거래 프로젝트</p>
-	  <p>제작기간 2024.01.15~ 02.14</p>
+	  <p><span class="sosimColor">소심한</span> 시민들을 위한 중고거래를</p>
+	  <p>안전하고 편리하게 하기위한 <span class="sosimColor">무인 물품 보관함</span> </p>
 	</div>
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-5 col-md-5 col-10">
-                <div class="breadcrumbs-content">
-                    <h2 class="page-title">왼쪽 정렬 말 찌끄리기</h2>
-                    <p>
-                    	Lourem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-10">
-					<h2> 오른쪽 말 찌끄리기</h2>
-                    <p>
-                    	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-            </div>
-            <div class="col-lg-2 col-md-2 col-4">
-					<h2> 사이즈 2 오른쪽 말 찌끄리기</h2>
-                    <p>
-                    	Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-            </div>
-        </div>
-    </div>
    	<div class="menu" >
 		<div class="btn-group">
 		  <button type="button" class="btngu btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -123,7 +99,6 @@
 		    	<li><a class="dropdown-item itemGu ${i.key}" id="${i.key}" value="${i.key}" name="GuNames">${i.key}</a></li>
 		    </c:forEach>
 		  </ul>
-	<%-- 	  <input type="button" name="GuNames" class="${GuName}" id="${GuName}" value="${GuName}"> --%>
 		  <button type="button" class="btndong btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 		    동 선택
 		  </button>
@@ -136,14 +111,14 @@
 	
 	<div id="theater_top">
 				<div id="theater_price">
-					<h3>[ 택배 보관함 위치 ]</h3>
+					<h3>소심함 위치</h3>
 					<div id="img_div">
 						<img src="${pageContext.request.contextPath}/resources/images/sosimham/진구.jpg" alt="진구" id="image">
 					</div>
 				</div>				
 				
 				<div id="theater_map">
-					<h3>[ 오시는 길 ]</h3>
+					<h3>오시는 길</h3>
 						<div id="map">
 							<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473"></script>
 							<script>
@@ -319,7 +294,82 @@
 						</div>
 					</div>
 				</div>
-	
+	<div class="container">
+		<div class="row justify-content-center">
+	    <div class="col-4">
+	    	<h4>서비스 이용 방법<br><br></h4>
+	    	1. 물품 판매 시 "<span class="sosimColor">소심함</span> 사용"을 체크<br>
+	    	2. 판매자는 원하는 시간대에 아래의 위치에 있는 소심함에 물건을 넣는다.<br>
+	    	3. 구매자에게 판매 물품의 위치를 채팅으로 알려준다.<br>
+	    	4. 구매자는 해당 위치의 물건을 확인하고 입금 또는 현금거래를 한다.<br>
+	    	5. 판매자에게 비밀번호를 받고 해당 소심함을 열어 물건을 꺼낸다.<br>
+	    	6. 서비스 최대 이용시간은 최대 24시간 무료 입니다.<br>
+	    	7. 최대 이용시간 초과 시 시간당 1,000원의 금액이 부과 됩니다.<br>
+	    	8. 무인택배함의 구성은 전체 64개 박스로 구성합니다.<br>
+	    	(대형 2 개, 중대형 2 개, 중형 6 개, 중소형 36 개, 소형 18 개로구성합니다)<br>
+	    	9. 각 박스는 개별 스마트 전자키가 부착된 독립형 박스로 구성됩니다.<br>
+	    </div>
+	    <div class="col-4">
+			<h4>사용가능한 <span class="sosimColor">소심함</span> 위치 목록</h4><br>
+			<span class="juso">구 :</span><br> 
+			<c:forEach var="gu" items="${resultMap}">
+				${gu.key},&nbsp; 
+			</c:forEach>
+			<br><br>
+			<span class="juso">동 :</span><br> 
+			<c:forEach var="dong" items="${resultMap}">
+				${dong.value},&nbsp;
+			</c:forEach>
+			<br>
+	    </div>
+	    </div>
+  	</div>
+				
+				
+	<div class="about-section">
+		<h1>소심함 사용시 의무와 책임</h1>
+		<p>판매자 및 이용자 주의 의무 및 사용금지항목 안내</p>
+	</div>
+				
+	<div class="container">
+	 	<div class="row justify-content-center">
+		  	<div class="col-sm-8">
+				<h5>이용 및 사용금지 조치</h5><br>
+					1. 무인보관함(소심함)에 들어가 장난을 치는 경우<br>
+					(무인보관함(소심함)에 사람이나 동물 등을 유도해 넣고 도어를 잠그는 행위 등)<br>
+					2. 무인보관함(소심함)을 파손하는 행위<br>
+					3. 무인보관함(소심함)에 맡겨진 물건을 3 회 이상 일부러 찾아가지 않아 다른 사용자가 사용하지 못하게 하는 행위를 한때<br>
+					4. 무인보관함(소심함)에 맡겨진 물건을 3 일 이상 보관되는 행위가 3 회 이상 반복될 때<br><br>
+					<h5>판매자의 주의 의무</h5><br>
+					1. 무인보관함(소심함) 현장관리요원(보안상황실 보안원)에게 폭언을 행하거나, 무인보관함(소심함)을 파손 또는 훼손하는 자<br>
+					2. 공장동이나 상가 입주민의 택배물을 무인보관함(소심함)에 맡기는 경우<br>
+					3. 기타 무인보관함(소심함) 운영과 관련하여 수회 민원이 발생한 판매자<br><br>
+					<h5>이용자 주의 의무</h5><br>
+					① 이용자(소시민 서비스 이용자)는 본 운영규정에 의한 관리자 및 운영자 조치에 적극
+					협조하여야 하며, <br>다음 각호의 사항에 대해서는 관리자 및 운영자에게
+					배상의무 및 책임을 요구할 수 없다.<br>
+					1. 이용자가 생물(한우, 어패류 선물세트 등 부패하기 쉬운 택배물)을
+					무인보관함(소심함)에 보관하여 자연 부패했을 경우<br>
+					2. 이용자가 판매자로부터 통보받은 비빌번호나 무인보관함(소심함) 번호를
+					분실하였을 경우<br>
+					3. 무인보관함(소심함)에 1 주일 이상 장기간 보관하여 운영자에 의해 강제로 택배함
+					문을 개방하여 해당 물건을 판매자에게 반려된 경우<br>
+					4. 보관중인 물건에서 악취나 물 등이 흘러 계속 보관하기 어려운 상황에
+					따라 운영자에 의해 강제로 문을 개방하여 해당 택배물을 꺼낸 경우<br>
+					② 이용자는 무인보관함(소심함)을 사용 중 부주의나 고의로 파손하였을 경우 배상
+					책임이 있다.<br><br>
+					<h5>무인보관함(소심함) 물품 보관기간</h5><br>
+					① 무인보관함(소심함)(64 개)은 적절한 순환이용을 위해서 보관함 내 장기 보관행위가 없도록 적극 통제한다.<br>
+					② 이용자가 판매자로부터 무인보관함(소심함) 번호와 비밀번호를 통보받은
+					후에도 본인의 물건을 회수하지 않는 경우 그 물건의 보관기간은 기본
+					3 일을 기준으로 하고 최장 1 주일까지로 한다.<br>
+					③ 1 주일이 지나도 회수되지 않은 물건은 운영자에 의해 강제로 개방되어
+					물건을 해당 판매자에게 반려조치 한다<br>
+					<br>
+					<br>
+			</div>
+		</div>
+	</div>
 	<footer class="footer">
 		<jsp:include page="../inc/bottom.jsp"></jsp:include>
 	</footer>

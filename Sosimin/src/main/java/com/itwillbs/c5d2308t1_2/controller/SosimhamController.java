@@ -43,16 +43,13 @@ public class SosimhamController {
             }
 		}
 		
-		//구 정보 가져오기
-		List<String> resultGu = SosimService.getGu();
-		System.out.println("조회한 구 정보 : " + resultGu);
-		model.addAttribute("ListGu",resultGu);		
-		
 		JSONObject object = new JSONObject(resultMap);
-		System.out.println("object test : " + object);
+		System.out.println("json object 변경 : " + object);
+		
 		model.addAttribute("object", object);
-		System.out.println("resultMap test : " + resultMap);
 		model.addAttribute("resultMap",resultMap);
+		System.out.println("resultMap : " + resultMap);
+		model.addAttribute("LockerList",LockerList);
 		 
 		return "sosimham/sosimLocker";
 		
@@ -61,6 +58,11 @@ public class SosimhamController {
 	@GetMapping("AboutUs")
 	public String aboutUs() {
 		return"AboutUs";
+	}
+	
+	@GetMapping("ProhibitionOnsale")
+	public String noSale() {
+		return "sosimham/ProhibitionOnsale";
 	}
 }
 

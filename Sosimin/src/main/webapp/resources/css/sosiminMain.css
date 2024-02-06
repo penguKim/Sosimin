@@ -8,4 +8,28 @@
 	color:#fff !important;
 }
 
+.boogicontainer{
+	position: relative;
+}
 
+.boogi{
+	position:absolute;
+	left:50%;
+	bottom:30px;
+}
+
+.footerbanner1{
+	background-size: contain;
+    background-position: 200px 0;
+    background-repeat: no-repeat;
+}
+.footerbanner2{
+    background-size: 350px;
+    background-position: 200px 30px;
+    background-repeat: no-repeat;
+}
+
+.slider1{
+	background-size: 700px!important;
+    background-position: 350px 100px!important;
+}

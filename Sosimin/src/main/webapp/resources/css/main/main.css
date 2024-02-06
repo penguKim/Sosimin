@@ -2051,7 +2051,7 @@ ol {
 	font-size: 18px;
 }
 
-#Recent table, #Popular table{
+#Recent table, #Popular table, #Relation table{
 	border: 1px solid #F2F2F2;
 	margin-top: 5px;
 }
@@ -2069,7 +2069,8 @@ ol {
 	padding: 10px;
 }
 #Recent table tr:last-child td,
-#Popular table tr:last-child td {
+#Popular table tr:last-child td 
+#Relation table tr:last-child td {
 	background-color: #F2F2F2;
 }
 
@@ -2078,7 +2079,7 @@ ol {
 
 
 
-#Recent,#Popular{
+#Recent,#Popular,#Relation{
 	position:fixed;
 	z-index: 9999;
 }
@@ -2087,7 +2088,7 @@ ol {
 /* top.jsp 고정하려 했으나 실패!*/
 }
 
-#Recent table td,#Popular table td{
+#Recent table td,#Popular table td,#Relation table td{
 	background-color: white;
 }
 #Recent table td,.PopularCenter td{

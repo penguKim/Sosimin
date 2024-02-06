@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.sosimColor{
+	color: #068139;
+}
+
 .about-section {
   padding: 25px;
   text-align: center;

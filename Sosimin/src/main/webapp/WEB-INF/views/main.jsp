@@ -56,6 +56,20 @@
                         <!-- Start Hero Slider -->
                         <div class="hero-slider">
                             <!-- Start Single Slider -->
+                            <div class="single-slider slider1"
+                                style="background-image: url(${pageContext.request.contextPath}/resources/images/MainPhoto/중고거래4.jpg);">
+                                <div class="content">
+                                     <h2><span>중고거래</span>
+                                        믿을만한 이웃 간 중고거래
+                                    </h2>
+                                    <p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요. 
+                                       <br> 우리 동네의 다양한 정보와 이야기를 공감과 댓글로 나누어요.</p>
+                                    <h3><span>Community by</span>Sosimin</h3>
+                                    <div class="button">
+                                        <a href="Community" class="btn">커뮤니티 바로가기</a>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="single-slider"
                                 style="background-image: url(${pageContext.request.contextPath}/resources/images/hero/old-nike-jacket-.png);">
                                 <div class="content colorWhite">
@@ -64,7 +78,7 @@
                                     </h2>
                                     <p>고강도 운동부터 편안한 일상생활까지 언제나 부드럽고 탄탄한 신축성을 
                                        <br> 제공하는 다양한 제품들과 함께 당신만의 느낌을 찾아보세요.</p>
-                                    <h3><span>Pay by </span>Sosimin Pay</h3>
+                                    <h3><span>Pay by </span>Sosim Pay</h3>
                                     <div class="button">
                                         <a href="product-grids.html" class="btn">구매하기</a>
                                     </div>
@@ -80,7 +94,7 @@
                                     </h2>
                                     <p>탁월한 쿠셔닝으로 새로운 러닝을 선사하는 나이키 스포츠
                                        <br>신발의 새로군 컬러웨이를 지금 바로 만나 보세요.</p>
-                                    <h3><span>Pay by </span>Sosimin Pay</h3>
+                                    <h3><span>Pay by </span>Sosim Pay</h3>
                                     <div class="button">
                                         <a href="product-grids.html" class="btn">구매하기</a>
                                     </div>
@@ -104,8 +118,7 @@
                 <div class="col-12">
                     <div class="section-title">
                         <h2>인기 상품 목록</h2>
-                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have
-                            suffered alteration in some form.</p>
+                        <p>좋아요를 많이 받은 순서대로 인기상품이 정렬되어 표시됩니다.</p>
                     </div>
                 </div>
             </div>
@@ -114,21 +127,21 @@
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/products/product-1.jpg" alt="#">
+                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/검은색아디다스신발.jpg" alt="#">
                             <div class="button">
                                 <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
-                            <span class="category">카테고리</span>
+                            <span class="category">신발</span>
                             <h4 class="title">
-                                <a href="product-grids.html">제품명</a>
+                                <a href="product-grids.html">아디다스 검정 신발</a>
                             </h4>
                             <ul class="review">
-                                <li><span>판매자의 리뷰 영역</span></li>
+                                <li><span>방정리중 LV.4</span></li>
                             </ul>
                             <div class="price">
-                                <span>가격</span>
+                                <span>20,000원</span>
                             </div>
                         </div>
                     </div>
@@ -138,27 +151,23 @@
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/products/product-2.jpg" alt="#">
+                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/겨울패딩.jpg" alt="#">
+                            <span class="sale-tag">-50%</span>
                             <div class="button">
                                 <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
-                            <span class="category">Speaker</span>
+                            <span class="category">아우터</span>
                             <h4 class="title">
-                                <a href="product-grids.html">Big Power Sound Speaker</a>
+                                <a href="product-grids.html">겨울 패딩</a>
                             </h4>
                             <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
+                                <li><span>방정리중 LV.4</span></li>
                             </ul>
                             <div class="price">
-                                <span>$275.00</span>
-                                <span class="discount-price">$300.00</span>
+                                <span>25,000원</span>
+                                <span class="discount-price">50,000원</span>
                             </div>
                         </div>
                     </div>
@@ -168,26 +177,21 @@
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg" alt="#">
+                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/경량패딩.jpg" alt="#">
                             <div class="button">
                                 <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
-                            <span class="category">Camera</span>
+                            <span class="category">아우터</span>
                             <h4 class="title">
-                                <a href="product-grids.html">WiFi Security Camera</a>
+                                <a href="product-grids.html">경량패딩</a>
                             </h4>
                             <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
+                                <li><span>캐럿맨 LV.2</span></li>
                             </ul>
                             <div class="price">
-                                <span>$399.00</span>
+                                <span>15,000원</span>
                             </div>
                         </div>
                     </div>
@@ -197,27 +201,22 @@
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/products/product-4.jpg" alt="#">
+                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/나이키신발.jpeg" alt="#">
                             <span class="new-tag">New</span>
                             <div class="button">
                                 <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
-                            <span class="category">Phones</span>
+                            <span class="category">신발</span>
                             <h4 class="title">
-                                <a href="product-grids.html">iphone 6x plus</a>
+                                <a href="product-grids.html">나이키 신발</a>
                             </h4>
                             <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
+                                <li><span>번개맨 LV.1</span></li>
                             </ul>
                             <div class="price">
-                                <span>$400.00</span>
+                                <span>80,000원</span>
                             </div>
                         </div>
                     </div>
@@ -227,7 +226,7 @@
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/products/product-5.jpg" alt="#">
+                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/나이키후디.jpeg" alt="#">
                             <div class="button">
                                 <a href="product-details.html" class="btn">
                                 	상세보기
@@ -239,20 +238,15 @@
                             </div>
                         </div>
                         <div class="product-info">
-                            <span class="category">Headphones</span>
+                            <span class="category">상의</span>
                             <h4 class="title">
-                                <a href="product-grids.html">Wireless Headphones</a>
+                                <a href="product-grids.html">나이키 후드티</a>
                             </h4>
                             <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
+                                <li><span>럭키짱 LV.3</span></li>
                             </ul>
                             <div class="price">
-                                <span>$350.00</span>
+                                <span>10,000원</span>
                             </div>
                         </div>
                     </div>
@@ -262,26 +256,21 @@
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/products/product-6.jpg" alt="#">
+                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/반팔반바지셋업.jpeg" alt="#">
                             <div class="button">
                                 <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
-                            <span class="category">Speaker</span>
+                            <span class="category">셋업/세트</span>
                             <h4 class="title">
-                                <a href="product-grids.html">Mini Bluetooth Speaker</a>
+                                <a href="product-grids.html">반팔반바지 셋업</a>
                             </h4>
                             <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star"></i></li>
-                                <li><span>4.0 Review(s)</span></li>
+                                <li><span>dkdlxldnlf LV.1</span></li>
                             </ul>
                             <div class="price">
-                                <span>$70.00</span>
+                                <span>20,000원</span>
                             </div>
                         </div>
                     </div>
@@ -291,28 +280,23 @@
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/products/product-7.jpg" alt="#">
+                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/여성용야상.JPG" alt="#">
                             <span class="sale-tag">-50%</span>
                             <div class="button">
                                 <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
-                            <span class="category">Headphones</span>
+                            <span class="category">아우터</span>
                             <h4 class="title">
-                                <a href="product-grids.html">PX7 Wireless Headphones</a>
+                                <a href="product-grids.html">여성 야상</a>
                             </h4>
                             <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star"></i></li>
-                                <li><span>4.0 Review(s)</span></li>
+                                <li><span>초코팡 LV.1</span></li>
                             </ul>
                             <div class="price">
-                                <span>$100.00</span>
-                                <span class="discount-price">$200.00</span>
+                                <span>10,000원</span>
+                                <span class="discount-price">20,000원</span>
                             </div>
                         </div>
                     </div>
@@ -322,26 +306,21 @@
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/products/product-8.jpg" alt="#">
+                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/후드.jpg" alt="#">
                             <div class="button">
                                 <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
                             </div>
                         </div>
                         <div class="product-info">
-                            <span class="category">Laptop</span>
+                            <span class="category">상의</span>
                             <h4 class="title">
-                                <a href="product-grids.html">Apple MacBook Air</a>
+                                <a href="product-grids.html">회색 후드</a>
                             </h4>
                             <ul class="review">
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><i class="lni lni-star-filled"></i></li>
-                                <li><span>5.0 Review(s)</span></li>
+                                <li><span>행복멸치 LV.2</span></li>
                             </ul>
                             <div class="price">
-                                <span>$899.00</span>
+                                <span>15,000원</span>
                             </div>
                         </div>
                     </div>
@@ -361,17 +340,22 @@
                 <div class="col-lg-8 offset-lg-2 col-12">
                     <div class="inner">
                         <div class="content">
-                            <h2 class="wow fadeInUp" data-wow-delay=".4s">Currently You are using free<br>
-                                Lite version of ShopGrids</h2>
-                            <p class="wow fadeInUp" data-wow-delay=".6s">Please, purchase full version of the template
-                                to get all pages,<br> features and commercial license.</p>
+                            <h2 class="wow fadeInUp" data-wow-delay=".4s">당신 근처의<br>
+                                지역 생활 커뮤니티</h2>
+                            <p class="wow fadeInUp" data-wow-delay=".6s">동네라서 가능한 모든 것<br> 
+                            소시민에서 가까운 이웃과 함께해요</p>
                             <div class="button wow fadeInUp" data-wow-delay=".8s">
-                                <a href="javascript:void(0)" class="btn">Purchase Now</a>
+                                <a href="Community" class="btn">커뮤니티 바로가기</a>
                             </div>
 
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row boogicontainer">
+	            <div class="col-lg-4 boogi">
+	            	<img src="${pageContext.request.contextPath}/resources/images/MainPhoto/중고거래.jpeg" alt="#">
+	            </div>
             </div>
         </div>
     </section>
@@ -382,25 +366,24 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-12">
-                    <div class="single-banner" style="background-image:url('${pageContext.request.contextPath}/resources/images/banner/banner-1-bg.jpg')">
+                    <div class="single-banner footerbanner1" style="background-image:url('${pageContext.request.contextPath}/resources/images/MainPhoto/중고거래2.jpg')" >
                         <div class="content">
-                            <h2>Smart Watch 2.0</h2>
-                            <p>Space Gray Aluminum Case with <br>Black/Volt Real Sport Band </p>
+                            <h2>안전한 중고거래 문화</h2>
+                            <p>소심페이 안전결제</p>
                             <div class="button">
-                                <a href="product-grids.html" class="btn">View Details</a>
+                                <a href="product-grids.html" class="btn">소심페이 바로가기</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
-                    <div class="single-banner custom-responsive-margin"
-                        style="background-image:url('${pageContext.request.contextPath}/resources/images/banner/banner-2-bg.jpg')">
+                    <div class="single-banner footerbanner2 custom-responsive-margin"
+                        style="background-image:url('${pageContext.request.contextPath}/resources/images/MainPhoto/중고거래3.jpeg')">
                         <div class="content">
-                            <h2>Smart Headphone</h2>
-                            <p>Lorem ipsum dolor sit amet, <br>eiusmod tempor
-                                incididunt ut labore.</p>
+                            <h2>위치 기반 중고거래</h2>
+                            <p>현재 위치를 기반으로<br>가까이 있는 상품을 알려드립니다.</p>
                             <div class="button">
-                                <a href="product-grids.html" class="btn">Shop Now</a>
+                                <a href="SearchProduct" class="btn">상품 바로가기</a>
                             </div>
                         </div>
                     </div>
@@ -419,8 +402,8 @@
                         <i class="lni lni-delivery"></i>
                     </div>
                     <div class="media-body">
-                        <h5>Free Shipping</h5>
-                        <span>On order over $99</span>
+                        <h5>중고거래 쇼핑</h5>
+                        <span>저렴한 금액으로 구매가능</span>
                     </div>
                 </li>
                 <!-- Money Return -->
@@ -429,8 +412,8 @@
                         <i class="lni lni-support"></i>
                     </div>
                     <div class="media-body">
-                        <h5>24/7 Support.</h5>
-                        <span>Live Chat Or Call.</span>
+                        <h5>연중무휴</h5>
+                        <span>1대1 문의 or 전화상담</span>
                     </div>
                 </li>
                 <!-- Support 24/7 -->
@@ -439,8 +422,8 @@
                         <i class="lni lni-credit-cards"></i>
                     </div>
                     <div class="media-body">
-                        <h5>Online Payment.</h5>
-                        <span>Secure Payment Services.</span>
+                        <h5>소심 결제</h5>
+                        <span>안전한 결제 서비스</span>
                     </div>
                 </li>
                 <!-- Safe Payment -->
@@ -449,8 +432,8 @@
                         <i class="lni lni-reload"></i>
                     </div>
                     <div class="media-body">
-                        <h5>Easy Return.</h5>
-                        <span>Hassle Free Shopping.</span>
+                        <h5>편리한 구매</h5>
+                        <span>검색으로 상품검색가능</span>
                     </div>
                 </li>
             </ul>

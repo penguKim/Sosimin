@@ -9,86 +9,120 @@
 
 	
 	
-	$(function(){
-	// ######################테스트 데이터 설정######################
+$(function(){
+// ######################테스트 데이터 설정######################
 	var clickCount = 0;
-	
-	  $('.nav-inner').click(function() {
-	    clickCount++;
-	
+	$('.nav-inner').click(function() {
+		clickCount++;
 	    if (clickCount === 3) {
-	      var keywords = ["테스트1", "테스트2", "테스트3", "테스트4", "테스트5", "테스트6", "테스트7", "테스트8", "테스트9", "테스트10"];
-	      localStorage.setItem("keywords", JSON.stringify(keywords));
+	    	var keywords = ["테스트1", "테스트2", "테스트3", "테스트4", "테스트5", "테스트6", "테스트7", "테스트8", "테스트9", "테스트10"];
+	    	localStorage.setItem("keywords", JSON.stringify(keywords));
+	    	alert("keywords 배열이 로컬 스토리지에 저장되었습니다.");
+	    	updateTable();
+	    	clickCount = 0;
+	   	}
+	});
+// ######################테스트 데이터 설정######################
 	
-	      alert("keywords 배열이 로컬 스토리지에 저장되었습니다.");
-	      updateTable();
-	      clickCount = 0;
-	    }
-	  });
-	// ######################테스트 데이터 설정######################
-	
 		
 		
-	// 	@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-		// 로컬 스토리지 값이 변경될 때 실행할 함수
-		
-		updateTable();
-		
-		// 로컬 스토리지 값이 변경될 때 updateTable 함수 실행
-		window.addEventListener('storage', function(event) {
-		  if (event.key === 'keywords') {
-		    updateTable();
-		  }
-		});
-		
-		//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-		
-		/* 
-		@@@ 검색창과 관련된 설정 항목 @@@
-		1. 검색창은 Id가 searchBox 인 영역을 클릭 했을 경우 나타난다.
-		2. 이 검색창은 
-			1) 마우스 스크롤
-			2) searchBox 밖의 영역 클릭
-			3) "닫기" 글자 클릭 
-			했을 경우 사라진다.
-		3. 이 검색창은
-		   1) 아무것도 입력하지 않고 엔터키 클릭
-		   2) 돋보기 클릭 시
-		   검색기능이 동작하지 않는다
-		*/
-		hideHandler();
-		$(window).on("scroll", hideHandler);
-		
-		// 특정 영역 외의 클릭 이벤트를 감지하는 코드입니다
-		$(document).on('click', function(event) {
-		    // 클릭된 요소가 특정 영역 내에 속하는지 확인합니다
-		    if (!$(event.target).closest('#searchBox').length || $(event.target).is('#closeSearchBox')) {
-		        // 클릭된 요소가 특정 영역 외부에 있을 경우 경고창을 띄웁니다
-		        if(!$(event.target).is('.localStarageDeleteOne') && !$(event.target).is('#localStorageClean') ){
-			    	hideHandler();
-			    }
-		    }
-		});
-		
-		
-		function hideHandler() {
-			$("#Recent").hide();
-			$("#Popular").addClass("hidden");
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	// 로컬 스토리지 값이 변경될 때 실행할 함수
+	updateTable();
+	// 로컬 스토리지 값이 변경될 때 updateTable 함수 실행
+	window.addEventListener('storage', function(event) {
+		if (event.key === 'keywords') {
+			updateTable();
 		}
-		
-		//엔터키 누를 경우 텍스트 가지고 주소 이동
-		//(form태그 쓰면 css 다 부서짐 그래서 그냥 이렇게 함)
-		$("#searchKeyword").keyup(function(event) {
-		    if (event.keyCode === 13) {
-		      searchKeyword();
-		    }
-	  	});
+	});
 	
-		$(".recentWordColor").css("color","#39d274");
-		$(".popularWordColor").css("color","black");
-	});// document.ready function END
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		
+	/* 
+	@@@ 검색창과 관련된 설정 항목 @@@
+	1. 검색창은 Id가 searchBox 인 영역을 클릭 했을 경우 나타난다.
+	2. 이 검색창은 
+		1) 마우스 스크롤
+		2) searchBox 밖의 영역 클릭
+		3) "닫기" 글자 클릭 
+		했을 경우 사라진다.
+	3. 이 검색창은
+	   1) 아무것도 입력하지 않고 엔터키 클릭
+	   2) 돋보기 클릭 시
+	   검색기능이 동작하지 않는다
+	*/
+	hideHandler();
+	$(window).on("scroll", hideHandler);
+	
+	// 특정 영역 외의 클릭 이벤트를 감지하는 코드입니다
+	$(document).on('click', function(event) {
+	    // 클릭된 요소가 특정 영역 내에 속하는지 확인합니다
+	    if (!$(event.target).closest('#searchBox').length || $(event.target).is('#closeSearchBox')) {
+	        // 클릭된 요소가 특정 영역 외부에 있을 경우 경고창을 띄웁니다
+	        if(!$(event.target).is('.localStarageDeleteOne') && !$(event.target).is('#localStorageClean') ){
+		    	hideHandler();
+		    }
+	    }
+	});
+		
+		
+	function hideHandler() {
+		$("#Recent").hide();
+		$("#Popular").addClass("hidden");
+		$("#Relation").addClass("hidden");
+	}
+	
+	//엔터키 누를 경우 텍스트 가지고 주소 이동
+	//(form태그 쓰면 css 다 부서짐 그래서 그냥 이렇게 함)
+	$("#searchKeyword").keyup(function(event) {
+	    if (event.keyCode === 13) {
+	      searchKeyword();
+	    }
+  	});
+
+	$(".recentWordColor").css("color","#39d274");
+	$(".popularWordColor").css("color","black");
+	
+	
+	$("#searchKeyword").keyup(function(){
+		
+// 		if($("#searchKeyword").val() != null){
+// 			$("#Popular").hide();
+			$("#Recent").hide();
+			$("#Relation").removeClass("hidden");
+			$("#Relation").html(
+					'<table id="Relation">'
+		    		+'<tr>'
+// 		    		+	'<td colspan="2">'+ $("#searchKeyword").val() +'</td>'
+		    		+	'<td>'+ $("#searchKeyword").val() +'</td>'
+		    		+	'<td>연관검색어 테스트</td>'
+		    		+'</tr>'
+					+	'<td>'
+					+	'	<a id="closeSearchBox"></a>'
+					+	'</td>'
+					+	'<td>'
+					+	'	<a id="closeSearchBox">'
+					+	'		닫기'
+					+	'	</a>'
+					+	'</td>'
+					+'</tr>' 
+		    		+'</table>'
+			);
+// 		}else{ 
+// 			$("#Popular").hide();
+// 			$("#Relation").hide();
+// 			$("#Recent").show();
+// 		}
+	});
+	
+	
+	
+	
+});// document.ready function END
 	
 	function searchKeyword(pkeyword) {
+		$("#Relation").removeClass("hidden");
+		$("#Relation").show();
 		let keyword = "";
 		if(pkeyword == null){
 			keyword = $("#searchKeyword").val();
@@ -150,23 +184,6 @@
 		$("#Popular").removeClass("hidden");
 		$(".recentWordColor").css("color","black");
 		$(".popularWordColor").css("color","#39d274");
-	}
-	
-	function searchKeywordChange(keyWord){
-		if($(keyWord).val() != null){
-			$("#searchArea").html(
-					'<table border="1">'
-		    		+'<tr>'
-		    		+	'<td>'+ $(keyWord).val() +'</td>'
-		    		+	'<td>연관검색어 테스트</td>'
-		    		+'</tr>'
-		    		+'<tr>'
-		    		+	'<td>공란</td>'
-		    		+	'<td><a id="closeSearchBox">닫기</a></td>'
-		    		+'</tr>'
-		    	    +'</table>'			
-			);
-		}
 	}
 	
 	function localStorageClean(){
@@ -386,7 +403,7 @@
                     <!-- navbar search start -->
                     <div class="navbar-search search-style-5">
                         <div class="search-input">
-                            <input type="text" id="searchKeyword" placeholder="상품명, 지역명, @상점명 입력" onkeyup="searchKeywordChange(this)" value="${param.keyword}">
+                            <input type="text" id="searchKeyword" placeholder="상품명, 지역명, @상점명 입력" value="${param.keyword}">
                         </div>
                         <div class="search-btn">
                             <button onclick="searchKeyword()">
@@ -402,6 +419,9 @@
                 <div class="searchBoxBlock">
                 <div id="Recent" >
                 	<!-- 최근검색어 테이블이 표시될 영역 -->
+                </div>
+                <div id="Relation" >
+                	<!-- 연관검색어 테이블이 표시될 영역 -->
                 </div>
                 <div id="Popular" class="hidden">
                 	<table id="PopularTableBoarder">
@@ -462,17 +482,17 @@
                 <div class="middle-right-area">
                 	<a href="ProductRegist">
 	                	<img src="https://m.bunjang.co.kr/pc-static/resource/bcc7abb5d531bcf26033.png" width="23" height="26" alt="판매하기버튼 이미지">
-	                	판매하기  
+	                	<span class="rightMenu">판매하기</span>  
                 	</a>
 
 
                 	<a href="MyPage">
 	                	<img src="https://m.bunjang.co.kr/pc-static/resource/31370b164bc5b7cc4fef.png" width="23" height="24" alt="내상점버튼 이미지">
-	                	관심  
+	                	<span class="rightMenu">관심</span>   
                 	</a>
                 	<a href="ChatMain?member_id=${sId }">
 	                	<img src="https://m.bunjang.co.kr/pc-static/resource/32554a59cf002b3def10.png" width="23" height="24" alt="번개톡버튼 이미지">
-	                	채팅톡
+	                	<span class="rightMenu">채팅톡</span>  
                 	</a>
 
 
@@ -498,25 +518,19 @@
                             <li class="nav-item">
                                 <a href="SearchProduct">카테고리</a>
                                 <ul class="sub-menu collapse" id="submenu-1-3">
-                                    <li><a href="javascript:void(0)" >상의</a></li>
-	                                <li><a href="javascript:void(0)" >하의</a></li>
-	                                <li><a href="javascript:void(0)" >아우터</a></li>
-	                                <li><a href="javascript:void(0)" >아동복</a></li>
-	                                <li><a href="javascript:void(0)" >셋업/세트</a></li>
-	                                <li><a href="javascript:void(0)" >패션/잡화</a></li>
-	                                <li><a href="javascript:void(0)" >신발</a></li>
-	                                <li><a href="javascript:void(0)" >기타</a></li>
-<!--                                     <li class="nav-item"><a href="product-grids.html">Shop Grid</a></li> -->
-<!--                                     <li class="nav-item"><a href="product-list.html">Shop List</a></li> -->
-<!--                                     <li class="nav-item"><a href="product-details.html">shop Single</a></li> -->
-<!--                                     <li class="nav-item"><a href="cart.html">Cart</a></li> -->
-<!--                                     <li class="nav-item"><a href="checkout.html">Checkout</a></li> -->
+                                    <li class="nav-item"><a href="javascript:void(0)" >상의</a></li>
+	                                <li class="nav-item"><a href="javascript:void(0)" >하의</a></li>
+	                                <li class="nav-item"><a href="javascript:void(0)" >아우터</a></li>
+	                                <li class="nav-item"><a href="javascript:void(0)" >아동복</a></li>
+	                                <li class="nav-item"><a href="javascript:void(0)" >셋업/세트</a></li>
+	                                <li class="nav-item"><a href="javascript:void(0)" >패션/잡화</a></li>
+	                                <li class="nav-item"><a href="javascript:void(0)" >신발</a></li>
+	                                <li class="nav-item"><a href="javascript:void(0)" >기타</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">
 								<a href="Community">커뮤니티</a>
                                 <ul class="sub-menu collapse" id="submenu-1-2">
-                                    <li class="nav-item"><a href="AboutUs">About Us</a></li>
                                     <li class="nav-item"><a href="Community?category=4">인기글</a></li>
                                     <li class="nav-item"><a href="Community?category=1">동네소식</a></li>
                                     <li class="nav-item"><a href="Community?category=2">동네질문</a></li>
@@ -524,7 +538,6 @@
                                     <li class="nav-item"><a href="SosimLocker">소심함 위치 안내</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item"><a href="SosimLocker">소심함 위치 안내</a></li>
                         </ul>
                     </div> <!-- navbar collapse -->
                 </nav>

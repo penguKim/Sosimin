@@ -926,8 +926,16 @@ progress {
 }
 
 @media (min-width:576px) {
-	#Recent table td,#Popular table td{
+	#Recent table td,#Popular table td,#Relation table td{
 		width: 258px;
+	}
+	
+	.boogi{
+		left:65%;
+	}
+	
+	.rightMenu{
+		display: none;
 	}
 
     .col-sm {
@@ -1144,8 +1152,12 @@ progress {
 }
 
 @media (min-width:768px) {
-	#Recent table td,#Popular table td{
+	#Recent table td,#Popular table td, #Relation table td{
 		width: 198px;
+	}
+	
+	.rightMenu{
+		display: none;
 	}
 	
     .col-md {
@@ -1362,11 +1374,15 @@ progress {
 }
 
 @media (min-width:992px) {
-	#Recent table td{
-		width: 27%;
-	}
-	#Popular table td{
+	#Recent table td, #Popular table td, #Relation table td{
 		width: 186px;
+	}
+	.header .nav-inner{
+		display: flex;
+	}	
+	
+	.rightMenu{
+		display: none;
 	}
 	
     .col-lg {
@@ -1583,8 +1599,12 @@ progress {
 }
 
 @media (min-width:1200px) {
-	#Recent table td, #Popular table td{
+	#Recent table td, #Popular table td, #Relation table td{
 		width: 225px;
+	}
+	
+	.rightMenu{
+		display:unset;
 	}
 	
     .col-xl {
@@ -1801,8 +1821,12 @@ progress {
 }
 
 @media (min-width:1400px) {
-	#Recent table td, #Popular table td{
+	#Recent table td, #Popular table td, #Relation table td{
 		width: 262px;
+	}
+	
+	.rightMenu{
+		display:unset;
 	}
 	
     .col-xxl {
