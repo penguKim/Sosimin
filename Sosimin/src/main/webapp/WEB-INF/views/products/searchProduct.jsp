@@ -109,7 +109,6 @@
 </style>
 <script type="text/javascript">
 $(function() {
-	
 	<%-- 필터링을 위한 변수 초기화 --%>
 	let id = "${sessionScope.sId}"; 
 	let pageNum = "";
@@ -170,7 +169,7 @@ $(function() {
  							
 							singleProduct += ' <div class="product-info heartPosition">'
 								+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
-								+ ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ')"></div>'
+								+ ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
 								+ ' <ul class="review">'
 									+ ' <li><span>' +  productList[i].dong + '</span></li>'
 									+ ' <li><span>|</span></li>'
@@ -199,7 +198,7 @@ $(function() {
 			if(sort != "") url += '&sort=' + sort;
 			if(trade != "") url += '&trade=' + trade;
 			
-		    alert("현재 주소는 : " + url );
+// 		    alert("현재 주소는 : " + url );
 			
 			let pages = '';
 			pages += '<nav aria-label="Page navigation">'
@@ -236,34 +235,39 @@ $(function() {
 			}
 			
 			<%-- 관심 목록 불러오기 --%> 
-// 			$.ajax({
-// 				url: 'ProductLikeList',
-// 				dataType: 'json',
-// 				success: function(data) {
-// 					for(let i = 0; i < productList.length; i++) {
-// 						if(productList[i].product_id == data[i].product_id) {
-// 							alert("확인");
-// 							$("#heartLike" + i).addClass("is-active");
-// 						} else {
-// 							alert("실패");
-// 						}
-						
-// 					}
-// 				},
-// 				error: function() {
-// 					const Toast = Swal.mixin({
-// 					    toast: true,
-// 					    position: 'center-center',
-// 					    showConfirmButton: false,
-// 					    timer: 1000,
-// 					    timerProgressBar: false,
-// 					})
-// 					Toast.fire({
-// 					    icon: 'error',
-// 					    title: '관심목록 불러오기 실패했습니다'
-// 					})					
-// 				}
-<%-- 			}); 관심목록 ajax 끝 --%>
+			if(id == "") {
+			    alert("아이디가 없습니다");
+			} else {
+			    alert("아이디는" + id);
+			    $.ajax({
+			        url: 'ProductLikeList',
+			        dataType: 'json',
+			        success: function(data) {
+			            alert("리스트 목록 : " + productList.length);
+			            for(let i = 0; i < productList.length; i++) {
+			                for(let LikeList of data) {
+			                    if(productList[i].product_id === LikeList.product_id) {
+			                        $("#heartLike"+i).addClass("is-active");
+			                    }
+			                }
+			            }
+			        },
+					error: function() {
+						const Toast = Swal.mixin({
+						    toast: true,
+						    position: 'center-center',
+						    showConfirmButton: false,
+						    timer: 1000,
+						    timerProgressBar: false,
+						})
+						Toast.fire({
+						    icon: 'error',
+						    title: '관심목록 불러오기 실패했습니다'
+						})					
+					}
+				}); <%--관심목록 ajax 끝--%>
+				
+			} <%-- 아이디 판별 --%>
 			
 		},
 		error: function() {
@@ -285,20 +289,26 @@ $(function() {
 }); // ready 끝
 
 <%-- 좋아요 등록 --%>
-function heartLike(heart) {
+function heartLike(heart, product_id) {
+	$("#heartLike"+heart).addClass("is-active");
     $.ajax({
     	url:"ProductLikeRegist",
     	data: {
-    		
+    		product_id: product_id
     	},
     	success: function(result) {
-    		alert("하트 값 :" + heart);
-    		$("#heartLike"+heart).toggleClass("is-active");
+    		<%-- 찜을 등록하는 경우 --%>
+    		if(result.isChecked == 'false') { 
+				$("#heartLike"+heart).addClass("is-active");
+				
+			<%-- 찜을 삭제하는 경우 --%>
+			} else if(result.isChecked == 'true') { 
+				$("#heartLike"+heart).removeClass("is-active");
+			}
 		},
 		error: function() {
 			
 		}
-    	
     }); // ajax 끝
 }
 
@@ -370,6 +380,7 @@ function wordPress(event) {
 
 function filtering(data) {
 	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
+	let id = "${sessionScope.sId}";
 	let pageNum = 1;
 	let category = "${param.keyword}";
 	let keyword = "${param.keyword}";
@@ -527,7 +538,40 @@ function filtering(data) {
 			if(pageNum >= pageInfo.maxPage) {
 				$("#nextPage").addClass("disabled");
 			}
-		
+			
+			<%-- 관심 목록 불러오기 --%> 
+			if(id == "") {
+			    alert("아이디가 없습니다");
+			} else {
+			    alert("아이디는" + id);
+			    $.ajax({
+			        url: 'ProductLikeList',
+			        dataType: 'json',
+			        success: function(data) {
+			            alert("리스트 목록 : " + productList.length);
+			            for(let i = 0; i < productList.length; i++) {
+			                for(let LikeList of data) {
+			                    if(productList[i].product_id === LikeList.product_id) {
+			                        $("#heartLike"+i).addClass("is-active");
+			                    }
+			                }
+			            }
+			        },
+					error: function() {
+						const Toast = Swal.mixin({
+						    toast: true,
+						    position: 'center-center',
+						    showConfirmButton: false,
+						    timer: 1000,
+						    timerProgressBar: false,
+						})
+						Toast.fire({
+						    icon: 'error',
+						    title: '관심목록 불러오기 실패했습니다'
+						})					
+					}
+				}); <%--관심목록 ajax 끝--%>
+			}
 		},
 		error: function() {
 			alert("실패");

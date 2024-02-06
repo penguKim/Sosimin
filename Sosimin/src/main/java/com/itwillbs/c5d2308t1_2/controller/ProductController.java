@@ -172,7 +172,7 @@ public class ProductController {
 		String sId = (String)session.getAttribute("sId");
 		map.put("sId", sId);
 		System.out.println(">>>>>>>>>>>>>>>>> 저장 후 맵 : " + map);
-		if(sId == null) {
+		if(sId != null) {
 			List<Map<String, Object>> likeList = service.getLikeList(map);
 			System.out.println(">>>>>>>>>>>>>>>>> 관심 목록 : " + likeList);
 			JSONArray jo = new JSONArray(likeList);
@@ -183,13 +183,26 @@ public class ProductController {
 		return "[]";
 	}
 	
+	
 	// 상품 좋아요 
 	@ResponseBody
 	@GetMapping("ProductLikeRegist")
-	public String productLikeRegist() {
+	public String productLikeRegist(@RequestParam Map<String, String> interest, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		System.out.println("상품 아이디 : " + interest);
+		System.out.println("세션 아이디 : " + sId);
+		if(sId == null) {
+			System.out.println("아이디가 없습니다!");
+			return "login";
+		}
+		System.out.println("널이면 안나와야지 씨ㅏ");
+		interest.put("member_id", sId);
+		String isChecked = service.getInterst(interest);
+		JSONObject object = new JSONObject();
+		System.out.println(">>>>>>>>>>>>>> : " + isChecked);
+		object.put("isChecked", isChecked);
 		
-		
-		return "true";
+		return object.toString();
 	}
 	
 	
@@ -691,6 +704,7 @@ public class ProductController {
 						int intersetCount = service.getInterestCount(product);
 						
 						System.out.println(" 몇개가 들었노 : " + intersetCount);
+						System.out.println("isChecked : " + isChecked);
 						JSONObject object = new JSONObject();
 						object.put("isChecked", isChecked);
 						object.put("intersetCount", intersetCount);
