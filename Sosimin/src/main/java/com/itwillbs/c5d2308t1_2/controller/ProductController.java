@@ -113,14 +113,11 @@ public class ProductController {
 		for(Map<String, Object> datetime : productList) {
 			LocalDateTime comDateTime;
 //			System.out.println(datetime);
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>  몇 인가요: " + datetime.get("product_datetime").toString().split(":").length);
+			// datetime 초가 00초인 경우 오류 판별을 위한 if문
 			if(datetime.get("product_datetime").toString().split(":").length > 2) {
 				comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter1);
-				System.out.println(">>>>>>>>>>>>>>>>>>> 날짜1111111111111 : " + comDateTime);
 			} else {
 				comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter2);
-				
-				System.out.println(">>>>>>>>>>>>>>>>>>> 날짜 22222222222222222222: " + comDateTime);
 			}
 			Duration duration = Duration.between(comDateTime, now);
 			

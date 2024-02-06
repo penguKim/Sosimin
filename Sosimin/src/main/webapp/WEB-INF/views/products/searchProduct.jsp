@@ -36,6 +36,7 @@
 </style>
 <script type="text/javascript">
 $(function() {
+	
 	<%-- 필터링을 위한 변수 초기화 --%>
 	let id = "${sessionScope.sId}"; 
 	
@@ -81,7 +82,7 @@ $(function() {
 							+ ' </a>'
 							+ ' <div class="product-info heartPosition">'
 								+ '<h6>' + productList[i].product_name + '</h6>'
-								+ ' <div class="heart" id="heartLike '+ i +'"></div>'
+								+ ' <div class="heart" id="heartLike '+ i +'" onclick="heartLike(this)"></div>'
 								+ ' <ul class="review">'
 									+ ' <li><span>' +  productList[i].dong + '</span></li>'
 									+ ' <li><span>|</span></li>'
@@ -143,34 +144,34 @@ $(function() {
 			}
 			
 			<%-- 관심 목록 불러오기 --%> 
-			$.ajax({
-				url: 'ProductLikeList',
-				dataType: 'json',
-				success: function(data) {
-					for(let i = 0; i < productList.length; i++) {
-						if(productList[i].product_id == data[i].product_id) {
-							alert("확인");
-							$("#heartLike" + i).addClass("is-active");
-						} else {
-							alert("실패");
-						}
+// 			$.ajax({
+// 				url: 'ProductLikeList',
+// 				dataType: 'json',
+// 				success: function(data) {
+// 					for(let i = 0; i < productList.length; i++) {
+// 						if(productList[i].product_id == data[i].product_id) {
+// 							alert("확인");
+// 							$("#heartLike" + i).addClass("is-active");
+// 						} else {
+// 							alert("실패");
+// 						}
 						
-					}
-				},
-				error: function() {
-					const Toast = Swal.mixin({
-					    toast: true,
-					    position: 'center-center',
-					    showConfirmButton: false,
-					    timer: 1000,
-					    timerProgressBar: false,
-					})
-					Toast.fire({
-					    icon: 'error',
-					    title: '관심목록 불러오기 실패했습니다'
-					})					
-				}
-			}); <%-- 관심목록 ajax 끝 --%>
+// 					}
+// 				},
+// 				error: function() {
+// 					const Toast = Swal.mixin({
+// 					    toast: true,
+// 					    position: 'center-center',
+// 					    showConfirmButton: false,
+// 					    timer: 1000,
+// 					    timerProgressBar: false,
+// 					})
+// 					Toast.fire({
+// 					    icon: 'error',
+// 					    title: '관심목록 불러오기 실패했습니다'
+// 					})					
+// 				}
+<%-- 			}); 관심목록 ajax 끝 --%>
 			
 		},
 		error: function() {
@@ -178,22 +179,22 @@ $(function() {
 			    toast: true,
 			    position: 'center-center',
 			    showConfirmButton: false,
-			    timer: 1000,
+			    timer: 2000,
 			    timerProgressBar: false,
 			})
 			Toast.fire({
 			    icon: 'error',
-			    title: 'ajax 불러오기 실패!'
+			    title: '다시 시도해 주세요!'
 			})		
 		}
 	}); <%-- 상품목록 조회 ajax 끝 --%>
 	
 	<%-- 관심 클릭 이벤트 --%>
-	$(".heart").on("click", function () {
-		alert("좋아요!!");
-	    $(this).toggleClass("is-active");
+// 	$(".heart").on("click", function () {
+// 		alert("좋아요!!");
+// 	    $(this).toggleClass("is-active");
 	
-	});
+// 	});
 	
 	
 	
@@ -201,6 +202,11 @@ $(function() {
 	
 	
 }); // ready 끝
+
+function heartLike(heart) {
+	alert("ㅎㅇ");
+	
+}
 
 <%-- 카테고리 선택 시 이동--%>
 $(function() {
@@ -491,8 +497,6 @@ function filtering(data) {
 			                    </div>
 		                    </form>
 		                    <div style="margin-bottom: 20px;"></div>
-		                    
-		                    <c:if test="${empty param.product_category}">
 			                    <h3>카테고리</h3>
 	                            <ul class="list" id="submenu-1-3">
 	                                <li><a href="javascript:void(0)" class="selcategory">상의</a></li>
@@ -504,8 +508,10 @@ function filtering(data) {
 	                                <li><a href="javascript:void(0)" class="selcategory">신발</a></li>
 	                                <li><a href="javascript:void(0)" class="selcategory">기타</a></li>
 	                            </ul>
-                       		</c:if>
                         <%-- 3. 신고하기 기능 버튼 --%>
+                        <div class="product-info heartPosition">
+                        	<div class="heart" id="heartLike"></div>
+                        </div>
                         <button type="button" class="btn btn-primary" id="testBtn" value="테스트중입니다">
 								테스트버튼
 						</button>

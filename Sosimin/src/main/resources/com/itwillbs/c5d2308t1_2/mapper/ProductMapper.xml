@@ -7,9 +7,9 @@
 	<!-- 상품 목록 갯수 -->
 	<select id="productListCount" resultType="int">
 		SELECT COUNT(*)
-		FROM Product
+		FROM ProductData
 		<if test="sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('') or !word.equals('')">
-			WHERE 
+			WHERE  
 		</if>
 		<!-- 로그인시 회원 구별 조회 -->
 		<if test="sId != null" >
@@ -67,7 +67,7 @@
 	<select id="selectProductList" resultType="map"> 
 		SELECT p.product_id, product_category, p.member_id, product_board_id, product_name, product_price, gu, p.dong  
 		, product_datetime, product_image1
-		FROM Product p JOIN Product_board pb
+		FROM ProductData p JOIN ProductBoard pb
 		ON p.product_id = pb.product_id
 		JOIN Member m
 		ON p.member_id = m.member_id
