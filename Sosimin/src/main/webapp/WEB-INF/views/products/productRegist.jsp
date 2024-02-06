@@ -630,43 +630,49 @@ $(document).ready(() => {
 });
 
 function saveTagsToLocalStorage() {
-  var tags = [];
-  $("#tagContainer .tag").each(function() {
-    tags.push($(this).text().substring(1));  // '#' 제거
-  });
-  localStorage.setItem(sId + "_tag_names", JSON.stringify(tags));
-}
+	  var tags = [];
+	  $("#tagContainer .tag").each(function() {
+	    tags.push($(this).text().substring(1)); // '#' 제거
+	  });
+	  localStorage.setItem(sId + "_tag_names", JSON.stringify(tags));
+	}
 
-function loadTagsFromLocalStorage() {
-  var tags = JSON.parse(localStorage.getItem(sId + "_tag_names"));
-  if (tags) {
+	function loadTagsFromLocalStorage() {
+	  var tags = JSON.parse(localStorage.getItem(sId + "_tag_names"));
+	  if (tags) {
 	    var tagContainer = document.getElementById("tagContainer");
 	    while (tagContainer.firstChild) {
-      tagContainer.removeChild(tagContainer.firstChild);
-  }
-    for (var i = 0; i < tags.length; i++) {
-      addTag(tags[i]);
-    }
-  }
-}
+	      tagContainer.removeChild(tagContainer.firstChild);
+	    }
+	    for (var i = 0; i < tags.length; i++) {
+	      addTag(tags[i], i + 1);
+	    }
+	  }
+	}
 
-function addTag(tagName) {
-  var tagElement = document.createElement("span");
-  tagElement.innerText = "#" + tagName;
-  tagElement.classList.add("tag");
+	function addTag(tagName, tagNumber) {
+	  var tagElement = document.createElement("span");
+	  tagElement.innerText = "#" + tagName;
+	  tagElement.classList.add("tag");
 
-  var closeButton = document.createElement("button");
-  closeButton.innerText = "";
-  closeButton.classList.add("close-button");
-  tagElement.appendChild(closeButton);
+	  var tagNameInput = document.createElement("input");
+	  tagNameInput.type = "hidden";
+	  tagNameInput.name = "tag_name" + (tagNumber || document.querySelectorAll(".tag").length + 1); // 컨트롤러로 전달할 name 속성 (tagNumber 또는 현재 태그 갯수 + 1)
+	  tagNameInput.value = tagName; // 컨트롤러로 전달할 값 설정
+	  tagElement.appendChild(tagNameInput);
 
-  var tagContainer = document.getElementById("tagContainer");
-  tagContainer.appendChild(tagElement);
+	  var closeButton = document.createElement("button");
+	  closeButton.innerText = "";
+	  closeButton.classList.add("close-button");
+	  tagElement.appendChild(closeButton);
 
-  if (tagContainer.querySelectorAll(".tag").length >= 4) {
-    document.getElementById("tagName").disabled = true;
-  }
-}
+	  var tagContainer = document.getElementById("tagContainer");
+	  tagContainer.appendChild(tagElement);
+
+	  if (tagContainer.querySelectorAll(".tag").length >= 4) {
+	    document.getElementById("tagName").disabled = true;
+	  }
+	}
 		
 //이미지 파일 선택 시 실행되는 함수
 function handleImageUpload(event) {
@@ -806,7 +812,7 @@ function handleTagRegistration() {
     tagElement.classList.add("tag");
     var tagNameInput = document.createElement("input");
     tagNameInput.type = "hidden";
-    tagNameInput.name = "tag_name" + tagCounter; // 컨트롤러로 전달할 name 속성 (순차적으로 증가)
+    tagNameInput.name = "tag_name" + (document.querySelectorAll(".tag").length + 1); // 컨트롤러로 전달할 name 속성 (현재 태그 갯수 + 1)
     tagNameInput.value = tagName; // 컨트롤러로 전달할 값 설정
     tagElement.appendChild(tagNameInput);
 
@@ -822,15 +828,20 @@ function handleTagRegistration() {
       document.getElementById("tagName").disabled = true;
     }
 
-    tagCounter++; // 카운터 변수 증가
+//     tagCounter++; // 카운터 변수 증가
     document.getElementById("tagName").value = "";
   }
 }
 
 $(document).on("click", ".close-button", function() {
-  $(this).closest(".tag").remove();
-  $("#tagName").prop("disabled", false);
-});
+	  $(this).closest(".tag").remove();
+	  $("#tagName").prop("disabled", false);
+	  
+	  // 모든 태그의 name 속성을 재정의
+	  $(".tag").each(function(index) {
+	    $(this).find("input").attr("name", "tag_name" + (index + 1));
+	  });
+	});
 
 // 썸네일 작업
 // var formData = new FormData(); // 전역 변수로 FormData 객체 생성
@@ -991,6 +1002,12 @@ function removeImage(button) {
   }
   
   // 이미지 항목 삭제
+    for(let i = 1; i <= 5; i++) {
+    if(localStorage.getItem("image" + i) === imageItem.querySelector('img').src) {
+      localStorage.removeItem("image" + i);
+      break;
+    }
+  }
   imageContainer.removeChild(imageItem);
   
 //   var index = imageItem.dataset.index;  // 파일의 인덱스를 가져옵니다.

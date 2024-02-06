@@ -47,6 +47,54 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </head>
 <style>
+
+#policeText{
+	position: relative;
+	bottom:48px;
+	left:128px;
+}
+.reportBtn {
+	position:relative;
+	color: #888;
+	cursor: pointer;
+	transition: 0.5s;
+	left: 110px;
+	bottom:24px;
+	width:10px;
+}
+
+.reportBtn:hover{
+	color: #f00;
+	transform: scale(1.2);
+	transition: 0.5s;
+}
+#reportBtn3{
+	display: inline-block;
+	position: relative;
+	
+}
+/* .reportBtn:hover, */
+/* .reportBtn2:hover .reportBtn, */
+/* #policeText:hover ~ .reportBtn { */
+/* 	color: #f00; */
+/* 	transform: scale(1.2); */
+/* 	transition: 0.5s; */
+/* }
+
+/* .reportBtn2:hover{ */
+/* 	color: #f00; */
+/* 	transform: scale(1.2); */
+/* 	transition: 0.5s; */
+/* } */
+/* .reportBtn2:hover #policeText { */
+/* 	color: #f00; */
+/* } */
+/* #reportBtn2{ */
+/* 	position: relative; */
+/* 	left:500px; */
+/* 	bottom:300px; */
+/* } */
+
 /* 판매 완료 */
 #singleProductAreaDealComplete {
 	border: none;
@@ -710,11 +758,14 @@ function Proposal() {
 	                        		</c:forEach>
 	                        	</div>
 	                        	<%-- 신고하기 --%>
-	                        	<button class="police" id="reviewCheckForm" type="button" class="btn btn-primary" 
-	                        	data-bs-toggle="modal" data-bs-target="#reportModal">
-	                        		<img src="${pageContext.request.contextPath}/resources/images/product-details/신고하기.png" width="25" height="25">
-	                        		신고하기
-	                        	</button>
+					        <div class="reportBtn2">
+								<button class="col-1 align-self-end police" style="width: 80px;" data-bs-toggle="modal" data-bs-target="#reportModal">
+									<span id="reportBtn3">
+										<i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i>
+										<span id="policeText">신고하기</span>
+									</span>
+									</button>
+							</div>
 	                        </div>
                         </div>
                         <br><br>
