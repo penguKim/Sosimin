@@ -45,6 +45,7 @@
 		FROM Member
 		WHERE Member.member_id = #{member_id} 
 	</select>
+
 	
 	<!-- 중복 체크 위한 회원정보조회 SELECT -->
 	<select id="selectDupMemberInfo" resultType="member">
@@ -262,6 +263,8 @@
 		UPDATE Member
 		SET 
 		member_profile = #{member_profile}
+		, member_name = #{member_name}
+		, member_birth = #{member_birth}
 		, member_intro = #{member_intro}
 		<if test="member_password != null and !member_password.equals('')">
 			, member_password = #{member_password}
@@ -269,7 +272,9 @@
 		, member_nickname = #{member_nickname}
 		, member_email = #{member_email}
 		, member_phone = #{member_phone}
-		<if test="member_status != null and !member_status.equals('')">
+		, member_neighbor_auth = #{member_neighbor_auth}
+		, town_id = #{town_id}
+		<if test="member_status != null and member_status != ''">
 			, member_status = #{member_status}
 		</if>
 		WHERE member_id = #{member_id}
@@ -281,6 +286,16 @@
 		FROM Member
 		LEFT OUTER JOIN Town
 		ON Town.town_id = Member.town_id
+	</select>
+	
+	<!-- 관리자페이지 회원 정보 수정을 위한 회원조회 SELECT -->
+	<select id="selectSingleMember" resultType="hashmap">
+		SELECT *
+		FROM Member
+		LEFT OUTER JOIN Town
+		ON Town.town_id = Member.town_id
+		WHERE member_id = #{member_id}
+		
 	</select>
 	
 </mapper>

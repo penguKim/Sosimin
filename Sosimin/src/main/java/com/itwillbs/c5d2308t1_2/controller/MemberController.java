@@ -394,7 +394,8 @@ public class MemberController {
 		PageInfo pageInfo = new PageInfo(page, listCount, 3);
 		
 		// 프로필 영역에 불러올 회원 정보 조회
-		MemberVO MyProfileMember = service.getMyProfileMember(sId);
+//		MemberVO MyProfileMember = service.getMyProfileMember(sId);
+		Map<String, Object> MyProfileMember = service.getSingleMember(sId);
 		System.out.println("프로필 찍어낼 멤버정보 확인 : " + MyProfileMember);
 		int MyProfileCountProductSold = service.getCountProductSold(sId); 
 		System.out.println("프로필 찍어낼 상품판매횟수 확인 : " + MyProfileCountProductSold);
@@ -482,7 +483,7 @@ public class MemberController {
 	}
 	
 
-	// 회원 정보 수정
+	// 내 정보 수정
 	@PostMapping("ModifyMyInfo")
 	public String modifyMyInfo(MemberVO member, HttpSession session) {
 		System.out.println("폼파라미터 확인 : " + member);
@@ -495,6 +496,14 @@ public class MemberController {
 		// D:\Spring\workspace_spring5\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Sosimin\resources/upload
 		String subDir = "";
 //		
+		String str = member.getMember_address();
+		String[] strArr = str.split("\\s");
+		String result = strArr[1] + " " + strArr[2];
+		System.out.println("문자열 결합 확인 : " + result);
+		member.setMember_address(result);
+		System.out.println(member.getMember_address());
+		
+		
 		// 날짜별로 서브디렉토리 생성하기
 		LocalDate now = LocalDate.now();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
@@ -598,10 +607,39 @@ public class MemberController {
 		return "admin/memberList";
 	}
 	
+	
+	// 회원 정보 수정 페이지로 이동
+	@GetMapping("ModifyMember")
+	public String modifyMember(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		map = service.getSingleMember((String)map.get("member_id"));
+		
+		model.addAttribute("member", map);
+		return "admin/memberModify";
+	}
+	
 	// 회원 정보 수정
 	@PostMapping("ModifyMemberInfo")
-	public String modifyMemberInfo(MemberVO member, HttpSession session) {
-		System.out.println("폼파라미터 확인 : " + member);
+	public String modifyMemberInfo(MemberVO member, String newPassword, HttpSession session) {
+		System.out.println(">>>>>>>>>>> 관리자  폼파라미터 확인 : " + member);
+		System.out.println(">>>>>>>>>>> 관리자 새 패스워드 확인 : " + newPassword);
+		
+		
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		if(newPassword != null && !newPassword.equals("")) {
+			newPassword = passwordEncoder.encode(newPassword);
+			member.setMember_password(newPassword);
+		}
+		
+		String str = member.getMember_address();
+		String[] strArr = str.split("\\s");
+		String result = strArr[1] + " " + strArr[2];
+		System.out.println("문자열 결합 확인 : " + result);
+		member.setMember_address(result);
+		System.out.println(member.getMember_address());
 		
 		// 파일업로드를 위한 준비
 		// resources 디렉토리 내에 upload 파일 생성
@@ -637,12 +675,10 @@ public class MemberController {
 			if(!mFile.getOriginalFilename().equals("")) {
 				member.setMember_profile(subDir + "/" + fileName);
 			}
-			
 			System.out.println("업로드 파일명 확인 : " + member.getMember_profile());
 		}
 		
 		int updateCount = service.modifyMyInfo(member);
-		
 		
 		// 게시물 등록 작업 요청 결과 판별
 		if(updateCount > 0) {
@@ -658,12 +694,9 @@ public class MemberController {
 					e.printStackTrace();
 				}
 			}
-				
+			
 		}
-		
 		
 		return "redirect:/MemberList";
 	}
-	
-	
 }

@@ -42,6 +42,7 @@
 <script type="text/javascript">
 	// 기존 회원 정보 저장
 	//	let member_intro = $("#intro").val();
+	let member_name = "";
 	let member_password = "";
 	let member_nickname = "";
 	let member_email = "";
@@ -49,6 +50,7 @@
 	
 	// 중복, 정규표현식, 안전도, 일치여부 저장 변수 선언
 	//	let isCorrectIntro = false;
+	let iscorrectName = false; <%-- 이름 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
 	let iscorrectPassword = false; <%-- 비밀번호 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
 	let isSamePassword = false; <%-- 패스워드 일치 여부를 저장할 변수 선언 --%>
 	let isSafePassword = false; <%-- 패스워드 안전도를 저장하는 변수 --%>
@@ -59,7 +61,7 @@
 	let iscorrectPhone = false; <%-- 휴대폰번호입력 여부 저장할 변수 선언 --%>
 	let isDuplicatePhone = false; <%-- 휴대폰번호 중복 여부를 저장할 변수 선언 --%>
 	let iscorrectPhoneAuthCode = false; <%-- 휴대폰번호 인증코드 입력 여부 저장할 변수 선언 --%>
-
+	let iscorrectBirth = true;	
 
 
 
@@ -86,13 +88,16 @@
 		
 		// 기존 회원 정보 저장
 // 		let member_intro = $("#intro").val();
+		member_name = $("#member_name").val();
 		member_password = $("#member_password").val();
 		member_nickname = $("#nickname").val();
 		member_email = $("#email").val();
 		member_phone = $("#phone").val();
+		member_birth = $("#birthdate").val();
 		
 		// 중복, 정규표현식, 안전도, 일치여부 저장 변수 선언
 // 		let isCorrectIntro = false;
+		iscorrectName = true; <%-- 이름 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
 		iscorrectPassword = true; <%-- 비밀번호 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
 		isSamePassword = true; <%-- 패스워드 일치 여부를 저장할 변수 선언 --%>
 		isSafePassword = true; <%-- 패스워드 안전도를 저장하는 변수 --%>
@@ -103,6 +108,7 @@
 		iscorrectPhone = true; <%-- 휴대폰번호입력 여부 저장할 변수 선언 --%>
 		isDuplicatePhone = false; <%-- 휴대폰번호 중복 여부를 저장할 변수 선언 --%>
 		iscorrectPhoneAuthCode = true; <%-- 휴대폰번호 인증코드 입력 여부 저장할 변수 선언 --%>
+		iscorrectBirth = true; <%-- 생년월일 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
 		
 		// 소개글 블러 이벤트 처리
 // 		$("#intro").on("blur", function() {
@@ -112,6 +118,86 @@
 // 				isCorrectIntro = true;
 // 			}
 // 		});
+		
+		navigator.geolocation.getCurrentPosition(function(position) {
+			  var latitude = position.coords.latitude; // 현재 위치의 위도
+			  var longitude = position.coords.longitude; // 현재 위치의 경도
+	
+			  var container = document.getElementById('map'); // 지도를 표시할 위치
+			  var options = {
+			    center: new kakao.maps.LatLng(latitude, longitude), // 지도 위치 설정(내위치)
+			    level: 3 // 지도 확대 레벨(휠로 돌리기전 기본 레벨 설정)
+			  };
+	
+			  map = new kakao.maps.Map(container, options); // 지도 생성 및 표시
+	
+			  var markerPosition = new kakao.maps.LatLng(latitude, longitude); // 마커의 위치 좌표 내위치기준으로 좌표줬음
+			  marker = new kakao.maps.Marker({
+			    position: markerPosition		// 마커 생성 시 위치 설정
+			  });
+			  marker.setMap(map); // 마커를 지도에 표시해준다.
+		});
+		
+		// 내위치정보 클릭 시 해당 위치의 주소 가져오기(위도 / 경도를 도로명주소,지번주소로 변경)
+		$("#myMapButton").on("click", function() {
+		  var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체 생성(카카오api사용)
+		  var markerPosition = marker.getPosition(); // 마커의 위치 좌표(위에서 찍힌 마커 위치 좌표를 가져옴)
+		  var latitude = markerPosition.getLat(); // 마커의 위도(내가 가져온 현재 위치의 위도)
+		  var longitude = markerPosition.getLng(); // 마커의 경도(내가 가져온 현재 위치의 경도)
+
+		  geocoder.coord2Address(longitude, latitude, function(result, status) {
+		   if (status === kakao.maps.services.Status.OK) { // 주소-좌표 변환 성공 시
+			// 도로명 주소가 있을 경우 도로명 주소를, 없을 경우 지번 주소를 표시
+	          var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+	          detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+	          
+	          var address = result[0].address.address_name; // 지번 주소
+	          
+	          
+// 	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          
+	          if(address.split(' ')[0] == "부산" || address.split(' ')[0] == "대구" || address.split(' ')[0] == "인천" || address.split(' ')[0] == "광주" || address.split(' ')[0] == "대전" || address.split(' ')[0] == "울산"  ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else if(address.split(' ')[0] == "서울" ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "특별시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else {
+	        	  var modifiedAddress = address.split(' ')[0]  + " " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          }
+		      
+	          
+	          $("#myMap").val(modifiedAddress);
+	          localStorage.setItem("tradePlace", modifiedAddress);
+	          
+		    } else {
+		    	Swal.fire({
+					title: '주소 요청 실패!',         // Alert 제목
+					text: "주소를 가져오지 못했습니다!",  // Alert 내용
+					icon:'error',
+				});
+// 		      alert("주소를 가져오지 못했습니다.");
+		    }
+		  });
+		});
+		
+		
+		<%-- 이름 확인 --%>
+		$("#name").on("blur", function() {	
+			if(member_name == $("#name").val()) { // 기존 이름과 동일할 경우
+				$("#checkNameResult").text("기존과 동일한 이름입니다").css("color", "#FFB400");
+				iscorrectName = true;
+			} else { 
+				let regName = /^[가-힣]{2,5}$/; <%-- 한글 2~5글자 --%>
+				if(!regName.test($("#name").val())){
+					$("#checkNameResult").text("2~5글자의 한글만 사용 가능합니다").css("color", "red");
+					iscorrectName = false;
+				} else if(regName.test($("#name").val())){
+					$("#checkNameResult").text("사용 가능한 이름입니다").css("color", "green");
+					iscorrectName = true;
+		        }
+			}
+		});	
+		
+		
 		
 		// 새 비밀번호 블러 이벤트처리
 		<%-- 비밀번호 정규표현식 검증 --%>
@@ -391,74 +477,9 @@
 	 							iscorrectPhone = false;
 	 							isDuplicatePhone = true;
 							} else { // 사용가능
-								$("#checkPhoneResult").text("사용 가능한 번호입니다. 버튼을 눌러 인증코드를 받아주세요.").css("color", "green");
-								$("#requestPhoneAuthCodeButton").focus();
+								$("#checkPhoneResult").text("사용 가능한 번호입니다. ").css("color", "green");
 								iscorrectPhone = true;
 								isDuplicatePhone = false;
-								
-								// 인증코드발급 버튼 클릭 시 이벤트 처리
-								$("#requestPhoneAuthCodeButton").on("click", function() {
-//	 								alert("인증코드 발송 완료");
-									Swal.fire({
-										title: '인증코드 발송 완료!',         // Alert 제목
-										text: "인증 코드를 확인해주세요!",  // Alert 내용
-										icon:'success',
-									});
-//	 								$("#requestPhoneAuthCodeButton").blur();
-									$.ajax({
-										url: "requestPhoneAuthCode",
-										data: {
-											"member_phone": newPhone
-										},
-										dataType: "json",
-										success: function(result) {
-											console.log("result : " + result);
-											
-											// 인증 버튼 클릭 시 코드값 비교해 인증 완료 처리해야함
-											$("#completePhoneAuthButton").on("click", function() {
-												let phone_auth_code = $("#phoneAuthCode").val(); 	
-											
-												if(phone_auth_code == "") {
-													$("#checkPhoneAuthCodeResult").text("인증코드를 입력해주세요").css("color", "red");
-													iscorrectPhoneAuthCode = false;
-												} else {
-													if($.trim(result) == phone_auth_code) {
-//	 													alert("휴대폰 인증이 정상적으로 완료되었습니다!");
-														Swal.fire({
-															title: '인증 완료!',         // Alert 제목
-															text: "휴대폰 인증이 정상적으로 완료되었습니다!",  // Alert 내용
-															icon:'success',
-														});
-														iscorrectPhoneAuthCode = true;
-													} else {
-														Swal.fire({
-															title: '인증 코드 불일치!',         // Alert 제목
-															text: "인증 코드가 올바르지 않습니다. 다시 인증해주세요!",  // Alert 내용
-															icon:'error',
-														});
-//	 													alert("인증 코드가 올바르지 않습니다. 다시 인증해주세요!");
-													}
-												}
-											});
-											
-											
-										},
-										error: function(xhr,textStatus,errorThrown) {
-										    // 요청이 실패한 경우 처리할 로직
-//	 									    alert("휴대폰 인증 코드 발급 AJAX 요청 실패!");
-										    Swal.fire({
-												title: 'AJAX 요청 실패!',         // Alert 제목
-												text: "휴대폰 인증 코드 발급에 실패했습니다!",  // Alert 내용
-												icon:'error',
-											});
-										    console.log(xhr + ", " + textStatus + ", " + errorThrown);
-										}
-									}); // 인증코드 발급 ajax 끝			
-									
-								
-								
-								});
-								
 							}
 								
 						}, // 중복 체크 ajax success 끝
@@ -476,83 +497,35 @@
 		        }
 				
 			}
-			
-			
-			
-			
 
 		});	// 휴대폰번호 blur 이벤트 끝
 		
-		// 휴대폰번호 입력 값이 없는데 인증코드발급 버튼을 클릭했을 경우
-		$("#requestPhoneAuthCodeButton").on("click", function() {
-			if($("#phone").val() == "") {
-				Swal.fire({
-					title: '입력값이 없어요!',         // Alert 제목
-					text: "휴대폰번호를 입력해야 인증코드 발급이 가능합니다!",  // Alert 내용
-					icon:'warning',
-				});
-// 				alert("휴대폰번호를 입력해야 인증코드 발급이 가능합니다!");
-				$("#phone").focus();
-			} 
-// 			else if() {
-				
-// 			}
-		});
-		
-		// 인증코드 입력 값이 없는데 인증 버튼을 클릭했을 경우
-		$("#completePhoneAuthButton").on("click", function() {
-			if($("#phoneAuthCode").val() == "") {
-				Swal.fire({
-					title: '입력값이 없어요!',         // Alert 제목
-					text: "인증코드를 입력해야 인증 확인이 가능합니다!",  // Alert 내용
-					icon:'warning',
-				});
-// 				alert("인증코드를 입력해야 인증 확인이 가능합니다!");
-				$("#phoneAuthCode").focus();
+		let regBirth = /^(19[0-9][0-9]|20[0-2][0-9]).(0[0-9]|1[0-2]).(0[1-9]|[1-2][0-9]|3[0-1])$/; <%-- 1920년~2029년까지/01월~12월까지/01일~31일까지의 8자리 숫자 --%>
+		<%-- 생년월일 확인 --%>
+		$("#birthdate").on("blur", function() {	
+			let newBirth = $("#birthdate").val();
+			if(member_birth == newBirth) {
+				$("#checkBirthdateResult").text("기존과 동일한 생년월일입니다").css("color", "#FFB400");
+				iscorrectBirth = true;
+			} else {
+				if(!regBirth.test($("#birthdate").val())) {
+					$("#checkBirthdateResult").text("생년월일을 확인해주세요").css("color", "red");
+					iscorrectBirth = false;
+				} else if(regBirth.test($("#birthdate").val())) {
+					$("#checkBirthdateResult").text("사용 가능한 생년월일입니다").css("color", "green");
+					iscorrectBirth = true;
+		        }
 			}
-		});
+		});	
 		
 		
-		
-		
-		
-		
-	}); // document.ready 끝
-	
-	// 회원 정보 수정 클릭 시 모달 띄우는 함수 정의
-	function openModifyMyInfoModal(birth, index) {
-	    $("#birthdate_").val(birth); // 값 설정
-		$("#memberModifyInfoModal_" + index).modal("show");
-	}
-	
-	// 파일 선택 시 미리보기 업데이트 처리 함수
-	function showPreviewImage() {
-		let fileInput = $("#memberProfilePicFile")[0];
-		let previewImage = $("#formGroupForMemberProfilePic img");
-		
-		// 파일 미선택 시 미리보기 초기화
-		if(!fileInput.files || !fileInput.files[0]) {
-// 			previewImage.attr("src", src);
-			return;
-		}
-		
-		let reader = new FileReader();
-		reader.onload = function(e) {
-			// 선택한 파일 미리보기 설정
-			previewImage.attr("src", e.target.result);
-		};
-		reader.readAsDataURL(fileInput.files[0]);
-	}
-	
-	// 내정보수정 모달 수정버튼 클릭 시 호출되는 함수
-	function submitForm(index) {
-// 	function submitForm(index, event) {
-		
-		<%-- submit 동작을 수행할 때 값을 올바르게 입력했는지 확인 --%>
-// 		$("#MyInfoForm").on("submit", function(event) {
-			if(!iscorrectNickname) { // 닉네임 미입력 또는 정규표현식 위배
-				$("#checkNicknameResult_" + index).text("2~10글자의 한글, 숫자를 입력해주세요").css("color", "red");
-				$("#nickname_" + index).focus();
+		$("#adminModifyForm").on("submit", function(event) {
+			if(!iscorrectName) { // 이름 미입력 또는 정규표현식 위배
+				$("#checkNameResult").text("2~5글자의 한글만 사용 가능합니다").css("color", "red");
+				$("#name").focus();
+			} else if(!iscorrectNickname) { // 닉네임 미입력 또는 정규표현식 위배
+				$("#checkNicknameResult").text("2~10글자의 한글, 숫자를 입력해주세요").css("color", "red");
+				$("#nickname").focus();
 			} else if(isDuplicateNickname) { // 닉네임 중복
 				$("#checkNicknameResult_").text("이미 사용 중인 닉네임입니다").css("color", "red");
 				$("#nickname").focus();
@@ -592,9 +565,13 @@
 				$("#checkPhoneAuthCodeResult").text("인증 코드를 확인해주세요").css("color", "red");
 				$("#phoneAuthCode").focus();
 				return false; // submit 동작 취소
+			} else if(!iscorrectBirth) {  <%-- 생년월일 미입력 시 --%>
+				$("#checkBirthdateResult").text("생년월일을 확인해주세요").css("color", "red");
+				$("#birthdate").focus();
+				return false; // submit 동작 취소
 			}  else {
 // 				confirm("가입 완료 버튼을 누르면 회원가입이 완료됩니다");
-// 	 			event.preventDefault();
+	 			event.preventDefault();
 				Swal.fire({
 					title: '정말로 수정하시겠어요?',
 					text: '확인을 누르면 정보가 수정됩니다',
@@ -615,8 +592,8 @@
 					// 만약 Promise리턴을 받으면,
 					if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
 						
-						$("#MemberInfoForm_" + index).off("submit");
-						$("#MemberInfoForm_" + index).submit();
+						$("#adminModifyForm").off("submit");
+						$("#adminModifyForm").submit();
 						return true;
 					} else {
 						return false;
@@ -625,8 +602,53 @@
 				}); // Swal-then 끝
 			
 			}
+		});
 		
+		
+		
+		
+	}); // document.ready 끝
+	
+	//지도로 찾기 팝업
+	function AddressMap() {
+		var width = 517; // 팝업 창의 가로 크기
+		var height = 485; // 팝업 창의 세로 크기
+		var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
+		var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
+		
+		var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
+		
+		window.open("AddressMap", "지도로 찾기", options);
+		$("#member_neighbor_auth").val("1");	
+
 	}
+
+	// 팝업창에서 가져온 값을 뿌려준다.
+	function setAddress(address) {
+		document.getElementById('myMap').value = address;
+	}
+	
+	
+	
+	// 파일 선택 시 미리보기 업데이트 처리 함수
+	function showPreviewImage() {
+		let fileInput = $("#memberProfilePicFile")[0];
+		let previewImage = $("#formGroupForMemberProfilePic img");
+		
+		// 파일 미선택 시 미리보기 초기화
+		if(!fileInput.files || !fileInput.files[0]) {
+// 			previewImage.attr("src", src);
+			return;
+		}
+		
+		let reader = new FileReader();
+		reader.onload = function(e) {
+			// 선택한 파일 미리보기 설정
+			previewImage.attr("src", e.target.result).addClass("rounded-circle");
+		};
+		reader.readAsDataURL(fileInput.files[0]);
+	}
+	
 	
 	// 프로필 삭제 버튼 클릭 시 이미지 초기화
 	function resetProfilePic(src) {
@@ -668,196 +690,191 @@
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->
-	
-		<section class="section">
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="card" id="adminMemberTableArea">
-						<div class="card-body">
-							<!-- Table with stripped rows -->
-							<table class="table datatable">
-								<thead>
-									<tr>
-										<th>프로필사진</th>
-										<th>이름</th>
-										<th>아이디</th>
-										<th>닉네임</th>
-										<th>생년월일</th>
-										<th>동네</th>
-										<th>이메일</th>
-										<th>휴대폰번호</th>
-										<th>회원레벨</th>
-										<th>회원상태</th>
-										<th>관리</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="member" items="${allMemberList}">
-										<tr>
-											<td>
-											<c:choose>
-												<c:when test="${empty member.member_profile }">
-													<img src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg" width="80px" height="80px">
-												</c:when>
-												<c:otherwise>
-													<img src="${pageContext.request.contextPath}/resources/upload/${member.member_profile}" width="80px" height="80px">
-												</c:otherwise>
-											</c:choose>
-											</td>
-											<td>${member.member_name}</td>
-											<td>${member.member_id}</td>
-											<td>${member.member_nickname}</td>
-											<td>${member.member_birth}</td>
-											<td>${member.gu} ${member.dong }</td>
-											<td>${member.member_email}</td>
-											<td>${member.member_phone}</td>
-											<td>Lv. ${member.member_level}</td>
-											<td>
-											<c:choose>
-												<c:when test="${member.member_status eq 0}">관리자</c:when>
-												<c:when test="${member.member_status eq 1}">활동</c:when>
-												<c:when test="${member.member_status eq 2}">탈퇴</c:when>
-											</c:choose>
-												
-											</td>
-											<td class="green" id="adminMemberTdArea">
-												<button type="button" class="btn btn-primary" id="myPageModifyInfoFrom" onclick="location.href='ModifyMember?member_id=${member.member_id}'">
-													수정
-												</button>
-<%-- 												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#memberModifyInfoModal_${status.index }" id="myPageModifyInfoFrom" onclick="openModifyMyInfoModal('${member.member_birth}', '${status.index }')"> --%>
-<!-- 													수정 -->
-<!-- 												</button> -->
-												<%-- 회원정보 수정 모달 설정 --%>
-												<div class="modal memberModifyInfoModal" id="memberModifyInfoModal_${status.index}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-													<div class="modal-dialog modal-dialog-centered">
-														<div class="modal-content">
-															<div class="modal-header">
-																<h1 class="modal-title fs-5" id="staticBackdropLabel">회원 정보 수정</h1>
-																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-															</div>
-															<div class="modal-body">
-																<div id="modifyMemberInfo" class="mx-auto my-5 w-75">
-																	<form id="MemberInfoForm_${status.index }" action="ModifyMemberInfo" class="row" method="post" enctype="multipart/form-data">
-																		<div class="form-group" id="formGroupForMemberProfilePic">
-																			<label for="reg-fn" id="mgForFiveMemberMod">프로필사진</label>
-																			<c:choose>
-																				<c:when test="${empty member.member_profile }">
-																					<img src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg">
-																				</c:when>
-																				<c:otherwise>
-																					<img src="${pageContext.request.contextPath}/resources/upload/${member.member_profile}">
-																				</c:otherwise>
-																			</c:choose>
-																			<input type="hidden" id="profile_name" name="member_profile" value="${member.member_profile}">
-																			<label for="memberProfilePicFile">
-																				<div class="btn btn-primary" id="memberProfilePicModifyButtonArea">사진 변경</div>
-<!-- 																				<div class="btnProfilePicModify" id="btnProfilePicModify">사진 변경</div> -->
-																			</label>
-																			<input type="file" name="file" id="memberProfilePicFile" accept="image/gif, image/png, image/jpeg">
-																			<div class="btn btn-primary" id="memberProfilePicResetButtonArea" onclick="resetProfilePic('${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg')">삭제</div>
-<%-- 																			<div class="btnProfilePicModify" id="btnProfilePicDelete" onclick="resetProfilePic('${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg')">삭제</div> --%>
-																		</div>
-																		<div class="form-group">
-																			<label for="intro" id="mgForThreeMemberMod">소개글</label>
-																			<input class="form-control" value="${member.member_intro }" maxlength="50" type="text" name="member_intro" id="intro" required>
-																		</div>
-																		<div class="form-group">
-																			<label for="name" id="mgForTwoMemberMod">이름</label> 
-																			<input class="form-control" value="${member.member_name }" maxlength="5" type="text" name="member_name" id="name" required>
-																		</div>
-																		<div class="form-group" >
-																			<label for="id" id="mgForThreeMemberMod">아이디</label> 
-																			<input class="form-control" value="${member.member_id }" maxlength="20" type="text"  name="member_id" id="id" readonly>
-																		</div>
-																		<div class="form-group">
-																			<label for="newPassword" id="mgForFiveOneMemberMod">새 비밀번호</label> 
-																			<input type="hidden" name="member_password" id="member_password" value="${member.member_password }">	
-																			<input class="form-control" maxlength="16" placeholder="비밀번호를 수정할 경우에만 입력해주세요" type="password"  name="newPassword" id="newPassword" required>
-																			<div id="checkPasswordResult" class="resultArea"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
-																		</div>
-																		<div class="form-group">
-																			<label for="passwordConfirm" id="mgForSevenTwoMemberMod">새 비밀번호 확인</label> 
-																			<input class="form-control" maxlength="16" placeholder="비밀번호를 한 번 더 입력해주세요" type="password" id="passwordConfirm" required>
-																			<div id="checkPasswordConfirmResult" class="resultArea"></div>
-																		</div>
-																		<div class="form-group">
-																			<label for="nickname" id="mgForThreeMemberMod">닉네임</label> 
-																			<input class="form-control" type="text" value="${member.member_nickname }" name="member_nickname" id="nickname" maxlength="10" required>
-																			<button type="button" id="checkNicknameDupButton" class="btn btn-primary">중복확인</button>
-											<!-- 								<input type="button" value="닉네임만들기" id="generateNicknameButton"> -->
-																			<%-- 입력값이 비어있을 경우 DB에서 임의로 난수발생해 insert 처리 --%>
-																			<div id="checkNicknameResult" class="resultArea"></div><%--2~10글자의 한글, 숫자(선택입력) --%>
-																		</div>
-											
-																		<div class="form-group">
-																			<label for="birthdate" id="mgForFourMemberMod">생년월일</label> 
-																			<input class="form-control" type="date" name="member_birth" id="birthdate" value="${member.member_birth }">
-																			<%--회원가입과 동일하게 범위제한하고 기존 생년월일 placeholder --%>
-																			<div id="checkBirthdateResult" class="resultArea"></div>
-																		</div>
-																		<div class="form-group">
-																			<label for="myMap" id="mgForTwoMemberMod">주소</label> 
-																			<input type="hidden" id="map">
-																			<input class="form-control" type="text" value="부산광역시 ${member.gu } ${member.dong}" name="member_address" id="myMap" required>
-																			<%--회원가입과 동일. 기존 주소 placeholder --%>
-																			<button type="button" id="myMapButton" class="btn btn-primary" onclick="AddressMap()">동네인증</button>
-																			<div id="checkAddressResult" class="resultArea"></div>
-																		</div>
-																		<div class="form-group">
-																			<label for="email" id="mgForThreeMemberMod">이메일</label> 
-																			<input class="form-control" type="email" value ="${member.member_email }" name="member_email" id="email" required>
-																			<%--회원가입과 동일하게 정규표현식 검증 및 중복확인. 기존 이메일 placeholder --%>
-																			<button type="button" id="checkEmailDupButton" class="btn btn-primary">중복확인</button>
-																			<div id="checkEmailResult" class="resultArea"></div>
-																		</div>
-																		<div class="form-group">
-																			<label for="phone" id="mgForFiveMemberMod">휴대폰번호</label> 
-																			<input class="form-control" maxlength="13" value="${member.member_phone }" type="tel" name="member_phone" id="phone" required>
-																			<%--회원가입과 동일하게 인증, 정규표현식 검증, 중복확인(회원아이디 일치하고 휴대폰 번호 동일한 경우 자바스크립트 처리?). 기존 폰번호 placeholder --%>
-																			<div id="checkPhoneResult" class="resultArea"></div>
-																		</div>
-<!-- 																		<div class="form-group"> -->
-<!-- 																			<label for="reg-fn" id="mgForFourMemberMod">회원레벨</label>  -->
-<!-- 																			<select> -->
-<!-- 																				<option>레벨 선택</option> -->
-<!-- 																				<option>1</option> -->
-<!-- 																				<option>2</option> -->
-<!-- 																				<option>3</option> -->
-<!-- 																			</select> -->
-<!-- 																		</div> -->
-																		<div class="form-group">
-																			<label for="status" id="mgForFourMemberMod">회원상태</label> 
-																			<select id="status" name="member_status">
-																				<option disabled value="">상태 선택</option>
-<!-- 																				<option>관리자</option> -->
-																				<option <c:if test="${member.member_status eq 1 }">selected</c:if> value="1">활동</option>
-<!-- 																				<option>정지</option> -->
-																				<option <c:if test="${member.member_status eq 2 }">selected</c:if> value="2">탈퇴</option>
-																			</select>
-																			<div id="checkReportCountResult" class="resultArea">${member.report_real_count }</div><%--신고 횟수 표시 --%>
-																		</div>
-																	</form>
-																</div>
-															</div>
-															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modifyInfoClose">창닫기</button>
-																<button type="submit" class="btn btn-primary" onclick="submitForm('${status.index}')">수정</button>
-															</div>
-														</div>
-													</div>
-												</div>		
-											</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-							<!-- End Table with stripped rows -->
-						</div>
-	 				</div>
+
+    <section class="section">
+<!--       <div class="row"> -->
+<!--         <div class="col-lg-6"> -->
+
+          <div class="card mx-auto" style="width: 900px !important;">
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+
+              <!-- General Form Elements -->
+              <form action="ModifyMemberInfo" method="post" id="adminModifyForm" enctype="multipart/form-data">
+				<div class="form-group row" id="formGroupForMemberProfilePic" style="margin-bottom:5% !important;">
+					<div class="col-3 align-self-center">
+						<label for="reg-fn" class="me-5">프로필사진</label>
+					</div>
+					<div class="col-auto">
+						<c:choose>
+							<c:when test="${empty member.member_profile }">
+								<img src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg" style="width:80px; height:80px;">
+							</c:when>
+							<c:otherwise>
+								<img src="${pageContext.request.contextPath}/resources/upload/${member.member_profile}" style="width:80px; height:80px;"> 
+							</c:otherwise>
+						</c:choose>
+						<input type="hidden" id="profile_name" name="member_profile" value="${member.member_profile}">
+					</div>
+					<div class="col-auto align-self-center">
+						<label for="memberProfilePicFile">
+							<div class="btn btn-primary" id="memberProfilePicModifyButtonArea" style="width: 100px !important;">사진 변경</div>
+						</label>
+						<input type="file" name="file" id="memberProfilePicFile" accept="image/gif, image/png, image/jpeg">
+					</div>
+					<div class="col-auto align-self-center">
+						<div class="btn btn-primary" id="memberProfilePicResetButtonArea" style="width: 100px !important;" onclick="resetProfilePic('${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg')">삭제</div>
+					</div>
 				</div>
-			</div>
-		</section>
-	</main><!-- End #main -->
+				<div class="form-group row">
+					<div class="col-3">
+						<label for="intro" id="">소개글</label>
+					</div>
+					<div class="col">
+						<input class="form-control" value="${member.member_intro }" maxlength="50" type="text" name="member_intro" id="intro" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-3">
+						<label for="name" id="">이름</label> 
+					</div>
+					<div class="col">
+						<div class="row">
+							<div class="col">
+								<input class="form-control" value="${member.member_name }" maxlength="5" type="text" name="member_name" id="name" required>
+							</div>
+						</div>						
+						<div id="checkNameResult" class="resultArea col"></div>
+					</div>
+				</div>
+				<div class="form-group row" >
+					<div class="col-3">
+						<label for="id" id="">아이디</label> 
+					</div>
+					<div class="col">
+						<input class="form-control" value="${member.member_id }" maxlength="20" type="text"  name="member_id" id="id" readonly>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-3">
+						<label for="newPassword" id="">새 비밀번호</label> 
+						<input type="hidden" name="member_password" id="member_password" value="${member.member_password }">	
+					</div>
+					<div class="col">
+						<input class="form-control" maxlength="16" placeholder="비밀번호를 수정할 경우에만 입력해주세요" type="password"  name="newPassword" id="newPassword">
+						<div id="checkPasswordResult" class="resultArea"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-3">
+						<label for="passwordConfirm" id="">새 비밀번호 확인</label> 
+					</div>
+					<div class="col">
+						<input class="form-control" maxlength="16" placeholder="비밀번호를 한 번 더 입력해주세요" type="password" id="passwordConfirm">
+						<div id="checkPasswordConfirmResult" class="resultArea"></div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-3">
+						<label for="nickname" id="">닉네임</label> 
+					</div>
+					<div class="col">
+						<div class="row">
+							<div class="col-9">
+								<input class="form-control" type="text" value="${member.member_nickname }" name="member_nickname" id="nickname" maxlength="10" required>
+							</div>
+							<div class="col">
+								<button type="button" id="checkNicknameDupButton" class="btn btn-primary" style="width: 100px !important">중복확인</button>
+							</div>			
+						</div>
+						<div class="row">
+							<div id="checkNicknameResult" class="resultArea"></div><%--2~10글자의 한글, 숫자(선택입력) --%>
+						</div>
+					</div>
+				</div>
+		
+				<div class="form-group row">
+					<div class="col-3">
+						<label for="birthdate" id="">생년월일</label> 
+					</div>
+					<div class="col">
+						<input class="form-control" type="date" name="member_birth" id="birthdate" value="${member.member_birth }">
+						<%--회원가입과 동일하게 범위제한하고 기존 생년월일 placeholder --%>
+						<div id="checkBirthdateResult" class="resultArea"></div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-3">
+						<label for="myMap" id="">주소</label> 
+						<input type="hidden" id="map">
+						<input type="hidden" id="member_neighbor_auth" name="member_neighbor_auth" value="${member.member_neighbor_auth }">
+					</div>
+					<div class="col">
+						<div class="row">
+							<div class="col-9">
+								<input class="form-control" type="text" value="부산광역시 ${member.gu } ${member.dong}" name="member_address" id="myMap" required>
+							</div>
+							<div class="col">
+								<button type="button" id="myMapButton" class="btn btn-primary" style="width: 100px !important" onclick="AddressMap()">동네변경</button>
+							</div>
+						</div>
+						<div class="row">
+							<%--회원가입과 동일. 기존 주소 placeholder --%>
+							<div id="checkAddressResult" class="resultArea"></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-3">
+						<label for="email" id="">이메일</label> 
+					</div>
+					<div class="col">
+						<div class="row">
+							<div class="col-9">
+								<input class="form-control" type="email" value ="${member.member_email }" name="member_email" id="email" required>
+							</div>
+							<div class="col">
+								<button type="button" id="checkEmailDupButton" class="btn btn-primary" style="width: 100px !important">중복확인</button>
+							</div>
+						</div>
+						<div class="row">
+							<%--회원가입과 동일하게 정규표현식 검증 및 중복확인. 기존 이메일 placeholder --%>
+							<div id="checkEmailResult" class="resultArea"></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-3">
+						<label for="phone" id="">휴대폰번호</label> 
+					</div>
+					<div class="col">
+						<input class="form-control" maxlength="13" value="${member.member_phone }" type="tel" name="member_phone" id="phone" required>
+						<div id="checkPhoneResult" class="resultArea"></div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-3">
+						<label for="status" id="">회원상태</label> 
+					</div>
+					<div class="col">
+						<select id="status" name="member_status">
+							<option disabled value="">상태 선택</option>
+							<option <c:if test="${member.member_status eq 1 }">selected</c:if> value="1">활동</option>
+							<option <c:if test="${member.member_status eq 2 }">selected</c:if> value="2">탈퇴</option>
+						</select>
+					</div>
+					<div class="col" id="checkReportCountResult" class="resultArea">최종 신고 횟수 : ${member.report_real_count }</div><%--신고 횟수 표시 --%>
+				</div>
+				<hr>
+				<div>
+					<button type="button" class="btn btn-secondary" onclick="history.back()"> 뒤로가기</button>
+					<button type="submit" class="btn btn-primary">수정</button>
+				</div>
+              </form><!-- End General Form Elements -->
+            </div>
+          </div>
+    </section>
+  </main>
 
 	<!-- ======= Footer ======= -->
 	<footer id="footer" class="footer">

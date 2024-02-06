@@ -28,12 +28,11 @@ public class MemberService {
 		return mapper.insertMember(member);
 	}
 	
-
 	// 회원 정보 조회
 	public MemberVO getMember(MemberVO member) {
 		return mapper.selectMember(member);
 	}
-
+	
 	// 회원 정보 조회해 중복 체크
 	public MemberVO getDupMemberInfo(MemberVO member) {
 		return mapper.selectDupMemberInfo(member);
@@ -84,6 +83,11 @@ public class MemberService {
 		return mapper.selectMyPageListCount(category, sId, filter);
 	}
 
+	// 회원 정보 조회
+	public Map<String, Object> getSingleMember(String member_id) {
+		return mapper.selectSingleMember(member_id);
+	}
+	
 	// 마이페이지 프로필 회원 정보 조회
 	public MemberVO getMyProfileMember(String sId) {
 		return mapper.selectMyProfileMember(sId);
@@ -117,6 +121,7 @@ public class MemberService {
 
 	// 마이페이지 모달 내 정보수정
 	public int modifyMyInfo(MemberVO member) {
+		member.setTown_id(mapper.getlocation(member));
 		return mapper.updateMyInfo(member);
 	}
 
@@ -124,6 +129,11 @@ public class MemberService {
 	public List<Map<String, Object>> getAllMemberList(MemberVO member) {
 		return mapper.selectAllMemberList(member);
 	}
+
+
+
+
+
 
 
 

@@ -947,7 +947,7 @@ input[readonly] {
 
 /* =================== */
 /* 회원 정보 수정 모달 */
-#memberModifyInfoModal .modal-content {
+.memberModifyInfoModal .modal-content {
 	width: 180%;
 }
 
@@ -1016,4 +1016,13 @@ input[readonly] {
 
 #modifyMemberInfo select {
     padding: 3px 9px;
+}
+
+/* ============================ 관리자페이지 회원수정 페이지 CSS =================================== */
+#adminModifyForm .form-control {
+	width: 100% !important;
+}
+
+#adminModifyForm .form-group {
+	margin: 0 auto 15px !important
 }

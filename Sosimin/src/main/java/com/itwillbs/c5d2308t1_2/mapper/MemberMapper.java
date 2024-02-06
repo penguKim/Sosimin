@@ -22,7 +22,7 @@ public interface MemberMapper {
 
 	// 회원 정보 조회
 	MemberVO selectMember(MemberVO member);
-
+	
 	// 회원 정보 조회해 중복 체크
 	MemberVO selectDupMemberInfo(MemberVO member);
 
@@ -74,6 +74,11 @@ public interface MemberMapper {
 
 	// 관리자페이지 회원 정보 목록 조회
 	List<Map<String, Object>> selectAllMemberList(MemberVO member);
+
+	// 관리자페이지 회원 정보 수정을 위한 회원조회
+	Map<String, Object> selectSingleMember(String member_id);
+
+
 
 
 

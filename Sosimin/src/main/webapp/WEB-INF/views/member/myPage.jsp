@@ -98,6 +98,70 @@
 			$("#myPageFilter").submit();
 		});
 		
+		navigator.geolocation.getCurrentPosition(function(position) {
+			  var latitude = position.coords.latitude; // 현재 위치의 위도
+			  var longitude = position.coords.longitude; // 현재 위치의 경도
+	
+			  var container = document.getElementById('map'); // 지도를 표시할 위치
+			  var options = {
+			    center: new kakao.maps.LatLng(latitude, longitude), // 지도 위치 설정(내위치)
+			    level: 3 // 지도 확대 레벨(휠로 돌리기전 기본 레벨 설정)
+			  };
+	
+			  map = new kakao.maps.Map(container, options); // 지도 생성 및 표시
+	
+			  var markerPosition = new kakao.maps.LatLng(latitude, longitude); // 마커의 위치 좌표 내위치기준으로 좌표줬음
+			  marker = new kakao.maps.Marker({
+			    position: markerPosition		// 마커 생성 시 위치 설정
+			  });
+			  marker.setMap(map); // 마커를 지도에 표시해준다.
+		});
+		
+		// 내위치정보 클릭 시 해당 위치의 주소 가져오기(위도 / 경도를 도로명주소,지번주소로 변경)
+		$("#myMapButton").on("click", function() {
+		  var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체 생성(카카오api사용)
+		  var markerPosition = marker.getPosition(); // 마커의 위치 좌표(위에서 찍힌 마커 위치 좌표를 가져옴)
+		  var latitude = markerPosition.getLat(); // 마커의 위도(내가 가져온 현재 위치의 위도)
+		  var longitude = markerPosition.getLng(); // 마커의 경도(내가 가져온 현재 위치의 경도)
+
+		  geocoder.coord2Address(longitude, latitude, function(result, status) {
+		   if (status === kakao.maps.services.Status.OK) { // 주소-좌표 변환 성공 시
+			// 도로명 주소가 있을 경우 도로명 주소를, 없을 경우 지번 주소를 표시
+	          var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+	          detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+	          
+	          var address = result[0].address.address_name; // 지번 주소
+	          
+	          
+// 	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          
+	          if(address.split(' ')[0] == "부산" || address.split(' ')[0] == "대구" || address.split(' ')[0] == "인천" || address.split(' ')[0] == "광주" || address.split(' ')[0] == "대전" || address.split(' ')[0] == "울산"  ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else if(address.split(' ')[0] == "서울" ) {
+	        	  var modifiedAddress = address.split(' ')[0] + "특별시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          } else {
+	        	  var modifiedAddress = address.split(' ')[0]  + " " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	          }
+		      
+	          
+	          $("#myMap").val(modifiedAddress);
+	          localStorage.setItem("tradePlace", modifiedAddress);
+	          
+		    } else {
+		    	Swal.fire({
+					title: '주소 요청 실패!',         // Alert 제목
+					text: "주소를 가져오지 못했습니다!",  // Alert 내용
+					icon:'error',
+				});
+// 		      alert("주소를 가져오지 못했습니다.");
+		    }
+		  });
+		});
+			  
+			  
+		
+		
+		
 		// 기존 회원 정보 저장
 // 		let member_intro = $("#intro").val();
 		member_password = $("#member_password").val();
@@ -112,6 +176,7 @@
 		isSafePassword = true; <%-- 패스워드 안전도를 저장하는 변수 --%>
 		iscorrectNickname = true; <%-- 닉네임 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
 		isDuplicateNickname = false; <%-- 닉네임 중복 여부를 저장할 변수 선언 --%>
+		iscorrectNeightborAuth = false; <%-- 동네인증 여부 저장 변수 --%>
 		iscorrectEmail = true; <%-- 이메일 입력 및 정규표현식 적합 여부 저장할 변수 선언 --%>
 		isDuplicateEmail = false; <%-- 이메일 중복 여부를 저장할 변수 선언 --%>
 		iscorrectPhone = true; <%-- 휴대폰번호입력 여부 저장할 변수 선언 --%>
@@ -530,6 +595,23 @@
 	}); // document.ready 끝
 
 
+	//지도로 찾기 팝업
+	function AddressMap() {
+		var width = 517; // 팝업 창의 가로 크기
+		var height = 485; // 팝업 창의 세로 크기
+		var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
+		var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
+		
+		var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
+		
+		window.open("AddressMap", "지도로 찾기", options);
+		$("#member_neighbor_auth").val("1");	
+	}
+
+	// 팝업창에서 가져온 값을 뿌려준다.
+	function setAddress(address) {
+		document.getElementById('myMap').value = address;
+	}
 
 
 	// 받은 후기 클릭 시 모달 띄우는 함수 정의
@@ -702,7 +784,7 @@
 				$("#checkPhoneAuthCodeResult").text("인증 코드를 확인해주세요").css("color", "red");
 				$("#phoneAuthCode").focus();
 				return false; // submit 동작 취소
-			}  else {
+			} else {
 // 				confirm("가입 완료 버튼을 누르면 회원가입이 완료됩니다");
 // 	 			event.preventDefault();
 				Swal.fire({
@@ -1385,16 +1467,22 @@
 								<label for="birthdate" id="mgForFourMod">생년월일</label> 
 								<input class="form-control" type="date" name="member_birth" id="birthdate" value="${MyProfileMember.member_birth }" readonly>
 							</div>
-							<c:if test="${MyProfileMember.member_neighbor_auth eq 0 }">
-								<div class="form-group">
-									<label for="myMap" id="mgForTwoMod">주소</label> 
-									<input type="hidden" id="map">
-									<input class="form-control" type="text" placeholder="재인증을 해주세요" name="member_address" id="myMap" required readonly>
-									<%--회원가입과 동일. 기존 주소 placeholder --%>
-									<input type="button" value="동네인증" id="myMapButton" onclick="AddressMap()">
-									<div id="checkAddressResult" class="resultArea"></div>
-								</div>
-							</c:if>
+							<div class="form-group">
+								<label for="myMap" id="mgForTwoMod">주소</label> 
+								<input type="hidden" id="map">
+								<input type="hidden" id="member_neighbor_auth" name="member_neighbor_auth" value="${MyProfileMember.member_neighbor_auth }">
+								<c:choose>
+									<c:when test="${MyProfileMember.member_neighbor_auth eq 1 }">
+										<input class="form-control" type="text" value="부산광역시 ${MyProfileMember.gu } ${MyProfileMember.dong}" name="member_address" id="myMap" required readonly>
+									</c:when>
+									<c:otherwise>
+										<input class="form-control" type="text" placeholder="재인증을 해주세요" name="member_address" id="myMap" required readonly>
+									</c:otherwise>
+								</c:choose>
+								<%--회원가입과 동일. 기존 주소 placeholder --%>
+								<input type="button" value="동네인증" id="myMapButton" onclick="AddressMap()">
+								<div id="checkAddressResult" class="resultArea"></div>
+							</div>
 							<div class="form-group">
 								<label for="email" id="mgForThreeMod">이메일</label> 
 								<input class="form-control" type="email" value ="${MyProfileMember.member_email }" name="member_email" id="email" required>
