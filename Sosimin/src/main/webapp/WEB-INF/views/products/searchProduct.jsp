@@ -705,6 +705,8 @@ function filtering(data) {
 	                                <li><a href="javascript:void(0)" class="selcategory">신발</a></li>
 	                                <li><a href="javascript:void(0)" class="selcategory">기타</a></li>
 	                            </ul>
+	                            
+	                    <div style="margin-bottom: 20px;"></div>        
                         <%-- 3. 신고하기 기능 버튼 --%>
                         <div class="product-info heartPosition">
                         	<div class="heart" id="heartLike"></div>
@@ -716,19 +718,10 @@ function filtering(data) {
                         		data-bs-target="#reportModal" >
 								신고하기
 						</button>
-						<button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                        		data-bs-target="#memberModal">
-								회원 신고하기
-						</button>
-						
                         </div>
                    </div>
                </div>
-                <script type="text/javascript">
-                	
-                
-                
-                </script>
+
                 <!-- 상품 목록 -->
                 <div class="col-lg-9 col-12">
                 	<!-- 상품 검색 조건 -->

@@ -170,7 +170,7 @@ public class ProductController {
 	@GetMapping("ProductLikeList")
 	public String productLikeList(@RequestParam Map<String, String> map, HttpSession session, Model model) {
 		String sId = (String)session.getAttribute("sId");
-		map.put("sId", sId);
+		map.put("member_id", sId);
 		System.out.println(">>>>>>>>>>>>>>>>> 저장 후 맵 : " + map);
 		if(sId != null) {
 			List<Map<String, Object>> likeList = service.getLikeList(map);
@@ -194,7 +194,7 @@ public class ProductController {
 		if(sId == null) {
 			System.out.println("아이디가 없습니다!");
 			return "login";
-		}
+		} 
 		System.out.println("널이면 안나와야지 씨ㅏ");
 		interest.put("member_id", sId);
 		String isChecked = service.getInterst(interest);

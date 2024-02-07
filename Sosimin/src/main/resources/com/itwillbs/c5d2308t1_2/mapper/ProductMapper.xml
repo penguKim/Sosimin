@@ -24,7 +24,8 @@
 			ON  m.town_id = t.town_id
 			WHERE member_id = #{sId})	
 		</if>
-		<if test="!category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('') or !word.equals('')">
+<!-- 		<if test="!category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('') or !word.equals('')"> -->
+		<if test="!category.equals('') or !keyword.equals('')">
 			AND
 		</if>
 		<!-- 카테고리 및 키워드 별 조회 -->
@@ -37,15 +38,16 @@
 			</when>
 		</choose>
 		<!-- 상품 가격별 조회 -->
-		<if test="(sId != null or !category.equals('') or !keyword.equals('')) and !price.equals('')">
-			AND
-		</if>
-		<if test="!price.equals('')">product_price between #{minPrice} AND #{maxPrice}</if>
+<!-- 		<if test="(sId != null or !category.equals('') or !keyword.equals('')) and !price.equals('')"> -->
+<!-- 			AND -->
+<!-- 		</if> -->
+		<if test="!price.equals('')">AND product_price between #{minPrice} AND #{maxPrice}</if>
 		<!-- 상품 상태별 조회 -->
-		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('')) and !status.equals('')">
-			AND
-		</if>
+<!-- 		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('')) and !status.equals('')"> -->
+<!-- 			AND -->
+<!-- 		</if> -->
 		<if test="!status.equals('')">
+			AND
 			<choose>
 				<when test="status3 != null">
 					product_status IN (#{status1}, #{status2}, #{status3})
@@ -61,11 +63,11 @@
 				</otherwise>
 			</choose>
 		</if>
-		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('')) and !word.equals('') ">
-			AND
-		</if>
+<!-- 		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('')) and !word.equals('') "> -->
+<!-- 			AND -->
+<!-- 		</if> -->
 		<if test="!word.equals('')">
-			product_name NOT LIKE CONCAT('%', #{word}, '%') 	
+			AND product_name NOT LIKE CONCAT('%', #{word}, '%') 	
 		</if>		
 	</select>
 	
@@ -93,7 +95,7 @@
 			ON  m.town_id = t.town_id
 			WHERE member_id = #{sId})	
 		</if> 
-		<if test="!category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('') or !word.equals('')">
+		<if test="!category.equals('') or !keyword.equals('')">
 			AND
 		</if>
 		<choose>
@@ -105,15 +107,10 @@
 			</when>
 		</choose>
 		<!-- 상품 가격별 조회 -->
-		<if test="(sId != null or !category.equals('') or !keyword.equals('')) and !price.equals('')">
-			AND
-		</if>
-		<if test="!price.equals('')">product_price between #{minPrice} AND #{maxPrice}</if>
+		<if test="!price.equals('')">AND product_price between #{minPrice} AND #{maxPrice}</if>
 		<!-- 상품 상태별 조회 -->
-		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('')) and !status.equals('')">
-			AND
-		</if>
 		<if test="!status.equals('')">
+			AND
 			<choose>
 				<when test="status3 != null">
 					product_status IN (#{status1}, #{status2}, #{status3})
@@ -129,11 +126,8 @@
 				</otherwise>
 			</choose>
 		</if>
-		<if test="(sId != null or !category.equals('') or !keyword.equals('') or !price.equals('') or !status.equals('')) and !word.equals('') ">
-			AND
-		</if>
 		<if test="!word.equals('')">
-			product_name NOT LIKE CONCAT('%', #{word}, '%') 	
+			AND product_name NOT LIKE CONCAT('%', #{word}, '%') 	
 		</if>	
 		ORDER BY 
 		<choose>
@@ -151,18 +145,13 @@
 		SELECT *
 		FROM Product
 	</select>
-	
-	<!--  -->
-	
+		
 	<!-- 관심 상품 목록 조회 -->
 	<select id="selectLikeList" resultType="map">
 		SELECT *
-		FROM productLike
-		WHERE member_id = #{sId}
+		FROM ProductLike
+		WHERE member_id = #{member_id}
 	</select>
-	
-	<!-- 관심 상품 수정 -->
-	
 	
 	<!-- ================================================================================= -->
 	<!-- 상품 등록 - INSERT -->
