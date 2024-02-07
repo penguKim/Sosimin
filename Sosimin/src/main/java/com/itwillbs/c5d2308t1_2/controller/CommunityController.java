@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
-import com.itwillbs.c5d2308t1_2.handler.ThumbnailCreator;
 import com.itwillbs.c5d2308t1_2.service.CommunityService;
 import com.itwillbs.c5d2308t1_2.service.LevelService;
 import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;

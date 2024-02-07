@@ -553,7 +553,7 @@
 							댓글 숨기기
 						</div>
 						<c:choose>
-							<c:when test="${com.community_writer ne sessionScope.sId and sessionScope.sId ne 'admin' }">
+							<c:when test="${com.community_writer ne sessionScope.sId and sessionScope.sId ne 'admin' and com.community_writer ne 'admin' }">
 								<div class="col-1 align-self-end" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i></div>
 							</c:when>
 							<c:otherwise>
