@@ -497,14 +497,34 @@ $("#likeButton").on("click", function () {
 		dataType: "json",
 		success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
 			if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
-				alert("관심ㄱㅅ");
+				const Toast = Swal.mixin({
+				    toast: true,
+				    position: 'center-center',
+				    showConfirmButton: false,
+				    timer: 2000,
+				    timerProgressBar: false,
+				})
+				Toast.fire({
+				    icon: 'success',
+				    title: '좋아요가 등록되었습니다!'
+				})		
 			$("#likeText").addClass("is-active");
 				$("#likeButtonSpan").text(result.intersetCount);
 				$("#Like").text(result.intersetCount);
 				$("#likeButton").css("background-color", "rgb(51, 51, 51)");
 				$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGNzJGMzMiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
 			} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
-			alert("관심ㄲㅈ");
+				const Toast = Swal.mixin({
+				    toast: true,
+				    position: 'center-center',
+				    showConfirmButton: false,
+				    timer: 2000,
+				    timerProgressBar: false,
+				})
+				Toast.fire({
+				    icon: 'error',
+				    title: '좋아요가 삭제되었습니다!'
+				})	
 			$("#likeText").removeClass("is-active");
 				$("#likeButtonSpan").text(result.intersetCount);
 				$("#Like").text(result.intersetCount);
@@ -579,10 +599,23 @@ var options = "width=" + width + ",height=" + height + ",left=" + left + ",top="
 
 window.open("Proposal?product_id=" + product_id, "상품이미지", options);
 } else{
-alert("로그인 후 사용 가능합니다.")
-location.href = "MemberLogin";
-}
-
+	Swal.fire({
+	        title: '회원만 사용가능합니다.',
+	        text: '로그인 페이지로 이동하시겠습니까?',
+	        icon: 'error',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '이동',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	        	location.href="MemberLogin";
+	        }
+	    });
+	}
 }
 
 

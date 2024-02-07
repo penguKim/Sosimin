@@ -119,23 +119,23 @@
 // 			}
 // 		});
 		
-		navigator.geolocation.getCurrentPosition(function(position) {
-			  var latitude = position.coords.latitude; // 현재 위치의 위도
-			  var longitude = position.coords.longitude; // 현재 위치의 경도
-	
-			  var container = document.getElementById('map'); // 지도를 표시할 위치
-			  var options = {
-			    center: new kakao.maps.LatLng(latitude, longitude), // 지도 위치 설정(내위치)
-			    level: 3 // 지도 확대 레벨(휠로 돌리기전 기본 레벨 설정)
-			  };
-	
-			  map = new kakao.maps.Map(container, options); // 지도 생성 및 표시
-	
-			  var markerPosition = new kakao.maps.LatLng(latitude, longitude); // 마커의 위치 좌표 내위치기준으로 좌표줬음
-			  marker = new kakao.maps.Marker({
-			    position: markerPosition		// 마커 생성 시 위치 설정
-			  });
-			  marker.setMap(map); // 마커를 지도에 표시해준다.
+	navigator.geolocation.getCurrentPosition(function(position) {
+		  var latitude = position.coords.latitude; // 현재 위치의 위도
+		  var longitude = position.coords.longitude; // 현재 위치의 경도
+
+		  var container = document.getElementById('map'); // 지도를 표시할 위치
+		  var options = {
+		    center: new kakao.maps.LatLng(latitude, longitude), // 지도 위치 설정(내위치)
+		    level: 3 // 지도 확대 레벨(휠로 돌리기전 기본 레벨 설정)
+		  };
+
+		  map = new kakao.maps.Map(container, options); // 지도 생성 및 표시
+
+		  var markerPosition = new kakao.maps.LatLng(latitude, longitude); // 마커의 위치 좌표 내위치기준으로 좌표줬음
+		  marker = new kakao.maps.Marker({
+		    position: markerPosition		// 마커 생성 시 위치 설정
+		  });
+		  marker.setMap(map); // 마커를 지도에 표시해준다.
 		});
 		
 		// 내위치정보 클릭 시 해당 위치의 주소 가져오기(위도 / 경도를 도로명주소,지번주소로 변경)
@@ -156,6 +156,13 @@
 	          
 // 	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
 	          
+	          if (address.split(' ')[0] == "부산") {
+	              var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+	            } else {
+	              alert("부산광역시에서만 가능합니다.");
+	              return;
+	            }
+	          
 	          if(address.split(' ')[0] == "부산" || address.split(' ')[0] == "대구" || address.split(' ')[0] == "인천" || address.split(' ')[0] == "광주" || address.split(' ')[0] == "대전" || address.split(' ')[0] == "울산"  ) {
 	        	  var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
 	          } else if(address.split(' ')[0] == "서울" ) {
@@ -166,19 +173,15 @@
 		      
 	          
 	          $("#myMap").val(modifiedAddress);
-	          localStorage.setItem("tradePlace", modifiedAddress);
+	          localStorage.setItem(sId + "_tradePlace", modifiedAddress);
 	          
 		    } else {
-		    	Swal.fire({
-					title: '주소 요청 실패!',         // Alert 제목
-					text: "주소를 가져오지 못했습니다!",  // Alert 내용
-					icon:'error',
-				});
-// 		      alert("주소를 가져오지 못했습니다.");
+		      alert("주소를 가져오지 못했습니다.");
 		    }
 		  });
 		});
-		
+		var sId = "${sId}";
+
 		
 		<%-- 이름 확인 --%>
 		$("#name").on("blur", function() {	
@@ -644,7 +647,7 @@
 		let reader = new FileReader();
 		reader.onload = function(e) {
 			// 선택한 파일 미리보기 설정
-			previewImage.attr("src", e.target.result).addClass("rounded-circle");
+			previewImage.attr("src", e.target.result);
 		};
 		reader.readAsDataURL(fileInput.files[0]);
 	}
@@ -708,10 +711,10 @@
 					<div class="col-auto">
 						<c:choose>
 							<c:when test="${empty member.member_profile }">
-								<img src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg" style="width:80px; height:80px;">
+								<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg" style="width:80px; height:80px;">
 							</c:when>
 							<c:otherwise>
-								<img src="${pageContext.request.contextPath}/resources/upload/${member.member_profile}" style="width:80px; height:80px;"> 
+								<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/upload/${member.member_profile}" style="width:80px; height:80px;"> 
 							</c:otherwise>
 						</c:choose>
 						<input type="hidden" id="profile_name" name="member_profile" value="${member.member_profile}">
@@ -731,7 +734,7 @@
 						<label for="intro" id="">소개글</label>
 					</div>
 					<div class="col">
-						<input class="form-control" value="${member.member_intro }" maxlength="50" type="text" name="member_intro" id="intro" required>
+						<input class="form-control" value="${member.member_intro }" maxlength="50" type="text" name="member_intro" id="intro">
 					</div>
 				</div>
 				<div class="form-group row">

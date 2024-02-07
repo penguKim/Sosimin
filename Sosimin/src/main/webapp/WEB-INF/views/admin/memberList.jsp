@@ -697,10 +697,10 @@
 											<td>
 											<c:choose>
 												<c:when test="${empty member.member_profile }">
-													<img src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg" width="80px" height="80px">
+													<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg" width="80px" height="80px">
 												</c:when>
 												<c:otherwise>
-													<img src="${pageContext.request.contextPath}/resources/upload/${member.member_profile}" width="80px" height="80px">
+													<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/upload/${member.member_profile}" width="80px" height="80px">
 												</c:otherwise>
 											</c:choose>
 											</td>
@@ -742,10 +742,10 @@
 																			<label for="reg-fn" id="mgForFiveMemberMod">프로필사진</label>
 																			<c:choose>
 																				<c:when test="${empty member.member_profile }">
-																					<img src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg">
+																					<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg">
 																				</c:when>
 																				<c:otherwise>
-																					<img src="${pageContext.request.contextPath}/resources/upload/${member.member_profile}">
+																					<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/upload/${member.member_profile}">
 																				</c:otherwise>
 																			</c:choose>
 																			<input type="hidden" id="profile_name" name="member_profile" value="${member.member_profile}">
