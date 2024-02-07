@@ -81,6 +81,18 @@ public interface MemberMapper {
 	// 받은 후기 카운트
 	List<Map<String, Object>> selectReviewCount(String sId);
 
+	// 관심 가져오기
+	List<Map<String, Object>> selectMemberInterest(String sId);
+
+	// 상품 찜 등록, 삭제를 위한 조회
+	int selectLike(@Param("sId")String sId, @Param("product_id")int product_id);
+
+	// 상품 찜 삭제
+	void deleteLike(@Param("sId")String sId, @Param("product_id")int product_id);
+
+	// 상품 찜 등록
+	void insertLike(@Param("sId")String sId, @Param("product_id")int product_id);
+
 
 
 

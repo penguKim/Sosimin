@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.c5d2308t1_2.service.CommunityService;
 import com.itwillbs.c5d2308t1_2.service.MemberService;
 import com.itwillbs.c5d2308t1_2.service.PaymentService;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
@@ -44,6 +46,9 @@ import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 public class MemberController {
 	@Autowired
 	private MemberService service;
+	
+	@Autowired
+	private CommunityService communityService;
 	
 	@Autowired
 	private PaymentService paymentService;
@@ -408,6 +413,11 @@ public class MemberController {
 //		System.out.println("프로필 찍어낼 커뮤니티 좋아요 개수 확인 : " + MyProfileCountCommunityLike);
 //		int ReplyLikePerSingleCommunity = service.getReplyLikePerSingleCommunity()
 		
+		// 회원 경험치 조회
+        Map<String, Integer> levelExp = communityService.getMemberLevel(sId); 
+        // 경험치 퍼센트 계산
+        float percentage = (float)levelExp.get("member_exp") / levelExp.get("level_max_exp") * 100;
+        percentage = Math.round(percentage * 10) / 10;
 		
 		
 		// 한 페이지에 불러올 게시글 목록 조회
@@ -480,6 +490,8 @@ public class MemberController {
         model.addAttribute("category", category);
         model.addAttribute("filter", filter);
         model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("percentage", percentage);
+
 		
 		return "member/myPage";
 	}
@@ -593,12 +605,215 @@ public class MemberController {
 		return jsonObject.toString();
 	}
 	
+	// 상품 관심 불러오기 AJAX
+	@ResponseBody
+	@PostMapping("ShowLikeInfo")
+	public String showLikeInfo(HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId != null) {
+			List<Map<String, Object>> interest = service.getMemberInterest(sId);	
+			System.out.println("회원의 관심은 : " + interest);
+			JSONArray array = new JSONArray(interest);
+			
+			return array.toString();
+		}
+		return "[]";
+	}
+	
+	// 상품 찜 등록, 삭제
+	@ResponseBody
+	@PostMapping("CheckLike")
+	public String checkLike(@RequestParam int product_id, HttpSession session) {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>> 프로덕트 아이디 : " + product_id); 
+		
+		String sId = (String)session.getAttribute("sId");
+		
+		if(sId == null) {
+			return "login"; // ajax의 리턴타입이 json이므로 해당 문자열 리턴시 error 발생
+		}
+		
+		String isChecked = service.getLike(sId, product_id);
+		
+		return isChecked;
+	}
+	
+	// 커뮤니티 글삭제
+	@ResponseBody
+	@GetMapping("DeleteCommunity")
+	public String deleteCommunity(CommunityVO com, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "false";
+		}
+		
+		// 게시글 상세정보 조회
+		// 조회수 증가 여부 false
+		Map<String, Object> map = new HashMap<String, Object>();
+		map = communityService.getCommunity(com, false);
+		System.out.println("삭제하려고 조회한 게시글입니다 : " + map);
+		
+		// 게시글이 없거나 작성자와 관리자가 아닐 경우 fail_back
+		if(map == null || !sId.equals(map.get("community_writer")) && !sId.equals("admin")) {
+			return "false";
+		}
+		
+		// 게시글 삭제 작업
+		int deleteCount = communityService.removeCommunity(com);
+		
+		if(deleteCount > 0) {
+			try {
+				// -------------------------------------------------------------
+				// [ 서버에서 파일 삭제 ]
+				// 실제 업로드 경로 알아내기
+				String uploadDir = "/resources/upload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
+				String saveDir = session.getServletContext().getRealPath(uploadDir);
+				// -----------------------------------------------------------
+				
+				String[] arrFileNames = {map.get("community_image1").toString(), map.get("community_image2").toString(), 
+						map.get("community_image3").toString(), map.get("community_image4").toString(), map.get("community_image5").toString()}; 
+				// for 문을 활용하여 배열 반복
+				for(String fileName : arrFileNames) {
+					if(!fileName.equals("")) {
+						Path path = Paths.get(saveDir + "/" + fileName);
+						Files.deleteIfExists(path);
+					}
+				}
+				
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			// ----------------------------------------------------------
+			// 글 목록 페이지 리다이렉트(페이지번호 파라미터 전달)
+			return "true";
+			
+		} else {
+			return "false";
+		}
+	} 
+	
 	
 	// *********** 판매자 페이지 **************
 	// 뷰 제작 작업의 편의성을 위해 판매자 페이지는 임시로 서블릿 나눠서 매핑
 	// 판매자 페이지 상품 관련 탭(판매내역, 구매내역, 관심목록)
 	@GetMapping("SellerInfo")
-	public String SellerInfo() {
+	public String sellerInfo(HttpSession session, Model model, @RequestParam(defaultValue = "") String member_id, @RequestParam(defaultValue = "1") int community_id, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "1") String category, @RequestParam(defaultValue = "0") String filter) {
+		if(member_id.equals("")) {
+			   model.addAttribute("msg", "잘못된 접근입니다!");
+			   model.addAttribute("msg2", "메인페이지로 이동합니다!");
+			   model.addAttribute("msg3", "error");
+			   model.addAttribute("targetURL", "./");
+			   return "forward";
+		}
+		
+		
+		
+		String sId = (String)session.getAttribute("sId");
+		System.out.println("필터 : " + filter);
+		System.out.println("카테고리 : " + category);
+		System.out.println("세션 아이디 확인 : " + sId);
+		
+		// 페이지 번호와 글의 개수를 파라미터로 전달
+		PageDTO page = new PageDTO(pageNum, 15);
+		// 전체 게시글 갯수 조회
+		int listCount = service.getMyPageListCount(category, member_id, filter);
+		// 페이징 처리
+		PageInfo pageInfo = new PageInfo(page, listCount, 3);
+		
+		// 프로필 영역에 불러올 회원 정보 조회
+//		MemberVO MyProfileMember = service.getMyProfileMember(sId);
+		Map<String, Object> MyProfileMember = service.getSingleMember(member_id);
+//		System.out.println("프로필 찍어낼 멤버정보 확인 : " + MyProfileMember);
+		int MyProfileCountProductSold = service.getCountProductSold(member_id); 
+//		System.out.println("프로필 찍어낼 상품판매횟수 확인 : " + MyProfileCountProductSold);
+		int MyProfileCountCommunity = service.getCountCommunity(member_id);
+//		System.out.println("프로필 찍어낼 커뮤니티 글 개수 확인 : " + MyProfileCountCommunity);
+		int MyProfileCountCommunityReply = service.getCountCommunityReply(member_id);
+//		System.out.println("프로필 찍어낼 커뮤니티 댓글 개수 확인 : " + MyProfileCountCommunityReply);
+		int MyProfileCountCommunityLike = service.getCountCommunityLike(member_id);
+//		System.out.println("프로필 찍어낼 커뮤니티 좋아요 개수 확인 : " + MyProfileCountCommunityLike);
+//		int ReplyLikePerSingleCommunity = service.getReplyLikePerSingleCommunity()
+		
+		// 회원 경험치 조회
+        Map<String, Integer> levelExp = communityService.getMemberLevel(member_id); 
+        // 경험치 퍼센트 계산
+        float percentage = (float)levelExp.get("member_exp") / levelExp.get("level_max_exp") * 100;
+        percentage = Math.round(percentage * 10) / 10;
+		
+		
+		// 한 페이지에 불러올 게시글 목록 조회
+		List<HashMap<String, Object>> MyPageList = service.getMyPageList(member_id, category, page, filter);
+		System.out.println("컨트롤러에서 넘긴 마이페이지 리스트 확인 : " + MyPageList);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> 커뮤니티 아이디 : " + community_id);
+		
+		// 시간 변환
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+        
+        LocalDateTime datetime = null;
+        for(HashMap<String, Object> map : MyPageList) {
+//        	System.out.println(map.get("product_datetime").getClass().getName());
+//        	System.out.println();
+        	if(category.equals("0") || category.equals("1") || category.equals("2") || category.equals("3")) {
+        		datetime = (LocalDateTime)map.get("product_datetime");
+        	} else if(category.equals("4")) {
+        		datetime = (LocalDateTime)map.get("community_datetime");
+        	} else if(category.equals("5")) {
+        		datetime = (LocalDateTime)map.get("reply_datetime");
+        	}
+//        	productMap.put("product_datetime", productDatetime.format(formatter));
+//        	
+//        	
+//        	// 시분초 차이 계산
+    		Duration duration = Duration.between(datetime, now);
+//    		// 년월일 차이 계산
+    		Period period = Period.between(datetime.toLocalDate(), now.toLocalDate());
+    		
+            long minutes = duration.toMinutes() % 60;
+            long hours = duration.toHours() % 24;
+            long days = duration.toDays() % 7;
+            long weeks = duration.toDays() / 7;
+            long months = period.getMonths();
+            long years = period.getYears();
+            
+            String timeAgo = "";
+            if(years > 0) {
+            	timeAgo = years + "년 전";
+            } else if(months > 0) {
+            	timeAgo = months + "개월 전";
+            } else if(weeks > 0 && weeks <= 4) {
+            	timeAgo = weeks + "주전";
+    		} else if (days > 0 && days < 7) { // 1 ~ 7 차이날 때
+                timeAgo = days + "일전";
+            } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+                timeAgo = hours + "시간 전";
+            } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+                timeAgo = minutes + "분 전";
+            } else {
+                timeAgo = "방금 전";
+            }
+        	
+            map.put("product_datetime", timeAgo);
+            map.put("order_date", timeAgo);
+            map.put("community_datetime", timeAgo);
+            map.put("reply_datetime", timeAgo);
+        	
+    	}
+		
+        model.addAttribute("MyProfileMember", MyProfileMember);
+        model.addAttribute("MyProfileCountProductSold", MyProfileCountProductSold);
+        model.addAttribute("MyProfileCountCommunity", MyProfileCountCommunity);
+        model.addAttribute("MyProfileCountCommunityReply", MyProfileCountCommunityReply);
+        model.addAttribute("MyProfileCountCommunityLike", MyProfileCountCommunityLike);
+        model.addAttribute("MyPageList", MyPageList);
+        model.addAttribute("category", category);
+        model.addAttribute("filter", filter);
+        model.addAttribute("pageInfo", pageInfo);
+		model.addAttribute("percentage", percentage);
+
+		
 		return "member/sellerInfo";
 	}
 	

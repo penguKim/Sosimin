@@ -135,7 +135,22 @@ public class MemberService {
 		return mapper.selectReviewCount(sId);
 	}
 
+	// 관심 가져오기
+	public List<Map<String, Object>> getMemberInterest(String sId) {
+		return mapper.selectMemberInterest(sId);
+	}
 
+	// 상품 찜 등록, 삭제
+	public String getLike(String sId, int product_id) {
+		int count = mapper.selectLike(sId, product_id);
+		if(count > 0) {
+			mapper.deleteLike(sId, product_id);
+			return "true";
+		} else {
+			mapper.insertLike(sId, product_id);
+			return "false";
+		}
+	}
 
 
 

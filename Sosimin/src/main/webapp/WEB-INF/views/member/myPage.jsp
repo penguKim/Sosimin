@@ -55,6 +55,9 @@
 
 
 	$(function(){
+		
+		memberExp(${percentage});
+		
 		// 페이징 처리
 		if(${pageInfo.page.pageNum <= 1 }) {
 			$("#prevPage").addClass("disabled");
@@ -69,30 +72,71 @@
 			$("#myPageCategory").submit();
 		});
 	
-		// 받은 후기 클릭 이벤트
-// 		$("#reviewViewFrom").on("click", function() {
-// 			openReceivedReviewModal(sId);
-// 			openReceivedReviewModal();
-// 		});
 	
 		// 내 정보 수정 클릭 이벤트
 		$("#myPageModifyInfoFrom").on("click", function() {
 			openModifyMyInfoModal();
 		});
-			
-		// 찜 버튼 클릭 이벤트
-	    $(".heart").on("click", function () {
-	        $(this).toggleClass("is-active");
-		    Swal.fire({
-				title: '찜했습니다!',         // Alert 제목
-				text: "감사합니다!",  // Alert 내용
-				icon:'success',                         // Alert 타입
+		
+		// 찜정보 가져오기
+		$.ajax({
+			type: "POST",
+			url: "ShowLikeInfo", <%-- 회원의 관심 정보 가져오기 --%>
+				dataType: "json",
+				success: function(result) {
+					console.log(result);
+					if(result.length > 0) {
+						for(let i = 0; i < ${fn:length(MyPageList)}; i++) {
+							let product_id = $(".list" + i).data("id");
+							for(let id of result) {
+								if(id.product_id == product_id) {
+									$(".list" + i).find(".heart").toggleClass("is-active");
+								}
+							}
+						}
+					}
+				},
+				error: function(xhr, textStatus, errorThrown) {
+						alert("관심 불러오기를 실패했습니다.\n새로고침을 해주세요.");
+				}
 			});
-	    });
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
+		
+		// 좋아요 버튼 클릭 이벤트
+        $(".heart").on("click", function () {
+        	let heart = $(this);
+    		$.ajax({
+    			type: "POST",
+    			url: "CheckLike",
+    			data: {
+    				product_id: $(this).parent().data("id")
+    			},
+//     			dataType: "json",
+    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+    				if(result == 'false') { // 찜을 등록하는 경우
+						$(heart).addClass("is-active");
+        				Swal.fire({
+        					position: 'center',
+        					icon: 'success',
+        					title: '찜 추가했습니다.',
+        					showConfirmButton: false,
+        					timer: 2000,
+        					toast: true
+        				});
+    				} else if(result == 'true') { // 찜을 삭제하는 경우
+						$(heart).removeClass("is-active");
+						$(heart).parent().remove();
+        				Swal.fire({
+        					position: 'center',
+        					icon: 'success',
+        					title: '찜 삭제했습니다.',
+        					showConfirmButton: false,
+        					timer: 2000,
+        					toast: true
+        				});
+    				}
+    			}
+    		});
+        });
 		
 		// 파일 change 이벤트 처리
 	    $("#profilePicFile").on("change", showPreviewImage);
@@ -995,8 +1039,97 @@
 		
 		$("#profile_name").val("");
 	}
+
+	// 커뮤니티 게시글 삭제 버튼
+	function deleteCommunity(community_id, btn) {
+		Swal.fire({
+			title: '정말로 삭제하시겠어요?',
+			text: '확인을 누르면 게시글이 삭제됩니다',
+			icon: 'warning',
+			showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+			confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+			cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+			confirmButtonText: '확인', // confirm 버튼 텍스트 지정
+			cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+			reverseButtons: true, // 버튼 순서 거꾸로
+		}).then(result => {
+			
+			// 만약 Promise리턴을 받으면,
+			if (result.isConfirmed) { 
+				
+				$.ajax({
+					url: "DeleteCommunity",
+					data: {
+						community_id: community_id
+					},
+					success: function(result) {
+						console.log(result);
+						if(result == "true") {
+							$(btn).parent().parent().parent().parent().remove();
+						}
+					},
+					error: function(xhr,textStatus,errorThrown) {
+					    // 요청이 실패한 경우 처리할 로직
+//						    alert("닉네임 중복 판별 AJAX 요청 실패!");
+					    Swal.fire({
+							title: 'AJAX 요청 실패!',         // Alert 제목
+							text: "커뮤니티 글 삭제에 실패했습니다!",  // Alert 내용
+							icon:'error',
+						});
+						console.log(xhr + ", " + textStatus + ", " + errorThrown);
+
+					}
+					
+				
+				});
+			} 
+			
+		}); // Swal-then 끝
 	
+
+		
+	}
 	
+	function deleteCommunityReply(reply_id, btn) {
+		Swal.fire({
+	        title: '댓글을 삭제하시겠습니까?',
+	        icon: 'warning',
+	        showCancelButton: true,
+	        confirmButtonColor: '#d33',
+	        cancelButtonColor: '#d6C757D',
+	        confirmButtonText: '삭제',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	    		$.ajax({
+	    			type: "GET",
+	    			url: "CommunityReplyDelete",
+	    			data: {
+	    				"reply_id":reply_id
+	    			},
+	    			dataType: "text",
+	    			success: function(result) {
+	    				// 댓글 삭제 요청 결과 판별("true"/"false")
+	    				if(result == "true") {
+							$(btn).parent().parent().parent().remove();
+	    				} else if(result == "false") {
+	    					alert("댓글 삭제 실패");
+	    				} else if(result == "invalidSession") { // 세션아이디 없을 경우
+	    					alert("권한이 없습니다!");
+	    					return;
+	    				}
+	    			},
+	    			error: function() {
+	    				alert("요청 실패!");
+	    			}
+	    		});
+	        } else {
+	    		$(this).blur();
+	    	}
+	    });
+	}
 	
 	
 </script>
@@ -1201,15 +1334,14 @@
 	    <c:if test="${empty MyPageList }">
 	    	<div class="single-block col">표시할 내역이 없습니다</div>
 	    </c:if>
-			<c:forEach var="mypage" items="${MyPageList }">
+			<c:forEach var="mypage" items="${MyPageList }" varStatus="status">
 				<c:choose> <%-- 탭선택 --%>
 					<c:when test="${category eq '1' }"> <%-- 판매내역 탭 시작--%>
-						<div class="single-block col-4" id="singleProductArea">
+						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
 								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
-				
-								<span class="heart"></span>
+<!-- 								<span class="heart"></span> -->
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
 									<span id="dealInProcess">거래중</span>
 								</c:if>
@@ -1256,7 +1388,7 @@
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 										<b>판매 완료</b>
 									</span>				
-									<span class="heart"></span>
+<!-- 									<span class="heart"></span> -->
 									<div id="singleProductTitleArea">
 									<b>
 									<c:choose>
@@ -1301,7 +1433,7 @@
 					
 			       
 					<c:when test="${category eq '2' }"> <%-- 구매내역 탭 시작 --%>
-				        <div class="single-block col-4" id="singleProductArea">
+						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 				        <c:choose>
 							<c:when test="${mypage.order_status eq '0'}"> <%-- 거래(구매) 중 --%>
 							<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
@@ -1316,7 +1448,8 @@
 							        <c:otherwise>
 							        	${mypage.product_name }
 							        </c:otherwise>
-								</c:choose>								</b>
+								</c:choose>								
+								</b>
 							</div>
 							<div id="singleProductInfoArea">
 								${mypage.product_price }원
@@ -1335,7 +1468,7 @@
 							</div>
 							</c:when>						
 							<c:when test="${mypage.order_status eq '1'}"> <%-- 거래(구매)완료 --%>
-							<div class="single-block" id="singleProductAreaDealComplete">
+								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
 								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
 								<span id="dealComplete">
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
@@ -1343,7 +1476,16 @@
 								</span>				
 								<span class="heart"></span>
 								<div id="singleProductTitleArea">
-									<b>${mypage.product_name }</b>
+								<b>
+								<c:choose>
+							        <c:when test="${fn:length(mypage.product_name) gt 9}">
+							        	${fn:substring(mypage.product_name, 0, 8)} ...
+							        </c:when>
+							        <c:otherwise>
+							        	${mypage.product_name }
+							        </c:otherwise>
+								</c:choose>								
+								</b>
 								</div>
 								<div id="singleProductInfoArea">
 									${mypage.product_price }원
@@ -1374,7 +1516,7 @@
 					</c:when> <%-- 구매내역 탭 끝 --%>
 					
 					<c:when test="${category eq '3' }"> <%-- 찜목록 탭 시작--%>
-						<div class="single-block col-4" id="singleProductArea">
+						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
 								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
@@ -1413,7 +1555,7 @@
 							</c:when>
 							
 							<c:when test="${mypage.trade_status eq '2' }"> <%-- 거래(판매) 완료 --%>
-								<div class="single-block" id="singleProductAreaDealComplete">
+								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
 									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
 									<span id="dealComplete">
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
@@ -1429,7 +1571,7 @@
 								        <c:otherwise>
 								        	${mypage.product_name }
 								        </c:otherwise>
-									</c:choose>									
+									</c:choose>								
 									</b>
 									</div>
 									<div id="singleProductInfoArea">
@@ -1465,29 +1607,34 @@
 					<c:when test="${category eq '4' }"> <%-- 커뮤니티 작성글 탭 시작--%>
 					    <div class="single-block col-1" id="singleCommunityArea">
 							<div id="communityLeft">
-								<div id="communityLeftUpperLeft">
-									<c:choose>
-										<c:when test="${mypage.community_category eq 1}">
-											<p>동네소식</p>
-										</c:when>
-										<c:when test="${mypage.community_category eq 2}">
-											<p>동네질문</p>
-										</c:when>
-										<c:when test="${mypage.community_category eq 3}">
-											<p>일상</p>
-										</c:when>
-									</c:choose>
-									<input type="hidden" name="community_id" value="${mypage.community_id }">
-									<b id="bold"><a href="CommunityDetail?community_id=${mypage.community_id }">
-									<c:choose>
-								        <c:when test="${fn:length(mypage.community_subject) gt 15}">
-								        	${fn:substring(mypage.community_subject, 0, 14)} ...
-								        </c:when>
-								        <c:otherwise>
-								        	${mypage.community_subject }
-								        </c:otherwise>
-									</c:choose>
-									</a></b><br>
+								<div id="communityLeftUpperLeft" class="row">
+									<div class="col-10">
+										<c:choose>
+											<c:when test="${mypage.community_category eq 1}">
+												<p>동네소식</p>
+											</c:when>
+											<c:when test="${mypage.community_category eq 2}">
+												<p>동네질문</p>
+											</c:when>
+											<c:when test="${mypage.community_category eq 3}">
+												<p>일상</p>
+											</c:when>
+										</c:choose>
+										<input type="hidden" name="community_id" value="${mypage.community_id }">
+										<b id="bold"><a href="CommunityDetail?community_id=${mypage.community_id }">
+										<c:choose>
+									        <c:when test="${fn:length(mypage.community_subject) gt 15}">
+									        	${fn:substring(mypage.community_subject, 0, 14)} ...
+									        </c:when>
+									        <c:otherwise>
+									        	${mypage.community_subject }
+									        </c:otherwise>
+										</c:choose>
+										</a></b><br>
+									</div>
+									<div class="col d-flex justify-content-end">
+										<input type="button" class="btn btn-primary" value="삭제" style="width:60% !important;" onclick="deleteCommunity('${mypage.community_id }', this)">
+									</div>
 								</div>
 								<div id="communityMiddleArea">
 									<div id="communityMiddleLeft">${mypage.community_datetime }</div>
@@ -1516,28 +1663,33 @@
 					
 					<c:when test="${category eq '5' }"> <%-- 커뮤니티 작성댓글 탭 시작--%>
 					    <div class="single-block col-1" id="singleCommunityReplyArea">
-							<div id="communityReplyTitleArea">
-								<c:choose>
-									<c:when test="${mypage.community_category eq 1}">
-										<p>동네소식</p>
-									</c:when>
-									<c:when test="${mypage.community_category eq 2}">
-										<p>동네질문</p>
-									</c:when>
-									<c:when test="${mypage.community_category eq 3}">
-										<p>일상</p>
-									</c:when>
-								</c:choose>
-								<b id="bold"><a href="CommunityDetail?community_id=${mypage.community_id }">
-								<c:choose>
-							        <c:when test="${fn:length(mypage.community_content) gt 15}">
-							        	${fn:substring(mypage.community_content, 0, 14)} ...
-							        </c:when>
-							        <c:otherwise>
-							        	${mypage.community_content }
-							        </c:otherwise>
-								</c:choose>
-								</a></b><br>
+							<div id="communityReplyTitleArea" class="row">
+								<div class="col-10">
+									<c:choose>
+										<c:when test="${mypage.community_category eq 1}">
+											<p>동네소식</p>
+										</c:when>
+										<c:when test="${mypage.community_category eq 2}">
+											<p>동네질문</p>
+										</c:when>
+										<c:when test="${mypage.community_category eq 3}">
+											<p>일상</p>
+										</c:when>
+									</c:choose>
+									<b id="bold"><a href="CommunityDetail?community_id=${mypage.community_id }">
+									<c:choose>
+								        <c:when test="${fn:length(mypage.community_content) gt 15}">
+								        	${fn:substring(mypage.community_content, 0, 14)} ...
+								        </c:when>
+								        <c:otherwise>
+								        	${mypage.community_content }
+								        </c:otherwise>
+									</c:choose>
+									</a></b><br>
+								</div>
+								<div class="col d-flex justify-content-end">
+									<input type="button" class="btn btn-primary" value="삭제" style="width:60% !important;" onclick="deleteCommunityReply('${mypage.reply_id }', this)">
+								</div>
 							</div>
 							<div id="communityReplyMiddleArea">
 <%-- 								<div id="communityReplyMiddleLeft">${mypage.reply_datetime }</div> --%>

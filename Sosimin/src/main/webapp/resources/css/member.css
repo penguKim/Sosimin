@@ -815,7 +815,7 @@ input[readonly] {
 }
 
 #communityLeftUpperLeft {
-	display: inline-block;
+/* 	display: inline-block; */
 	float: left;
 	width: 970px;
 	height: 50px;

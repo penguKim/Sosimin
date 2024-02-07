@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+	
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
-<title>Sosimin</title>
+<title>소시민</title>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,53 +30,352 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script type="text/javascript">
-// 	function reviewViewFrom() {
-// 		$("#staticBackdropLabel").text("보낸 후기");
-// 		$(".modal-body input[type='radio']").attr("disabled", true);
-// 		$("#reviewCheck").empty();
-// 		$("#reviewCheck").html(
-// 				'<ul class="list-group list-group-flush">'
-// 					+'<li class="list-group-item">후기입니다1.</li>'
-// 					+'<li class="list-group-item">후기입니다1.</li>'
-// 					+'<li class="list-group-item">후기입니다1.</li>'
-// 					+'<li class="list-group-item">후기입니다1.</li>'
-// 				+'</ul>'
-// 		);
-// 		$(".modal-footer").html(
-// 				'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
-// 				+ '<button type="button" class="btn btn-primary" id="reviewBtn" onclick="reviewDelete()">'
-// 				+'후기 삭제</button>'	
-// 		);
-// 	}
+	
+
+
 	$(function(){
-		$("#reviewViewFrom").on("click", function() {
-			$("#staticBackdropLabel").text("보낸 후기");
-			$(".modal-body input[type='radio']").attr("disabled", true);
-			$("#reviewCheck").empty();
-			$("#reviewCheck").html(
-					'<ul class="list-group list-group-flush">'
-						+'<li class="list-group-item">후기입니다1.</li>'
-						+'<li class="list-group-item">후기입니다1.</li>'
-						+'<li class="list-group-item">후기입니다1.</li>'
-						+'<li class="list-group-item">후기입니다1.</li>'
-					+'</ul>'
-			);
-			$(".modal-footer").html(
-					'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
-					+ '<button type="button" class="btn btn-primary" id="reviewBtn" onclick="reviewDelete()">'
-					+'후기 삭제</button>'	
-			);
-		});
-			// 좋아요 버튼 클릭 이벤트
-	        $(".heart").on("click", function () {
-	            $(this).toggleClass("is-active");
-	        });
 		
-	});
+		memberExp(${percentage});
+		
+		// 페이징 처리
+		if(${pageInfo.page.pageNum <= 1 }) {
+			$("#prevPage").addClass("disabled");
+		}
+		if(${pageInfo.page.pageNum >= pageInfo.maxPage }) {
+			$("#nextPage").addClass("disabled");
+		}
+		
+		// 카테고리 선택
+		$("#categoryArea input[type='radio']").on("click", function() {
+	//			alert("확인");
+			$("#myPageCategory").submit();
+		});
+	
+	
+		
+		// 찜정보 가져오기
+		$.ajax({
+			type: "POST",
+			url: "ShowLikeInfo", <%-- 회원의 관심 정보 가져오기 --%>
+				dataType: "json",
+				success: function(result) {
+					console.log(result);
+					if(result.length > 0) {
+						for(let i = 0; i < ${fn:length(MyPageList)}; i++) {
+							let product_id = $(".list" + i).data("id");
+							for(let id of result) {
+								if(id.product_id == product_id) {
+									$(".list" + i).find(".heart").toggleClass("is-active");
+								}
+							}
+						}
+					}
+				},
+				error: function(xhr, textStatus, errorThrown) {
+						alert("관심 불러오기를 실패했습니다.\n새로고침을 해주세요.");
+				}
+			});
+		
+		// 좋아요 버튼 클릭 이벤트
+        $(".heart").on("click", function () {
+        	let heart = $(this);
+    		$.ajax({
+    			type: "POST",
+    			url: "CheckLike",
+    			data: {
+    				product_id: $(this).parent().data("id")
+    			},
+//     			dataType: "json",
+    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+    				if(result == 'false') { // 찜을 등록하는 경우
+						$(heart).addClass("is-active");
+        				Swal.fire({
+        					position: 'center',
+        					icon: 'success',
+        					title: '찜 추가했습니다.',
+        					showConfirmButton: false,
+        					timer: 2000,
+        					toast: true
+        				});
+    				} else if(result == 'true') { // 찜을 삭제하는 경우
+						$(heart).removeClass("is-active");
+						$(heart).parent().remove();
+        				Swal.fire({
+        					position: 'center',
+        					icon: 'success',
+        					title: '찜 삭제했습니다.',
+        					showConfirmButton: false,
+        					timer: 2000,
+        					toast: true
+        				});
+    				}
+    			}
+    		});
+        });
+		
+		// 필터 선택
+		$("#myPageFilter a").on("click", function(event) {
+			event.preventDefault();
+			$("#myPageFilter").submit();
+		});
+		
+		
+	}); // document.ready 끝
+
+
+
+
+	// 받은 후기 클릭 시 모달 띄우는 함수 정의
+// 	function openReceivedReviewModal(sId) {
+	function openReceivedReviewModal(sId) {
+		$("#staticBackdropLabel").text("받은 후기");
+ 		$(".modal-body input[type='radio']").attr("disabled", false);
+ 		$(".modal-body input[type='radio']").eq(0).prop("checked", true); // 기본옵션 별로에요 선택
+		
+ 		$("#reviewCheck").empty();
+ 		$(".modal-footer").html(
+	 			'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
+	 		);
+
+ 		$.ajax({
+			url: "ShowReviews",
+			data: {
+				sId: sId
+			},
+			dataType: "json",
+			success: function(data) {
+				if(data.CountReviews.length == 0) {
+					$("#reviewCheck").html(
+							// 별로에요 옵션 표시(디폴트)
+				 			'<ul class="list-group">'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '약속 장소에 나타나지 않아요'
+				 				+ '</li>'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '상품 상태가 설명과 달라요'
+				 				+ '</li>'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '시간 약속을 안 지켜요'
+				 				+ '</li>'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '응답이 없어요'
+				 				+ '</li>'
+				 			+ '</ul>'
+				 		);
+						// 별로에요 버튼 클릭 이벤트
+				 		$("#option1").on("click", function() {
+				 			$("#reviewCheck").empty();
+				 			$("#reviewCheck").html(
+				 					'<ul class="list-group">'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '약속 장소에 나타나지 않아요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '상품 상태가 설명과 달라요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '시간 약속을 안 지켜요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '응답이 없어요'
+				 					+ '</li>'
+				 				+ '</ul>'
+				 			);
+				 		});
+						
+						// 최고에요 버튼 클릭 이벤트
+				 		$("#option2").on("click", function() {
+				 			$("#reviewCheck").empty();
+				 			$("#reviewCheck").html(
+				 				'<ul class="list-group">'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '제가 있는곳까지 와서 거래했어요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '친절하고 매너가 좋아요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '시간 약속을 잘 지켜요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '응답이 빨라요'
+				 					+ '</li>'
+				 				+ '</ul>'
+				 			);
+							
+				 		});
+				} else {
+					for(let review of data.CountReviews) {
+						console.log(review);
+						console.log(review.review_status);
+						if(review.review_status == "bad") {
+					 		$("#reviewCheck").html(
+								// 별로에요 옵션 표시(디폴트)
+					 			'<ul class="list-group">'
+					 				+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					 					+ '<h6>' +  review.review_check1 + '개' + '</h6>'
+					 					+ '약속 장소에 나타나지 않아요'
+					 				+ '</li>'
+					 				+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					 					+ '<h6>' +  review.review_check2 + '개' + '</h6>'
+					 					+ '상품 상태가 설명과 달라요'
+					 				+ '</li>'
+					 				+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					 					+ '<h6>' +  review.review_check3 + '개' + '</h6>'
+					 					+ '시간 약속을 안 지켜요'
+					 				+ '</li>'
+					 				+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					 					+ '<h6>' +  review.review_check4 + '개' + '</h6>'
+					 					+ '응답이 없어요'
+					 				+ '</li>'
+					 			+ '</ul>'
+					 		);
+							// 별로에요 버튼 클릭 이벤트
+					 		$("#option1").on("click", function() {
+					 			$("#reviewCheck").empty();
+					 			$("#reviewCheck").html(
+					 					'<ul class="list-group">'
+					 					+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					 					+ '<h6>' +  review.review_check1 + '개' + '</h6>'
+					 						+ '약속 장소에 나타나지 않아요'
+					 					+ '</li>'
+					 					+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					 					+ '<h6>' +  review.review_check2 + '개' + '</h6>'
+					 						+ '상품 상태가 설명과 달라요'
+					 					+ '</li>'
+					 					+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					 					+ '<h6>' +  review.review_check3 + '개' + '</h6>'
+					 						+ '시간 약속을 안 지켜요'
+					 					+ '</li>'
+					 					+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+					 					+ '<h6>' +  review.review_check4 + '개' + '</h6>'
+					 						+ '응답이 없어요'
+					 					+ '</li>'
+					 				+ '</ul>'
+					 			);
+					 		});
+						
+						
+						} else if(review.review_status == "good") {
+							// 최고에요 버튼 클릭 이벤트
+					 		$("#option2").on("click", function() {
+					 			$("#reviewCheck").empty();
+					 			$("#reviewCheck").html(
+					 				'<ul class="list-group">'
+					 					+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+					 					+ '<h6>' +  review.review_check1 + '개' + '</h6>'
+					 						+ '제가 있는곳까지 와서 거래했어요'
+					 					+ '</li>'
+					 					+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+					 					+ '<h6>' +  review.review_check2 + '개' + '</h6>'
+					 						+ '친절하고 매너가 좋아요'
+					 					+ '</li>'
+					 					+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+					 					+ '<h6>' +  review.review_check3 + '개' + '</h6>'
+					 						+ '시간 약속을 잘 지켜요'
+					 					+ '</li>'
+					 					+ '<li class="list-group-item">'
+					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+					 					+ '<h6>' +  review.review_check4 + '개' + '</h6>'
+					 						+ '응답이 빨라요'
+					 					+ '</li>'
+					 				+ '</ul>'
+					 			);
+								
+					 		});
+							
+						}
+	
+					} // for문 끝
+					
+				}
+				
+				
+			},
+			error: function(xhr,textStatus,errorThrown) {
+			    // 요청이 실패한 경우 처리할 로직
+//				    alert("닉네임 중복 판별 AJAX 요청 실패!");
+// 			    Swal.fire({
+// 					title: 'AJAX 요청 실패!',         // Alert 제목
+// 					text: "후기 불러오기에 실패했습니다!",  // Alert 내용
+// 					icon: 'error',
+// 				});
+				console.log(xhr + ", " + textStatus + ", " + errorThrown);
+
+
+
+			}
+			
+		});
+		
+		
+
+	}
+	
+	
+	// 회원 경험치 프로그레스바
+	function memberExp(percent) {
+		// 스타일 요소를 만들고, @keyframes 규칙을 추가합니다.
+		$('<style>')
+		.prop('type', 'text/css')
+		.html(`
+			@keyframes progress-animation {
+				0%   {width: 0%;}
+				100% {width: percent + '%';}
+			}
+		`)
+		.appendTo('head');
+		
+		// 프로그레스바 애니메이션을 시작합니다.
+		$('.progress-bar').css('width', percent + '%').attr('aria-valuenow', percent + '%').text(percent + '%');
+	}
+	
+	
 </script>
 </head>
 
 <body>
+	
+	<%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1 로 저장) --%>
+	<c:set var="pageNum" value="1" />
+	<c:if test="${not empty param.pageNum }">
+		<c:set var="pageNum" value="${param.pageNum }" />
+	</c:if>
 	<!-- Preloader -->
 	<div class="preloader" style="opacity: 0; display: none;">
 		<div class="preloader-inner">
@@ -89,361 +392,523 @@
 	</header>
 	<!-- End Header Area -->
 	
-	<%-- 신고하기 기능 --%>
-	<jsp:include page="../report/report.jsp"></jsp:include>
-	
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">판매자 정보</h1>
+                        <h1 class="page-title">판매자페이지</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
-                        <li>상품 정보</li>
-                        <li>판매자 정보</li>
+                        <li><a href="./"><i class="lni lni-home"></i>홈</a></li>
+                        <li>판매자페이지</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End Breadcrumbs -->
-    
-	<section class="item-details section" style="padding: 10px 0px !important; background-color: #ffffff !important">
+	<section class="item-details section row" id="myPageProfileSectionArea">
         <div class="container">
             <div class="top-area" id="profileArea">
 				<div id="profileLeft">
-					<img src="${pageContext.request.contextPath}/resources/images/">
+					<c:choose>
+						<c:when test="${empty MyProfileMember.member_profile }">
+							<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg">
+						</c:when>
+						<c:otherwise>
+							<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/upload/${MyProfileMember.member_profile}">
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div id="profileRight">
 					<div id="profileRightUpperLeft">
-						<b id="bold">닉네임</b>&nbsp;&nbsp;&nbsp;&nbsp;
+						<b id="bold">${MyProfileMember.member_nickname }</b>&nbsp;&nbsp;&nbsp;&nbsp;
 							<!-- 인증 완료된 경우 예시 -->
-<!-- 							<p id="sellerAuthArea"> -->
-<%-- 							동네인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"> --%>
-<%-- 							&nbsp;&nbsp;&nbsp;&nbsp;본인인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"> --%>
-<!-- 							</p> -->
-							<!-- 인증 완료되지않은 경우 예시 -->
 							<p id="sellerAuthArea">
-							동네인증<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png">
-							&nbsp;&nbsp;&nbsp;&nbsp;본인인증<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png">
+							동네인증
+							<c:choose>
+								<c:when test="${MyProfileMember.member_neighbor_auth eq 0 }"> <%-- 미인증 --%>
+									<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 
+								</c:when>
+								<c:otherwise> <%-- 인증 --%>
+									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
+								</c:otherwise>
+							</c:choose>
+							&nbsp;&nbsp;&nbsp;&nbsp;본인인증
+							<c:choose>
+								<c:when test="${MyProfileMember.member_phone_auth eq 0 }"> <%-- 미인증 --%>
+									<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 
+								</c:when>
+								<c:otherwise> <%-- 인증 --%>
+									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
+								</c:otherwise>
+							</c:choose>
+							
 							</p>
 					</div>
 					<div id="profileRightUpperRight">
-<!-- 						<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewViewFrom"> -->
-<!-- 							후기 보기 모달창 -->
-<!-- 						</button> -->
-						<a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="reviewViewFrom">
+<!-- 						<a href="javascript:reviewViewFrom()" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> -->
+						<a href="#staticBackdrop" data-bs-toggle="modal" id="reviewViewFrom" onclick="openReceivedReviewModal('${sessionScope.sId}')">
+<!-- 						<a href="javascript:reviewViewFrom()"> -->
 							<img src="${pageContext.request.contextPath}/resources/images/member/reviewicon.png">
 							받은 후기
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="" data-bs-toggle="modal" data-bs-target="" id="startChat">
-							<img src="${pageContext.request.contextPath}/resources/images/member/chaticon.png">
-							채팅하기
-						</a>&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="" data-bs-toggle="modal" data-bs-target="#memberModal" id="reportBtn">
-							<img src="${pageContext.request.contextPath}/resources/images/member/reporticon.png">
-							신고하기
-						</a>
-<%-- 						동네인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"> --%>
-<%-- 						&nbsp;&nbsp;&nbsp;&nbsp;본인인증<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"> --%>
+<!-- 						<a href="#myPageModifyInfoModal" data-bs-toggle="modal" id="myPageModifyInfoFrom"> -->
+<%-- 							<img src="${pageContext.request.contextPath}/resources/images/member/usericon.png"> --%>
+<!-- 							내 정보 수정 -->
+<!-- 						</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
 					</div>
-					<section id="profileRightMiddle">
-						<span>Lv.3</span>
-						<span>상품 판매 n회</span>
-						<span>커뮤니티 글 n개</span>
-						<span>커뮤니티 댓글 n개</span>
-						<span>받은 좋아요 n개</span>
+					<section id="profileRightMiddle" class="row align-items-center">
+						<span class="col auto">Lv. ${MyProfileMember.member_level }</span>
+			        	<div class="col-xl-2 col-3">
+							<div class="progress">
+								<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+							</div>
+			        	</div>						
+			        	<span class="col auto">상품 판매 ${MyProfileCountProductSold }회</span>
+						<span class="col auto">커뮤니티 글 ${MyProfileCountCommunity }개</span>
+						<span class="col auto">커뮤니티 댓글 ${MyProfileCountCommunityReply }개</span>
+						<span class="col auto">받은 좋아요 ${MyProfileCountCommunityLike }개</span>
 					</section>
 					<div id="profileRightBottom">
 						<p>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-						Maecenas ac libero ac ligula consectetur accumsan in et diam. 
-						Vestibulum commodo in sem sit amet laoreet. 
-						Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-						Cras et sapien vel arcu suscipit vulputate. 
+						<c:choose>
+							<c:when test="${not empty MyProfileMember.member_intro }">
+								${MyProfileMember.member_intro }
+							</c:when>
+							<c:otherwise>
+								등록된 소개글이 없습니다.
+							</c:otherwise>
+						</c:choose>
 						</p>
 					</div>
 				</div>
             </div>
         </div>
     </section>
+    <form action="" id="myPageCategory">
+		<div id="categoryArea" class="btn-group col categoryBtn" role="group" aria-label="Basic radio toggle button group">
+		<input type="hidden" name="member_id" value="${param.member_id }">
+		  <input type="radio" class="btn-check" name="category" id="soldCategory" value="1" autocomplete="off" <c:if test="${category eq '1' }">checked</c:if>>
+		  <label class="btn btn-outline-primary" for="soldCategory">판매내역</label>
+		  <input type="radio" class="btn-check" name="category" id="boughtCategory" value="2" autocomplete="off" <c:if test="${category eq '2' }">checked</c:if>>
+		  <label class="btn btn-outline-primary" for="boughtCategory">구매내역</label>
+		  <input type="radio" class="btn-check" name="category" id="likeCategory" value="3" autocomplete="off" <c:if test="${category eq '3' }">checked</c:if>>
+		  <label class="btn btn-outline-primary" for="likeCategory">찜 목록</label>
+		  <input type="radio" class="btn-check" name="category" id="communityCategory" value="4" autocomplete="off" <c:if test="${category eq '4' }">checked</c:if>>
+		  <label class="btn btn-outline-primary" for="communityCategory">커뮤니티 작성 글</label>
+		  <input type="radio" class="btn-check" name="category" id="communityReplyCategory" value="5" autocomplete="off" <c:if test="${category eq '5' }">checked</c:if>>
+		  <label class="btn btn-outline-primary" for="communityReplyCategory">커뮤니티 작성 댓글</label>
+		</div>
+    </form>
     
-	<div id="categoryArea" class="btn-group col categoryBtn" role="group" aria-label="Basic radio toggle button group">
-	  <input type="radio" class="btn-check" name="category" id="allCategory" value="판매내역" autocomplete="off" checked="">
-	  <label class="btn btn-outline-primary" for="allCategory">판매내역</label>
-	  <input type="radio" class="btn-check" name="category" id="questionCategory" value="커뮤니티 작성 글" autocomplete="off">
-	  <label class="btn btn-outline-primary" for="questionCategory">커뮤니티 작성 글</label>
-	  <input type="radio" class="btn-check" name="category" id="dailyCategory" value="커뮤니티 작성 댓글" autocomplete="off">
-	  <label class="btn btn-outline-primary" for="dailyCategory">커뮤니티 작성 댓글</label>
-	</div>
     
     
-    
-    
-<!--      <div class="meta-information" id="categoryArea"> -->
-<!--          <ul class="meta-info"> -->
-<!--              <li><a href="javascript:void(0)"><i class="lni lni-user"></i>판매내역</a></li> -->
-<!--              <li><a href="javascript:void(0)"><i class="lni lni-calendar"></i>구매내역</a></li> -->
-<!--              <li><a href="javascript:void(0)"><i class="lni lni-tag"></i>관심목록</a></li> -->
-<!--              <li><a href="javascript:void(0)"><i class="lni lni-timer"></i>커뮤니티 작성 글</a></li> -->
-<!--              <li><a href="javascript:void(0)"><i class="lni lni-timer"></i>커뮤니티 작성 댓글</a></li> -->
-<!--          </ul> -->
-<!--      </div> -->
 
-<%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 표시 --%>
-   	<div id="filterArea">
-   		<%-- 필터 옵션1 : 판매 내역 탭일 경우 --%>
-   		<ul>
-   			<li><a href="">전체</a></li>
-   			<li><a href="">판매중</a></li>
-   			<li><a href="">거래완료</a></li>
-   			<li><a href="">취소/환불</a></li>
-   		</ul>
-
-   		<%-- 필터 옵션2 : 찜목록 탭일 경우 --%>
-<!--     		<ul> -->
-<!--     			<li><a href="">전체</a></li> -->
-<!--     			<li><a href="">판매중</a></li> -->
-<!--     			<li><a href="">거래완료</a></li> -->
-<!--     		</ul> -->
-	</div>
+	<%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 표시 --%>
+	<c:if test="${category eq '1' or category eq '3'}">
+	   	<div class="filterArea">
+	   		<ul class="row allFilter filter-3">
+	   			<li class="col-3 eachFilter">
+	   				<a href="SellerInfo?filter=0&category=${category }&member_id=${param.member_id}">
+	   					전체
+	   				</a>
+   				</li>
+	   			<li class="col-3 eachFilter">
+	   				<a href="SellerInfo?filter=1&category=${category }&member_id=${param.member_id}">
+	   					판매중
+	   				</a>
+   				</li>
+	   			<li class="col-3 eachFilter">
+	   				<a href="SellerInfo?filter=2&category=${category }&member_id=${param.member_id}">
+	   					거래완료
+	   				</a>
+   				</li>
+	   		</ul>
+		</div>
+	</c:if>            
             
-            
-	<section class="item-details section" style="padding: 10px 0px !important; background-color: #ffffff !important">
-            
-	    <div class="product-details-info" id="wholeProductArea">
-
-	    	<!-- 판매내역 옵션1-1 판매 중(끌올 불가) -->
-	    	<!-- 현재 hover시 singleProductArea 영역 모두 opacity 되도록 설정됨 -->
-	    	<!-- 이후에 판별 후 거래완료인 상품만 opacity 되도록 수정 -->
-	        <div class="single-block" id="singleProductArea">
-				<img src="${pageContext.request.contextPath}/resources/images/products/product-1.jpg">
-
-				<span class="heart"></span>
-				<div id="singleProductTitleArea">
-					<b>판매중끌올x</b>
-				</div>
-				<div id="singleProductInfoArea">
-					nnnnn원
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					n시간 전
-				</div>
-				<div id="singleProductContactArea">
-					찜 n개
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					채팅 n회
-				</div>
-				<div id="singleProductButtonArea">
-					<input type="button" value="수정">
-				</div>
-	        </div>
-	
-			<!-- 판매내역 옵션1-2 판매 중(끌올 가능) -->
-	        <div class="single-block" id="singleProductArea">
-				<img src="${pageContext.request.contextPath}/resources/images/products/product-2.jpg">
-				<span class="heart"></span>
-				<div id="singleProductTitleArea">
-					<b>판매중끌올o</b>
-				</div>
-				<div id="singleProductInfoArea">
-					nnnnn원
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					n시간 전
-				</div>
-				<div id="singleProductContactArea">
-					찜 n개
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					채팅 n회
-				</div>
-				<div id="singleProductButtonArea">
-					<input type="button" value="수정">
-					<input type="button" value="UP">
-				</div>
-	        </div>
-	
-			<!-- 판매내역 옵션2 거래중 -->
-	        <div class="single-block" id="singleProductArea">
-				<img src="${pageContext.request.contextPath}/resources/images/products/product-3.jpg">
-				<span class="heart"></span>
-				<span id="dealInProcess">거래중</span>
-				<div id="singleProductTitleArea">
-					<b>판매거래중</b>
-				</div>
-				<div id="singleProductInfoArea">
-					nnnnn원
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					n시간 전
-				</div>
-				<div id="singleProductContactArea">
-					찜 n개
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					채팅 n회
-				</div>
-				<div id="singleProductButtonArea">
-					<input type="button" value="구매확정요청">
-				</div>
-	        </div>
-	
-			<!-- 판매내역 옵션3 판매완료(후기미작성) -->
-	        <div class="single-block" id="singleProductArea">
-		        <div class="single-block" id="singleProductAreaDealComplete">
-					<img src="${pageContext.request.contextPath}/resources/images/products/product-4.jpg">
-					<span id="dealComplete">
-						<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
-						<b>판매 완료</b>
-					</span>				
-					<span class="heart"></span>
-					<div id="singleProductTitleArea">
-						<b>판매완료후기x</b>
-					</div>
-					<div id="singleProductInfoArea">
-						nnnnn원
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						n시간 전
-					</div>
-					<div id="singleProductContactArea">
-						찜 n개
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						채팅 n회
-					</div>
-					<div id="singleProductButtonArea">
-						<input type="button" value="거래후기작성">
-					</div>
-				</div>	
-	        </div>
-
-			<!-- 판매내역 옵션4 거래완료(후기작성완료) -->
-	        <div class="single-block" id="singleProductArea">
-		        <div class="single-block" id="singleProductAreaDealComplete">
-					<img src="${pageContext.request.contextPath}/resources/images/products/product-5.jpg">
-					<span id="dealComplete">
-						<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
-						<b>판매 완료</b>
-					</span>				
-					<span class="heart"></span>
-					<div id="singleProductTitleArea">
-						<b>판매완료후기o</b>
-					</div>
-					<div id="singleProductInfoArea">
-						nnnnn원
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						n시간 전
-					</div>
-					<div id="singleProductContactArea">
-						찜 n개
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						채팅 n회
-					</div>
-					<div id="singleProductButtonArea">
-						<input type="button" value="거래후기보기">
-					</div>
-				</div>	
-	        </div>
-	        
-			<!-- 구매내역 옵션1 거래중 -->
-	        <div class="single-block" id="singleProductArea">
-				<img src="${pageContext.request.contextPath}/resources/images/products/product-6.jpg">
-				<span class="heart"></span>
-				<span id="dealInProcess">거래중</span>
-				<div id="singleProductTitleArea">
-					<b>구매거래중</b>
-				</div>
-				<div id="singleProductInfoArea">
-					nnnnn원
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					n시간 전
-				</div>
-				<div id="singleProductContactArea">
-					찜 n개
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					채팅 n회
-				</div>
-				<div id="singleProductButtonArea">
-					<input type="button" value="구매확정하기">
-				</div>
-	        </div>
-
-			<!-- 구매내역 옵션2 구매완료(후기미작성) -->
-	        <div class="single-block" id="singleProductArea">
-		        <div class="single-block" id="singleProductAreaDealComplete">
-					<img src="${pageContext.request.contextPath}/resources/images/products/product-7.jpg">
-					<span id="dealComplete">
-						<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
-						<b>구매 완료</b>
-					</span>				
-					<span class="heart"></span>
-					<div id="singleProductTitleArea">
-						<b>구매완료후기x</b>
-					</div>
-					<div id="singleProductInfoArea">
-						nnnnn원
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						n시간 전
-					</div>
-					<div id="singleProductContactArea">
-						찜 n개
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						채팅 n회
-					</div>
-					<div id="singleProductButtonArea">
-						<input type="button" value="거래후기작성">
-					</div>
-		        </div>
-	        </div>
-
-			<!-- 구매내역 옵션3 거래완료(후기작성완료) -->
-	        <div class="single-block" id="singleProductArea">
-		        <div class="single-block" id="singleProductAreaDealComplete">
-					<img src="${pageContext.request.contextPath}/resources/images/products/product-8.jpg">
-					<span id="dealComplete">
-						<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
-						<b>구매 완료</b>
-					</span>						
-					<span class="heart"></span>
-					<div id="singleProductTitleArea">
-						<b>구매완료후기o</b>
-					</div>
-					<div id="singleProductInfoArea">
-						nnnnn원
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						n시간 전
-					</div>
-					<div id="singleProductContactArea">
-						찜 n개
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						채팅 n회
-					</div>
-					<div id="singleProductButtonArea">
-						<input type="button" value="거래후기보기">
-					</div>
-		        </div>
-	        </div>
-	        <%-- 페이지 옵션1 끝 --%>
-	        
-	        
-	
+	<section class="item-details section wholeProductSection">
+	    <div class="product-details-info row" id="wholeProductArea">
+	    <c:if test="${empty MyPageList }">
+	    	<div class="single-block col">표시할 내역이 없습니다</div>
+	    </c:if>
+			<c:forEach var="mypage" items="${MyPageList }" varStatus="status">
+				<c:choose> <%-- 탭선택 --%>
+					<c:when test="${category eq '1' }"> <%-- 판매내역 탭 시작--%>
+						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
+							<c:choose>
+								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
+								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+								<span class="heart"></span>
+								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
+									<span id="dealInProcess">거래중</span>
+								</c:if>
+								<div id="singleProductTitleArea">
+									<b>
+									<c:choose>
+								        <c:when test="${fn:length(mypage.product_name) gt 9}">
+								        	${fn:substring(mypage.product_name, 0, 8)} ...
+								        </c:when>
+								        <c:otherwise>
+								        	${mypage.product_name }
+								        </c:otherwise>
+									</c:choose>
+									</b>
+								</div>
+								<div id="singleProductInfoArea">
+									${mypage.product_price }원
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									${mypage.product_datetime }
+								</div>
+								<div id="singleProductContactArea">
+									찜 n개
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									채팅 n회
+								</div>
+								<div id="singleProductButtonArea">
+									<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
+								</div>
+							</c:when>
+							
+							<c:when test="${mypage.trade_status eq '2' }"> <%-- 거래(판매) 완료 --%>
+								<div class="single-block" id="singleProductAreaDealComplete">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+									<span id="dealComplete">
+										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
+										<b>판매 완료</b>
+									</span>				
+<!-- 									<span class="heart"></span> -->
+									<div id="singleProductTitleArea">
+									<b>
+									<c:choose>
+								        <c:when test="${fn:length(mypage.product_name) gt 9}">
+								        	${fn:substring(mypage.product_name, 0, 8)} ...
+								        </c:when>
+								        <c:otherwise>
+								        	${mypage.product_name }
+								        </c:otherwise>
+									</c:choose>
+									</b>
+									</div>
+									<div id="singleProductInfoArea">
+										${mypage.product_price }원
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										${mypage.product_datetime }
+									</div>
+									<div id="singleProductContactArea">
+										찜 n개
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										채팅 n회
+									</div>
+									<div id="singleProductButtonArea">
+										<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
+									</div>
+								</div>	
+							</c:when>
+						</c:choose>
+				        </div> <%--singleProductArea 끝 --%>
+					</c:when> <%-- 판매내역탭 끝 --%>
+					
+					
+			       
+					<c:when test="${category eq '2' }"> <%-- 구매내역 탭 시작 --%>
+						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
+				        <c:choose>
+							<c:when test="${mypage.order_status eq '0'}"> <%-- 거래(구매) 중 --%>
+							<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+							<span class="heart"></span>
+							<span id="dealInProcess">거래중</span>
+							<div id="singleProductTitleArea">
+								<b>
+								<c:choose>
+							        <c:when test="${fn:length(mypage.product_name) gt 9}">
+							        	${fn:substring(mypage.product_name, 0, 8)} ...
+							        </c:when>
+							        <c:otherwise>
+							        	${mypage.product_name }
+							        </c:otherwise>
+								</c:choose>								
+								</b>
+							</div>
+							<div id="singleProductInfoArea">
+								${mypage.product_price }원
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								${mypage.product_datetime }
+							</div>
+							<div id="singleProductContactArea">
+								찜 n개
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								채팅 n회
+							</div>
+							<div id="singleProductButtonArea">
+								<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
+							</div>
+							</c:when>						
+							<c:when test="${mypage.order_status eq '1'}"> <%-- 거래(구매)완료 --%>
+								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
+								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+								<span id="dealComplete">
+									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
+									<b>구매 완료</b>
+								</span>				
+								<span class="heart"></span>
+								<div id="singleProductTitleArea">
+								<b>
+								<c:choose>
+							        <c:when test="${fn:length(mypage.product_name) gt 9}">
+							        	${fn:substring(mypage.product_name, 0, 8)} ...
+							        </c:when>
+							        <c:otherwise>
+							        	${mypage.product_name }
+							        </c:otherwise>
+								</c:choose>								
+								</b>
+								</div>
+								<div id="singleProductInfoArea">
+									${mypage.product_price }원
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									${mypage.product_datetime }
+								</div>
+								<div id="singleProductContactArea">
+									찜 n개
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									채팅 n회
+								</div>
+								<div id="singleProductButtonArea">
+									<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
+								</div>
+					        </div>
+							</c:when>
+						</c:choose>
+				        </div> <%--singleProductArea 끝 --%>
+					</c:when> <%-- 구매내역 탭 끝 --%>
+					
+					<c:when test="${category eq '3' }"> <%-- 찜목록 탭 시작--%>
+						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
+							<c:choose>
+								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
+								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+				
+								<span class="heart"></span>
+								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
+									<span id="dealInProcess">거래중</span>
+								</c:if>
+								<div id="singleProductTitleArea">
+									<b>
+									<c:choose>
+								        <c:when test="${fn:length(mypage.product_name) gt 9}">
+								        	${fn:substring(mypage.product_name, 0, 8)} ...
+								        </c:when>
+								        <c:otherwise>
+								        	${mypage.product_name }
+								        </c:otherwise>
+									</c:choose>									
+									</b>
+								</div>
+								<div id="singleProductInfoArea">
+									${mypage.product_price }원
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									${mypage.product_datetime }
+								</div>
+								<div id="singleProductContactArea">
+									찜 n개
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									채팅 n회
+								</div>
+								<div id="singleProductButtonArea">
+									<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
+								</div>
+							</c:when>
+							
+							<c:when test="${mypage.trade_status eq '2' }"> <%-- 거래(판매) 완료 --%>
+								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+									<span id="dealComplete">
+										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
+										<b>판매 완료</b>
+									</span>				
+									<span class="heart"></span>
+									<div id="singleProductTitleArea">
+									<b>
+									<c:choose>
+								        <c:when test="${fn:length(mypage.product_name) gt 9}">
+								        	${fn:substring(mypage.product_name, 0, 8)} ...
+								        </c:when>
+								        <c:otherwise>
+								        	${mypage.product_name }
+								        </c:otherwise>
+									</c:choose>								
+									</b>
+									</div>
+									<div id="singleProductInfoArea">
+										${mypage.product_price }원
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										${mypage.product_datetime }
+									</div>
+									<div id="singleProductContactArea">
+										찜 n개
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										채팅 n회
+									</div>
+									<div id="singleProductButtonArea">
+										<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
+									</div>
+								</div>	
+							</c:when>
+						</c:choose>
+				        </div> <%--singleProductArea 끝 --%>
+					</c:when> <%-- 찜목록탭 끝 --%>
+					
+					
+					
+					<c:when test="${category eq '4' }"> <%-- 커뮤니티 작성글 탭 시작--%>
+					    <div class="single-block col-1" id="singleCommunityArea">
+							<div id="communityLeft">
+								<div id="communityLeftUpperLeft" class="row">
+									<div class="col-10">
+										<c:choose>
+											<c:when test="${mypage.community_category eq 1}">
+												<p>동네소식</p>
+											</c:when>
+											<c:when test="${mypage.community_category eq 2}">
+												<p>동네질문</p>
+											</c:when>
+											<c:when test="${mypage.community_category eq 3}">
+												<p>일상</p>
+											</c:when>
+										</c:choose>
+										<input type="hidden" name="community_id" value="${mypage.community_id }">
+										<b id="bold"><a href="CommunityDetail?community_id=${mypage.community_id }">
+										<c:choose>
+									        <c:when test="${fn:length(mypage.community_subject) gt 15}">
+									        	${fn:substring(mypage.community_subject, 0, 14)} ...
+									        </c:when>
+									        <c:otherwise>
+									        	${mypage.community_subject }
+									        </c:otherwise>
+										</c:choose>
+										</a></b><br>
+									</div>
+									<div class="col d-flex justify-content-end">
+<%-- 										<input type="button" class="btn btn-primary" value="삭제" style="width:60% !important;" onclick="deleteCommunity('${mypage.community_id }', this)"> --%>
+									</div>
+								</div>
+								<div id="communityMiddleArea">
+									<div id="communityMiddleLeft">${mypage.community_datetime }</div>
+									<div id="communityMiddleRight">
+										조회수 ${mypage.community_readcount }&nbsp;&nbsp;&nbsp;&nbsp;댓글 ${mypage.reply_count }&nbsp;&nbsp;&nbsp;&nbsp;좋아요 ${mypage.like_count }
+									</div>
+								</div>
+								<div id="communityLeftBottom">
+									<p>
+										<c:choose>
+									        <c:when test="${fn:length(mypage.community_content) gt 30}">
+									        	${fn:substring(mypage.community_content, 0, 29)} ...
+									        </c:when>
+									        <c:otherwise>
+									        	${mypage.community_content }
+									        </c:otherwise>
+										</c:choose>
+									</p>
+								</div>
+							</div>
+							<div id="communityRight">
+								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.community_image1}">
+							</div>
+				        </div> <%--singleCommunityArea 끝 --%>
+					</c:when> <%-- 커뮤니티 작성글 탭 끝 --%>
+					
+					<c:when test="${category eq '5' }"> <%-- 커뮤니티 작성댓글 탭 시작--%>
+					    <div class="single-block col-1" id="singleCommunityReplyArea">
+							<div id="communityReplyTitleArea" class="row">
+								<div class="col-10">
+									<c:choose>
+										<c:when test="${mypage.community_category eq 1}">
+											<p>동네소식</p>
+										</c:when>
+										<c:when test="${mypage.community_category eq 2}">
+											<p>동네질문</p>
+										</c:when>
+										<c:when test="${mypage.community_category eq 3}">
+											<p>일상</p>
+										</c:when>
+									</c:choose>
+									<b id="bold"><a href="CommunityDetail?community_id=${mypage.community_id }">
+									<c:choose>
+								        <c:when test="${fn:length(mypage.community_content) gt 15}">
+								        	${fn:substring(mypage.community_content, 0, 14)} ...
+								        </c:when>
+								        <c:otherwise>
+								        	${mypage.community_content }
+								        </c:otherwise>
+									</c:choose>
+									</a></b><br>
+								</div>
+								<div class="col d-flex justify-content-end">
+<%-- 									<input type="button" class="btn btn-primary" value="삭제" style="width:60% !important;" onclick="deleteCommunityReply('${mypage.reply_id }', this)"> --%>
+								</div>
+							</div>
+							<div id="communityReplyMiddleArea">
+<%-- 								<div id="communityReplyMiddleLeft">${mypage.reply_datetime }</div> --%>
+								<div id="communityReplyMiddleRight">
+<!-- 									대댓글 n개 -->
+									${mypage.reply_datetime }
+								</div>
+							</div>
+							<div id="communityReplyLeftBottom">
+								<p>
+								<c:choose>
+							        <c:when test="${fn:length(mypage.reply_content) gt 4}">
+							        	${fn:substring(mypage.reply_content, 0, 3)} ...
+							        </c:when>
+							        <c:otherwise>
+							        	${mypage.reply_content }
+							        </c:otherwise>
+								</c:choose>
+								</p>
+							</div>
+						</div> <%--singleCommunityReplyArea 끝 --%>
+					</c:when> <%-- 커뮤니티 작성글 탭 끝 --%>
+		        </c:choose> <%-- 탭선택 --%>
+			</c:forEach>
 	    </div>
+	    <nav aria-label="Page navigation">
+				<ul class="pagination d-flex justify-content-center">
+					<li class="page-item" id="prevPage">
+<%-- 						<a href="Community?pageNum=${pageNum - 1}" class="page-link">&laquo;</a> --%>
+						<a href="MyPage?category=${param.category }&pageNum=${pageNum - 1}" class="page-link">&laquo;</a>
+					</li>
+					<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }">
+					<c:choose>
+						<c:when test="${pageNum eq i }">
+						<li class="page-item active"><span class="page-link">${i }</span></li>
+						</c:when>
+						<c:otherwise>
+						<li class="page-item"><a href="MyPage?category=${param.category }&pageNum=${i }" class="page-link" >${i }</a></li>
+						</c:otherwise>
+					</c:choose>
+					</c:forEach>
+					<li class="page-item" id="nextPage">
+						<a href="MyPage?category=${param.category }&pageNum=${pageNum + 1}" class="page-link">&raquo;</a>
+					</li>
+				</ul>
+			</nav>
 	</section>    
 
     <%-- 후기 모달 설정 --%>
@@ -455,42 +920,18 @@
 	<!-- 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
 				</div>
 				<div class="modal-body">
-					<div class="d-flex justify-content-center">
+					<div class="d-flex justify-content-center" id="reviewModalButtonArea">
 						<input type="radio" class="btn-check" name="options" id="option1" value="bad" autocomplete="off">
 						<label class="btn btn-outline-primary mx-4" for="option1">별로예요</label>
 						<input type="radio" class="btn-check" name="options" id="option2" value="good" autocomplete="off" checked>
 						<label class="btn btn-outline-primary mx-4" for="option2">최고예요</label>
 					</div>
 					<div id="reviewCheck" class="mx-auto my-5 w-75">
-	<!-- 					<div class="form-check"> -->
-	<!-- 						<input class="form-check-input" type="checkbox" name="hugi1" id="hugi1"> -->
-	<!-- 						<label class="form-check-label" for="hugi1" id="hugiLabel1"> -->
-	<!-- 							제가 있는곳까지 와서 거래했어요 -->
-	<!-- 						</label> -->
-	<!-- 					</div> -->
-	<!-- 					<div class="form-check"> -->
-	<!-- 						<input class="form-check-input" type="checkbox" name="hugi2" id="hugi2"> -->
-	<!-- 						<label class="form-check-label" for="hugi2" id="hugiLabel2"> -->
-	<!-- 							친절하고 매너가 좋아요 -->
-	<!-- 						</label> -->
-	<!-- 					</div> -->
-	<!-- 					<div class="form-check"> -->
-	<!-- 						<input class="form-check-input" type="checkbox" name="hugi3" id="hugi3"> -->
-	<!-- 						<label class="form-check-label" for="hugi3" id="hugiLabel3"> -->
-	<!-- 							시간 약속을 잘 지켜요 -->
-	<!-- 						</label> -->
-	<!-- 					</div> -->
-	<!-- 					<div class="form-check"> -->
-	<!-- 						<input class="form-check-input" type="checkbox" name="hugi4" id="hugi4"> -->
-	<!-- 						<label class="form-check-label" for="hugi4" id="hugiLabel4"> -->
-	<!-- 							응답이 빨라요 -->
-	<!-- 						</label> -->
-	<!-- 					</div> -->
 					</div>
 				</div>
 				<div class="modal-footer">
-	<!-- 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button> -->
-	<!-- 				<button type="submit" class="btn btn-primary" id="reviewRegist">후기 등록</button> -->
+<!-- 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button> -->
+<!-- 					<button type="submit" class="btn btn-primary" id="reviewRegist">후기 등록</button> -->
 				</div>
 			</div>
 		</div>
