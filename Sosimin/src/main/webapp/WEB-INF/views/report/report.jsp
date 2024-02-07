@@ -49,6 +49,7 @@ function reportRegist(index, reason) {
 	<%-- 신고 분류 0: 게시물 신고, 1: 사용자 신고--%>
 	let report_type = index;
 	let report_content = ""; 
+	let reportee_id = $("#reportee_id").val();
 	
 	// 신고사유에 따른 내용 저장
 	if(reason === 1) {
@@ -101,7 +102,6 @@ function reportRegist(index, reason) {
  		$("#modalDismiss").click();
  		return false;
  	} 	
-	
 		Swal.fire({
 			   title: '정말 신고하시겠습니까?',
 			   text: '내용과 사실이 다를 경우 불이익을 당할 수 있습니다',
@@ -123,7 +123,7 @@ function reportRegist(index, reason) {
 						data: {
 							report_type: index, // 신고 종류
 							reporter_id: reporter_id, // 신고자 아이디
-							reportee_id: "사기꾼", // 피신고자 아이디
+							reportee_id: reportee_id, // 피신고자 아이디
 							report_reason: reason, // 신고 사유
 							report_content: report_content // 신고 내용
 						},
@@ -158,10 +158,29 @@ function reportRegist(index, reason) {
 		   	}
 		});
 	}
+
+function guide(url) {
+	Swal.fire({
+		   title: '가이드를 보시겠습니까?',
+		   icon: 'question',
+		   
+		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+		   confirmButtonText: '신고하기', // confirm 버튼 텍스트 지정
+		   cancelButtonText: '취소하기', // cancel 버튼 텍스트 지정
+		   reverseButtons: true, // 버튼 순서 거꾸로
+	}).then(result => {
+		 if (result.isConfirmed) {
+			location.href=url;
+		 }
+	});
+}
 	
 </script>
 </head>
 <body>
+	
 	<%-- 게시글 모달 설정 --%>
 	<div class="modal fade review-modal" id="reportModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -185,7 +204,7 @@ function reportRegist(index, reason) {
 								<div class="accordion-body">
 									<p class="accordion-body-1">어떤 물품을 판매하고 있나요?</p> 
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
-									<p><a href="#">거래 금지 품목을 살펴봅시다</a></p>
+									<p><a href="javascript:void(0)" onclick="guide('ProhibitionOnsale')">거래 금지 품목을 살펴봅시다</a></p>
 									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
 									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(0, 1)">신고 하기</button>		
 								</div>

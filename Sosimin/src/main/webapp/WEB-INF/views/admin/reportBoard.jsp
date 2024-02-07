@@ -96,12 +96,12 @@ function reportStatus() {
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>회원 신고관리</h1>
+			<h1>게시글 신고관리</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
 					<li class="breadcrumb-item active">신고관리</li>
-					<li class="breadcrumb-item active">회원신고관리</li>
+					<li class="breadcrumb-item active">게시글신고관리</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->

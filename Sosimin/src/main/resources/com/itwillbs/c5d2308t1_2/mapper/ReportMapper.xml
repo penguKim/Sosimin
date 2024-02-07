@@ -23,12 +23,14 @@
 		SELECT *
 		FROM Report  
 		WHERE report_type = 1
+		ORDER BY report_id DESC
 	</select>
 	
 	<select id="boardReportList">
 		SELECT *
 		FROM Report  
 		WHERE report_type = 0
+		ORDER BY report_id DESC
 	</select>
 	
 </mapper>
