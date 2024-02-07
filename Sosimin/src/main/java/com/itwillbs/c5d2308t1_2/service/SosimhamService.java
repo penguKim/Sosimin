@@ -21,5 +21,10 @@ public class SosimhamService {
 	public List<String> getGu() {
 		return SosimMapper.selectGu();
 	}
+	
+	// 연관검색어 조회
+	public List<String> getRelationKeyWord(String searchKeyWord) {
+		return SosimMapper.selectRelationKeyWord(searchKeyWord);
+	}
 
 }

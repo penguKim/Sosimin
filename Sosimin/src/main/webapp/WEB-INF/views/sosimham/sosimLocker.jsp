@@ -64,7 +64,6 @@
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
 	
-	
 	<!-- Start Breadcrumbs -->
 	<div class="breadcrumbs">
         <div class="container">
@@ -369,6 +368,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<footer class="footer">
 		<jsp:include page="../inc/bottom.jsp"></jsp:include>
 	</footer>

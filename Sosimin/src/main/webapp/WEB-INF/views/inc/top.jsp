@@ -80,25 +80,34 @@ $(function(){
 	    }
   	});
 
+	
 	$(".recentWordColor").css("color","#39d274");
 	$(".popularWordColor").css("color","black");
 	
 	
 	$("#searchKeyword").keyup(function(){
-		
-// 		if($("#searchKeyword").val() != null){
-// 			$("#Popular").hide();
-			$("#Recent").hide();
-			$("#Relation").removeClass("hidden");
-			$("#Relation").html(
+		$.ajax({
+			type:"GET",
+			url:"RelationSearchKeyWord",
+			data: {searchKeyWord : $("#searchKeyword").val()},
+			success:function(res){
+				$("#Popular").hide();
+				$("#Recent").hide();
+				$("#Relation").removeClass("hidden");
+				let relationBox = 
 					'<table id="Relation">'
-		    		+'<tr>'
-// 		    		+	'<td colspan="2">'+ $("#searchKeyword").val() +'</td>'
-		    		+	'<td>'+ $("#searchKeyword").val() +'</td>'
-		    		+	'<td>연관검색어 테스트</td>'
+		    		+'<tr id= "Relationdata">'
+		    		+	'<td colspan="2">'
+		    		+       '<img src="${pageContext.request.contextPath}/resources/images/MainPhoto/상점검색.png" width="18" height="14" alt="추천 상점 아이콘"> 상점검색 &gt;'
+		    		+ 		'<a href="FindStore?searchKeyword="'+ $("#searchKeyword").val() +'>'
+		    		+			$("#searchKeyword").val()
+		    		+		'</a>'
+		    		+ 		"  상점명으로 검색" 
+		    		+	'</td>'
 		    		+'</tr>'
+		    		+'<tr>'
 					+	'<td>'
-					+	'	<a id="closeSearchBox"></a>'
+					+	'	<a></a>'
 					+	'</td>'
 					+	'<td>'
 					+	'	<a id="closeSearchBox">'
@@ -107,12 +116,21 @@ $(function(){
 					+	'</td>'
 					+'</tr>' 
 		    		+'</table>'
-			);
-// 		}else{ 
-// 			$("#Popular").hide();
-// 			$("#Relation").hide();
-// 			$("#Recent").show();
-// 		}
+				$("#Relation").html(relationBox)
+				let relationKeyWord = ""
+				for(let data of res){
+					relationKeyWord += "<tr><td colspan='2'>" + data + "</td></tr>";
+				}
+		    		
+				$("#Relationdata").after(relationKeyWord)
+				
+						
+				
+			},
+			error:function(){
+// 				alert("통신 실패.")
+			}
+		});
 	});
 	
 	

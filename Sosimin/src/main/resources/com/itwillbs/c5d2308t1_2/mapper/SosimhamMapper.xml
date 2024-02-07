@@ -13,4 +13,11 @@
 		SELECT *
 		FROM City
 	</select>
+	
+	<select id="selectRelationKeyWord" resultType="String">
+		SELECT search_content
+		FROM Search
+		WHERE search_content LIKE "${searchKeyWord}%"
+		LIMIT 9;
+	</select>
 </mapper>
