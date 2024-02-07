@@ -10,6 +10,9 @@
 <title>Insert title here</title>
 </head>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <style>
 	#proposalBackground{
 		background-color: #f9f9f9;
@@ -201,6 +204,36 @@ function price(input, maxLength) {
     }
     document.getElementById("priceInput").textContent = input.value.length;
   }
+  
+function proposalOk() {
+    var sId = "${sId}";
+    var product_id = ${Product.product_id};
+    Swal.fire({
+        title: '가격제안 하시겠습니까?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#39d274',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+        reverseButtons: true,
+        allowOutsideClick: false
+    }).then((result) => {
+        if (result.isConfirmed) { // 확인 버튼을 클릭했을 경우
+            // 비즈니스 로직 실행 후 성공 메시지를 표시
+            Swal.fire({
+                icon: 'success',
+                title: '가격제안이 완료되었습니다.',
+                allowOutsideClick: false
+            }).then(() => {
+                // 팝업이 완전히 닫힌 후에 window.close()가 실행되도록 setTimeout을 사용
+                setTimeout(function() {
+                    window.close();
+                }, 0); // 1000ms = 1초 후에 실행
+            });
+        }
+    });
+};
 
 </script>
 <body>
@@ -239,7 +272,7 @@ function price(input, maxLength) {
 	        </div>
         </div>
 		<form action="가라 1대1 채팅으로">
-		    <input type="submit" value="제안하기" id="proposal">
+		    <input type="button" value="제안하기" id="proposal" onclick="proposalOk()">
 		</form>
 </body>
 </html>

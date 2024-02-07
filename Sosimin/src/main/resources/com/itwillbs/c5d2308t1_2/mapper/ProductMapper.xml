@@ -161,7 +161,7 @@
             FROM Town t 
             WHERE gu = #{gu}
             AND dong = #{dong}
-        </selectKey> 
+        </selectKey>
         INSERT INTO Product
         VALUES (
             null

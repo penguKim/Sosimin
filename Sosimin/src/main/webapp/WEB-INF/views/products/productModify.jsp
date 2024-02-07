@@ -916,9 +916,21 @@ function submitFiles(event) {
 	    contentType: false,
 	    success: function(data) {
 	      // 서버로부터 응답을 받았을 때 실행되는 코드
-	      alert("상품이 수정되었습니다.");
-	      console.log('File upload successful!');
+	      	Swal.fire({
+	        title: '수정하시겠습니까?',
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '수정',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
 	      location.href =  "ProductDetail?product_id=" + data;
+	        }
+        });
 	    },
 	    error: function(jqXHR, textStatus, errorThrown) {
 	      // 파일 업로드에 실패했을 때 실행되는 코드
@@ -929,7 +941,18 @@ function submitFiles(event) {
 	}
 	
 function ProductDelete(event) {
-    if (confirm("삭제하시겠습니까?")) {
+	Swal.fire({
+	        title: '삭제하시겠습니까?',
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '등록',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
         var form = document.querySelector('form');
         var formData = new FormData();
         var formElements = form.elements;
@@ -951,7 +974,6 @@ function ProductDelete(event) {
             processData: false,
             contentType: false,
             success: function(data) {
-                alert("삭제되었습니다.");
                 console.log('File upload successful!');
                 location.href =  "./"
             },
@@ -959,10 +981,11 @@ function ProductDelete(event) {
                 // 파일 업로드에 실패했을 때 실행되는 코드
                 alert('실패');
                 console.log(jqXHR, textStatus, errorThrown);
+	      	    }
+	   	      });
             }
         });
     }
-}
 	
 
 // // 제출 버튼 클릭 시 서버로 모든 파일 전송
@@ -1278,7 +1301,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					<input type="hidden" name="product_id" value="${param.product_id }">
 						<input type="text" id="productName" name="product_name" onkeyup="productKey()" maxlength="40" oninput="limitInputLength(this, 40)"
 						placeholder="상품명을 입력해 주세요." class="text-box" value="${productModify.product_name }">
-						<a href="https://help.bunjang.co.kr/faq/2/220" target="_blank" id="tradeX">
+						<a href="ProhibitionOnsale" target="_blank" id="tradeX">
 						 <span id="tradeXText">거래금지 품목 보기</span></a>
 						 <div id="textLength">
 						 <span id="productNameLength">0</span><span>/40</span>

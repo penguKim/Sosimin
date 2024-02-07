@@ -618,6 +618,45 @@ window.open("Proposal?product_id=" + product_id, "상품이미지", options);
 	}
 }
 
+function chat() {
+	var sId = "${sId}";
+	var product_id = ${Product.product_id};
+	
+	if(sId) {
+		Swal.fire({
+	        title: '채팅방으로 이동하시겠습니까?',
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '이동',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	        	location.href="ChatMain?product_id=" + product_id;
+	        }
+	    });
+	} else{
+		Swal.fire({
+		        title: '회원만 사용가능합니다.',
+		        text: '로그인 페이지로 이동하시겠습니까?',
+		        icon: 'error',
+		        showCancelButton: true,
+		        confirmButtonColor: '#39d274',
+		        cancelButtonColor: '#d33',
+		        confirmButtonText: '이동',
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		        allowOutsideClick: false
+		    }).then((result) => {
+		        if (result.isConfirmed) {
+		        	location.href="MemberLogin";
+		        }
+		    });
+		}
+};
 
 //function Proposal() {
 
@@ -859,7 +898,8 @@ window.open("Proposal?product_id=" + product_id, "상품이미지", options);
 	                                 </div>
 	                                 <div class="col-lg-4 col-md-4 col-12">
 	                                     <div class="wish-button">
-	                                         <button class="btn" style="height: 60px;" id="chatButton" onclick="location.href='ChatMain?product_id=${Product.product_id}'"> 1:1채팅</button>
+<%-- 	                                         <button class="btn" style="height: 60px;" id="chatButton" onclick="location.href='ChatMain?product_id=${Product.product_id}'"> 1:1채팅</button> --%>
+	                                         <button class="btn" style="height: 60px;" id="chatButton" onclick="chat()"> 1:1채팅</button>
 	                                     </div>
 	                                 </div>
 		     						 <div class="col-lg-4 col-md-4 col-12">
@@ -966,7 +1006,7 @@ window.open("Proposal?product_id=" + product_id, "상품이미지", options);
                                 <hr>
                                 <div>
                                 	<a href="MyPage?member_id=${SellerInfo.member_id }"  id="profileImage">
-                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#">
+                                		<img src="${pageContext.request.contextPath}/resources/upload/${SellerInfo.member_profile}" class="img" alt="#">
                                 	</a>
                                 	<div id="nickname">
                                 		<a href="MyPage?member_id=${SellerInfo.member_id }" id="nicknameA">${SellerInfo.member_nickname }</a>

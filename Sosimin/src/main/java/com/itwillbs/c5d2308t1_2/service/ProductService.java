@@ -14,7 +14,6 @@ public class ProductService {
 
 	@Autowired
 	ProductMapper mapper;
-	
 	// 페이지 카운트 조회
 	public int getProductListCount(Map<String, Object> map) {
 		return mapper.productListCount(map);

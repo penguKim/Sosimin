@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.itwillbs.c5d2308t1_2.service.LevelService;
 import com.itwillbs.c5d2308t1_2.service.ProductService;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
@@ -44,7 +45,8 @@ public class ProductController {
     
 	@Autowired
 	ProductService service;
-	 
+	@Autowired
+	LevelService levelService;
 	// 메인 상품 목록 페이지 이동
 	@GetMapping("SearchProduct")
 	public String searchProduct() {
@@ -250,6 +252,8 @@ public class ProductController {
 										HttpServletRequest request, @RequestParam("product_image") MultipartFile[] files) {
 		
 		
+		
+		
 		String sId = (String)session.getAttribute("sId");
 		map.put("sId", sId);
 		
@@ -342,6 +346,9 @@ public class ProductController {
 	    
 	    
 	    int successInsert = service.productRegist(map);
+	    
+	    levelService.updateProExp(map); // 경험치 증가
+	    
 	    
 	    System.out.println("너는 ㅜㅁ가 들엇어어어어어어어어어엉 : "  + successInsert);
 	    
@@ -589,7 +596,6 @@ public class ProductController {
 			            }
 			        }
 			    }
-			    
 //			    if (deleteImages != null) {
 //			        Arrays.sort(deleteImages);
 //			        for (int i = deleteImages.length - 1; i >= 0; i--) {
@@ -602,7 +608,6 @@ public class ProductController {
 //			            }
 //			        }
 //			    }
-
 			    if (files != null) {
 			        for (MultipartFile file : files) {
 			            if (!file.isEmpty()) {

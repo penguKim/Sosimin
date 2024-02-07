@@ -469,22 +469,43 @@ $(function() {
 		var sId = "${sId}";
 		
 		function askForTemporarySave() {
-			  if (confirm("임시저장 하시겠습니까?")) {
-			    // '예'를 선택하면, 입력한 값을 로컬 스토리지에 저장합니다.
-			    localStorage.setItem(sId + "_productName", $("#productName").val());
-			    var categoryName = $("#categoryName").val();
-			    if (categoryName !== 'default') {
-			    	localStorage.setItem(sId + "_categoryName", categoryName);
+			
+			
+			Swal.fire({
+			    title: '임시저장 하시겠습니까??',
+			    icon: 'question',
+			    showCancelButton: true,
+			    confirmButtonColor: '#39d274',
+			    cancelButtonColor: '#d33',
+			    confirmButtonText: '저장',
+			    cancelButtonText: '취소',
+			    reverseButtons: true,
+			    allowOutsideClick: false
+			}).then((result) => {
+			    if (result.isConfirmed) {
+			        // '저장'를 선택하면, 입력한 값을 로컬 스토리지에 저장합니다.
+			        localStorage.setItem(sId + "_productName", $("#productName").val());
+			        var categoryName = $("#categoryName").val();
+			        if (categoryName !== 'default') {
+			            localStorage.setItem(sId + "_categoryName", categoryName);
+			        }
+			        localStorage.setItem(sId + "_tradePlace", $("#myMap").val());
+			        localStorage.setItem(sId + "_productStatus", $("input[name=product_status]:checked").val());
+			        localStorage.setItem(sId + "_trade_method", $("input[name=trade_method]:checked").val());
+			        localStorage.setItem(sId + "_product_price", $("#priceInput").val());
+			        localStorage.setItem(sId + "_ProductDescription", $("#ProductDescription").val());
+			        saveTagsToLocalStorage();
+			        localStorage.setItem(sId + "_isTempSaved", "1");
+
+			        // 비즈니스 로직 실행 후 성공 메시지를 표시
+			        Swal.fire({
+			            icon: 'success',
+			            title: '임시저장 되었습니다.',
+			            allowOutsideClick: false
+			        });
 			    }
-			    localStorage.setItem(sId + "_tradePlace", $("#myMap").val());
-			    localStorage.setItem(sId + "_productStatus", $("input[name=product_status]:checked").val());
-			    localStorage.setItem(sId + "_trade_method", $("input[name=trade_method]:checked").val());
-			    localStorage.setItem(sId + "_product_price", $("#priceInput").val());
-			    localStorage.setItem(sId + "_ProductDescription", $("#ProductDescription").val());
-			    saveTagsToLocalStorage();
-			    localStorage.setItem(sId + "_isTempSaved", "1");
-			  }
-			}
+			});
+		}
 			  // 페이지가 로드될 때마다 '최근 작성한 글을 불러오시겠습니까?'라는 메시지를 표시합니다.
 			// 임시저장 버튼이 클릭되었을 때 askForTemporarySave 함수를 호출합니다.
 		
@@ -529,105 +550,118 @@ function loadImage() {
 
 			
 $(document).ready(() => {
-  function showConfirmMessage() {
-    if (localStorage.getItem(sId + "_isTempSaved") === "1") {
-      if (confirm("최근 작성한 글을 불러오시겠습니까?")) {
-    	  loadImage();
-        $("#productName").val(localStorage.getItem(sId + "_productName"));
-        var categoryName = localStorage.getItem(sId + "_categoryName");
-        if (categoryName) {
-          $("#categoryName").val(categoryName);
-          $('#selectCategory').text(categoryName); 
+	  function showConfirmMessage() {
+	    if (localStorage.getItem(sId + "_isTempSaved") === "1") {
+	      Swal.fire({
+	        title: '작성한 글을 불러오시겠습니까?',
+// 	        text: '최근 작성한 글을 불러오시겠습니까?',
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '예',
+	        cancelButtonText: '아니오',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	      }).then((result) => {
+	        if (result.isConfirmed) {
+	          loadImage();
+	          $("#productName").val(localStorage.getItem(sId + "_productName"));
+	          var categoryName = localStorage.getItem(sId + "_categoryName");
+	          if (categoryName) {
+	            $("#categoryName").val(categoryName);
+	            $('#selectCategory').text(categoryName); 
 
-          var selectElement = document.getElementById("categoryName");
-          var defaultOption = selectElement.querySelector("option[value='default']");
-          if (defaultOption) {
-            selectElement.removeChild(defaultOption);
-          }
-        }
-        $("#myMap").val(localStorage.getItem(sId + "_tradePlace"));
-        $("#priceInput").val(localStorage.getItem(sId + "_product_price"));
-        $("#ProductDescription").val(localStorage.getItem(sId + "_ProductDescription"));
-        $("input[name=product_status][value=" + localStorage.getItem(sId + "_productStatus") + "]").prop('checked', true);
-        $("input[name=trade_method][value=" + localStorage.getItem(sId + "_trade_method") + "]").prop('checked', true);
-        loadTagsFromLocalStorage();
-      } else {
-          localStorage.removeItem(sId + "_isTempSaved");  // '아니오'를 선택하면 플래그를 삭제합니다.
-          localStorage.clear();
-       // 이미지 컨테이너의 모든 이미지를 제거합니다.
-          var imageContainer = document.getElementById("image_container");
-          while (imageContainer.firstChild) {
-            imageContainer.removeChild(imageContainer.firstChild);
-          }
-          document.getElementById("imageLength").textContent = "0";
-          localStorage.setItem(sId + "_imageCount", "0");
-          
-          var mainImageText = document.querySelector(".mainImage");
-          mainImageText.style.display = "none";
-      }
-    }
-  }
-  $('#temporarySaveButton').click(askForTemporarySave);
-  showConfirmMessage();
+	            var selectElement = document.getElementById("categoryName");
+	            var defaultOption = selectElement.querySelector("option[value='default']");
+	            if (defaultOption) {
+	              selectElement.removeChild(defaultOption);
+	            }
+	          }
+	          $("#myMap").val(localStorage.getItem(sId + "_tradePlace"));
+	          $("#priceInput").val(localStorage.getItem(sId + "_product_price"));
+	          $("#ProductDescription").val(localStorage.getItem(sId + "_ProductDescription"));
+	          $("input[name=product_status][value=" + localStorage.getItem(sId + "_productStatus") + "]").prop('checked', true);
+	          $("input[name=trade_method][value=" + localStorage.getItem(sId + "_trade_method") + "]").prop('checked', true);
+	          loadTagsFromLocalStorage();
+	        } else {
+	          localStorage.removeItem(sId + "_isTempSaved"); 
+	          localStorage.clear();
+	          var imageContainer = document.getElementById("image_container");
+	          while (imageContainer.firstChild) {
+	            imageContainer.removeChild(imageContainer.firstChild);
+	          }
+	          document.getElementById("imageLength").textContent = "0";
+	          localStorage.setItem(sId + "_imageCount", "0");
+	          
+	          var mainImageText = document.querySelector(".mainImage");
+	          mainImageText.style.display = "none";
+	        }
+	      });
+	    }
+	  }
 
-  $("#productName").keyup(() => {
-    localStorage.setItem(sId + "productName", $("#productName").val());
-  });
+	  $('#temporarySaveButton').click(askForTemporarySave);
+	  showConfirmMessage();
 
-  $("#categoryName").change(() => {
-    var categoryName = $("#categoryName").val();
-    localStorage.setItem(sId + "categoryName", categoryName);
-    $('#selectCategory').text(categoryName); 
+	  $("#productName").keyup(() => {
+	    localStorage.setItem(sId + "productName", $("#productName").val());
+	  });
 
-    var selectElement = document.getElementById("categoryName");
-    var defaultOption = selectElement.querySelector("option[value='default']");
-    if (defaultOption) {
-      selectElement.removeChild(defaultOption);
-    }
-  });
+	  $("#categoryName").change(() => {
+	    var categoryName = $("#categoryName").val();
+	    localStorage.setItem(sId + "categoryName", categoryName);
+	    $('#selectCategory').text(categoryName); 
 
-  $("#myMap").change(() => {
-    localStorage.setItem(sId + "_tradePlace", $("#myMap").val());
-  });
+	    var selectElement = document.getElementById("categoryName");
+	    var defaultOption = selectElement.querySelector("option[value='default']");
+	    if (defaultOption) {
+	      selectElement.removeChild(defaultOption);
+	    }
+	  });
 
-  $("input[name=product_status]").change(() => {
-    localStorage.setItem(sId + "_productStatus", $("input[name=product_status]:checked").val());
-  });
+	  $("#myMap").change(() => {
+	    localStorage.setItem(sId + "_tradePlace", $("#myMap").val());
+	  });
 
-  $("input[name=trade_method]").change(() => {
-    localStorage.setItem(sId + "_trade_method", $("input[name=trade_method]:checked").val());
-  });
+	  $("input[name=product_status]").change(() => {
+	    localStorage.setItem(sId + "_productStatus", $("input[name=product_status]:checked").val());
+	  });
 
-  $("#priceInput").change(() => {
-    localStorage.setItem(sId + "_product_price", $("#priceInput").val());
-  });
+	  $("input[name=trade_method]").change(() => {
+	    localStorage.setItem(sId + "_trade_method", $("input[name=trade_method]:checked").val());
+	  });
 
-  $("#ProductDescription").change(() => {
-    localStorage.setItem(sId + "_ProductDescription", $("#ProductDescription").val());
-  });
+	  $("#priceInput").change(() => {
+	    localStorage.setItem(sId + "_product_price", $("#priceInput").val());
+	  });
 
-  $("#tagName").keypress(function(e) {
-    if (e.which == 13) {
-      $("#tagName2").click();
-      e.preventDefault();
-    }
-  });
+	  $("#ProductDescription").change(() => {
+	    localStorage.setItem(sId + "_ProductDescription", $("#ProductDescription").val());
+	  });
 
-  $("#tagName2").click(() => {
-    var tagName = $("#tagName").val();
-    if (tagName) {
-      addTag(tagName);
-      $("#tagName").val("");
-      saveTagsToLocalStorage();
-    }
-  });
+	  $("#tagName").keypress(function(e) {
+	    if (e.which == 13) {
+	      $("#tagName2").click();
+	      e.preventDefault();
+	    }
+	  });
 
-  $(document).on("click", ".close-button", function() {
-    $(this).closest(".tag").remove();
-    $("#tagName").prop("disabled", false);
-    saveTagsToLocalStorage();
-  });
-});
+	  $("#tagName2").click(() => {
+	    var tagName = $("#tagName").val();
+	    if (tagName) {
+	      addTag(tagName);
+	      $("#tagName").val("");
+	      saveTagsToLocalStorage();
+	    }
+	  });
+
+	  $(document).on("click", ".close-button", function() {
+	    $(this).closest(".tag").remove();
+	    $("#tagName").prop("disabled", false);
+	    saveTagsToLocalStorage();
+	  });
+	});
 
 function saveTagsToLocalStorage() {
 	  var tags = [];
@@ -963,9 +997,22 @@ function submitFiles(event) {
 		    processData: false,
 		    contentType: false,
 		    success: function(data) {
+				Swal.fire({
+		 	        title: '상품을 등록하시겠습니까?',
+		 	        icon: 'question',
+		 	        showCancelButton: true,
+		 	        confirmButtonColor: '#39d274',
+		 	        cancelButtonColor: '#d33',
+		 	        confirmButtonText: '등록',
+		 	        cancelButtonText: '취소',
+		 	        reverseButtons: true,
+		 	        allowOutsideClick: false
+		 	    }).then((result) => {
+		 	        if (result.isConfirmed) {
+		 	        	location.href =  "ProductDetail?product_id=" + data;
+		 	        }
+		 	    });
 		        // 서버로부터 응답을 받았을 때 실행되는 코드
-		        console.log('File upload successful!');
-		        location.href =  "ProductDetail?product_id=" + data;
 		    },
 		    error: function(jqXHR, textStatus, errorThrown) {
 		        // 파일 업로드에 실패했을 때 실행되는 코드
@@ -1213,7 +1260,7 @@ function checkInput() {
 					</div>
 						<input type="text" id="productName" name="product_name" onkeyup="productKey()" maxlength="40" oninput="limitInputLength(this, 40)"
 						placeholder="상품명을 입력해 주세요." class="text-box">
-						<a href="https://help.bunjang.co.kr/faq/2/220" target="_blank" id="tradeX">
+						<a href="ProhibitionOnsale" target="_blank" id="tradeX">
 						 <span id="tradeXText">거래금지 품목 보기</span></a>
 						 <div id="textLength">
 						 <span id="productNameLength">0</span><span>/40</span>
