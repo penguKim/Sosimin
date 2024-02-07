@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 웹소켓 매핑 등의 설정을 위해서는 websocket namespace 필요 -->
+	<!-- 웹소켓 핸들러를 활용하여 웹소켓 연결 요청 매핑 작업 수행(순서 무관) -->
+	<!-- 1) websocket:handlers 태그를 통해 매핑할 주소 지정 및 매핑 클래스 연결 -->
+	<websocket:handlers allowed-origins="*">
+		<!-- websocket:mapping 태그를 활용하여 매핑 URL 와 매핑 클래스 연결 수행 -->
+		<websocket:mapping path="/echo" handler="wsHandler"/>
+	</websocket:handlers>
+	
+	<!-- 2) bean 태그를 통해 매핑할 클래스 지정 -->
+	<bean id="wsHandler" class="com.itwillbs.c5d2308t1_2.handler.MyWebSocketHandler" />
+	
+	
+	<!-- 웹소켓 매핑 등의 설정을 위해서는 websocket namespace 필요 -->
+	<!-- 웹소켓 핸들러를 활용하여 웹소켓 연결 요청 매핑 작업 수행(순서 무관) -->
+	<!-- 1) websocket:handlers 태그를 통해 매핑할 주소 지정 및 매핑 클래스 연결 -->
+	<websocket:handlers allowed-origins="*">
+		<!-- websocket:mapping 태그를 활용하여 매핑 URL 와 매핑 클래스 연결 수행 -->
+		<websocket:mapping path="/echo2" handler="wsHandler2"/>
+	</websocket:handlers>
+	
+	<!-- 2) bean 태그를 통해 매핑할 클래스 지정 -->
+	<bean id="wsHandler2" class="com.itwillbs.c5d2308t1_2.handler.MyWebSocketHandler2" />
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -203,11 +203,11 @@ main header h3{
 }
 #chat .you .triangle{
     border-color: transparent transparent #58b666 transparent;
-    margin-left:15px;
+    margin-left:10px;
 }
 #chat .me .triangle{
     border-color: transparent transparent #6fbced transparent;
-    margin-left:375px;
+    margin-left:400px;
 }
 
 main footer{

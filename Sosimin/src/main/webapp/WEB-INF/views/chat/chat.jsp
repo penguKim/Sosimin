@@ -113,6 +113,7 @@ bottom:136px;
 #chat{
 	overflow-y: auto; /*스크롤 밑으로 내리기*/
 }
+
 </style>
 <script type="text/javascript">
 
@@ -501,7 +502,7 @@ function onError(event) {
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./">Home</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
                         <li>1:1 채팅</li>
                     </ul>
                 </div>
@@ -524,14 +525,14 @@ function onError(event) {
 			</li>
       
 			<li>
-				<img src="${pageContext.request.contextPath}/resources/upload/${sellMember.member_profile}" alt="판매자">
+				<img src="${pageContext.request.contextPath}/resources/upload/${sellMember.member_profile}">
 				<div>
 					<h2>${sellMember.member_nickname }</h2>
 					<h3><span>방금전</span></h3>
 				</div>
 			</li>
 			<li>
-				<img src="${pageContext.request.contextPath}/resources/upload/${sellMember.member_profile}" alt="판매자" >
+				<img src="${pageContext.request.contextPath}/resources/upload/${sellMember.member_profile}">
 				<div>
 					<h2>${sellMember.member_nickname }</h2>
 					<h3><span>방금전</span></h3>
@@ -542,10 +543,9 @@ function onError(event) {
 	
 	<main>
 	<header>
-		<img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" alt="">
+		<img src="${pageContext.request.contextPath}/resources/upload/${sellMember.member_profile}">
 		<div>
 			<h2>${sellMember.member_nickname }</h2>
-			<h3>상대방정보</h3>
 		</div>
 		
 		<div>
@@ -569,10 +569,10 @@ function onError(event) {
 
 		<li class="you">
 			<div class="entete">
-				<h2><img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" alt="">상대방</h2>
+				<h2><img src="${pageContext.request.contextPath}/resources/upload/${sellMember.member_profile}">${sellMember.member_nickname }</h2>
 			</div>
 			<div class="triangle"></div><!-- 말풍선 색상정하는 클래스  -->
-			<div class="message" id="messageColor">
+			<div class="message">
 				<span id="chatMessageArea"></span>
 			</div>
 			<div>
@@ -601,7 +601,7 @@ function onError(event) {
 <!-- 			<input type="button" value="메세지보내기" id="btnSend" onclick="btnSend()"> -->
 			<div class="col-lg-4 col-md-4 col-12">
 				<div class="wish-button" id="priceProposal">
-					<button class="btn" style="width:100px; height: 40px; font-size: 16px; color:white; background-color: #39d274" id="btnSend" onclick="btnSend()">send</button>
+					<button class="btn" style="width:100px; height: 40px; font-size: 16px; color:white; background-color: #39d274" id="btnSend" onclick="btnSend()">전송</button>
 				</div>
 			</div>
 		</footer>

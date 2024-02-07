@@ -2,23 +2,94 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.itwillbs.c5d2308t1_2.mapper.ChatMapper">
-
-<select id="getProduct" resultType="map">
-	SELECT *
-	FROM Product
-	WHERE product_id = #{product_id}
-	<!-- WHERE절 앞에는 서버(db)값들이고 = 우리가 받아올 파라미터값(map으로 받아온값) -->
-</select>
-
-<select id="getSellMember" resultType="map">
-		SELECT DISTINCT *
-		FROM Product p JOIN Member m
-		on p.member_id = m.member_id
+	<!-- 채팅방 1개 추가 -->
+	<insert id="insertChatRoom">
+		INSERT
+		INTO chat_room_list
+		VALUES
+		<!-- 복수개의 레코드를 한꺼번에 INSERT 할 경우 반복문 형식의 <foreach> 태그 활용 -->
+		<!-- 이 때, 사용될 데이터는 외부에서 전달받은 데이터(객체)를 사용하여 처리 -->
+		<!-- 
+		item 속성 : 태그 내에서 사용할 객체 1개 이름, 
+		collection 속성 : 전달받은 객체의 타입
+		separator 속성 : 각 묶음을 구분할 SQL 구문에서의 구분자
+		-->
+		<foreach item="chatRoom" collection="list" separator=",">
+			(#{chatRoom.room_id}, #{chatRoom.sender_id}, #{chatRoom.receiver_id}, #{chatRoom.title}, null)  -- List 객체수만큼 반복
+		</foreach>
+	</insert>
+	
+	<!-- 자신의 채팅방 목록 조회 -->
+	<select id="selectChatRoomList" resultType="chatRoom">
+		SELECT *
+		FROM chat_room_list
+		WHERE sender_id = #{sender_id}
+	</select>
+	
+	<!-- 채팅 메세지 저장 -->
+	<!-- 
+	[ chat_message 테이블 정의 ]
+	CREATE TABLE chat_message (
+		room_id VARCHAR(50) NOT NULL,
+		sender_id VARCHAR(16) NOT NULL,
+		receiver_id VARCHAR(16) NOT NULL,
+		message VARCHAR(2000) NOT NULL,
+		type VARCHAR(10) NOT NULL,
+		send_time VARCHAR(20) NOT NULL
+	); 
+	-->
+	<insert id="insertMessage">
+		INSERT
+		INTO chat_message
+		VALUES (
+			#{room_id}
+			, #{sender_id}
+			, #{receiver_id}
+			, #{message}
+			, #{type}
+			, #{send_time}
+		)
+	</insert>
+	
+	<!-- 채팅방 사용자 삭제 - DELETE -->
+	<!-- 룸ID 와 사용자ID 가 일치하는 레코드 삭제 -->
+	<delete id="deleteChatRoomUser">
+		DELETE
+		FROM chat_room_list
 		WHERE
-	    product_id = #{product_id}
-</select>
-
-
+			room_id = #{room_id}
+			AND sender_id = #{sender_id}
+	</delete>
+	
+	<!-- 현재 채팅방 사용자 수 조회 - SELECT -->
+	<!-- 룸ID 가 일치하는 레코드의 수 조회 -->
+	<select id="selectCurrentChatRoomUser" resultType="int">
+		SELECT COUNT(*)
+		FROM chat_room_list
+		WHERE room_id = #{room_id}
+	</select>
+	
+	<!-- 이전 채팅 내역 조회 - SELECT -->
+	<select id="selectChatList" resultType="chatMessage">
+		SELECT * 
+		FROM chat_message
+		WHERE room_id = #{room_id}
+	</select>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

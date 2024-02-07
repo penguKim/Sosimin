@@ -7,5 +7,7 @@
 		<typeAlias type="com.itwillbs.c5d2308t1_2.vo.CommunityVO" alias="community"/>
 		<typeAlias type="com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO" alias="reply"/>
 		<typeAlias type="com.itwillbs.c5d2308t1_2.vo.MemberVO" alias="member"/>
+		<typeAlias type="com.itwillbs.c5d2308t1_2.vo.ChatRoomVO" alias="chatRoom"/>
+		<typeAlias type="com.itwillbs.c5d2308t1_2.vo.ChatMessage2" alias="chatMessage"/>
 	</typeAliases>
 </configuration>

@@ -1,22 +1,42 @@
 package com.itwillbs.c5d2308t1_2.mapper;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import com.itwillbs.c5d2308t1_2.vo.MemberVO;
-import com.itwillbs.c5d2308t1_2.vo.PageDTO;
-import com.itwillbs.c5d2308t1_2.vo.ProductVO;
+import com.itwillbs.c5d2308t1_2.vo.ChatMessage2;
+import com.itwillbs.c5d2308t1_2.vo.ChatRoomVO;
+
 
 @Mapper
 public interface ChatMapper {
+	
+	// 채팅방 1개 정보 추가
+	void insertChatRoom(List<ChatRoomVO> chatRoom);
 
-	Map<String, String> getProduct(Map<String, String> map); //두개이상 받기위해서는 @param("map") Map<String,String> map, @param("member") Map<String,String> member
+	// 채팅방 목록 조회
+	List<ChatRoomVO> selectChatRoomList(String sender_id);
 
-	Map<String, String> getSellMember(Map<String, String> map);
+	// 채팅 메세지 저장
+	void insertMessage(ChatMessage2 chatMessage);
 
+	// 채팅방 사용자 삭제
+	void deleteChatRoomUser(ChatMessage2 chatMessage);
+
+	// 채팅방 사용자 수 조회
+	int selectCurrentChatRoomUser(ChatMessage2 chatMessage);
+
+	// 이전 채팅 내역 조회
+	List<ChatMessage2> selectChatList(ChatMessage2 chatMessage);
 
 }
+
+
+
+
+
+
+
+
+
+
