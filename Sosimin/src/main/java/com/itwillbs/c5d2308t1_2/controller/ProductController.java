@@ -639,10 +639,6 @@ public class ProductController {
 			    map.put("product_price" , product_price);
 			    map.put("gu", gu);
 			    map.put("dong", dong);
-//			    map.put("tag_name1", "#" + map.get("tag_name1"));
-//			    map.put("tag_name2", "#" + map.get("tag_name2"));
-//			    map.put("tag_name3", "#" + map.get("tag_name3"));
-//			    map.put("tag_name4", "#" + map.get("tag_name4"));
 			    
 			    if (map.get("tag_name1") != null) {
 			    	  map.put("tag_name1", "#" + map.get("tag_name1"));

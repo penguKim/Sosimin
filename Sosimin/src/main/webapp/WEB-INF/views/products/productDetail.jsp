@@ -599,10 +599,23 @@ var options = "width=" + width + ",height=" + height + ",left=" + left + ",top="
 
 window.open("Proposal?product_id=" + product_id, "상품이미지", options);
 } else{
-alert("로그인 후 사용 가능합니다.")
-location.href = "MemberLogin";
-}
-
+	Swal.fire({
+	        title: '회원만 사용가능합니다.',
+	        text: '로그인 페이지로 이동하시겠습니까?',
+	        icon: 'error',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '이동',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	        	location.href="MemberLogin";
+	        }
+	    });
+	}
 }
 
 
