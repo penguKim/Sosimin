@@ -290,24 +290,46 @@ $(function() {
 
 <%-- 좋아요 등록 --%>
 function heartLike(heart, product_id) {
-	$("#heartLike"+heart).addClass("is-active");
+	
     $.ajax({
     	url:"ProductLikeRegist",
     	data: {
     		product_id: product_id
     	},
+    	dataType: "json",
     	success: function(result) {
     		<%-- 찜을 등록하는 경우 --%>
-    		if(result.isChecked == 'false') { 
+    		if(result.isChecked == 'false') {
+    			const Toast = Swal.mixin({
+    			    toast: true,
+    			    position: 'center-center',
+    			    showConfirmButton: false,
+    			    timer: 2000,
+    			    timerProgressBar: false,
+    			})
+    			Toast.fire({
+    			    icon: 'success',
+    			    title: '좋아요가 등록되었습니다!'
+    			})		
 				$("#heartLike"+heart).addClass("is-active");
-				
 			<%-- 찜을 삭제하는 경우 --%>
-			} else if(result.isChecked == 'true') { 
+			} else if(result.isChecked == 'true') {
+				const Toast = Swal.mixin({
+				    toast: true,
+				    position: 'center-center',
+				    showConfirmButton: false,
+				    timer: 2000,
+				    timerProgressBar: false,
+				})
+				Toast.fire({
+				    icon: 'error',
+				    title: '좋아요가 삭제되었습니다!'
+				})		
 				$("#heartLike"+heart).removeClass("is-active");
 			}
 		},
 		error: function() {
-			
+			alert("설마 여기냐")
 		}
     }); // ajax 끝
 }
