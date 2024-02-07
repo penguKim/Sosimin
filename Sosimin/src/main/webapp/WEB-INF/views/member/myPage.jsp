@@ -81,7 +81,7 @@
 		// 찜정보 가져오기
 		$.ajax({
 			type: "POST",
-			url: "ShowLikeInfo", <%-- 회원의 관심 정보 가져오기 --%>
+			url: "ShowLikeInfo", <%-- 회원의 찜 정보 가져오기 --%>
 				dataType: "json",
 				success: function(result) {
 					console.log(result);
@@ -97,11 +97,11 @@
 					}
 				},
 				error: function(xhr, textStatus, errorThrown) {
-						alert("관심 불러오기를 실패했습니다.\n새로고침을 해주세요.");
+						alert("찜 불러오기를 실패했습니다.\n새로고침을 해주세요.");
 				}
 			});
 		
-		// 좋아요 버튼 클릭 이벤트
+		// 찜 버튼 클릭 이벤트
         $(".heart").on("click", function () {
         	let heart = $(this);
     		$.ajax({
@@ -643,6 +643,103 @@
 			}
 		});
 		
+		// 구매확정하기 버튼 클릭 이벤트 처리
+		$(".btnConfirmDeal").on("click", function() {
+			let product_id = $(this).data("id");
+// 			alert(product_id);
+			<%-- 서블릿 요청 --%>
+			$.ajax({
+				type: "GET",
+				url: "ConfirmPayment",
+				data: {
+					"product_id": product_id
+				},
+				success:  function(data) {
+					if(data == "not-login") {
+						Swal.fire({
+							icon: 'warning',
+							title: '로그인을 해주세요!',
+							text: '로그인 페이지로 이동합니다!',
+							allowOutsideClick: false
+						}).then((result) => {
+								location.href="MemberLogin";
+						});	
+					} else if(data == "true") {
+						Swal.fire({
+							position: 'center',
+							icon: 'success',
+							title: '구매를 확정했습니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});
+						$(".btnConfirmDeal").val("거래후기작성");
+						$(".btnConfirmDeal").attr("class", "btnWriteReview");
+					} else if(data == "none") {
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '구매 확정 가능한 상품이 없습니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});				
+					} else if(data == "inconsistency") {
+							Swal.fire({
+								position: 'center',
+								icon: 'error',
+								title: '구매자 정보가 일치하지 않습니다.',
+								showConfirmButton: false,
+								timer: 2000,
+								toast: true
+						});			
+					} else if(data == "unpaid") {
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '결제를 먼저 진행해주세요.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});			
+					} else if(data == "not-access_token") {
+						Swal.fire({
+							icon: 'warning',
+							title: '계좌 인증이 필요합니다',
+							text: '계좌 인증 페이지로 이동합니다.',
+							allowOutsideClick: false
+						}).then((result) => {
+								location.href="AccountVerification";
+						});	
+					} else if(data == "not-payInfo") {
+						Swal.fire({
+							icon: 'warning',
+							title: '계좌 등록이 필요합니다',
+							text: '계좌 등록 페이지로 이동합니다.',
+							allowOutsideClick: false
+						}).then((result) => {
+								location.href="AccountRegist";
+						});	
+					} else {
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '구매 확정을 실패했습니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});			
+					}
+			
+				},
+				error: function(request, status, error) {
+			      // 요청이 실패한 경우 처리할 로직
+			      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+				}
+			});	
+			
+		});
+		
 		
 	}); // document.ready 끝
 
@@ -1132,6 +1229,7 @@
 	}
 	
 	
+	
 </script>
 </head>
 
@@ -1169,37 +1267,13 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i>홈</a></li>
                         <li>마이페이지</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End Breadcrumbs -->
-    <%-- el 출력 테스트 --%>
-<%-- 		<c:choose> --%>
-<%-- 			<c:when test="${param.category eq '1' or param.category eq '3'}"> --%>
-<%-- 				<c:forEach var="page" items="${MyPageList }"> --%>
-<%-- 					${page.product_datetime } --%>
-<%-- 				</c:forEach>           --%>
-<%-- 			</c:when> --%>
-<%-- 			<c:when test="${param.category eq '2' }"> --%>
-<%-- 				<c:forEach var="page" items="${MyPageList }"> --%>
-<%-- 					${page.order_date } --%>
-<%-- 				</c:forEach>           --%>
-<%-- 			</c:when> --%>
-<%-- 			<c:when test="${param.category eq '4' }"> --%>
-<%-- 				<c:forEach var="page" items="${MyPageList }"> --%>
-<%-- 					${page.community_datetime } --%>
-<%-- 				</c:forEach>           --%>
-<%-- 			</c:when> --%>
-<%-- 			<c:when test="${param.category eq '5' }"> --%>
-<%-- 				<c:forEach var="page" items="${MyPageList }"> --%>
-<%-- 					${page.reply_datetime } --%>
-<%-- 				</c:forEach>           --%>
-<%-- 			</c:when> --%>
-<%-- 		</c:choose> --%>
 	<section class="item-details section row" id="myPageProfileSectionArea">
         <div class="container">
             <div class="top-area" id="profileArea">
@@ -1340,7 +1414,9 @@
 						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
-								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+								<a href="ProductDetail?product_id=${mypage.product_id }">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+								</a>
 <!-- 								<span class="heart"></span> -->
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
 									<span id="dealInProcess">거래중</span>
@@ -1372,7 +1448,7 @@
 								<div id="singleProductButtonArea">
 									<c:choose>
 										<c:when test="${mypage.trade_status eq '0' }"> <%-- 거래 대기 --%>
-											<input type="button" value="수정">
+											<input type="button" value="수정" onclick="location.href='ProductModify?product_id=${mypage.product_id}'" >
 										</c:when>
 										<c:when test="${mypage.trade_status eq '1' }"> <%-- 거래 중 --%>
 											<input type="button" value="구매확정요청">
@@ -1382,8 +1458,10 @@
 							</c:when>
 							
 							<c:when test="${mypage.trade_status eq '2' }"> <%-- 거래(판매) 완료 --%>
-								<div class="single-block" id="singleProductAreaDealComplete">
-									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+								<div class="single-block list${status.index} col-4" data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
+									<a href="ProductDetail?product_id=${mypage.product_id }">
+										<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+									</a>									
 									<span id="dealComplete">
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 										<b>판매 완료</b>
@@ -1436,7 +1514,9 @@
 						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 				        <c:choose>
 							<c:when test="${mypage.order_status eq '0'}"> <%-- 거래(구매) 중 --%>
-							<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+							<a href="ProductDetail?product_id=${mypage.product_id }">
+								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+							</a>										
 							<span class="heart"></span>
 							<span id="dealInProcess">거래중</span>
 							<div id="singleProductTitleArea">
@@ -1464,13 +1544,15 @@
 								채팅 n회
 							</div>
 							<div id="singleProductButtonArea">
-								<input type="button" value="구매확정하기">
+								<input type="button" class="btnConfirmDeal num${mypage.product_id }" data-id="${mypage.product_id}" value="구매확정하기">
 							</div>
 							</c:when>						
 							<c:when test="${mypage.order_status eq '1'}"> <%-- 거래(구매)완료 --%>
 								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
-								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
-								<span id="dealComplete">
+									<a href="ProductDetail?product_id=${mypage.product_id }">
+										<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+									</a>											
+									<span id="dealComplete">
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 									<b>구매 완료</b>
 								</span>				
@@ -1519,8 +1601,9 @@
 						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
-								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
-				
+								<a href="ProductDetail?product_id=${mypage.product_id }">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+								</a>							
 								<span class="heart"></span>
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
 									<span id="dealInProcess">거래중</span>
@@ -1550,13 +1633,15 @@
 									채팅 n회
 								</div>
 								<div id="singleProductButtonArea">
-									<input type="button" value="상세보기">
+									<input type="button" value="상세보기" onclick="ProductDetail?product_id=${mypage.product_id}">
 								</div>
 							</c:when>
 							
 							<c:when test="${mypage.trade_status eq '2' }"> <%-- 거래(판매) 완료 --%>
 								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
-									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+									<a href="ProductDetail?product_id=${mypage.product_id }">
+										<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+									</a>												
 									<span id="dealComplete">
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 										<b>판매 완료</b>
@@ -1678,11 +1763,11 @@
 									</c:choose>
 									<b id="bold"><a href="CommunityDetail?community_id=${mypage.community_id }">
 									<c:choose>
-								        <c:when test="${fn:length(mypage.community_content) gt 15}">
-								        	${fn:substring(mypage.community_content, 0, 14)} ...
+								        <c:when test="${fn:length(mypage.community_subject) gt 15}">
+								        	${fn:substring(mypage.community_subject, 0, 14)} ...
 								        </c:when>
 								        <c:otherwise>
-								        	${mypage.community_content }
+								        	${mypage.community_subject }
 								        </c:otherwise>
 									</c:choose>
 									</a></b><br>

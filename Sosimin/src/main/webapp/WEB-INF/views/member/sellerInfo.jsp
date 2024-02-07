@@ -542,8 +542,9 @@
 						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
-								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
-								<span class="heart"></span>
+								<a href="ProductDetail?product_id=${mypage.product_id }">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+								</a>								<span class="heart"></span>
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
 									<span id="dealInProcess">거래중</span>
 								</c:if>
@@ -577,9 +578,10 @@
 							</c:when>
 							
 							<c:when test="${mypage.trade_status eq '2' }"> <%-- 거래(판매) 완료 --%>
-								<div class="single-block" id="singleProductAreaDealComplete">
-									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
-									<span id="dealComplete">
+								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
+										<a href="ProductDetail?product_id=${mypage.product_id }">
+											<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+										</a>									<span id="dealComplete">
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 										<b>판매 완료</b>
 									</span>				
@@ -623,7 +625,9 @@
 						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 				        <c:choose>
 							<c:when test="${mypage.order_status eq '0'}"> <%-- 거래(구매) 중 --%>
-							<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+							<a href="ProductDetail?product_id=${mypage.product_id }">
+								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+							</a>							
 							<span class="heart"></span>
 							<span id="dealInProcess">거래중</span>
 							<div id="singleProductTitleArea">
@@ -655,8 +659,10 @@
 							</div>
 							</c:when>						
 							<c:when test="${mypage.order_status eq '1'}"> <%-- 거래(구매)완료 --%>
-								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
-								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+							<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
+								<a href="ProductDetail?product_id=${mypage.product_id }">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+								</a>								
 								<span id="dealComplete">
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 									<b>구매 완료</b>
@@ -699,8 +705,9 @@
 						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
-								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
-				
+								<a href="ProductDetail?product_id=${mypage.product_id }">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+								</a>				
 								<span class="heart"></span>
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
 									<span id="dealInProcess">거래중</span>
@@ -736,7 +743,9 @@
 							
 							<c:when test="${mypage.trade_status eq '2' }"> <%-- 거래(판매) 완료 --%>
 								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
-									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+									<a href="ProductDetail?product_id=${mypage.product_id }">
+										<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+									</a>									
 									<span id="dealComplete">
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 										<b>판매 완료</b>
@@ -851,11 +860,11 @@
 									</c:choose>
 									<b id="bold"><a href="CommunityDetail?community_id=${mypage.community_id }">
 									<c:choose>
-								        <c:when test="${fn:length(mypage.community_content) gt 15}">
-								        	${fn:substring(mypage.community_content, 0, 14)} ...
+								        <c:when test="${fn:length(mypage.community_subject) gt 15}">
+								        	${fn:substring(mypage.community_subject, 0, 14)} ...
 								        </c:when>
 								        <c:otherwise>
-								        	${mypage.community_content }
+								        	${mypage.community_subject }
 								        </c:otherwise>
 									</c:choose>
 									</a></b><br>
