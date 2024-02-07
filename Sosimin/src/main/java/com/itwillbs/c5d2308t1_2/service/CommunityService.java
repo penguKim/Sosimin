@@ -148,7 +148,7 @@ public class CommunityService {
 	}
 
 	// 댓글 목록 조회
-	public List<CommunityReplyVO> getreplyList(CommunityVO com) {
+	public List<Map<String, Object>> getReplyList(CommunityVO com) {
 		return mapper.getReplyList(com);
 	}
 

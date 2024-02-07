@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.c5d2308t1_2.mapper.LevelMapper;
+import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.ReviewVO;
 
@@ -49,6 +50,55 @@ public class LevelService {
 		// 회원 레벨 업데이트
 		mapper.updateMemberLevel(map);
 		
+	}
+
+	// 회원 댓글 등록
+	public void updateComReExp(CommunityReplyVO reply, boolean isDeleted) {
+		// 회원 정보 조회
+		Map<String, Integer> map = mapper.selectMemberLevel(reply.getReply_writer());
+		// 이전 레벨정보 가져오기
+		Map<String, Integer> prevLevel = mapper.selectLevel((int)map.get("member_level") - 1);
+		// 현재레벨
+		int level = map.get("member_level");
+		// 현재경험치
+		int currentExp = map.get("member_exp");
+		// 계산경험치
+		int exp = 0;
+		if(isDeleted) {
+			exp = 3;
+		} else {
+			exp = -3;
+		}
+		// 최대 레벨
+		int maxLevel = mapper.selectMaxLevel();
+		
+		currentExp += exp;
+		
+		if(currentExp >= (int)map.get("level_max_exp")) { // 경험치 초과 시 레벨 업
+		    if(level < maxLevel) { // 최대 레벨 미만인 경우
+		        System.out.println("레벨을 올릴거에요");
+		        map.put("member_level", level + 1);
+		        map.put("member_exp", currentExp - (int)map.get("level_max_exp"));
+		    } else { // 최대 레벨인 경우
+		        System.out.println("경험치를 최대로 유지할거에요");
+		        map.put("member_exp", (int)map.get("level_max_exp"));
+		    }
+		} else if(currentExp <= (int)map.get("level_min_exp")) { // 레벨 다운
+		    if(level > 1) { // 레벨이 2이상인 경우
+		        System.out.println("레벨을 내릴거에요");
+		        map.put("member_level", level - 1);
+		        map.put("member_exp", (int)prevLevel.get("level_max_exp") + currentExp);
+		    } else { // 레벨이 1인 경우
+		        System.out.println("경험치를 0으로 만들거에요");
+		        map.put("member_exp", 0);
+		    }
+		} else { // 경험치만 증가
+			System.out.println("경험치만 올릴거에요");
+			map.put("member_exp", currentExp);
+		}
+		
+		// 회원 레벨 업데이트
+		mapper.updateMemberLevel(map);
 	}
 	
 	// 회원 리뷰 등록
@@ -211,6 +261,7 @@ public class LevelService {
 		}
 		
 	}
+
 
 
 

@@ -35,6 +35,25 @@
 		// 30초마다 게시글 임시저장
 		let tempSave = setInterval(tempToast, 30000);
 		
+		// 회원의 지역 정보 가져오기
+		$.ajax({
+			type: "POST",
+			url: "TownCheck",
+			dataType: "json",
+			success: function(data) {
+				if(typeof data.gu !== 'undefined') {
+					$(".breadcrumbs-content").html(
+							'<h1 class="page-title">' + data.gu + '의 커뮤니티</h1>'
+							);
+				} else {
+					$(".breadcrumbs-content").html(
+							'<h1 class="page-title">부산광역시의 커뮤니티</h1>'
+							);
+				}
+
+			}
+		});
+		
 		// 임시저장한 게시글 불러오기
 		$.ajax({
 			type: "POST",
@@ -478,13 +497,13 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">XX동 커뮤니티</h1>
+                        <h1 class="page-title">&nbsp;</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="Community">커뮤니티</a></li>
+                        <li><a href="Community?pageNum=${param.pageNum }">커뮤니티</a></li>
                         <li>게시글 작성</li>
                     </ul>
                 </div>
@@ -494,13 +513,7 @@
    	<!-- End Breadcrumbs -->
    	<section class="communityArea section">
 		<div class="container">
-			<h1>게시글 작성</h1>
-<!-- <form action="ImageTest" method="post" enctype="multipart/form-data" > -->
-<!-- 	<input type="file" name="image" id="fileUpload" multiple hidden /> -->
-<!-- 	<div id="uploadArea"></div> -->
-<!-- 	<div id="previewArea"></div> -->
-<!-- 	<input type="submit" value="파일"> -->
-<!-- </form> -->
+<!-- 			<h1>게시글 작성</h1> -->
 			<form action="CommunityWritePro" name="writeForm" class="needs-validation" id="writeForm" method="post" enctype="multipart/form-data" novalidate>
 				<div class="communityForm post p-4 mx-auto" style="width: 65%;">
 				    <div class="post-header border-bottom">

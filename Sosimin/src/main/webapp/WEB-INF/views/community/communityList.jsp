@@ -419,7 +419,7 @@
 									</div>
 								</a>
 							</td>
-							<td class="d-none d-md-table-cell">${com.community_writer }</td>
+							<td class="d-none d-md-table-cell">${com.member_nickname }</td>
 							<td class="d-none d-md-table-cell">
 								<span id="comDate">${com.community_datetime }</span>
 <%-- 								<fmt:formatDate value="${com.community_datetime }" pattern="yy-MM-dd HH:mm"/> --%>

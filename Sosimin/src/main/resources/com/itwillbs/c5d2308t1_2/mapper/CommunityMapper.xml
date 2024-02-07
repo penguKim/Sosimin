@@ -59,12 +59,12 @@
 					AND community_content LIKE '%${searchKeyword}%'
 				</when>
 				<when test="searchType.equals('writer')">
-					AND community_writer LIKE #{searchKeyword}
+					AND member_nickname LIKE '%${searchKeyword}%'
 				</when>
 				<otherwise>
 					AND community_subject LIKE '%${searchKeyword}%'
 					OR community_content LIKE '%${searchKeyword}%'
-					OR community_writer LIKE #{searchKeyword}
+					OR member_nickname LIKE #{searchKeyword}
 				</otherwise>
 			</choose>
 		</if>
@@ -155,12 +155,12 @@
 					AND community_content LIKE '%${searchKeyword}%'
 				</when>
 				<when test="searchType.equals('writer')">
-					AND community_writer LIKE #{searchKeyword}
+					AND member_nickname LIKE '%${searchKeyword}%'
 				</when>
 				<otherwise>
 					AND community_subject LIKE '%${searchKeyword}%'
 					OR community_content LIKE '%${searchKeyword}%'
-					OR community_writer LIKE #{searchKeyword}
+					OR member_nickname LIKE #{searchKeyword}
 				</otherwise>
 			</choose>
 		</if>
@@ -304,9 +304,9 @@
 	</insert>
 	
 	<!-- 게시글 댓글 목록 조회 -->
-	<select id="getReplyList" resultType="reply">
+	<select id="getReplyList" resultType="map">
 		SELECT *
-		FROM CommunityReply
+		FROM CommunityReplyView
 		WHERE 
 			community_id = #{community_id}
 		ORDER BY

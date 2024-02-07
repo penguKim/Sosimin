@@ -26,6 +26,25 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
 <script type="text/javascript">
 	$(function() {
+		// 회원의 지역 정보 가져오기
+		$.ajax({
+			type: "POST",
+			url: "TownCheck",
+			dataType: "json",
+			success: function(data) {
+				if(typeof data.gu !== 'undefined') {
+					$(".breadcrumbs-content").html(
+							'<h1 class="page-title">' + data.gu + '의 커뮤니티</h1>'
+							);
+				} else {
+					$(".breadcrumbs-content").html(
+							'<h1 class="page-title">부산광역시의 커뮤니티</h1>'
+							);
+				}
+
+			}
+		});
+		
 		// 게시글 수정하기
 		$('#modifyBtn').on('click', function(event) {
 			event.preventDefault();
@@ -384,13 +403,13 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">XX동 커뮤니티</h1>
+                        <h1 class="page-title">&nbsp;</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="Community">커뮤니티</a></li>
+                        <li><a href="Community?pageNum=${param.pageNum }">커뮤니티</a></li>
                         <li>게시글 수정</li>
                     </ul>
                 </div>
@@ -400,7 +419,7 @@
    	<!-- End Breadcrumbs -->
    	<section class="communityArea section">
 		<div class="container">
-			<h1>게시글 수정</h1>
+<!-- 			<h1>게시글 수정</h1> -->
 			<form action="CommunityModifyPro" name="modifyForm" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>
 				<div class="communityForm post p-4 mx-auto" style="width: 65%;">
 				    <div class="post-header border-bottom">

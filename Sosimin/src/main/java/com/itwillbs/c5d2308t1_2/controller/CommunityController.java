@@ -276,17 +276,17 @@ public class CommunityController {
         int likeCount = communityService.getLikeCount(com);
         
         // 댓글 불러오기
-        List<CommunityReplyVO> replyList = communityService.getreplyList(com);
+        List<Map<String, Object>> replyList = communityService.getReplyList(com);
         
-        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         
-        for(CommunityReplyVO datetime : replyList) {
+        for(Map<String, Object> datetime : replyList) {
         	LocalDateTime reDateTime;
-    		if(datetime.getReply_datetime().toString().split(":").length > 2) {
-    			reDateTime = LocalDateTime.parse(datetime.getReply_datetime().toString(), formatter);
+    		if(datetime.get("reply_datetime").toString().split(":").length > 2) {
+    			reDateTime = LocalDateTime.parse(datetime.get("reply_datetime").toString(), formatter);
     		} else {
-    			reDateTime = LocalDateTime.parse(datetime.getReply_datetime().toString(), formatter2);
+    			reDateTime = LocalDateTime.parse(datetime.get("reply_datetime").toString(), formatter2);
     		}
         	duration = Duration.between(reDateTime, now);
     		period = Period.between(reDateTime.toLocalDate(), now.toLocalDate());
@@ -315,7 +315,7 @@ public class CommunityController {
                 timeAgo = "방금 전";
             }
 
-            datetime.setReply_datetime(timeAgo);
+            datetime.put("reply_datetime", timeAgo);
             
         }
         
@@ -645,6 +645,8 @@ public class CommunityController {
 		
 		// 댓글 등록 요청 결과 판별
 		if(insertCount > 0) {
+			// 댓글 등록 시 경험치 증가
+			levelService.updateComReExp(reply, true);
 			return "redirect:/CommunityDetail?community_id="
 					+ reply.getCommunity_id() + "&pageNum=" + pageNum;
 		} else 	{
@@ -674,6 +676,8 @@ public class CommunityController {
 			int deleteCount = communityService.removeReply(reply);
 			
 			if(deleteCount > 0) {
+				// 댓글 삭제 시 경험치 감소
+				levelService.updateComReExp(reply, false);
 				return "true";
 			} else {
 				return "false";
@@ -698,6 +702,8 @@ public class CommunityController {
 		reply.setReply_writer(sId);
 		
 		int insertCount = communityService.registReReply(reply);
+		// 댓글 등록 시 경험치 증가
+		levelService.updateComReExp(reply, true);
 		
 		if(insertCount > 0) {
 			return "true";
@@ -707,110 +713,7 @@ public class CommunityController {
 		
 	}
 	
-	// 게시글 임시저장 AJAX
-//	@ResponseBody
-//	@PostMapping("TempRegist")
-//	public String tempRegist(CommunityVO com, HttpSession session) {
-//		
-////		System.out.println("ajax로 넘어온 데이터 제발넘어와 : " + com);
-//		
-//		String sId = (String)session.getAttribute("sId");
-//		if(sId == null) {
-//			return "false";
-//		}
-//		
-//		com.setCommunity_writer(sId);
-//		
-//		String uploadDir = "/resources/tempUpload"; // 가상의 경로(이클립스 프로젝트 상에 생성한 경로)
-//		String saveDir = session.getServletContext().getRealPath(uploadDir);
-//		
-//		// 서브 디렉토리
-//		String subDir = "";
-//		
-//		LocalDate now = LocalDate.now();
-//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-//		subDir = now.format(dtf);
-//		
-//		saveDir += File.separator + subDir; // File.separator 대신 / 또는 \ 지정도 가능
-//		System.out.println(saveDir);
-//		try {
-//			Path path = Paths.get(saveDir); // 파라미터로 업로드 경로 전달
-//			Files.createDirectories(path); // 파라미터로 Path 객체 전달
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		// -------------------
-//		// BoardVO 객체에 전달(저장)된 실제 파일 정보가 관리되는 MultipartFile 타입 객체 꺼내기
-//		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
-//		mFiles.add(com.getFile1());
-//		mFiles.add(com.getFile2());
-//		mFiles.add(com.getFile3());
-//		mFiles.add(com.getFile4());
-//		mFiles.add(com.getFile5());
-//		
-//		List<String> fileNames = new ArrayList<String>();
-//		fileNames.add("");
-//		fileNames.add("");
-//		fileNames.add("");
-//		fileNames.add("");
-//		fileNames.add("");
-//		
-//		// UUID 를 변수에 저장해서 똑같은 난수를 넣어주는것보다 매번 호출하여
-//		// 다른 난수를 파일마다 붙여주면 한번에 파일명이 같은 파일이 업로드되도 중복되지 않는다.
-//		for(int i = 0; i < 5; i++) {
-//			MultipartFile mFile = mFiles.get(i);
-//			if(mFile != null && !mFile.getOriginalFilename().equals("")) {
-//				String fileName = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile.getOriginalFilename();
-//				fileNames.set(i, subDir + "/" + fileName);
-//			}
-//		}
-//		
-//		// 서브디렉토리 + 파일명을 저장
-//		com.setCommunity_image1(fileNames.get(0));
-//		com.setCommunity_image2(fileNames.get(1));
-//		com.setCommunity_image3(fileNames.get(2));
-//		com.setCommunity_image4(fileNames.get(3));
-//		com.setCommunity_image5(fileNames.get(4));
-//		
-//		System.out.println("실제 업로드 파일명1 : " + com.getCommunity_image1());
-//		System.out.println("실제 업로드 파일명2 : " + com.getCommunity_image2());
-//		System.out.println("실제 업로드 파일명3 : " + com.getCommunity_image3());
-//		System.out.println("실제 업로드 파일명4 : " + com.getCommunity_image4());
-//		System.out.println("실제 업로드 파일명5 : " + com.getCommunity_image5());
-//		
-//		// ----------------------------------------------------------------------
-//
-//		// 게시글 등록 작업
-//		int insertCount = communityService.registTempCommunity(com);
-//		
-//		// 게시물 등록 작업 요철 결과 판별
-//		if(insertCount > 0) {
-//			try {
-//				// 파일명이 존재하는 파일만 이동 처리 작업 수행
-//				for(int i = 0; i < 5; i++) {
-//					MultipartFile mFile = mFiles.get(i);
-//					String fileName = fileNames.get(i);
-//					if(!fileName.equals("")) {
-//						// 년월일 다음의 '/'를 인덱스로 지정 
-//						fileName = fileName.substring(fileName.indexOf("/", 9));
-//						System.out.println("파일 이동 할거야" + saveDir + fileName);
-//						mFile.transferTo(new File(saveDir, fileName));
-//					}
-//					
-//				}
-//			} catch (IllegalStateException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			
-//			return "true";
-//		} else {
-//			return "false";
-//		}
-//		
-//	}
-	
+	// 게시글 임시저장
 	@ResponseBody
 	@PostMapping("TempRegist")
 	public String tempRegist(CommunityVO com, HttpSession session) {

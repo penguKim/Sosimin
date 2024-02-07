@@ -43,7 +43,7 @@ public interface CommunityMapper {
 	int insertReplyCommunity(CommunityReplyVO reply);
 
 	// 댓글 목록 조회
-	List<CommunityReplyVO> getReplyList(CommunityVO com);
+	List<Map<String, Object>> getReplyList(CommunityVO com);
 
 	// 댓글 작성자 조회
 	CommunityReplyVO selectReplyWriter(CommunityReplyVO reply);

@@ -4,6 +4,12 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script>
+	<%-- 뒤로가기 방지 --%>
+	window.addEventListener('pageshow', function(event) { <%-- 페이지가 로드되거나 새로고침 발생 이벤트 --%>
+		if (event.persisted) { <%-- 뒤로가기나 앞으로가기로 이동했을 시 true 리턴 --%>
+			location.href = './'; //메인 페이지로 이동
+		}
+	});
 	// sweetalert - icon 속성 값
 	// 성공 : success, 실패 : error, 경고 : warning, 정보 : info, 질문 : question
 	$(function() {

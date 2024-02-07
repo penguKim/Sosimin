@@ -24,6 +24,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
 <script type="text/javascript">
 	$(function() {
 		console.log(${percentage});
@@ -98,7 +99,7 @@
         $(".heart").on("click", function () {
     		$.ajax({
     			type: "POST",
-    			url: "likeCheck", <%-- 해당 영화의 찜 정보가 DB에 있는지 판별 --%>
+    			url: "likeCheck",
     			data: {
     				community_like_status: 0,
     				community_num: ${param.community_id}
@@ -151,11 +152,11 @@
         });
 		
 		// 신고 버튼 클릭 이벤트
-        $(".reportBtn").on("click", function() {
-			if(confirm("신고하시겠습니까?")) {
-				alert("신고했습니다.");
-			}
-		});
+//         $(".reportBtn").on("click", function() {
+// 			if(confirm("신고하시겠습니까?")) {
+// 				alert("신고했습니다.");
+// 			}
+// 		});
         
         // 댓글 숨기기/보이기 버튼 클릭 이벤트
         $("#replyBtn").on("click", function() {
@@ -278,14 +279,35 @@
 	    					// => replyTr_ 문자열과 댓글번호를 조합하여 id 선택자 지정
 	    					$("#replyTr_" + reply_id).remove();
 	    				} else if(result == "false") {
-	    					alert("댓글 삭제 실패");
+	    					Swal.fire({
+	    						position: 'center',
+	    						icon: 'error',
+	    						title: '댓글 삭제 실패!',
+	    						showConfirmButton: false,
+	    						timer: 2000,
+	    						toast: true
+	    					});
 	    				} else if(result == "invalidSession") { // 세션아이디 없을 경우
-	    					alert("권한이 없습니다!");
+	    					Swal.fire({
+	    						position: 'center',
+	    						icon: 'warning',
+	    						title: '권한이 없습니다.',
+	    						showConfirmButton: false,
+	    						timer: 2000,
+	    						toast: true
+	    					});
 	    					return;
 	    				}
 	    			},
 	    			error: function() {
-	    				alert("요청 실패!");
+    					Swal.fire({
+    						position: 'center',
+    						icon: 'warning',
+    						title: '요청 실패!',
+    						showConfirmButton: false,
+    						timer: 2000,
+    						toast: true
+    					});
 	    			}
 	    		});
 	        } else {
@@ -307,7 +329,7 @@
 				showConfirmButton: false,
 				timer: 2000,
 				toast: true
-			})
+			});
 			$("#replyTextarea").focus();
 			return;
 		} else {
@@ -398,11 +420,25 @@
 				if(result == "true") {
 					location.reload(); // 페이지 갱신(POST 방식일 시 전달받은 데이터 유지,브라우저 갱신 이력 남지 않음)
 				} else {
-					alert("댓글 삭제 실패!");
+					Swal.fire({
+						position: 'center',
+						icon: 'warning',
+						title: '댓글 삭제 실패!',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
 				}
 			},
 			error: function() {
-				alert("요청 실패!");
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '요청 실패!',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
 			}
 			
 		});
@@ -450,6 +486,8 @@
 	<header class="header navbar-area">
 		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
+	<%-- 신고하기 기능 --%>
+	<jsp:include page="../report/report.jsp"></jsp:include>
 	<!-- End Header Area -->
 	
 	<!-- Start Breadcrumbs -->
@@ -465,6 +503,7 @@
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
                         <li><a href="Community?pageNum=${param.pageNum }">커뮤니티</a></li>
+                        <li>상세 게시글</li>
                     </ul>
                 </div>
             </div>
@@ -499,14 +538,6 @@
 				        	<div class="row align-items-center">
 						        <a class="col-auto" href="SellerInfo?member_id=${com.member_id }"><p class="fs-5">${com.member_nickname}</p></a>
 						        <p class="col-auto fs-6">${com. dong}</p>
-<!-- 						        <div class="col-xl-auto col-auto"> -->
-<%-- 						        	LV. ${com.member_level } --%>
-<!-- 					        	</div> -->
-<!-- 					        	<div class="col-xl-4 col-3"> -->
-<!-- 									<div class="progress"> -->
-<!-- 										<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div> -->
-<!-- 									</div> -->
-<!-- 					        	</div> -->
 				        	</div>
 				        	<div class="row align-items-center">
 				        		<div class="col-xl-auto col-auto fs-6">
@@ -554,7 +585,8 @@
 						</div>
 						<c:choose>
 							<c:when test="${com.community_writer ne sessionScope.sId and sessionScope.sId ne 'admin' and com.community_writer ne 'admin' }">
-								<div class="col-1 align-self-end" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:24px"></i></div>
+								<div class="col-1 align-self-end" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size:24px"></i></div>
+<!-- 								<span class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size:20px; white-space: nowrap">신고하기</span> -->
 							</c:when>
 							<c:otherwise>
 								<div class="col-2"></div>
@@ -596,8 +628,13 @@
 										</div>
 									<div class="col">
 										<div class="row">
+											<div class="col-auto pe-0 align-self-center">
+												<a  href="SellerInfo?member_id=${com.member_id }"><span class="fs-6">${reply.member_nickname }</span></a>
+											</div>
+											<div class="col-auto pe-0">
+												<p>${reply.dong }</p>
+											</div>
 											<div class="col">
-												<span class="me-2 mb-2">${reply.reply_writer }</span>
 												<c:choose>
 													<c:when test="${reply.reply_writer eq 'admin' }">
 														<span class="badge rounded-pill text-bg-secondary" style="background-color: #000;">관리자</span>
@@ -632,8 +669,10 @@
 											<c:choose>
 												<c:when test="${reply.reply_writer eq 'admin' }"><span></span></c:when>
 												<c:when test="${empty sessionScope.sId or sessionScope.sId ne reply.reply_writer and sessionScope.sId ne 'admin' }">
-													<span class="text-end">
-														<i class="reportBtn fa fa-warning" style="font-size:18px"></i>
+<!-- 													<span class="text-end"> -->
+													<div class="col-1 offset-md-6" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size:18px"></i></div>
+													
+<!-- 														<i class="reportBtn fa fa-warning" style="font-size:18px"></i> -->
 													</span>
 												</c:when>
 												<c:when test="${sessionScope.sId eq reply.reply_writer or sessionScope.sId eq 'admin' }">
