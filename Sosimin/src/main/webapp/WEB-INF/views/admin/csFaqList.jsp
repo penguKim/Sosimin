@@ -104,97 +104,75 @@ function openModal(order_id) {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="order_list" items="${orderList}">
+									<c:forEach var="faq" items="${csFaqList}">
 										<tr>
-											<td>${order_list.order_id}</td>
-											<td>${order_list.product_name}</td>
-											<td>${order_list.product_seller}</td>
-											<td>${order_list.product_buyer}</td>
+											<td>${faq.cs_type_list_num}</td>
 											<td>
-												<c:set var="datetime" value="${fn:split(order_list.order_date, 'T')}" />
+												<c:choose>
+													<c:when test="${faq.cs_type_detail eq '4'}">회원</c:when>
+													<c:when test="${faq.cs_type_detail eq '5'}">거래분쟁</c:when>
+													<c:when test="${faq.cs_type_detail eq '6'}">소심페이</c:when>
+													<c:when test="${faq.cs_type_detail eq '7'}">사이트이용</c:when>
+												</c:choose>
+											</td>
+											<td>${faq.cs_subject}</td>
+											<td>
+												<c:set var="datetime" value="${fn:split(faq.cs_date, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
 												${date}
 											</td>
 											<td class="green">
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${order_list.order_id}">
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${faq.cs_id}">
 													상세보기
 												</button>
 												<!-- Basic Modal -->
-												<div class="modal fade" id="modal-${order_list.order_id}" tabindex="-1">
+												<div class="modal fade" id="modal-${faq.cs_id}" tabindex="-1">
 													<div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header">
-																<h5 class="modal-title">충전/환급 상세보기</h5><!-- 모달 제목 -->
+																<h5 class="modal-title">자주묻는질문 상세보기</h5><!-- 모달 제목 -->
 																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 															</div>
 															<div class="modal-body">
 																<!-- 모달 내용이 들어가는 부분 -->
 																<table class="table modal_table">
 																	<tr>
-																		<th scope="row">거래내역번호</th>
-																		<td>${order_list.order_id}</td>
+																		<th scope="row">번호</th>
+																		<td>${faq.cs_type_list_num}</td>
 																	</tr>
 																	<tr>
-																		<th scope="row">상품번호</th>
-																		<td>${order_list.product_id}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">상품명</th>
-																		<td>${order_list.product_name}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">상품품목</th>
-																		<td>${order_list.product_category}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">판매자</th>
-																		<td>${order_list.product_seller}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">구매자</th>
-																		<td>${order_list.product_buyer}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">거래금액</th>
+																		<th scope="row">유형</th>
 																		<td>
 																			<c:choose>
-																				<c:when test="${order_list.order_status eq 0}">
-																					금액확인중
-																				</c:when>
-																				<c:otherwise>
-																					<c:set var="payAmount" value="${order_list.payment_amount}" />
-																					<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
-																				</c:otherwise>
+																				<c:when test="${faq.cs_type_detail eq '4'}">회원</c:when>
+																				<c:when test="${faq.cs_type_detail eq '5'}">거래분쟁</c:when>
+																				<c:when test="${faq.cs_type_detail eq '6'}">소심페이</c:when>
+																				<c:when test="${faq.cs_type_detail eq '7'}">사이트이용</c:when>
 																			</c:choose>
 																		</td>
 																	</tr>
 																	<tr>
-																		<th scope="row">거래상태</th>
+																		<th scope="row">제목</th>
+																		<td>${faq.cs_subject}</td>
+																	</tr>
+																	<tr>
+																		<th scope="row">게시시간</th>
 																		<td>
-																			<c:choose>
-																				<c:when test="${order_list.order_status eq 0}">거래진행</c:when>
-																				<c:when test="${order_list.order_status eq 1}">거래완료</c:when>
-																			</c:choose>
+																			<c:set var="datetime" value="${fn:split(faq.cs_date, 'T')}" />
+																			<c:set var="date" value="${datetime[0]}" />
+																			${date}
 																		</td>
 																	</tr>
 																	<tr>
-																		<th scope="row">거래일</th>
-																		<td>
-																			<c:choose>
-																				<c:when test="${order_list.order_status eq 0}">거래진행중</c:when>
-																				<c:otherwise>
-																					<c:set var="datetime" value="${fn:split(order_list.order_date, 'T')}" />
-																					<c:set var="date" value="${datetime[0]}" />
-																					${date}
-																				</c:otherwise>
-																			</c:choose>
-																		</td>
+																		<th scope="row">내용</th>
+																		<td>${faq.cs_content}</td>
 																	</tr>
 																</table>
 															</div>
 															<div class="modal-footer">
 																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-<!-- 																<button type="button" class="btn btn-primary">취소하기</button> -->
+																<button type="button" class="btn btn-primary">수정하기</button>
+																<button type="button" class="btn btn-primary">삭제하기</button>
 															</div>
 														</div>
 													</div>

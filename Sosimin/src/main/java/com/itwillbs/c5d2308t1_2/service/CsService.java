@@ -16,13 +16,18 @@ public class CsService {
 	private CsMapper mapper;
 
 	// 공지사항 목록 불러오기
-	public int getCsListCount(String searchKeyword, String searchType, String category) {
-		return mapper.selectCsListCount(searchKeyword, searchType, category);
+	public int getCsListCount(String searchKeyword, String searchType, String category, Map<String, Object> map) {
+		return mapper.selectCsListCount(searchKeyword, searchType, category, map);
 	}
 	
 	// 한 페이지에 표시할 게시글 목록 조회 작업 요청 
-	public List<Map<String, Object>> getCsNotice(String searchKeyword, String searchType, String category, PageDTO page) {
-		return mapper.selectCsList(searchKeyword, searchType, category, page);
+	public List<Map<String, Object>> getCsList(String searchKeyword, String searchType, String category, PageDTO page, Map<String, Object> map) {
+		return mapper.selectCsList(searchKeyword, searchType, category, page, map);
 	}
 
+	// 고객센터관리
+	public List<Map<String, Object>> getCsListAdmin(Map<String, Object> map) {
+		return mapper.selectCsListAdmin(map);
+	}
+	
 }

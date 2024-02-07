@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,14 +100,15 @@
 			<div class="row mb-5 mx-auto">
 				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" checked>
-<%-- 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>> --%>
 					<label class="btn btn-outline-primary" for="allCategory">전체</label>
 					<input type="radio" class="btn-check" name="category" id="hotCategory" value="4" autocomplete="off" <c:if test="${param.category eq '4' }">checked</c:if>>
-					<label class="btn btn-outline-primary" for="hotCategory">공지</label>
-					<input type="radio" class="btn-check" name="category" id="infoCategory" value="1" autocomplete="off" <c:if test="${param.category eq '1' }">checked</c:if>>
-					<label class="btn btn-outline-primary" for="infoCategory">정책변경</label>
-					<input type="radio" class="btn-check" name="category" id="questionCategory" value="2" autocomplete="off" <c:if test="${param.category eq '2' }">checked</c:if>>
-					<label class="btn btn-outline-primary" for="questionCategory">사기예방</label>
+					<label class="btn btn-outline-primary" for="hotCategory">회원</label>
+					<input type="radio" class="btn-check" name="category" id="infoCategory" value="5" autocomplete="off" <c:if test="${param.category eq '5' }">checked</c:if>>
+					<label class="btn btn-outline-primary" for="infoCategory">거래분쟁</label>
+					<input type="radio" class="btn-check" name="category" id="questionCategory" value="6" autocomplete="off" <c:if test="${param.category eq '6' }">checked</c:if>>
+					<label class="btn btn-outline-primary" for="questionCategory">소심페이</label>
+					<input type="radio" class="btn-check" name="category" id="dailyCategory" value="7" autocomplete="off" <c:if test="${param.category eq '7' }">checked</c:if>>
+					<label class="btn btn-outline-primary" for="dailyCategory">사이트이용</label>
 				</div>
 				<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
 					<div class="form-group row d-flex justify-content-end">
@@ -122,7 +123,7 @@
 							<input type="text" name="searchKeyword" id="searchKeyword" class="form-control" value="${param.searchKeyword }">
 						</div>
 						<div class="searchBtn col-xl-2 col-md-2 d-grid ps-0 pe-2 mb-2">
-							<input type="submit" value="검색" class="btn btn-primary" formaction="Community">
+							<input type="submit" value="검색" class="btn btn-primary" formaction="CsFaq">
 						</div>
 					</div>
 				</div>
@@ -139,18 +140,31 @@
 						</tr>
 					</thead>
 					<c:choose>
-						<c:when test="${empty communityList }">
+						<c:when test="${empty csFaqList}">
 							<td colspan="4">결과가 없습니다.</td>
 						</c:when>
 						<c:otherwise>
-<%-- 							<c:forEach var="" items=""> --%>
+							<c:forEach var="faq" items="${csFaqList}">
 								<tr>
-									<td class="d-none d-md-table-cell"></td>
-									<td class="d-none d-md-table-cell"></td>
-									<td class="d-none d-md-table-cell"></td>
-									<td class="d-none d-md-table-cell"></td>
+									<td class="d-none d-md-table-cell">${faq.cs_type_list_num}</td>
+									<td class="d-none d-md-table-cell">
+										<c:choose>
+											<c:when test="${faq.cs_type_detail eq '4'}">회원</c:when>
+											<c:when test="${faq.cs_type_detail eq '5'}">거래분쟁</c:when>
+											<c:when test="${faq.cs_type_detail eq '6'}">소심페이</c:when>
+											<c:when test="${faq.cs_type_detail eq '7'}">사이트이용</c:when>
+										</c:choose>
+									</td>
+									<td class="d-none d-md-table-cell">
+										<a href="CsNoticeDetail?cs_id=${faq.cs_id}">${faq.cs_subject}</a>
+									</td>
+									<td class="d-none d-md-table-cell">
+										<c:set var="datetime" value="${fn:split(faq.cs_date, 'T')}" />
+										<c:set var="date" value="${datetime[0]}" />
+										${date}
+									</td>
 								</tr>
-<%-- 							</c:forEach> --%>
+							</c:forEach>
 						</c:otherwise>
 					</c:choose>
 				</table>

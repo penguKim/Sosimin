@@ -10,20 +10,14 @@
 		FROM Cs
 		WHERE
 		<choose>
-			<when test="category == 1">
-				cs_type_detail = 1
-			</when>
-			<when test="category == 2">
-				cs_type_detail = 2
-			</when>
-			<when test="category == 3">
-				cs_type_detail = 3
+			<when test="category != null and !category.equals('')">
+				cs_type_detail = #{category}
 			</when>
 			<when test="category.equals('')">
 				1=1 
 			</when>
 		</choose>
-		AND cs_type = 1
+		AND cs_type = #{map.cs_type}
 		<if test="!searchKeyword.equals('')">
 			<choose>
 				<when test="searchType.equals('subject')">
@@ -46,20 +40,14 @@
 		FROM Cs
 		WHERE
 		<choose>
-			<when test="category == 1">
-				cs_type_detail = 1
-			</when>
-			<when test="category == 2">
-				cs_type_detail = 2
-			</when>
-			<when test="category == 3">
-				cs_type_detail = 3
+			<when test="category != null and !category.equals('')">
+				cs_type_detail = #{category}
 			</when>
 			<when test="category.equals('')">
 				1=1 
 			</when>
 		</choose>
-		AND cs_type = 1
+		AND cs_type = #{map.cs_type}
 		<if test="!searchKeyword.equals('')">
 			<choose>
 				<when test="searchType.equals('subject')">
@@ -76,5 +64,12 @@
 		</if>
 		ORDER BY cs_id DESC
 		LIMIT #{page.startRow}, #{page.listLimit}
+	</select>
+	
+	<select id="selectCsListAdmin" resultType="map">
+		SELECT *
+		FROM Cs
+		WHERE cs_type = #{map.cs_type}
+		ORDER BY cs_id DESC
 	</select>
 </mapper>

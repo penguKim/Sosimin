@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,11 +101,11 @@
 				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" checked>
 					<label class="btn btn-outline-primary" for="allCategory">전체</label>
-					<input type="radio" class="btn-check" name="category" id="hotCategory" value="4" autocomplete="off" <c:if test="${param.category eq '1' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="hotCategory" value="1" autocomplete="off" <c:if test="${param.category eq '1' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="hotCategory">공지</label>
-					<input type="radio" class="btn-check" name="category" id="infoCategory" value="1" autocomplete="off" <c:if test="${param.category eq '2' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="infoCategory" value="2" autocomplete="off" <c:if test="${param.category eq '2' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="infoCategory">정책변경</label>
-					<input type="radio" class="btn-check" name="category" id="questionCategory" value="2" autocomplete="off" <c:if test="${param.category eq '3' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="questionCategory" value="3" autocomplete="off" <c:if test="${param.category eq '3' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="questionCategory">사기예방</label>
 				</div>
 				<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
@@ -121,7 +121,7 @@
 							<input type="text" name="searchKeyword" id="searchKeyword" class="form-control" value="${param.searchKeyword }">
 						</div>
 						<div class="searchBtn col-xl-2 col-md-2 d-grid ps-0 pe-2 mb-2">
-							<input type="submit" value="검색" class="btn btn-primary" formaction="Community">
+							<input type="submit" value="검색" class="btn btn-primary" formaction="CsNotice">
 						</div>
 					</div>
 				</div>
@@ -142,12 +142,24 @@
 							<td colspan="4">결과가 없습니다.</td>
 						</c:when>
 						<c:otherwise>
-							<c:forEach var="notice" items="csNoticeList">
+							<c:forEach var="notice" items="${csNoticeList}">
 								<tr>
-									<td class="d-none d-md-table-cell">${notice.cs_id}</td>
-									<td class="d-none d-md-table-cell">${notice.cs_type_detail}</td>
-									<td class="d-none d-md-table-cell">${notice.cs_subject}</td>
-									<td class="d-none d-md-table-cell">${notice.cs_date}</td>
+									<td class="d-none d-md-table-cell">${notice.cs_type_list_num}</td>
+									<td class="d-none d-md-table-cell">
+										<c:choose>
+											<c:when test="${notice.cs_type_detail eq '1'}">공지</c:when>
+											<c:when test="${notice.cs_type_detail eq '2'}">정책변경</c:when>
+											<c:when test="${notice.cs_type_detail eq '3'}">사기예방</c:when>
+										</c:choose>
+									</td>
+									<td class="d-none d-md-table-cell">
+										<a href="CsNoticeDetail?cs_id=${notice.cs_id}">${notice.cs_subject}</a>
+									</td>
+									<td class="d-none d-md-table-cell">
+										<c:set var="datetime" value="${fn:split(notice.cs_date, 'T')}" />
+										<c:set var="date" value="${datetime[0]}" />
+										${date}
+									</td>
 								</tr>
 							</c:forEach>
 						</c:otherwise>
