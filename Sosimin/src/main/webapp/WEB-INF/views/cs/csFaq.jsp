@@ -21,16 +21,14 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/csStyle.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
 <script type="text/javascript">
 	$(function() {
 		
 		let width = $(window).width();
 		console.log(width);
-		
-		// 게시시간 변환 함수 호출
-		timeAgo();
 		
 		// 페이징 처리
 		if(${pageInfo.page.pageNum <= 1 }) {
@@ -41,23 +39,16 @@
 		}
 		
 
-	
-	// 게시시간 변환
-	function timeAgo() {
-		let timeStamp = new Date("${cs.cs_datetime}".replace(" ", "T")).getTime(); // 비교 대상 시간
-	    let now = new Date();
-        secondsPast = (now.getTime() - timeStamp) / 1000;
-	    
-	    if(secondsPast < 60){
-	    	 $("#csDate").text("방금전");
-	    } else if(secondsPast < 60 * 60){
-	    	 $("#csDate").text(parseInt(secondsPast/60) + '분전');
-	    } else if(secondsPast <= 60 * 60 * 24){
-	    	 $("#csDate").text(parseInt(secondsPast/60 * 60) + '시간전');
-	    }
-	}
-	
+		$(".categoryBtn .btn-check").on("click", function() {
+			$('#CommunityForm #searchKeyword').val('');
+			$('#CommunityForm #searchType').val('');
+			
+			$("#CommunityForm").submit();
+		});
 
+		
+	});
+	
 </script>
 </head>
 <body>
@@ -66,13 +57,6 @@
 	<c:if test="${not empty param.pageNum }">
 		<c:set var="pageNum" value="${param.pageNum }" />
 	</c:if>
-	<!--[if lte IE 9]>
-      <p class="browserupgrade">
-        You are using an <strong>outdated</strong> browser. Please
-        <a href="https://browsehappy.com/">upgrade your browser</a> to improve
-        your experience and security.
-      </p>
-    <![endif]-->
 
 	<!-- Preloader -->
 	<div class="preloader" style="opacity: 0; display: none;">
@@ -101,7 +85,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
                         <li><a href="CsMain">고객센터</a></li>
                         <li>자주묻는질문</li>
                     </ul>
@@ -110,83 +94,72 @@
         </div>
     </div>
    	<!-- End Breadcrumbs -->
-	<section class="csArea section">
+	<section class="communityArea section">
 		<div class="container-lg">
+					<form action="" id="CommunityForm">
 			<div class="row mb-5 mx-auto">
 				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
-					<input type="radio" class="btn-check" name="category" id="allMenu" value="전체" autocomplete="off" checked>
-					<label class="btn btn-outline-primary" for="allMenu">전체</label>
-					<input type="radio" class="btn-check" name="category" id="Menu1" value="공지" autocomplete="off">
-					<label class="btn btn-outline-primary" for="Menu1">회원</label>
-					<input type="radio" class="btn-check" name="category" id="Menu2" value="정책변경" autocomplete="off">
-					<label class="btn btn-outline-primary" for="Menu2">금지품목</label>
-					<input type="radio" class="btn-check" name="category" id="Menu3" value="사기예방" autocomplete="off">
-					<label class="btn btn-outline-primary" for="Menu3">운영정책</label>
-					<input type="radio" class="btn-check" name="category" id="Menu4" value="사기예방" autocomplete="off">
-					<label class="btn btn-outline-primary" for="Menu4">안전결제</label>
-					<input type="radio" class="btn-check" name="category" id="Menu5" value="사기예방" autocomplete="off">
-					<label class="btn btn-outline-primary" for="Menu5">사이트이용</label>
+					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" checked>
+<%-- 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>> --%>
+					<label class="btn btn-outline-primary" for="allCategory">전체</label>
+					<input type="radio" class="btn-check" name="category" id="hotCategory" value="4" autocomplete="off" <c:if test="${param.category eq '4' }">checked</c:if>>
+					<label class="btn btn-outline-primary" for="hotCategory">공지</label>
+					<input type="radio" class="btn-check" name="category" id="infoCategory" value="1" autocomplete="off" <c:if test="${param.category eq '1' }">checked</c:if>>
+					<label class="btn btn-outline-primary" for="infoCategory">정책변경</label>
+					<input type="radio" class="btn-check" name="category" id="questionCategory" value="2" autocomplete="off" <c:if test="${param.category eq '2' }">checked</c:if>>
+					<label class="btn btn-outline-primary" for="questionCategory">사기예방</label>
 				</div>
 				<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
-					<form action="">
-	<!-- 					<div class="form-group row row-cols-1 row-cols-sm-2 row-cols-md-2"> -->
-						<div class="form-group row d-flex justify-content-end">
-							<div class="col-xl-2 col-md-2 col-sm-3 col-3 px-0 mb-2">
-<!-- 								<select class="form-select col-xl-1 col-md-3 col-sm-3 col-3" style="width: 20%;"> -->
-								<select class="form-select" name="searchType">
-									<option selected value="">전체</option>
-									<option value="subject">제목</option>
-									<option value="content">내용</option>
-								</select>
-							</div>
-							<div class="searchKeyword col-xl-5 col-md-6 col-sm-9 col-9 px-1 mb-2">
-								<input type="text" name="searchKeyword" class="form-control">
-							</div>
-							<div class="searchBtn col-xl-2 col-md-2 d-grid ps-0 pe-2 mb-2">
-								<input type="button" value="검색" class="btn btn-primary">
-							</div>
+					<div class="form-group row d-flex justify-content-end">
+						<div class="col-xl-2 col-md-2 col-sm-3 col-3 px-0 mb-2">
+							<select class="form-select" name="searchType" id="searchType">
+								<option value="" <c:if test="${param.searchType eq '' }">selected</c:if>>전체</option>
+								<option value="subject" <c:if test="${param.searchType eq 'subject' }">selected</c:if>>제목</option>
+								<option value="content" <c:if test="${param.searchType eq 'content' }">selected</c:if>>내용</option>
+							</select>
 						</div>
-					</form>
+						<div class="searchKeyword col-xl-5 col-md-6 col-sm-9 col-9 px-1 mb-2">
+							<input type="text" name="searchKeyword" id="searchKeyword" class="form-control" value="${param.searchKeyword }">
+						</div>
+						<div class="searchBtn col-xl-2 col-md-2 d-grid ps-0 pe-2 mb-2">
+							<input type="submit" value="검색" class="btn btn-primary" formaction="Community">
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="csTable">
+					</form>
+			<div class="communityTable">
 				<table class="table table-hover contentList text-center">
 					<thead>
 						<tr class="table-light">
-							<th width=5%><span class="d-none d-md-inline">번호</span><span class="d-sm-block d-md-none">나는바보</span></th>
-							<th class="d-none d-md-table-cell">제목</th>
-							<th class="d-none d-md-table-cell" width=15%>유형</th>
-							<th class="d-none d-md-table-cell" width=20%>게시시간</th>
-							<th class="d-none d-md-table-cell" width=20%>작성자</th>
+							<th class="col-1"><span class="d-none d-md-inline">번호</span><span class="d-sm-block d-md-none">게시글</span></th>
+							<th class="col-1 d-none d-md-table-cell">유형</th>
+							<th class="col-5 d-none d-md-table-cell">제목</th>
+							<th class="col-1 d-none d-md-table-cell">게시시간</th>
 						</tr>
 					</thead>
-					<c:forEach var="cs" items="${csList }" varStatus="status">
-						<tr>
-							<td>
-								${cs.cs_id }
-								<div class="d-sm-block d-md-none">
-									바보바보
-								</div>
-							</td>
-							<td id="subject" class="text-start d-none d-md-table-cell">
-								<a href="CsDetail?cs_id=${cs.cs_id }&pageNum=${pageNum}">
-									${cs.cs_subject }
-								</a>
-							</td>
-							<td class="d-none d-md-table-cell">${cs.cs_type }</td>
-							<td class="d-none d-md-table-cell">
-								<span id="csDate">${cs.cs_datetime }</span>
-<%-- 								<fmt:formatDate value="${com.community_datetime }" pattern="yy-MM-dd HH:mm"/> --%>
-							</td>
-							<td class="d-none d-md-table-cell">${cs.cs_writer }</td>
-						</tr>
-					</c:forEach>
+					<c:choose>
+						<c:when test="${empty communityList }">
+							<td colspan="4">결과가 없습니다.</td>
+						</c:when>
+						<c:otherwise>
+<%-- 							<c:forEach var="" items=""> --%>
+								<tr>
+									<td class="d-none d-md-table-cell"></td>
+									<td class="d-none d-md-table-cell"></td>
+									<td class="d-none d-md-table-cell"></td>
+									<td class="d-none d-md-table-cell"></td>
+								</tr>
+<%-- 							</c:forEach> --%>
+						</c:otherwise>
+					</c:choose>
 				</table>
 			</div>
 			<nav aria-label="Page navigation">
 				<ul class="pagination justify-content-center">
 					<li class="page-item" id="prevPage">
-						<a href="Cs?pageNum=${pageNum + 1}" class="page-link">&laquo;</a>
+<%-- 						<a href="Community?pageNum=${pageNum - 1}" class="page-link">&laquo;</a> --%>
+						<a href="Community?category=${param.category }&searchType=${param.searchType }&searchKeyword=${param.searchKeyword }&pageNum=${pageNum - 1}" class="page-link">&laquo;</a>
 					</li>
 					<c:forEach var="i" begin="${pageInfo.startPage }" end="${pageInfo.endPage }">
 					<c:choose>
@@ -194,17 +167,16 @@
 						<li class="page-item active"><span class="page-link">${i }</span></li>
 						</c:when>
 						<c:otherwise>
-						<li class="page-item"><a href="Cs?pageNum=${i }" class="page-link" >${i }</a></li>
+						<li class="page-item"><a href="Community?category=${param.category }&searchType=${param.searchType }&searchKeyword=${param.searchKeyword }&pageNum=${i }" class="page-link" >${i }</a></li>
 						</c:otherwise>
 					</c:choose>
 					</c:forEach>
 					<li class="page-item" id="nextPage">
-						<a href="Cs?pageNum=${pageNum + 1}" class="page-link">&raquo;</a>
+						<a href="Community?category=${param.category }&searchType=${param.searchType }&searchKeyword=${param.searchKeyword }&pageNum=${pageNum + 1}" class="page-link">&raquo;</a>
 					</li>
 				</ul>
 			</nav>
 		</div>
-		
 	</section>
 	<footer class="footer">
 		<jsp:include page="../inc/bottom.jsp"></jsp:include>

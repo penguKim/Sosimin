@@ -57,13 +57,6 @@
 	<c:if test="${not empty param.pageNum }">
 		<c:set var="pageNum" value="${param.pageNum }" />
 	</c:if>
-	<!--[if lte IE 9]>
-      <p class="browserupgrade">
-        You are using an <strong>outdated</strong> browser. Please
-        <a href="https://browsehappy.com/">upgrade your browser</a> to improve
-        your experience and security.
-      </p>
-    <![endif]-->
 
 	<!-- Preloader -->
 	<div class="preloader" style="opacity: 0; display: none;">
@@ -87,13 +80,14 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">&nbsp;</h1>
+                        <h1 class="page-title">고객센터</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
-                        <li>커뮤니티</li>
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
+                        <li><a href="CsMain">고객센터</a></li>
+                        <li>공지사항</li>
                     </ul>
                 </div>
             </div>
@@ -106,13 +100,12 @@
 			<div class="row mb-5 mx-auto">
 				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" checked>
-<%-- 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>> --%>
 					<label class="btn btn-outline-primary" for="allCategory">전체</label>
-					<input type="radio" class="btn-check" name="category" id="hotCategory" value="4" autocomplete="off" <c:if test="${param.category eq '4' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="hotCategory" value="4" autocomplete="off" <c:if test="${param.category eq '1' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="hotCategory">공지</label>
-					<input type="radio" class="btn-check" name="category" id="infoCategory" value="1" autocomplete="off" <c:if test="${param.category eq '1' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="infoCategory" value="1" autocomplete="off" <c:if test="${param.category eq '2' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="infoCategory">정책변경</label>
-					<input type="radio" class="btn-check" name="category" id="questionCategory" value="2" autocomplete="off" <c:if test="${param.category eq '2' }">checked</c:if>>
+					<input type="radio" class="btn-check" name="category" id="questionCategory" value="2" autocomplete="off" <c:if test="${param.category eq '3' }">checked</c:if>>
 					<label class="btn btn-outline-primary" for="questionCategory">사기예방</label>
 				</div>
 				<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
@@ -145,76 +138,20 @@
 						</tr>
 					</thead>
 					<c:choose>
-						<c:when test="${empty communityList }">
+						<c:when test="${empty csNoticeList}">
 							<td colspan="4">결과가 없습니다.</td>
 						</c:when>
 						<c:otherwise>
-						<c:forEach var="com" items="${communityList }" varStatus="status">
-						<tr>
-							<td>
-								<div class="d-sm-block d-md-none">
-									<a class="mobileArea row" href="CommunityDetail?category=${com.community_category }&community_id=${com.community_id }&pageNum=${pageNum}">
-										<div class="col">
-											<div class="row mb-2">
-	<!-- 											<div class="col-3 text-start"> -->
-												<span class="col-3 text-start">
-												<c:choose>
-													<c:when test="${com.community_category eq '1' }">[공지]</c:when>
-													<c:when test="${com.community_category eq '2' }">[정책변경]</c:when>
-													<c:when test="${com.community_category eq '3' }">[사기예방]</c:when>
-												</c:choose>
-												</span>
-													<span class="title col text-start px-0 fw-bold ellipsis">${com.community_subject } (${com.reply_count })</span>
-											</div>
-											<div class="row">
-												<div class="col text-start">
-													<span class="mobileComInfo">${com.community_writer } | ${com.dong} | 
-														${com.community_datetime } | 조회수 ${com.community_readcount } | 좋아요 ${com.like_count }</span>
-												</div>
-											</div>
-										</div>
-										<div class="col-2">
-											<c:if test="${com.community_image1 ne null and com.community_image1 ne ''}">
-												<img src="${pageContext.request.contextPath }/resources/upload/${com.community_image1}" style="max-height: 50px;">
-											</c:if>
-										</div>
-									</a>
-								</div>
-								<div class="d-none d-md-table-cell px-2"><span>${com.community_id }</span></div>
-							</td>
-							<td class="d-none d-md-table-cell">
-								${com.dong }
-							</td>
-							<td class="d-none d-md-table-cell">
-								<c:choose>
-									<c:when test="${com.community_category eq '1' }">동네소식</c:when>
-									<c:when test="${com.community_category eq '2' }">동네질문</c:when>
-									<c:when test="${com.community_category eq '3' }">동네일상</c:when>
-								</c:choose>
-							</td>
-							<td id="subject" class="text-start d-none d-md-table-cell" onclick="location.href='CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}'">
-								<a href="CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}">
-									<div class="row">
-										<span class="col ellipsis fw-bold pe-1">${com.community_subject } (${com.reply_count })</span>
-										<c:if test="${com.community_image1 ne null and com.community_image1 ne ''}">
-											<i class="fa fa-image col-1 px-0 py-1"></i>
-										</c:if>
-									</div>
-								</a>
-							</td>
-							<td class="d-none d-md-table-cell">${com.community_writer }</td>
-							<td class="d-none d-md-table-cell">
-								<span id="comDate">${com.community_datetime }</span>
-<%-- 								<fmt:formatDate value="${com.community_datetime }" pattern="yy-MM-dd HH:mm"/> --%>
-							</td>
-							<td class="d-none d-md-table-cell">${com.community_readcount }</td>
-							<td class="d-none d-md-table-cell">${com.like_count }</td>
-						</tr>
-					</c:forEach>
+							<c:forEach var="notice" items="csNoticeList">
+								<tr>
+									<td class="d-none d-md-table-cell">${notice.cs_id}</td>
+									<td class="d-none d-md-table-cell">${notice.cs_type_detail}</td>
+									<td class="d-none d-md-table-cell">${notice.cs_subject}</td>
+									<td class="d-none d-md-table-cell">${notice.cs_date}</td>
+								</tr>
+							</c:forEach>
 						</c:otherwise>
 					</c:choose>
-					
-
 				</table>
 			</div>
 			<nav aria-label="Page navigation">
