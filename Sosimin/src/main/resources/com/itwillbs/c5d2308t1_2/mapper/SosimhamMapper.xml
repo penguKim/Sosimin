@@ -20,4 +20,10 @@
 		WHERE search_content LIKE "${searchKeyWord}%"
 		LIMIT 9;
 	</select>
+	
+	<select id="selectMemberId" resultType="String">
+		SELECT member_id
+		FROM Member
+		WHERE member_nickname = #{q}
+	</select>
 </mapper>

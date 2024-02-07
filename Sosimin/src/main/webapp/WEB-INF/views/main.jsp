@@ -366,7 +366,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-12">
-                    <div class="single-banner footerbanner1" style="background-image:url('${pageContext.request.contextPath}/resources/images/MainPhoto/중고거래2.jpg')" >
+                    <div class="single-banner footerbanner1" 
+                    	style="background-image:url('${pageContext.request.contextPath}/resources/images/MainPhoto/중고거래2.jpg')" >
                         <div class="content">
                             <h2>안전한 중고거래 문화</h2>
                             <p>소심페이 안전결제</p>

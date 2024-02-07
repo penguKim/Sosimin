@@ -13,5 +13,7 @@ public interface SosimhamMapper {
 	List<String> selectGu();
 	// 연관검색어 조회
 	List<String> selectRelationKeyWord(String searchKeyWord);
+	// 멤버아이디 조회(닉네임으로)
+	String selectMemberId(String q);
 
 }

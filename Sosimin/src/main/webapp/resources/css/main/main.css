@@ -2030,7 +2030,7 @@ ol {
 	color:#39d274!important;
 }
 
-#Recent table tr td a:hover, #Popular table tr td a:hover{
+#Recent table tr td a:hover, #Popular table tr td a:hover, #Relation table tr td a:hover{
 	cursor: pointer;
 }
 
@@ -2065,17 +2065,23 @@ ol {
 }
 
 #Recent table tr:nth-child(n+2) td,
-#Popular table tr:nth-child(n+2) td {
+#Popular table tr:nth-child(n+2) td, 
+#Relation table tr td{
 	padding: 10px;
 }
 #Recent table tr:last-child td,
-#Popular table tr:last-child td 
+#Popular table tr:last-child td, 
 #Relation table tr:last-child td {
-	background-color: #F2F2F2;
+	background-color: #ebebeb;
+	text-align: center;
 }
 
 /* 24-01-30 작업 내용 끝입니다.*/
 
+.relationText{
+	color: #2eac60;
+	margin-left: 10px;
+}
 
 
 

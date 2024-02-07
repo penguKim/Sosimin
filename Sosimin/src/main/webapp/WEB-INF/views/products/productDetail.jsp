@@ -957,7 +957,8 @@ function chat() {
                          		<c:forEach var="i" begin="1" end="4">
 								  <c:set var="tagName" value="tag_name${i}" />
 								  <c:if test="${not empty Product[tagName] and Product[tagName] ne '#null' }">
-								    <a href="SearchProduct?tag_name=${Product[tagName]}" id="addressDetailA">
+								  	<c:set var="modifiedTagName" value="${fn:replace(Product[tagName],'#','%23')}" />
+								    <a href="SearchProduct?keyword=${modifiedTagName}" id="addressDetailA">
 								      <span id="tagDetail">${Product[tagName]}</span>
 								    </a>
 								  </c:if>

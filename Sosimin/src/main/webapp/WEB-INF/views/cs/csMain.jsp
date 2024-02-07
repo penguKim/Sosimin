@@ -25,30 +25,16 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/csStyle.css" />
     
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
-
-</head>
-
-<style>
-#rowCenter{
-	position:relative;
-	left:280px;
-}
-
-#csFaqDiv{
-	position: relative;
-	left:160px;
-}
-
-#CsOnoOnOneDiv{
-	position: relative;
-	left:320px;
-}
-
-#CsNoticeDiv , #csFaqDiv , #CsOnoOnOneDiv{
-	display: inline-block;
+<style type="text/css">
+.grid{
+	display: grid;
+    place-items: center;
+    height: auto; /* 화면의 세로 길이에 따라 조정 */
+    text-align: center;
 }
 </style>
 
+</head>
 
 <body>
 
@@ -97,26 +83,26 @@
                     </div>
                 </div>
             </div>
-				<div id="rowCenter">
-					<div id="CsNoticeDiv">
-					    <a href="CsNotice">
-					        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
-					        <span id="">공지사항</span>
-					    </a>
-					    </div>
-					    <div id="csFaqDiv">
+            <div class="row rowCenter">
+            	<div class="col-sm grid" id="CsNoticeDiv">
+            		<a href="CsNotice">
+            		 	<img src="${pageContext.request.contextPath}/resources/images/Cs/공지사항.png" width="100px" height="100px">
+				        <br><span id="">공지사항</span>
+			        </a>
+            	</div>
+	           	<div class="col-sm grid" id="csFaqDiv">
 					    <a href="CsFaq">
-					        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
-					        <span>자주묻는질문</span>
+					        <img src="${pageContext.request.contextPath}/resources/images/Cs/자주묻는질문.png" width="100px" height="100px">
+					        <br><span>자주묻는질문</span>
 					    </a>
-					    </div>
-					    <div id="CsOnoOnOneDiv">
+	        	</div>
+	        	<div class="col-sm grid" id="CsOnoOnOneDiv">
 					    <a href="CsOneOnOne">
-					        <img src="${pageContext.request.contextPath}/resources/images/favicon.svg" width="100px" height="100px">
-					        <span>1:1채팅문의</span>
+					        <img src="${pageContext.request.contextPath}/resources/images/Cs/1대1문의.png" width="100px" height="100px">
+					         <br><span>1:1채팅문의</span>
 					    </a>
-				    </div>
-				</div>
+	        	</div>
+        	</div>
         </div>
     </section>
     <!--/ End Faq Area -->

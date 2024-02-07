@@ -21,11 +21,11 @@ import com.itwillbs.c5d2308t1_2.service.SosimhamService;
 @Controller
 public class HomeController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 	
 	@GetMapping("/")
 	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+		log.info("Welcome home! The client locale is {}.", locale);
 		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
@@ -49,17 +49,19 @@ public class HomeController {
 	@ResponseBody
 	@GetMapping("RelationSearchKeyWord")
 	public List<String> relationSearchKeyWord(@RequestParam String searchKeyWord) {
-		System.out.println("입력한 검색어 : " + searchKeyWord);
+		log.info("입력한 검색어 : " + searchKeyWord);
 		List<String> relationKeyWord = service.getRelationKeyWord(searchKeyWord);
-		System.out.println("조회한 연관검색어 : " + relationKeyWord);
+		log.info("조회한 연관검색어 : " + relationKeyWord);
 		
 		return relationKeyWord;
 	}
 	
-	@GetMapping("FindStore")
-	public String findStore(@RequestParam String searchKeyWord) {
-		System.out.println("조회할 닉네임 : " + searchKeyWord);
-		
+	@GetMapping("FindMyPage")
+	public String findStore(@RequestParam String q) {
+		log.info("조회할 닉네임 : " + q);
+		String member_id = service.getMemberid(q);
+		log.info("조회한 멤버아이디 : " + member_id);
+		// 나중에 판매자 상품목록이 구현되면 연결할 부분
 		return "";
 	}
 

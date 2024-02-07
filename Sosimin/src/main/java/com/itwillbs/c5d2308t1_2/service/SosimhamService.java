@@ -26,5 +26,10 @@ public class SosimhamService {
 	public List<String> getRelationKeyWord(String searchKeyWord) {
 		return SosimMapper.selectRelationKeyWord(searchKeyWord);
 	}
+	
+	// 마이페이지 판매내역 조회
+	public String getMemberid(String q) {
+		return SosimMapper.selectMemberId(q);
+	}
 
 }

@@ -41,7 +41,9 @@ function connect() {
 	
 }
 
-
+// 인기검색어, 최근검색어 클릭 위치를 저장할 변수
+let recentClick = true;
+let popularClick = true; 
 	
 $(function(){
 // ######################테스트 데이터 설정######################
@@ -102,8 +104,8 @@ $(function(){
 		
 	function hideHandler() {
 		$("#Recent").hide();
-		$("#Popular").addClass("hidden");
-		$("#Relation").addClass("hidden");
+		$("#Popular").hide();
+		$("#Relation").hide();
 	}
 	
 	//엔터키 누를 경우 텍스트 가지고 주소 이동
@@ -120,6 +122,23 @@ $(function(){
 	
 	
 	$("#searchKeyword").keyup(function(){
+		if($("#searchKeyword").val().length < 1){
+			if(recentClick == true){
+				$("#Recent").show();
+			}else if(popularClick == true){
+				$("#Popular").show();
+			}
+			$("#Relation").hide();
+		}else{
+			searchAjax();	
+		}
+	});
+	
+	
+	
+	
+});// document.ready function END
+	function searchAjax(){
 		$.ajax({
 			type:"GET",
 			url:"RelationSearchKeyWord",
@@ -127,15 +146,16 @@ $(function(){
 			success:function(res){
 				$("#Popular").hide();
 				$("#Recent").hide();
-				$("#Relation").removeClass("hidden");
+// 				$("#Relation").removeClass("hidden");
+				$("#Relation").show();
 				let relationBox = 
-					'<table id="Relation">'
+					'<table id="RelationTableBoarder">'
 		    		+'<tr id= "Relationdata">'
 		    		+	'<td colspan="2">'
 		    		+       '<img src="${pageContext.request.contextPath}/resources/images/MainPhoto/상점검색.png" width="18" height="14" alt="추천 상점 아이콘"> 상점검색 &gt;'
-		    		+ 		'<a href="FindStore?searchKeyword="'+ $("#searchKeyword").val() +'>'
-		    		+			$("#searchKeyword").val()
-		    		+		'</a>'
+		    		+ 			'<a href="FindMyPage?q=' + $("#searchKeyword").val() + '">'
+		    		+     			$("#searchKeyword").val()
+		    		+ 			'</a>'
 		    		+ 		"  상점명으로 검색" 
 		    		+	'</td>'
 		    		+'</tr>'
@@ -153,7 +173,7 @@ $(function(){
 				$("#Relation").html(relationBox)
 				let relationKeyWord = ""
 				for(let data of res){
-					relationKeyWord += "<tr><td colspan='2'>" + data + "</td></tr>";
+					relationKeyWord += "<tr><td colspan='2' class='relationText'><a onclick='sendKeyword(this)'>" + data + "</a></td></tr>";
 				}
 		    		
 				$("#Relationdata").after(relationKeyWord)
@@ -165,13 +185,7 @@ $(function(){
 // 				alert("통신 실패.")
 			}
 		});
-	});
-	
-	
-	
-	
-});// document.ready function END
-	
+	}
 	function searchKeyword(pkeyword) {
 		$("#Relation").removeClass("hidden");
 		$("#Relation").show();
@@ -220,22 +234,31 @@ $(function(){
 	}
 	
 	function showHandler(){
-		$("#Recent").show();
+		if($("#searchKeyword").val() == null || $("#searchKeyword").val() == ''){
+			$("#Recent").show();
+		}else{
+			searchAjax();
+		}
 	}
 	
 	function RecentSearchs(){
 		$("#Recent").show();
-		$("#Popular").addClass("hidden");
+		$("#Popular").hide();
 		$(".recentWordColor").css("color","#39d274");
 		$(".popularWordColor").css("color","black");
+		recentClick = true;
+		popularClick = false;
 		
 	}
 	
 	function PopularSearches(){
 		$("#Recent").hide();
+		$("#Popular").show();
 		$("#Popular").removeClass("hidden");
 		$(".recentWordColor").css("color","black");
 		$(".popularWordColor").css("color","#39d274");
+		popularClick = true;
+		recentClick = false;
 	}
 	
 	function localStorageClean(){
