@@ -43,8 +43,8 @@ public class CommunityService {
 	private ServletContext servletContext; // 세션 대신 컨텍스트 경로찾기
 	
 	// 게시글 목록
-	public int getCommunityListCount(String searchKeyword, String searchType, String category, int townId) {
-		return mapper.selectCommunityListCount(searchKeyword, searchType, category, townId);
+	public int getCommunityListCount(String searchKeyword, String searchType, String category, String gu) {
+		return mapper.selectCommunityListCount(searchKeyword, searchType, category, gu);
 	}
 	
 	// 게시판 입장시 지역정보 판별
@@ -55,8 +55,8 @@ public class CommunityService {
 	}
 	
 	// 한 페이지에 표시할 게시글 목록 조회 작업 요청 
-	public List<Map<String, Object>> getCommunityList(String searchKeyword, String searchType, String category, PageDTO page, int townId) {
-		return mapper.selectCommunityList(searchKeyword, searchType, category, page, townId);
+	public List<Map<String, Object>> getCommunityList(String searchKeyword, String searchType, String category, PageDTO page, String gu) {
+		return mapper.selectCommunityList(searchKeyword, searchType, category, page, gu);
 	}
 	
 	// 게시글 등록

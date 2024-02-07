@@ -47,8 +47,8 @@
 				1=1 
 			</when>
 		</choose>
-		<if test="townId != 0">
-			AND town_id = #{townId}
+		<if test="!gu.equals('')">
+			AND gu = #{gu}
 		</if>
 		<if test="!searchKeyword.equals('')">
 			<choose>
@@ -143,8 +143,8 @@
 				1=1 
 			</when>
 		</choose>
-		<if test="townId != 0">
-			AND town_id = #{townId}
+		<if test="!gu.equals('')">
+			AND gu = #{gu}
 		</if>
 		<if test="!searchKeyword.equals('')">
 			<choose>

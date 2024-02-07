@@ -127,7 +127,7 @@
 	        if (text.length > 40) {
 	        	// 제한수 넘으면 자르기
 	            $(this).val($(this).val().substring(0, 40));
-	            
+	            $('#titleLenth').text('제목 (40/40)');
 				Swal.fire({
 					position: 'center',
 					icon: 'warning',
@@ -154,7 +154,7 @@
 	        if (text.length > 1000) {
 	        	// 제한수 넘으면 자르기
 	            $(this).val($(this).val().substring(0, 1000));
-	            
+	            $('#contentLength').text('내용 (1000/1000)');
 				Swal.fire({
 					position: 'center',
 					icon: 'warning',
@@ -375,6 +375,7 @@
     			processData: false, 
     			success: function(result) {
     				console.log(result);
+    				console.log(typeof(result));
     				if(result != 'false') {
 	   	 	            var thumbnail = $(
   	 	            		'<div class="thumbnail col-auto mx-2 pt-3 px-1 ' + fileId + '">').html(

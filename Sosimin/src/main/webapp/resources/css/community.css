@@ -107,6 +107,16 @@
 	color: black;
 }
 
+.profile_image img, .replyContent img {
+	width: 50px;
+	height: 50px;
+}
+
+/* 회원 아이디 색 */
+.post-title a:hover {
+	color: #43c073 !important;	
+}
+
 /* 회원 경험치바 */
 /* @keyframes progress-animation { */
 /*   0%   {width: 0%;} */

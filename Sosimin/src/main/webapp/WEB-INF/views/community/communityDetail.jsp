@@ -490,28 +490,35 @@
 			        	<p class="post-title mb-2">${com.community_subject }</p>
 		        	</div>
 			        <div class="row mb-2">
-			        	<div class="col-xl-1 col-2 me-1">
-				        	<i class="fa fa-github-alt" style="font-size:48px"></i>
+			        	<div class="profile_image col-xl-1 col-2 me-1 pe-0">
+						<a href="SellerInfo?member_id=${com.member_id }">
+							<img class="rounded-circle " alt="" src="${pageContext.request.contextPath}/resources/upload/${com.member_profile}">
+						</a>
 				        </div>
 				        <div class="col">
 				        	<div class="row align-items-center">
-						        <p class="col-auto">${com.community_writer }</p>
-						        <p class="col-auto">${com. dong}</p>
-<%-- 						        <p class="col-xl-3 col-4">${com.community_writer }</p> --%>
-<%-- 						        <p class="col-xl-2 col-2">${com. dong}</p> --%>
-						        <div class="col-xl-1 col-2">
+						        <a class="col-auto" href="SellerInfo?member_id=${com.member_id }"><p class="fs-5">${com.member_nickname}</p></a>
+						        <p class="col-auto fs-6">${com. dong}</p>
+<!-- 						        <div class="col-xl-auto col-auto"> -->
+<%-- 						        	LV. ${com.member_level } --%>
+<!-- 					        	</div> -->
+<!-- 					        	<div class="col-xl-4 col-3"> -->
+<!-- 									<div class="progress"> -->
+<!-- 										<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div> -->
+<!-- 									</div> -->
+<!-- 					        	</div> -->
+				        	</div>
+				        	<div class="row align-items-center">
+				        		<div class="col-xl-auto col-auto fs-6">
 						        	LV. ${com.member_level }
 					        	</div>
 					        	<div class="col-xl-4 col-3">
 									<div class="progress">
-										<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">75%</div>
+										<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
 					        	</div>
-				        	</div>
-				        	<div class="row">
-						        <p class="col-auto" id="comDate">${com.community_datetime }</p>
-<%-- 						        <p class="col-xl-3 col-4" id="comDate">${com.community_datetime }</p> --%>
-						        <p class="col">조회수 ${com.community_readcount }</p>
+						        <p class="col-auto offset-md-3 fs-6" id="comDate">${com.community_datetime }</p>
+						        <p class="col-auto fs-6">조회수 ${com.community_readcount }</p>
 				        	</div>
 				        </div>
 			        </div>
@@ -582,6 +589,11 @@
 									<c:forEach var="i" begin="1" end="${reply.reply_re_lev }">
 										<div class="col-1"></div>
 									</c:forEach>
+										<div class="col-auto align-self-center pe-0">
+											<a href="SellerInfo?member_id=${reply.reply_writer }">
+												<img class="rounded-circle " alt="" src="${pageContext.request.contextPath}/resources/upload/${com.member_profile}">
+											</a>
+										</div>
 									<div class="col">
 										<div class="row">
 											<div class="col">

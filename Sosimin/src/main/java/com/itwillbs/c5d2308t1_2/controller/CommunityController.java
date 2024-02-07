@@ -31,12 +31,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
+import com.itwillbs.c5d2308t1_2.handler.ThumbnailCreator;
 import com.itwillbs.c5d2308t1_2.service.CommunityService;
 import com.itwillbs.c5d2308t1_2.service.LevelService;
 import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.PageInfo;
 import com.itwillbs.c5d2308t1_2.vo.ReviewVO;
+
+import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 
 @Controller
 public class CommunityController {
@@ -46,7 +51,7 @@ public class CommunityController {
 	
 	@Autowired
 	private LevelService levelService;
-
+	
 	// 커뮤니티 게시판으로 이동
 	@GetMapping("Community")
 	public String community(@RequestParam(defaultValue = "") String searchKeyword, 
@@ -61,31 +66,39 @@ public class CommunityController {
 		
 		String id = (String)session.getAttribute("sId");
 		
-		int townId = 0;
+		// 회원의 구 정보
+		String gu = "";
 		
 		if (id != null) {
 			Map<String, Object> map = communityService.getTownName(id);
-			townId = (int)map.get("town_id");
+			gu = (String)map.get("gu");
 		}
 		
 		
 		// 페이지 번호와 글의 개수를 파라미터로 전달
 		PageDTO page = new PageDTO(pageNum, 15);
 		// 전체 게시글 갯수 조회
-		int listCount = communityService.getCommunityListCount(searchKeyword, searchType, category, townId);
+		int listCount = communityService.getCommunityListCount(searchKeyword, searchType, category, gu);
 		System.out.println(listCount);
 		// 페이징 처리
 		PageInfo pageInfo = new PageInfo(page, listCount, 3);
 		// 한 페이지에 불러올 게시글 목록 조회
-		List<Map<String, Object>> communityList = communityService.getCommunityList(searchKeyword, searchType, category, page, townId);
+		List<Map<String, Object>> communityList = communityService.getCommunityList(searchKeyword, searchType, category, page, gu);
 		
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 //        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
         
         for(Map<String, Object> com : communityList) {
-        	LocalDateTime comDateTime = LocalDateTime.parse(com.get("community_datetime").toString(), formatter);
+        	LocalDateTime comDateTime;
+			if(com.get("community_datetime").toString().split(":").length > 2) {
+				comDateTime = LocalDateTime.parse(com.get("community_datetime").toString(), formatter);
+			} else {
+				comDateTime = LocalDateTime.parse(com.get("community_datetime").toString(), formatter2);
+			}
+//        	LocalDateTime comDateTime = LocalDateTime.parse(com.get("community_datetime").toString(), formatter);
         	// 시분초 차이 계산
     		Duration duration = Duration.between(comDateTime, now);
     		// 년월일 차이 계산
@@ -218,11 +231,17 @@ public class CommunityController {
 		
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
         
         // 게시시간 가져오기
-    	LocalDateTime comDateTime = LocalDateTime.parse(map.get("community_datetime").toString(), formatter);
+    	LocalDateTime comDateTime;
+		if(map.get("community_datetime").toString().split(":").length > 2) {
+			comDateTime = LocalDateTime.parse(map.get("community_datetime").toString(), formatter);
+		} else {
+			comDateTime = LocalDateTime.parse(map.get("community_datetime").toString(), formatter2);
+		}
     	// 시분초 차이 계산
 		Duration duration = Duration.between(comDateTime, now);
 		// 년월일 차이 계산
@@ -261,9 +280,15 @@ public class CommunityController {
         List<CommunityReplyVO> replyList = communityService.getreplyList(com);
         
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         
         for(CommunityReplyVO datetime : replyList) {
-        	LocalDateTime reDateTime = LocalDateTime.parse(datetime.getReply_datetime().toString(), formatter);
+        	LocalDateTime reDateTime;
+    		if(datetime.getReply_datetime().toString().split(":").length > 2) {
+    			reDateTime = LocalDateTime.parse(datetime.getReply_datetime().toString(), formatter);
+    		} else {
+    			reDateTime = LocalDateTime.parse(datetime.getReply_datetime().toString(), formatter2);
+    		}
         	duration = Duration.between(reDateTime, now);
     		period = Period.between(reDateTime.toLocalDate(), now.toLocalDate());
         	
@@ -894,12 +919,21 @@ public class CommunityController {
 		mFiles.add(com.getFile4());
 		mFiles.add(com.getFile5());
 		
+		// 실제 파일명 리스트
 		List<String> fileNames = new ArrayList<String>();
 		fileNames.add("");
 		fileNames.add("");
 		fileNames.add("");
 		fileNames.add("");
 		fileNames.add("");
+		
+		// 썸네일 파일명 리스트
+		List<String> thumbnailNames = new ArrayList<String>();
+		thumbnailNames.add("");
+		thumbnailNames.add("");
+		thumbnailNames.add("");
+		thumbnailNames.add("");
+		thumbnailNames.add("");
 		
 		// UUID 를 변수에 저장해서 똑같은 난수를 넣어주는것보다 매번 호출하여
 		// 다른 난수를 파일마다 붙여주면 한번에 파일명이 같은 파일이 업로드되도 중복되지 않는다.
@@ -908,6 +942,7 @@ public class CommunityController {
 			if(mFile != null && !mFile.getOriginalFilename().equals("")) {
 				String fileName = UUID.randomUUID().toString().substring(0, 8) + "_" + mFile.getOriginalFilename();
 				fileNames.set(i, subDir + "/" + fileName);
+				thumbnailNames.set(i, subDir + "/s_" + fileName);
 			}
 		}
 		
@@ -932,11 +967,22 @@ public class CommunityController {
 				for(int i = 0; i < 5; i++) {
 					MultipartFile mFile = mFiles.get(i);
 					String fileName = fileNames.get(i);
+					String thumbnail = thumbnailNames.get(i);
 					if(!fileName.equals("")) {
 						image = fileName; // 경로의 이미지를 저장
 						// 년월일 다음의 '/'를 인덱스로 지정 
 						fileName = fileName.substring(fileName.indexOf("/", 9));
-						mFile.transferTo(new File(saveDir, fileName));
+						File file = new File(saveDir, fileName);
+						mFile.transferTo(file);
+						thumbnail = thumbnail.substring(11);
+						
+						// 썸네일 생성
+//						File thumbnailFile = new File(saveDir, thumbnail);
+//						Thumbnails.of(file)
+////			                    .width(200) // 원본비율로 너비를 100px로 조절
+//			                    .crop(Positions.CENTER) // 중앙을 기준으로
+//			                    .size(200, 200) // 200 x 200으로 자름
+//			                    .toFile(thumbnailFile);
 					}
 					
 				}

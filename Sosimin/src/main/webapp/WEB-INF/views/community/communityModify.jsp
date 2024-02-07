@@ -77,44 +77,62 @@
 			    });
 			}
 		});
+		
+		// 제목 글자수 제한
+	    $('#title').on('keyup', function() {
+	        var text = $(this).val();
+	        
+	        // 텍스트 제한
+	        if(text.length == 0 || text == "") {
+		        $('#titleLenth').text('제목 (0/40)');
+	        } else {
+		        $('#titleLenth').text('제목 (' + text.length + '/40)');
+	        }
+	        
+	        // 글자수 제한
+	        if (text.length > 40) {
+	        	// 제한수 넘으면 자르기
+	            $(this).val($(this).val().substring(0, 40));
+	            $('#titleLenth').text('제목 (40/40)');
+				Swal.fire({
+					position: 'center',
+					icon: 'warning',
+					title: '글자수는 40자까지 입력 가능합니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+	        };
+	    });
+	    
+		// 내용 글자수 제한
+	    $('#content').on('keyup', function() {
+	        var text = $(this).val();
+	        
+	        // 텍스트 변경
+	        if(text.length == 0 || text == "") {
+		        $('#contentLength').text('내용 (0/1000)');
+	        } else {
+		        $('#contentLength').text('내용 (' + text.length + '/1000)');
+	        }
+	        
+	        // 글자수 제한
+	        if (text.length > 1000) {
+	        	// 제한수 넘으면 자르기
+	            $(this).val($(this).val().substring(0, 1000));
+	            $('#contentLength').text('내용 (1000/1000)');
+				Swal.fire({
+					position: 'center',
+					icon: 'warning',
+					title: '글자수는 1000자까지 입력 가능합니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+	        };
+	    });
 	});
 	
-// 	function deleteFile(community_id, image, index) {
-		
-// 		Swal.fire({
-// 	        title: '이미지를 삭제하시겠습니까?',
-// 	        text: "삭제한 이미지는 복구할 수 없습니다.",
-// 	        icon: 'question',
-// 	        showCancelButton: true,
-// 	        confirmButtonColor: '#39d274',
-// 	        cancelButtonColor: '#d33',
-// 	        confirmButtonText: '등록',
-// 	        cancelButtonText: '취소',
-// 	        reverseButtons: true,
-// 	    }).then((result) => {
-// 	        if (result.isConfirmed) {
-// 	        	$.ajax({
-// 					type: "POST",
-// 					url: "CommunityDeleteFile",
-// 					data: {
-// 						community_id: community_id,
-// 						community_image1: image
-// 					},
-// 					success: function(result) {
-// 						console.log("파일 삭제 요청 결과 : " + result + ", " + typeof(result));
-// 						if(result == 'true') { // 삭제 성공 시
-// 							$("#fileItemArea" + index).html("<input type='file' name='file" + index + "'>");
-// 						} else if(result == 'false') {
-// 							console.log("파일 삭제 실패!");	
-// 						}
-// 					}
-// 				});
-// 	        } else {
-// 	        	$(this).blur();
-// 	        }
-// 	    });
-		
-// 	}
 	
 	
 
@@ -402,7 +420,7 @@
 							<div class="col-12">
 								<div class="form-floating mb-1">
 									<input type="text" class="form-control form-control-lg formFocus" name="community_subject" id="title" value="${com.community_subject }" required>
-									<label for="title">제목</label>
+									<label id="titleLenth" for="title">제목 (0/40)</label>
 								</div>
 							</div>
 						</div>
@@ -410,7 +428,7 @@
 				    <div class="post-content mt-3">
 						<div class="form-floating">
 							<textarea class="form-control communityFormSubject formFocus" name="community_content" id="floatingTextarea" style="height: 500px;" required>${com.community_content }</textarea>
-							<label for="floatingTextarea">내용</label>
+							<label id="contentLength" for="content">내용 (0/1000)</label>
 						</div>
 				    </div>
 <!--    				    <div class="post-file mt-3"> -->

@@ -362,7 +362,7 @@
 					</thead>
 					<c:choose>
 						<c:when test="${empty communityList }">
-							<td colspan="6">결과가 없습니다.</td>
+							<td colspan="8">결과가 없습니다.</td>
 						</c:when>
 						<c:otherwise>
 						<c:forEach var="com" items="${communityList }" varStatus="status">
@@ -409,11 +409,12 @@
 								</c:choose>
 							</td>
 							<td id="subject" class="text-start d-none d-md-table-cell" onclick="location.href='CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}'">
-								<a href="CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}">
+								<a class="" href="CommunityDetail?community_id=${com.community_id }&pageNum=${pageNum}">
 									<div class="row">
-										<span class="col ellipsis fw-bold pe-1">${com.community_subject } (${com.reply_count })</span>
+										<span class="col ellipsis fw-bold pe-1">${com.community_subject }</span>
+										<span class="col-auto">(${com.reply_count })</span>
 										<c:if test="${com.community_image1 ne null and com.community_image1 ne ''}">
-											<i class="fa fa-image col-1 px-0 py-1"></i>
+											<i class="fa fa-image col-auto px-0 py-1"></i>
 										</c:if>
 									</div>
 								</a>
