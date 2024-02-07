@@ -130,6 +130,11 @@ public class MemberService {
 		return mapper.selectAllMemberList(member);
 	}
 
+	// 받은 후기 카운트
+	public List<Map<String, Object>> getReviewCount(String sId) {
+		return mapper.selectReviewCount(sId);
+	}
+
 
 
 

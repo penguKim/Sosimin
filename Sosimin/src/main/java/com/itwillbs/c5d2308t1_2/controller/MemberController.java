@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -373,7 +374,7 @@ public class MemberController {
 	// *********** 마이페이지 **************
 	// 마이페이지로 이동
 	@GetMapping("MyPage")
-	public String MyPage(HttpSession session, Model model, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "1") String category, @RequestParam(defaultValue = "0") String filter) {
+	public String MyPage(HttpSession session, Model model, @RequestParam(defaultValue = "1") int community_id, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "1") String category, @RequestParam(defaultValue = "0") String filter) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) { // 로그인 안 한 경우
 			model.addAttribute("msg", "로그인이 필요합니다!");
@@ -396,22 +397,23 @@ public class MemberController {
 		// 프로필 영역에 불러올 회원 정보 조회
 //		MemberVO MyProfileMember = service.getMyProfileMember(sId);
 		Map<String, Object> MyProfileMember = service.getSingleMember(sId);
-		System.out.println("프로필 찍어낼 멤버정보 확인 : " + MyProfileMember);
+//		System.out.println("프로필 찍어낼 멤버정보 확인 : " + MyProfileMember);
 		int MyProfileCountProductSold = service.getCountProductSold(sId); 
-		System.out.println("프로필 찍어낼 상품판매횟수 확인 : " + MyProfileCountProductSold);
+//		System.out.println("프로필 찍어낼 상품판매횟수 확인 : " + MyProfileCountProductSold);
 		int MyProfileCountCommunity = service.getCountCommunity(sId);
-		System.out.println("프로필 찍어낼 커뮤니티 글 개수 확인 : " + MyProfileCountCommunity);
+//		System.out.println("프로필 찍어낼 커뮤니티 글 개수 확인 : " + MyProfileCountCommunity);
 		int MyProfileCountCommunityReply = service.getCountCommunityReply(sId);
-		System.out.println("프로필 찍어낼 커뮤니티 댓글 개수 확인 : " + MyProfileCountCommunityReply);
+//		System.out.println("프로필 찍어낼 커뮤니티 댓글 개수 확인 : " + MyProfileCountCommunityReply);
 		int MyProfileCountCommunityLike = service.getCountCommunityLike(sId);
-		System.out.println("프로필 찍어낼 커뮤니티 좋아요 개수 확인 : " + MyProfileCountCommunityLike);
+//		System.out.println("프로필 찍어낼 커뮤니티 좋아요 개수 확인 : " + MyProfileCountCommunityLike);
+//		int ReplyLikePerSingleCommunity = service.getReplyLikePerSingleCommunity()
 		
 		
 		
 		// 한 페이지에 불러올 게시글 목록 조회
 		List<HashMap<String, Object>> MyPageList = service.getMyPageList(sId, category, page, filter);
 		System.out.println("컨트롤러에서 넘긴 마이페이지 리스트 확인 : " + MyPageList);
-		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> 커뮤니티 아이디 : " + community_id);
 		
 		// 시간 변환
         LocalDateTime now = LocalDateTime.now();
@@ -574,6 +576,21 @@ public class MemberController {
 	    } else {
 	    	return "false";
 	    }
+	}
+	
+	// 후기 불러오기
+	@ResponseBody
+	@GetMapping("ShowReviews")
+	public String showReviews(String sId, Model model) {
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>리뷰 찍어낼 아이디: " + sId);
+		List<Map<String, Object>> CountReviews = service.getReviewCount(sId);
+		System.out.println("리뷰카운트 확인합시다 : " + CountReviews);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("CountReviews", CountReviews);
+		JSONObject jsonObject = new JSONObject(map);
+
+		return jsonObject.toString();
 	}
 	
 	

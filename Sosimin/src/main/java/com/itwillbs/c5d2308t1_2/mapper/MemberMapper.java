@@ -78,6 +78,9 @@ public interface MemberMapper {
 	// 관리자페이지 회원 정보 수정을 위한 회원조회
 	Map<String, Object> selectSingleMember(String member_id);
 
+	// 받은 후기 카운트
+	List<Map<String, Object>> selectReviewCount(String sId);
+
 
 
 

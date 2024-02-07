@@ -29,62 +29,67 @@
 		navigator.geolocation.getCurrentPosition(function(position) {
 			  var latitude = position.coords.latitude; // 현재 위치의 위도
 			  var longitude = position.coords.longitude; // 현재 위치의 경도
-	
+
 			  var container = document.getElementById('map'); // 지도를 표시할 위치
 			  var options = {
 			    center: new kakao.maps.LatLng(latitude, longitude), // 지도 위치 설정(내위치)
 			    level: 3 // 지도 확대 레벨(휠로 돌리기전 기본 레벨 설정)
 			  };
-	
+
 			  map = new kakao.maps.Map(container, options); // 지도 생성 및 표시
-	
+
 			  var markerPosition = new kakao.maps.LatLng(latitude, longitude); // 마커의 위치 좌표 내위치기준으로 좌표줬음
 			  marker = new kakao.maps.Marker({
 			    position: markerPosition		// 마커 생성 시 위치 설정
 			  });
 			  marker.setMap(map); // 마커를 지도에 표시해준다.
-		});
+			});
 			
-		// 내위치정보 클릭 시 해당 위치의 주소 가져오기(위도 / 경도를 도로명주소,지번주소로 변경)
-		$("#myMapButton").on("click", function() {
-		  var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체 생성(카카오api사용)
-		  var markerPosition = marker.getPosition(); // 마커의 위치 좌표(위에서 찍힌 마커 위치 좌표를 가져옴)
-		  var latitude = markerPosition.getLat(); // 마커의 위도(내가 가져온 현재 위치의 위도)
-		  var longitude = markerPosition.getLng(); // 마커의 경도(내가 가져온 현재 위치의 경도)
+			// 내위치정보 클릭 시 해당 위치의 주소 가져오기(위도 / 경도를 도로명주소,지번주소로 변경)
+			$("#myMapButton").on("click", function() {
+			  var geocoder = new kakao.maps.services.Geocoder(); // 주소-좌표 변환 객체 생성(카카오api사용)
+			  var markerPosition = marker.getPosition(); // 마커의 위치 좌표(위에서 찍힌 마커 위치 좌표를 가져옴)
+			  var latitude = markerPosition.getLat(); // 마커의 위도(내가 가져온 현재 위치의 위도)
+			  var longitude = markerPosition.getLng(); // 마커의 경도(내가 가져온 현재 위치의 경도)
 
-		  geocoder.coord2Address(longitude, latitude, function(result, status) {
-		   if (status === kakao.maps.services.Status.OK) { // 주소-좌표 변환 성공 시
-			// 도로명 주소가 있을 경우 도로명 주소를, 없을 경우 지번 주소를 표시
-	          var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
-	          detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
-	          
-	          var address = result[0].address.address_name; // 지번 주소
-	          
-	          
-// 	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
-	          
-	          if(address.split(' ')[0] == "부산" || address.split(' ')[0] == "대구" || address.split(' ')[0] == "인천" || address.split(' ')[0] == "광주" || address.split(' ')[0] == "대전" || address.split(' ')[0] == "울산"  ) {
-	        	  var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
-	          } else if(address.split(' ')[0] == "서울" ) {
-	        	  var modifiedAddress = address.split(' ')[0] + "특별시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
-	          } else {
-	        	  var modifiedAddress = address.split(' ')[0]  + " " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
-	          }
-		      
-	          
-	          $("#myMap").val(modifiedAddress);
-	          localStorage.setItem("tradePlace", modifiedAddress);
-	          
-		    } else {
-		    	Swal.fire({
-					title: '주소 요청 실패!',         // Alert 제목
-					text: "주소를 가져오지 못했습니다!",  // Alert 내용
-					icon:'error',
-				});
-// 		      alert("주소를 가져오지 못했습니다.");
-		    }
-		  });
-		});
+			  geocoder.coord2Address(longitude, latitude, function(result, status) {
+			   if (status === kakao.maps.services.Status.OK) { // 주소-좌표 변환 성공 시
+				// 도로명 주소가 있을 경우 도로명 주소를, 없을 경우 지번 주소를 표시
+		          var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+		          detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+		          
+		          var address = result[0].address.address_name; // 지번 주소
+		          
+		          
+//	 	          var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+		          
+		          if (address.split(' ')[0] == "부산") {
+		              var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+		            } else {
+		              alert("부산광역시에서만 가능합니다.");
+		              return;
+		            }
+		          
+		          if(address.split(' ')[0] == "부산" || address.split(' ')[0] == "대구" || address.split(' ')[0] == "인천" || address.split(' ')[0] == "광주" || address.split(' ')[0] == "대전" || address.split(' ')[0] == "울산"  ) {
+		        	  var modifiedAddress = address.split(' ')[0] + "광역시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+		          } else if(address.split(' ')[0] == "서울" ) {
+		        	  var modifiedAddress = address.split(' ')[0] + "특별시 " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+		          } else {
+		        	  var modifiedAddress = address.split(' ')[0]  + " " +  address.split(' ')[1] + ' ' + address.split(' ')[2];
+		          }
+			      
+		          
+		          $("#myMap").val(modifiedAddress);
+		          localStorage.setItem(sId + "_tradePlace", modifiedAddress);
+		          
+			    } else {
+			      alert("주소를 가져오지 못했습니다.");
+			    }
+			  });
+			});
+		
+			
+			var sId = "${sId}";
 			
 	}); // document.ready 끝
 	
