@@ -1123,8 +1123,8 @@ public class PaymentController {
 				|| orderInfo.get("buyer_pay_history_id").toString().equals(""))) {
 			return "unpaid"; // 결제안함
 		}
-		
-		map.put("product_seller", productInfo.get("product_seller"));
+		log.info(">>>>>>>>>>>>>productInfo : " + productInfo);
+		map.put("product_seller", productInfo.get("member_id"));
 		// 현금결제인지 소심결제인지 따라서 다름!
 		if(orderInfo.get("order_type").toString().equals("1")) { // 현금거래일 경우
 			// Products 테이블과 Orders 테이블의 결제 상태 바꾸기 order_status 1
