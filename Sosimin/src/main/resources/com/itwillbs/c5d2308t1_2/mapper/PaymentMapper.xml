@@ -285,7 +285,7 @@
 		)
 	</insert>
 	
-		<!-- 구매 기록 저장 -->
+	<!-- 구매 기록 저장 -->
 	<insert id="updateOrderSeller">
 		UPDATE Orders
 		SET

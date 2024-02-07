@@ -50,7 +50,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="">
+				<a href="SosiminAccount">
 					<i class="bi bi-circle"></i><span>약정계좌관리</span>
 				</a>
 			</li>

@@ -1231,10 +1231,6 @@ public class PaymentController {
 		}
 	}
 	
-	
-	
-	
-	
 	// ---------- 페이 비밀번호 체크 ---------------
 	@ResponseBody
 	@GetMapping("PasswdCheck")
@@ -1258,7 +1254,16 @@ public class PaymentController {
 	
 	// 페이정보관리 페이지로 이동
 	@GetMapping("MemberPay")
-	public String memberAccount(Model model) {
+	public String memberAccount(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다!");
+//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+//			model.addAttribute("msg3", "error");
+//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+//			return "fail_back";
+//		}
+		
 		List<Map<String, Object>> payList = service.getPayListAll();
 		log.info(payList.toString());
 		
@@ -1269,7 +1274,16 @@ public class PaymentController {
 	
 	// 계좌 관리 상세 페이지로 이동
 	@GetMapping("MemberPayDetail")
-	public String memberAccountDetail(@RequestParam Map<String, Object> map, Model model) {
+	public String memberAccountDetail(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다!");
+//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+//			model.addAttribute("msg3", "error");
+//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+//			return "fail_back";
+//		}
+		
 		log.info("map은 " + map);
 		
 		Map<String, Object> payList = service.getPayList(map);
@@ -1287,7 +1301,15 @@ public class PaymentController {
 	// 페이 가입 정보 수정(잔액, 상태, 비밀번호 변경)
 	@ResponseBody
 	@GetMapping("ChangePayInfo")
-	public String changePayInfo(@RequestParam Map<String, Object> map) {
+	public String changePayInfo(@RequestParam Map<String, Object> map, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다!");
+//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+//			model.addAttribute("msg3", "error");
+//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+//			return "fail_back";
+//		}
 		
 		log.info(map.toString());
 		
@@ -1309,7 +1331,7 @@ public class PaymentController {
 		}
 		
 		map.put("pay_history_type", 1);
-		map.put("pay_history_message", "관리자 권한으로 변경");
+		map.put("pay_history_message", "관리자-페이잔액변경");
 		
 		int updateCount = service.updatePayInfo(map);
 		
@@ -1321,11 +1343,108 @@ public class PaymentController {
 		
 	}
 	
+	// 고객의 페이를 관리자가 환급
+	@ResponseBody
+	@GetMapping("RefundPay")
+	public String refundPay(@RequestParam Map<String, Object> map, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다!");
+//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+//			model.addAttribute("msg3", "error");
+//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+//			return "fail_back";
+//		}
+		
+		// 입력한 금액을 숫자로 변환
+		String refund_balanceString = (String) map.get("refund_balance");
+		refund_balanceString = refund_balanceString.replace(",", "");
+		int refund_balance = Integer.parseInt(refund_balanceString); // 실결제금액
+		map.put("tran_amt", refund_balance);
+		
+		
+		// 저장된 "admin" 계정의 엑세스토큰(oob) 조회 필요
+		map.put("access_token", service.getAdminAccessToken());
+		
+		// bank_tran_id 생성하여 map객체에 저장
+		// 파라미터로 사용할 난수 생성하여 리턴받기
+		String bank_tran_id = bankValueGenerator.getBankTranId();
+		log.info("은행거래고유번호 : " + bank_tran_id);
+				
+		String tran_dtime = bankValueGenerator.getTranDTime(); 
+		log.info("요청일시 : " + tran_dtime);
+		
+		map.put("bank_tran_id", bank_tran_id);
+		map.put("tran_dtime", tran_dtime);
+		
+		// 이체 용도(송금(TR), 결제(ST), 충전(RC) 등) 지정
+		map.put("transfer_purpose", "TR");
+				
+		log.info(">>>>>>>>>>>>> 입금이체 map 데이터 " + map);
+		
+		// PayHistory에 있는 bank_tran_id 를 조회하여
+		// 이미 이루어진 거래면 거래 못하도록 막기
+		int tranIdCount = service.getTranIdCount(map);
+		
+		if(tranIdCount > 0) { // 해당 거래고유번호로 이루어진 거래가 있으면 거래 중단
+			return "false";
+		}
+
+		// BankService - requestDeposit() 메서드 호출하여 상품에 대한 환불(입금이체) 요청
+		// => 파라미터 : Map 객체   리턴타입 : Map<String, Object>(depositResult)
+		Map<String, Object> depositResult = service.requestDeposit(map);
+		log.info(">>>>>>>>>>>>>>>>>depositResult : " + depositResult);
+		
+		// pay_history_type을 환급으로 지정
+		map.put("pay_history_type", 2);
+		map.put("pay_history_message", "관리자-페이환급");
+		
+		if(depositResult.get("rsp_code").equals("A0000")) {
+//			log.info("이거임 >>>>>>>>>>>>>>>" + map.toString());
+//			System.out.println("입금됨");
+			// 페이 잔액을 업데이트
+			int updateCount = service.updatePayBalance(map);
+			
+			if(updateCount > 0) {
+				
+				return "true";					
+			} else {
+				return "false"; // 입금 실패 페이지로 이동				
+			}
+		} else {
+//			System.out.println("입금안됨!!!!!!!!!!!!!!!!!!");				
+			return "false"; // 입금 실패 페이지로 이동
+		}
+	}
+	
+	// 약정계좌관리 페이지로 이동
+	@GetMapping("SosiminAccount")
+	public String sosiminAccount(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다!");
+//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+//			model.addAttribute("msg3", "error");
+//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+//			return "fail_back";
+//		}
+		
+		return "admin/sosiminAccount";
+	}
 	
 	
 	// 충전/환급 관리 페이지로 이동
 	@GetMapping("ChargeRefund")
-	public String chargeRefund(Model model) {
+	public String chargeRefund(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다!");
+//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+//			model.addAttribute("msg3", "error");
+//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+//			return "fail_back";
+//		}
+		
 		List<Map<String, Object>> payHistoryList = service.getPayHistoryChargeRefund();
 		log.info(payHistoryList.toString());
 		
@@ -1336,7 +1455,16 @@ public class PaymentController {
 
 	// 사용/수익 관리 페이지로 이동
 	@GetMapping("SpentRevenue")
-	public String spentRevenue(Model model) {
+	public String spentRevenue(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다!");
+//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+//			model.addAttribute("msg3", "error");
+//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+//			return "fail_back";
+//		}
+		
 		List<Map<String, Object>> payHistoryList = service.getPayHistorySpentRevenue();
 		log.info(payHistoryList.toString());
 		
@@ -1347,7 +1475,16 @@ public class PaymentController {
 	
 	// 거래 내역 관리 페이지로 이동
 	@GetMapping("OrderList")
-	public String orderList(Model model) {
+	public String orderList(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+//		if(sId == null || !sId.equals("admin")) {
+//			model.addAttribute("msg", "잘못된 접근입니다!");
+//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+//			model.addAttribute("msg3", "error");
+//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+//			return "fail_back";
+//		}
+		
 		List<Map<String, Object>> orderList = service.getOrderList();
 		
 		log.info(orderList.toString());
