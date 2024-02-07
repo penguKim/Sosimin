@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.c5d2308t1_2.handler.BankValueGenerator;
+import com.itwillbs.c5d2308t1_2.service.LevelService;
 import com.itwillbs.c5d2308t1_2.service.PaymentService;
 import com.itwillbs.c5d2308t1_2.vo.ResponseTokenVO;
 
@@ -29,6 +30,9 @@ public class PaymentController {
 	
 	@Autowired
 	private PaymentService service;
+	
+	@Autowired
+	private LevelService levelService;
 	
 	@Autowired
 	BankValueGenerator bankValueGenerator;
@@ -249,6 +253,8 @@ public class PaymentController {
 		return "payment/payInfo";
 	}
 	
+	
+	// 페이 사용 목록 불러오기
 	@ResponseBody
 	@GetMapping("PayHistoryJson")
 	public String historyJson(Model model, @RequestParam Map<String, Object> map) {
@@ -336,6 +342,9 @@ public class PaymentController {
 	public String payChargePro(@RequestParam Map<String, Object> map, HttpSession session, Model model, RedirectAttributes rttr) {
 		String member_id = (String)session.getAttribute("sId");
 		
+		// DB에서 페이 가입 여부 조회하고 정보 가져오기
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		
 		session.setAttribute("PayChargePro", "PayChargePro" + member_id); // 세션에 거래 요청 정보를 추가
 		
 		if(member_id == null) {
@@ -350,6 +359,12 @@ public class PaymentController {
 			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "AccountVerification");	
 			return "forward";
+		} else if(payInfo == null) {
+			model.addAttribute("msg", "계좌 등록이 필요합니다");
+			model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
+			return "forward";
 		}
 		
 //		log.info(map.toString());
@@ -358,6 +373,7 @@ public class PaymentController {
 		// 충전 = 잔액 인출 후 성공 뷰페이지, 거절 = 거절페이지
 		map.put("access_token", (String)session.getAttribute("access_token"));
 		map.put("member_id", (String)session.getAttribute("sId"));
+		map.put("pay_balance", payInfo.get("pay_balance"));
 		
 		log.info(map.toString());
 		
@@ -592,6 +608,9 @@ public class PaymentController {
 	public String payRefundPro(@RequestParam Map<String, Object> map, HttpSession session, Model model, RedirectAttributes rttr) {
 		String member_id = (String)session.getAttribute("sId");
 		
+		// DB에서 페이 가입 여부 조회하고 정보 가져오기
+		Map<String, Object> payInfo = service.getPayInfo(member_id);
+		
 		session.setAttribute("PayRefundPro", "PayRefundPro" + member_id); // 거래 완료 정보를 추가
 		
 		if(member_id == null) {
@@ -611,6 +630,7 @@ public class PaymentController {
 		// 저장된 "admin" 계정의 엑세스토큰(oob) 조회 필요
 		map.put("access_token", service.getAdminAccessToken());
 		map.put("member_id", member_id);
+		map.put("pay_balance", payInfo.get("pay_balance"));
 		
 		// 파라미터로 입력받은 값을 숫자로 변환
 		String pay_amountString = (String) map.get("pay_amount");
@@ -1104,7 +1124,7 @@ public class PaymentController {
 			return "unpaid"; // 결제안함
 		}
 		
-		
+		map.put("product_seller", productInfo.get("product_seller"));
 		// 현금결제인지 소심결제인지 따라서 다름!
 		if(orderInfo.get("order_type").toString().equals("1")) { // 현금거래일 경우
 			// Products 테이블과 Orders 테이블의 결제 상태 바꾸기 order_status 1
@@ -1114,6 +1134,7 @@ public class PaymentController {
 			int updateCount = service.modifyStatus(map);
 			
 			if(updateCount > 0) { // 성공시
+				levelService.updatePaymentExp(map, 20);
 				return "true";	
 			} else {
 				return "false";					
@@ -1152,6 +1173,7 @@ public class PaymentController {
 				int modifyCount = service.confirmPayment(orderInfo);
 			
 				if(modifyCount > 0) { // 성공시
+					levelService.updatePaymentExp(map, 20);
 					return "true";	
 				} else {
 					return "false";					
@@ -1356,6 +1378,11 @@ public class PaymentController {
 //			return "fail_back";
 //		}
 		
+		// member_id로 페이 정보 조회
+		Map<String, Object> payInfo = service.getPayInfo(map.get("member_id").toString());
+		
+		map.put("pay_balance", payInfo.get("pay_balance"));
+		
 		// 입력한 금액을 숫자로 변환
 		String refund_balanceString = (String) map.get("refund_balance");
 		refund_balanceString = refund_balanceString.replace(",", "");
@@ -1428,6 +1455,10 @@ public class PaymentController {
 //			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
 //			return "fail_back";
 //		}
+		
+		List<Map<String, Object>> sosiminAccount = service.getSosiminAccount();
+		
+		model.addAttribute("sosiminAccount", sosiminAccount);
 		
 		return "admin/sosiminAccount";
 	}

@@ -42,6 +42,9 @@ public interface PaymentMapper {
 	// 페이 충전/환급 내역 저장 요청
 	void insertPayHistory(Map<String, Object> map);
 	
+	// 약정계좌 사용 내역 기록
+	void insertSosiminAccount(Map<String, Object> map);
+	
 	// 관리자 엑세스토큰 조회 요청
 	String selectAdminAccessToken();
 
@@ -107,7 +110,12 @@ public interface PaymentMapper {
 	// 페이 사용 내역 불러오기(사용/수익)
 	List<Map<String, Object>> selectPaySpentRevenue();
 
+	// 구매 내역 불러오기
 	List<Map<String, Object>> selectOrderList();
+	
+	// 약정계좌 내역 불러오기
+	List<Map<String, Object>> selectSosiminAccount();
+
 
 
 

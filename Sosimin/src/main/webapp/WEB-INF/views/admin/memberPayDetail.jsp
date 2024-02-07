@@ -286,69 +286,88 @@ $(function() {
 		let user_name = "${payList.user_name}";
 		let member_id = "${payList.member_id}";
 		
-		Swal.fire({
-	        title: '해당 고객의 페이를 환급하시겠습니까?',
-	        text: "확인을 누르시면 환급이 진행됩니다.",
-	        icon: 'question',
-	        showCancelButton: true,
-	        confirmButtonColor: '#0d6efd',
-	        cancelButtonColor: '#d33',
-	        confirmButtonText: '환급',
-	        cancelButtonText: '취소',
-	        reverseButtons: true,
-	    }).then((result) => {
-	    	if (result.isConfirmed) {
-	    		// 환급을 위해 ajax 요청
-	    		$.ajax({
-	    			type: "GET",
-	    			url: "RefundPay",
-	    			data: {
-	    				"pay_id": pay_id,
-	    				"refund_balance": refund_balance,
-	    				"pay_balance": pay_balance,
-	    				"fintech_use_num": fintech_use_num,
-	    				"user_name": user_name,
-	    				"member_id": member_id
-	    			},
-	    			success:  function(data) {
-	    				console.log("결과 : " + data);
-	    				
-	    				if(data = "true") {
-	    					Swal.fire({
-	    						icon: 'success',
-	    						title: '페이 환급에 성공했습니다.',
-	    						confirmButtonColor: '#0d6efd',
-	    						confirmButtonText: '확인',
-	    						allowOutsideClick: false
-	    					}).then((result) => {
-	    						location.reload();
-	    					});
-	    				} else {
-	    					Swal.fire({
-	    						icon: 'error',
-	    						title: '페이 환급에 실패했습니다.',
-	    						confirmButtonColor: '#0d6efd',
-	    						confirmButtonText: '확인',
-	    						allowOutsideClick: false
-	    					});
-	    				}
-	    				
-	    				$('#modal2-${pay_list.pay_history_id}').modal('hide'); // 모달창 닫기
-	    				
-	    			},
-	    			error: function(request, status, error) {
-	    		      // 요청이 실패한 경우 처리할 로직
-	    		      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
-	    			}
-	    		});
-	    		
-	    		
-	    		
-	    	} else {
-	        	$('#modal2-${pay_list.pay_history_id}').modal('hide'); // 모달창 닫기
-	        }
-	    	
-	    });
+		
+		input_amount = parseInt($("#refund-balance").val().replace(/,/g, ''));
+		console.log("input_amount : " + input_amount);
+		console.log("pay_balance : " + pay_balance);
+		
+		
+		if(pay_balance < input_amount) { // 입력금액이 페이잔액보다 크면
+			Swal.fire({
+				position: 'center',
+				icon: 'error',
+				title: '페이 잔액보다 많은 금액은 입력하실 수 없습니다.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+			$('#modal2-${pay_list.pay_history_id}').modal('hide');
+		} else {
+		
+			Swal.fire({
+		        title: '해당 고객의 페이를 환급하시겠습니까?',
+		        text: "확인을 누르시면 환급이 진행됩니다.",
+		        icon: 'question',
+		        showCancelButton: true,
+		        confirmButtonColor: '#0d6efd',
+		        cancelButtonColor: '#d33',
+		        confirmButtonText: '환급',
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		    }).then((result) => {
+		    	if (result.isConfirmed) {
+		    		// 환급을 위해 ajax 요청
+		    		$.ajax({
+		    			type: "GET",
+		    			url: "RefundPay",
+		    			data: {
+		    				"pay_id": pay_id,
+		    				"refund_balance": refund_balance,
+		    				"pay_balance": pay_balance,
+		    				"fintech_use_num": fintech_use_num,
+		    				"user_name": user_name,
+		    				"member_id": member_id
+		    			},
+		    			success:  function(data) {
+		    				console.log("결과 : " + data);
+		    				
+		    				if(data = "true") {
+		    					Swal.fire({
+		    						icon: 'success',
+		    						title: '페이 환급에 성공했습니다.',
+		    						confirmButtonColor: '#0d6efd',
+		    						confirmButtonText: '확인',
+		    						allowOutsideClick: false
+		    					}).then((result) => {
+		    						location.reload();
+		    					});
+		    				} else {
+		    					Swal.fire({
+		    						icon: 'error',
+		    						title: '페이 환급에 실패했습니다.',
+		    						confirmButtonColor: '#0d6efd',
+		    						confirmButtonText: '확인',
+		    						allowOutsideClick: false
+		    					});
+		    				}
+		    				
+		    				$('#modal2-${pay_list.pay_history_id}').modal('hide'); // 모달창 닫기
+		    				
+		    			},
+		    			error: function(request, status, error) {
+		    		      // 요청이 실패한 경우 처리할 로직
+		    		      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+		    			}
+		    		});
+		    		
+		    		
+		    		
+		    	} else {
+		        	$('#modal2-${pay_list.pay_history_id}').modal('hide'); // 모달창 닫기
+		        }
+		    	
+		    });
+		}
 	}
 	
 	

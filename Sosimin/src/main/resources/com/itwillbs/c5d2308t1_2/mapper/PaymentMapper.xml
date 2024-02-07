@@ -138,10 +138,8 @@
 	
 	<!-- 페이 충전/환급 내역 -->
 	<insert id="insertPayHistory">
-		<selectKey keyProperty="pay_history_balance" resultType="INT" order="BEFORE">
-			SELECT pay_balance
-			FROM Pay
-			WHERE pay_id = #{pay_id}
+		<selectKey keyProperty="pay_history_id" resultType="INT" order="AFTER">
+			SELECT LAST_INSERT_ID()
 		</selectKey>
 		INSERT INTO PayHistory
 		VALUE (
@@ -150,13 +148,13 @@
 			, #{tran_amt}
 			<choose>
 				<when test="pay_history_type == 1">
-					, #{pay_history_balance} + CAST(#{tran_amt} AS SIGNED)
+					, #{pay_balance} + CAST(#{tran_amt} AS SIGNED)
 				</when>
 				<when test="pay_history_type == 2">
-					, #{pay_history_balance} - CAST(#{tran_amt} AS SIGNED)
+					, #{pay_balance} - CAST(#{tran_amt} AS SIGNED)
 				</when>
 				<otherwise>
-					, #{pay_history_balance}
+					, #{pay_balance}
 				</otherwise>
 			</choose>
 			, #{pay_history_type}
@@ -166,6 +164,24 @@
 		)
 	</insert>
 	
+	<!-- 약정계좌 이용 내역 -->
+	<insert id="insertSosiminAccount">
+		INSERT INTO SosiminAccount
+		VALUE (
+			null
+			<choose>
+				<when test="pay_history_type == 1">
+					, account_balance + CAST(#{tran_amt} AS SIGNED)
+				</when>
+				<when test="pay_history_type == 2">
+					, account_balance - CAST(#{tran_amt} AS SIGNED)
+				</when>
+			</choose>
+			, #{pay_history_id}
+		)
+	</insert>
+	
+
 	<!-- 출금을 위해 관리자 토큰 조회(oob) -->
 	<select id="selectAdminAccessToken" resultType="string">
 		SELECT admin_access_token
@@ -380,10 +396,17 @@
 	</select>
 	
 	<!-- 거래 내역 페이지 -->
-	<select id="selectOrderList">
+	<select id="selectOrderList" resultType="map">
 		SELECT *
 		FROM OrderList
 		ORDER BY order_id DESC
+	</select>
+	
+	<!-- 약정계좌내역 불러오기 -->
+	<select id="selectSosiminAccount" resultType="map">
+		SELECT *
+		FROM SosiminAccountView
+		ORDER BY account_history_id DESC
 	</select>
 	
 </mapper>

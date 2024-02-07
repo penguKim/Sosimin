@@ -105,10 +105,12 @@ public class PaymentService {
 		return bankApiClient.requestWithdraw(map);
 	}
 
-	// 페이 충전/환급 및 충전/환급 내역 저장 요청
+	// 페이 충전/환급 및 내역 저장 요청
+	// 약정 계좌 내역 저장 요청
 	@Transactional
 	public int updatePayBalance(Map<String, Object> map) {
 		mapper.insertPayHistory(map);
+		mapper.insertSosiminAccount(map);
 		
 		return mapper.updatePayBalance(map);
 	}
@@ -240,6 +242,11 @@ public class PaymentService {
 	// 거래 내역 불러오기
 	public List<Map<String, Object>> getOrderList() {
 		return mapper.selectOrderList();
+	}
+
+	// 약정계좌 내역 불러오기
+	public List<Map<String, Object>> getSosiminAccount() {
+		return mapper.selectSosiminAccount();
 	}
 
 }

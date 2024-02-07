@@ -388,7 +388,12 @@ $(function() {
 							<table class="top_table">
 								<tr>
 									<th>약정계좌잔액</th>
-									<td>${payList.pay_id}</td>
+									<td>
+										<c:set var="formattedBalance" value="${sosiminAccount[0]['account_balance']}" />
+										<fmt:formatNumber value="${formattedBalance}" pattern="#,##0" var="formattedBalanceWithComma" />
+										
+										<c:out value="${formattedBalanceWithComma}" />원
+									</td>
 								</tr>
 							</table>
 						
@@ -405,26 +410,26 @@ $(function() {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="pay_list" items="${payHistoryList}">
+									<c:forEach var="account" items="${sosiminAccount}">
 										<tr>
-											<td>${pay_list.pay_history_id}</td>
-											<td>${pay_list.member_id}</td>
+											<td>${account.account_history_id}</td>
+											<td>${account.member_id}</td>
 											<td>
 												<c:choose>
-													<c:when test="${pay_list.pay_history_type eq '1'}">충전</c:when>
-													<c:when test="${pay_list.pay_history_type eq '2'}">환급</c:when>
+													<c:when test="${account.pay_history_type eq '1'}">충전</c:when>
+													<c:when test="${account.pay_history_type eq '2'}">환급</c:when>
 												</c:choose>
 											</td>
 											<td>
-												<c:set var="payAmount" value="${pay_list.pay_amount}" />
-												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+												<c:set var="amount" value="${account.pay_amount}" />
+												<fmt:formatNumber value="${amount}" pattern="#,##0" />원
 											</td>
 											<td>
-												<c:set var="payAmount" value="${pay_list.pay_amount}" />
-												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
+												<c:set var="balance" value="${account.account_balance}" />
+												<fmt:formatNumber value="${balance}" pattern="#,##0" />원
 											</td>
 											<td>
-												<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
+												<c:set var="datetime" value="${fn:split(account.pay_history_date, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
 												${date}
 											</td>
