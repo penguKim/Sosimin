@@ -129,9 +129,6 @@
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.1.js"></script>
 <script>
 	$(function() {
-		// 채팅 페이지 접속 시 웹소켓 연결 즉시 수행
-		connect();
-		// ===============================================================
 		// 버튼 클릭 이벤트 처리
 		$("#btnJoin").click(function() {
 			// 상대방 아이디 미입력 시 오류메세지 출력 및 입력창 포커스 요청
@@ -143,11 +140,6 @@
 			
 			startChat();
 		});
-		
-		$("#btnQuit").click(function() {
-			disconnect();	
-		});
-		
 	});
 	
 	// ===============================================================
@@ -387,7 +379,6 @@
 	// 웹소켓 연결 해제
 	function disconnect() {
 		// WebSocket 객체의 close() 메서드 호출하여 웹소켓 연결 종료
-		ws.close();
 	}
 	
 	// 웹소켓 연결 해제 시 close 이벤트에 대한 처리 메서드

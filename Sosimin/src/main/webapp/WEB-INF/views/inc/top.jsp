@@ -6,8 +6,42 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 
 <script type="text/javascript">
-
+//로그인시 웹소켓 연결
+$(function() {
+	var sId = "${sessionScope.sId}";
+	if(sId != ""){
+		connect();
+	}else{
+		ws.close();
+	}
 	
+});
+function connect() {
+	// 사용자 세션 아이디 변수에 저장
+	current_user_id = "${sessionScope.sId}";
+
+	// 웹소켓 연결에 사용할 기본 주소 설정(ws 프로토콜 사용)
+	// => 보안을 위해서는 ws 대신 wss 사용해야함
+	let ws_base_url = "ws://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}";
+	// => 주의! request 객체의 contextPath 값은 "/XXX" 형식으로 리턴되므로 문자열 결합 시 / 생략
+	
+	// 웹소켓 요청(Handshake)
+	// => WebSocket 객체 생성(생성자 파라미터로 요청 주소 전달)
+	ws = new WebSocket(ws_base_url + "/echo2");
+	// => 이 요청을 서버에서 처리하기 위해 매핑을 수행해야하는데
+	//    이 매핑은 컨트롤러가 아닌 xml 파일에서 설정 필요
+	//    (=> ws-context.xml 파일 만들어서 설정)
+	
+	// WebSocket 객체의 onxxx 이벤트에 각각의 함수 연결
+	// => 주의! onxxx 이벤트에 전달하는 함수는 반드시 함수명만 기술
+	ws.onopen = onOpen;
+	ws.onmessage = onMessage;
+	ws.onclose = onClose;
+	ws.onerror = onError;
+	
+}
+
+
 	
 $(function(){
 // ######################테스트 데이터 설정######################
