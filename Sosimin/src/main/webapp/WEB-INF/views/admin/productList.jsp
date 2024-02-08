@@ -82,6 +82,39 @@ function deleteProduct() {
 	
 </script>
 </head>
+<style>
+#image1,#image2,#image3,#image4,#image5 {
+	display:inline-block;
+	position:relative;
+	color: #888;
+	cursor: pointer;
+	transition: 0.5s;
+	width:10px;
+}
+#image2{
+	position: relative;
+	left:10px;
+}
+#image3{
+	position: relative;
+	left:30px;
+}
+#image4{
+	position: relative;
+	left:50px;
+}
+#image5{
+	position: relative;
+	left:70px;
+}
+
+
+#image1:hover, #image2:hover, #image3:hover ,#image4:hover , #image5:hover {
+	transform: scale(10);
+	z-index: 1000;
+}
+
+</style>
 <body>
 
 	<!-- ======= Header ======= -->
@@ -124,20 +157,20 @@ function deleteProduct() {
 										<th>상세보기</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="tbody">
 									<c:forEach var="productList" items="${productList }">
 										<tr>
 											<td>
-												<img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image1}">	
+												<img style="width: 80px; height: 80px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image1}">	
 											</td>
-											<td>${productList.member_id}</td>
-											<td>${productList.product_name}</td>
-											<td>
+											<td style="vertical-align: middle;">${productList.member_id}</td>
+											<td style="vertical-align: middle;">${productList.product_name}</td>
+											<td style="vertical-align: middle;">
 												<fmt:formatNumber value="${productList.product_price}" pattern="#,##0" />원
 											</td>
-											<td>${productList.product_category}</td>
-											<td>${productList.product_datetime}</td>
-											<td class="green">
+											<td style="vertical-align: middle;">${productList.product_category}</td>
+											<td style="vertical-align: middle;">${productList.product_datetime}</td>
+											<td class="green" style="vertical-align: middle;">
 												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-">
 													상세보기
 												</button>
@@ -154,7 +187,7 @@ function deleteProduct() {
 																<table class="table modal_table">
 																	<tr>
 																		<th scope="row">상품번호</th>
-																		<td>${productList.product_id }</td>
+																		<td style="">${productList.product_id }</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">판매자</th>
@@ -208,11 +241,11 @@ function deleteProduct() {
 																	<tr>
 																		<th scope="row">상품이미지</th>
 																		<td>
-																			<c:if test="${not empty productList.product_image1 }"><span><img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image1}"></span></c:if>
-																			<c:if test="${not empty productList.product_image2 }"><span><img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image2}"></span></c:if>
-																			<c:if test="${not empty productList.product_image3 }"><span><img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image3}"></span></c:if>
-																			<c:if test="${not empty productList.product_image4 }"><span><img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image4}"></span></c:if>
-																			<c:if test="${not empty productList.product_image5 }"><span><img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image5}"></span></c:if>
+																			<c:if test="${not empty productList.product_image1 }"><span id="image1"><img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image1}"></span></c:if>
+																			<c:if test="${not empty productList.product_image2 }"><span id="image2"><img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image2}"></span></c:if>
+																			<c:if test="${not empty productList.product_image3 }"><span id="image3"><img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image3}"></span></c:if>
+																			<c:if test="${not empty productList.product_image4 }"><span id="image4"><img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image4}"></span></c:if>
+																			<c:if test="${not empty productList.product_image5 }"><span id="image5"><img style="width: 20px; height: 20px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image5}"></span></c:if>
 																		</td>
 																	</tr>
 																</table>
