@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itwillbs.c5d2308t1_2.service.CommunityService;
 import com.itwillbs.c5d2308t1_2.service.LevelService;
 import com.itwillbs.c5d2308t1_2.service.ProductService;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
@@ -41,6 +42,7 @@ public class ProductController {
 	ProductService service;
 	@Autowired
 	LevelService levelService;
+	
 	// 메인 상품 목록 페이지 이동
 	@GetMapping("SearchProduct")
 	public String searchProduct() {
@@ -389,9 +391,22 @@ public class ProductController {
 					Map<String, Object> count = new HashMap<String, Object>();
 					count = service.getCount(map,true);
 					// 페이 미가입자 판별 여부
-					int payStatus = service.selectPayStatus(map);
-					
+					Map<String,String> payStatus = service.selectProductPayStatus(Product);
+					// 구/동 판별
 					Map<String,String> guDong = service.getGuDong(map);
+					// 회원 경험치 조회
+					System.out.println("너 뭐 들었어 : " + member);
+					
+					
+					System.out.println("판매자의!!!정보는!! : " + payStatus);
+					
+					Map<String, Integer> levelExp = service.getProductMemberLevel(SellerInfo);
+			        float percentage = (float)levelExp.get("member_exp") / levelExp.get("level_max_exp") * 100;
+			        percentage = Math.round(percentage * 10) / 10;
+			        System.out.println("회원의 경험치는 : " + (float)levelExp.get("member_exp"));
+			        System.out.println("최대 경험치는 : " + levelExp.get("level_max_exp"));
+			        System.out.println("퍼센트는 : " + percentage);
+					
 					
 					System.out.println(" >>>>>>>>>>>>>>>> 몇개 들었노: " + SellerProductCount);
 					System.out.println(" >>>>>>>>>>>>>>>> 판매자정보 : " + SellerInfo);
@@ -454,7 +469,10 @@ public class ProductController {
 								model.addAttribute("count", count);
 								model.addAttribute("guDong", guDong);
 								model.addAttribute("payStatus", payStatus);
+								model.addAttribute("percentage", percentage);
 								// 리스트를 무작위로 섞어 조회한 상품중 랜덤한 값 뿌리기
+								
+								System.out.println("여기에 뭐가들었니? : " + percentage);
 								
 								RelatedProducts = service.selectRelatedProducts(Product);
 								Collections.shuffle(RelatedProducts); // 

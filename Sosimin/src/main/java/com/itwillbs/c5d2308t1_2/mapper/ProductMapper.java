@@ -89,7 +89,9 @@ public interface ProductMapper {
 
 	int selectPayStatus(Map<String, String> productModify);
 
-	
+	Map<String, Integer> getProductMemberLevel(Map<String, String> sellerInfo);
+
+	Map<String, String> selectProductPayStatus(Map<String, String> product);
 	 
 	
 	

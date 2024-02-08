@@ -455,12 +455,15 @@
   animation-timing-function: ease-out; 
   /* 애니메이션 속도 곡선을 설정합니다. */
 }
+
 </style>
 <script>
 
 
 
 $(function() {
+	console.log(${percentage});
+	memberExp(${percentage});
 	console.log("세션에 저장된 아이디 ; " + '${sessionScope.sId}');
 	// 찜정보 가져오기
 	$.ajax({
@@ -705,6 +708,22 @@ function chat() {
 // }
 //});
 //}
+
+	function memberExp(percent) {
+	// 스타일 요소를 만들고, @keyframes 규칙을 추가합니다.
+	$('<style>')
+	.prop('type', 'text/css')
+	.html(`
+		@keyframes progress-animation {
+			0%   {width: 0%;}
+			100% {width: percent + '%';}
+		}
+	`)
+	.appendTo('head');
+	
+	// 프로그레스바 애니메이션을 시작합니다.
+	$('.progress-bar').css('width', percent + '%').attr('aria-valuenow', percent + '%').text(percent + '%');
+}
 </script>
 <body>
 
@@ -797,7 +816,7 @@ function chat() {
                             	</div>
 	                            <div>
 	                            <h3 class="price2" style="font-size: 40px"><fmt:formatNumber value="${Product.product_price}" pattern="###,###"/><span style="font-size: 20px">원</span></h3>&nbsp;&nbsp;&nbsp;
-	                            	<c:if test="${Product.trade_method eq 1 }">
+	                            	<c:if test="${payStatus.member_id eq Product.member_id}">
 			                            	<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"
 		                            	style="height: 40px;" id="payImage">
 	                            	</c:if>
@@ -1059,8 +1078,9 @@ function chat() {
                                 	</a>
                                 </div> 
                                 <div class="col-xl-4 col-3">
-									<div class="progress">
-										<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">75%</div>
+                                	
+									<div class="progress" style="width: 250px;">
+										<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
 			        		    </div>
                                 <hr>

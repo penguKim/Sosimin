@@ -33,6 +33,7 @@ public interface LevelMapper {
 	
 	// 회원 레벨 업데이트
 	void updateMemberLevel(Map<String, Integer> map);
+	
 
 
 

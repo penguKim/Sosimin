@@ -436,11 +436,27 @@
 		FROM ProductData
 		WHERE product_id = #{product_id}
 	</select>
-	
+	<!-- 상품등록 / 수정할때 판별 소심페이 가능하냐 -->
 	<select id="selectPayStatus" resultType="int">
         SELECT count(*)
         FROM Pay
         WHERE member_id = #{sId}
+	</select>
+	
+	<select id="getProductMemberLevel">
+		SELECT *
+		FROM MemberLevelView
+		WHERE member_id = #{member_id}
+	</select>
+	
+	<select id="selectProductPayStatus">
+			SELECT DISTINCT member_id 
+			FROM Product p 
+			WHERE EXISTS (SELECT 1
+			                FROM Pay 
+			                WHERE p.member_id = Pay.member_id
+			                AND pay_status = 0)
+			AND member_id = #{member_id};
 	</select>
 	
 </mapper>

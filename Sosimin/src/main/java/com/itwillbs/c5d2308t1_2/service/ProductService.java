@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itwillbs.c5d2308t1_2.mapper.LevelMapper;
 import com.itwillbs.c5d2308t1_2.mapper.ProductMapper;
 import com.itwillbs.c5d2308t1_2.vo.*;
 
@@ -14,6 +15,9 @@ public class ProductService {
 
 	@Autowired
 	ProductMapper mapper;
+	
+	@Autowired
+	LevelMapper levelMapper;
 	// 페이지 카운트 조회
 	public int getProductListCount(Map<String, Object> map) {
 		return mapper.productListCount(map);
@@ -178,6 +182,14 @@ public class ProductService {
 	public int selectPayStatus(Map<String, String> productModify) {
 		
 		return mapper.selectPayStatus(productModify);
+	}
+	public Map<String, Integer> getProductMemberLevel(Map<String, String> sellerInfo) {
+		
+		return mapper.getProductMemberLevel(sellerInfo);
+	}
+	public Map<String, String> selectProductPayStatus(Map<String, String> product) {
+		
+		return mapper.selectProductPayStatus(product);
 	}
 	
 }

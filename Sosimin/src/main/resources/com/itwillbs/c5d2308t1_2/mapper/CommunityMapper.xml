@@ -597,8 +597,12 @@
 		SELECT *
 		FROM CommunityReply
 	</select>
-	
-	
+	<!-- 회원 조회 -->
+	<select id="selectMemberLevel">
+		SELECT *
+		FROM MemberLevelView
+		WHERE member_id = #{member_id}
+	</select>
 </mapper>
 
 
