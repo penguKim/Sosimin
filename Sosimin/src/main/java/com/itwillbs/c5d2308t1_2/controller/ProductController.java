@@ -48,7 +48,7 @@ public class ProductController {
 	public String searchProduct() {
 		return "products/searchProduct";
 	}
-	
+	               
 	// 상품 목록 출력 ajax
 	@ResponseBody 
 	@GetMapping("StoreProductList")
