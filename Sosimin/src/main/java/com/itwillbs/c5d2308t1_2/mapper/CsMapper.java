@@ -20,6 +20,9 @@ public interface CsMapper {
 
 	// 고객센터관리
 	List<Map<String, Object>> selectCsListAdmin(@Param("map") Map<String, Object> map);
+
+	// 고객센터 상세 조회
+	Map<String, Object> selectCsDetail(int cs_id);
 	
 
 }

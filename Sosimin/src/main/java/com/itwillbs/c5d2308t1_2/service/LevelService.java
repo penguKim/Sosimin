@@ -177,6 +177,19 @@ public class LevelService {
 		return mapper.insertReview(re);
 	}
 
+	// 회원의 리뷰정보 가져오기
+	public ReviewVO getReview(ReviewVO re) {
+		return mapper.selectReview(re);
+	}
+
+	// 회원의 리뷰 삭제
+	public int deleteReview(ReviewVO re) {
+		
+		// 삭제하는쪽 경험치 차감..................
+		
+		return mapper.deleteReview(re);
+	}
+	
 	// 회원 상품 등록
 	// levelService.updateProExp(map); // 경험치 증가
 	public void updateProExp(Map<String, String> map) {
@@ -261,6 +274,8 @@ public class LevelService {
 		}
 		
 	}
+
+
 
 
 

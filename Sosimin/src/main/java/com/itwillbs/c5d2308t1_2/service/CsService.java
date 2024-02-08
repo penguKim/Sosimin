@@ -29,5 +29,10 @@ public class CsService {
 	public List<Map<String, Object>> getCsListAdmin(Map<String, Object> map) {
 		return mapper.selectCsListAdmin(map);
 	}
+
+	// 고객센터 상세 조회
+	public Map<String, Object> getCsDetail(int cs_id) {
+		return mapper.selectCsDetail(cs_id);
+	}
 	
 }

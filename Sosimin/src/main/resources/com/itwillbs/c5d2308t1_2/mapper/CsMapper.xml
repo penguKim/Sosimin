@@ -72,4 +72,11 @@
 		WHERE cs_type = #{map.cs_type}
 		ORDER BY cs_id DESC
 	</select>
+	
+	<!-- 고객센터 상세 조회 -->
+	<select id="selectCsDetail" resultType="map">
+		SELECT *
+		FROM Cs
+		WHERE cs_id = #{cs_id}
+	</select>
 </mapper>

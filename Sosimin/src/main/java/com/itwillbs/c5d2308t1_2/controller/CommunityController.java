@@ -943,9 +943,9 @@ public class CommunityController {
 		}
 	}
 	
-	
+	// 후기 등록
 	@ResponseBody
-	@PostMapping("reviewRegist")
+	@PostMapping("ReviewRegist")
 	public String reviewRegist(ReviewVO re, HttpSession session) {
 		System.out.println(re);
 		
@@ -957,7 +957,7 @@ public class CommunityController {
 		re.setMember_id(sId);
 		
 		// 임시로 결제번호 등록 =========================================================================
-		re.setOrder_id(16);
+//		re.setOrder_id(16);
 		
 		
 		// 리뷰 등록
@@ -970,18 +970,51 @@ public class CommunityController {
 		return "false";
 	}
 	
+	// 후기 보기
+	@ResponseBody
+	@PostMapping("ReviewView")
+	public String reviewView(ReviewVO re, HttpSession session) {
+		System.out.println("보려는 후기 : " + re);
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "login"; // dataType json이므로 응답은 error로 발생
+		}
+
+		re.setMember_id(sId);
+		
+		ReviewVO review = levelService.getReview(re);
+		
+		JSONObject object = new JSONObject(review);
+		
+		return object.toString();
+	}
+	
+	// 후기 삭제
+	@ResponseBody
+	@PostMapping("ReviewDelete")
+	public String reviewDelete(ReviewVO re, HttpSession session) {
+		System.out.println("삭제하려는 후기 : " + re);
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "login"; // dataType json이므로 응답은 error로 발생
+		}
+		
+		re.setMember_id(sId);
+		
+		int deleteCount = levelService.deleteReview(re);
+		
+		if(deleteCount > 0) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
+	
 	// ===================== 관리자 페이지 =====================
 	
 	@GetMapping("CommunityList")
 	public String adminCommunityList(HttpSession session, Model model) {
 		String sId = (String)session.getAttribute("sId");
-//		if(sId == null || !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다!");
-//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-//			model.addAttribute("msg3", "error");
-//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-//			return "fail_back";
-//		}
 		if(sId == null || !sId.equals("admin")) {
 			return "error/404";
 		}
@@ -995,13 +1028,6 @@ public class CommunityController {
 	@GetMapping("CommunityReplyList")
 	public String adminCommunityReply(HttpSession session, Model model) {
 		String sId = (String)session.getAttribute("sId");
-//		if(sId == null || !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다!");
-//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-//			model.addAttribute("msg3", "error");
-//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-//			return "fail_back";
-//		}
 		if(sId == null || !sId.equals("admin")) {
 			return "error/404";
 		}

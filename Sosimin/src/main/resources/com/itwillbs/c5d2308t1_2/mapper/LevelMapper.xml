@@ -12,6 +12,7 @@
 		FROM OrderList
 		WHERE order_id = #{order_id}
 	</select>
+	
 	<!-- 회원 조회 -->
 	<select id="selectMemberLevel">
 		SELECT *
@@ -56,4 +57,19 @@
 			, IFNULL(#{review_check4}, 'off')
 		)
 	</insert>
+	
+	<!-- 회원 리뷰 조회 -->
+	<select id="selectReview" resultType="review">
+		SELECT *
+		FROM Review
+		WHERE
+			order_id = #{order_id}
+	</select>
+	
+	<!-- 회원 리뷰 삭제 -->
+	<delete id="deleteReview">
+		DELETE FROM Review
+		WHERE 
+			order_id = #{order_id}
+	</delete>
 </mapper>

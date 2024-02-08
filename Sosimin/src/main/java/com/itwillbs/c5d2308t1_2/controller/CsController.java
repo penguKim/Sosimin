@@ -123,6 +123,19 @@ public class CsController {
 		return "admin/csOneOnOneList";
 	}
 	
-	
+	@GetMapping("CsNoticeDetail")
+	public String csDetail(@RequestParam(defaultValue = "0") int cs_id, Model model) {
+		// 서블릿 주소로만 들어올 경우 처리
+		if(cs_id == 0) {
+			return "error/404";
+		}
+		
+		// 게시글 조회
+		Map<String, Object> map = service.getCsDetail(cs_id);
+		
+		model.addAttribute("detail", map);
+		
+		return "cs/csDetail";
+	}
 	
 }
