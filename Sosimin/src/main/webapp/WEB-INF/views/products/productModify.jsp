@@ -871,6 +871,10 @@ function submitFiles(event) {
 	  var form = document.querySelector('form');
 	  var formData = new FormData();
 
+	  for (var i = 0; i < deleteImages.length; i++) {
+		    formData.append('delete_image_index' + i, deleteImages[i]);
+		  }
+	  
 	  for (var i = 1; i <= 4; i++) {
 		  var tagInput = document.querySelector('input[name="tag_name' + i + '"]');
 		  if (tagInput) {
@@ -1401,7 +1405,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			<c:if test="${payStatus eq 0 }">
 				<div id="sosimPay">
 					<a href="AccountVerification">
-						<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png" width=100px;" height="30px;" >
+						<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png" width=100px; height="30px;" >
 					</a>
 					<span id="paySelect">가입자만 선택 가능합니다.</span>
 				</div>

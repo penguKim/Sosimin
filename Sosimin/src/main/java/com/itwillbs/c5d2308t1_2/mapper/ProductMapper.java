@@ -87,7 +87,8 @@ public interface ProductMapper {
 
 	Map<String, String> getGuDong(Map<String, String> map);
 
-	int selectPayStatus(Map<String, String> map);
+	int selectPayStatus(Map<String, String> productModify);
+
 	
 	 
 	

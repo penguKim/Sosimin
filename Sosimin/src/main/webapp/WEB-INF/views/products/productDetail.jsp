@@ -1038,7 +1038,7 @@ function chat() {
 	                                	<a href="ProductDetail?product_id=${SellerProductInfo.product_id}" style="height: 150px;">
 	                                		<img src="${pageContext.request.contextPath}/resources/upload/${SellerProductInfo.product_image1 }" class="img" alt="#" height="150px" width="150px">
 	                                		<div id="imgPrice">
-	                                			<span>${SellerProductInfo.product_price }</span>원
+	                                			<span><fmt:formatNumber value="${SellerProductInfo.product_price }" pattern="###,###"/></span>원
 	                                		</div>
 	                                	</a>
                                 		</c:forEach>

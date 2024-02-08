@@ -235,6 +235,7 @@ public class ProductController {
 				model.addAttribute("targetURL", "MemberLogin");
 				return "forward";
 			}
+			
 				map.put("sId", sId);
 				int payStatus = service.selectPayStatus(map);
 				model.addAttribute("payStatus", payStatus);
@@ -265,10 +266,10 @@ public class ProductController {
 		    
 		    LocalDate now = LocalDate.now();
 		    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		   subDir = now.format(dtf);
+            subDir = now.format(dtf);
 
 		    saveDir += File.separator + subDir;
-
+		    
 		    try {
 		        Path path = Paths.get(saveDir); // 파라미터로 업로드 경로 전달
 		        Files.createDirectories(path); // 파라미터로 Path 객체 전달
@@ -481,18 +482,30 @@ public class ProductController {
 				public String productModify(HttpSession session, @RequestParam Map<String, String> map, Model model) {
 					
 					System.out.println(" ======================> 뭐가들었지 : " + map);
-					
+					String sId = (String)session.getAttribute("sId");
+					if(sId == null) {
+						model.addAttribute("msg", "로그인이 필요합니다!");
+						model.addAttribute("msg2", "로그인 후 판매하기 페이지로 이동합니다");
+						model.addAttribute("msg3", "warning");
+						// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
+						model.addAttribute("targetURL", "MemberLogin");
+						return "forward";
+					}
 				    map.put("tag_name1", "#" + map.get("tag_name1"));
 				    map.put("tag_name2", "#" + map.get("tag_name2"));
 				    map.put("tag_name3", "#" + map.get("tag_name3"));
 				    map.put("tag_name4", "#" + map.get("tag_name4"));
 				    
-					int payStatus = service.selectPayStatus(map);
-					model.addAttribute("payStatus", payStatus);
-					System.out.println("payStatus : " + payStatus);
-				    
 					Map<String, String> productModify = service.selectProductModify(map);
 					Map<String,String> guDong = service.getGuDong(map);
+					
+					productModify.put("sId", productModify.get("member_id"));
+					System.out.println("productModify 아이디 : " + productModify.get("member_id"));
+					
+					int payStatus = service.selectPayStatus(productModify);
+					
+					model.addAttribute("payStatus", payStatus);
+					System.out.println("payStatus : " + payStatus);
 					System.out.println("<<<<<<<<<<<<<< 뭐가 돌아왔지 " + productModify);
 					model.addAttribute("guDong", guDong);
 					model.addAttribute("productModify", productModify);
@@ -503,7 +516,7 @@ public class ProductController {
 				@PostMapping("ProductDelete")
 				public String productDelete(HttpSession session, Model model, @RequestParam Map<String,String> map, MemberVO member) {
 					// C:\wordspace_spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Sosimin\resources\ upload\2024\02\04
-					
+					// D:\workspace_sts\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Sosimin\resources\ upload\
 					String sId = (String)session.getAttribute("sId");
 					if(sId == null) {
 						model.addAttribute("msg", "로그인이 필요합니다!");
@@ -568,7 +581,6 @@ public class ProductController {
 				        return "forward";
 				    }
 				    
-				    System.out.println("뭐가 받아와졌죠?  " + map );
 				    
 				    String uploadDir = "/resources/upload";
 				    String saveDir = session.getServletContext().getRealPath(uploadDir);
@@ -582,37 +594,32 @@ public class ProductController {
 				        }
 				    }
 				    
+				    System.out.println("뭐가 받아와졌죠?  " + map );
 				    System.out.println("삭제 할때 뭐가넘어왔노! : " + deleteImageStr);
+				    System.out.println("삭제 할때 뭐가넘어왔노2! : " + files);
+
 				    int[] deleteImages = null;
 				    if (deleteImageStr != null && !deleteImageStr.isEmpty()) {
 				        deleteImages = Arrays.stream(deleteImageStr.split(","))
-				                               .mapToInt(Integer::parseInt)
-				                               .toArray();
+				                                .mapToInt(Integer::parseInt)
+				                                .toArray();
 				    }
 				    if (deleteImages != null && deleteImages.length > 0) {
 				        Arrays.sort(deleteImages);
 				        for (int i = deleteImages.length - 1; i >= 0; i--) {
 				            if (deleteImages[i] - 1 < images.size() && deleteImages[i] - 1 >= 0) {
 				                String imagePath = images.remove(deleteImages[i] - 1);
-				                File imageFile = new File(session.getServletContext().getRealPath("/") + imagePath);
-				                if (imageFile.exists()) {
-				                    imageFile.delete();
+
+				                saveDir = session.getServletContext().getRealPath("/resources/upload");
+				                Path path = Paths.get(saveDir + "/" + imagePath);
+				                try {
+				                    Files.deleteIfExists(path);
+				                } catch (IOException e) {
+				                    e.printStackTrace();
 				                }
 				            }
 				        }
 				    }
-//				    if (deleteImages != null) {
-//				        Arrays.sort(deleteImages);
-//				        for (int i = deleteImages.length - 1; i >= 0; i--) {
-//				            if (deleteImages[i] - 1 < images.size()) {
-//				                String imagePath = images.remove(deleteImages[i] - 1);
-//				                File imageFile = new File(session.getServletContext().getRealPath("/") + imagePath);
-//				                if (imageFile.exists()) {
-//				                    imageFile.delete();
-//				                }
-//				            }
-//				        }
-//				    }
 				    if (files != null) {
 				        for (MultipartFile file : files) {
 				            if (!file.isEmpty()) {
@@ -624,7 +631,7 @@ public class ProductController {
 				                    int uploadIndex = filePath.indexOf("upload");
 				                    if (uploadIndex != -1) {
 				                        String relativePath = filePath.substring(uploadIndex + "upload".length() + 1);
-				                        images.add(relativePath);
+				                        images.add(relativePath);  // 이 부분이 이미지를 추가하는 부분입니다.
 				                    }
 				                } catch (IllegalStateException | IOException e) {
 				                    e.printStackTrace();
@@ -632,7 +639,7 @@ public class ProductController {
 				            }
 				        }
 				    }
-				    	
+
 				    for (int i = 0; i < 5; i++) {
 				        if (i < images.size()) {
 				            map.put("product_image" + (i + 1), images.get(i));
