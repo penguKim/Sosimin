@@ -523,8 +523,6 @@ function filtering(data) {
 										+ ' <li><span>' +  productList[i].dong + '</span></li>'
 										+ ' <li><span>|</span></li>'
 										+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
-										+ ' <li><img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"'
-		                            	+ 'style="height: 20px;" id="payImage"></li>' 
 									+ ' </ul>'
 									+ ' <div class="price">'
 										+ ' <span>' + productList[i].product_price.toLocaleString() + '원</span>'
