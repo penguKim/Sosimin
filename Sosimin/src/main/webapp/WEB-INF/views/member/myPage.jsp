@@ -1440,7 +1440,7 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 n개
+									찜 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									채팅 n회
@@ -1486,7 +1486,7 @@
 										${mypage.product_datetime }
 									</div>
 									<div id="singleProductContactArea">
-										찜 n개
+										찜 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										채팅 n회
@@ -1538,7 +1538,7 @@
 								${mypage.product_datetime }
 							</div>
 							<div id="singleProductContactArea">
-								찜 n개
+								찜 ${mypage.count}개
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								채팅 n회
@@ -1576,7 +1576,7 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 n개
+									찜 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									채팅 n회
@@ -1627,13 +1627,13 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 n개
+									찜 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									채팅 n회
 								</div>
 								<div id="singleProductButtonArea">
-									<input type="button" value="상세보기" onclick="ProductDetail?product_id=${mypage.product_id}">
+									<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
 								</div>
 							</c:when>
 							
@@ -1666,7 +1666,7 @@
 										${mypage.product_datetime }
 									</div>
 									<div id="singleProductContactArea">
-										찜 n개
+										찜 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										채팅 n회

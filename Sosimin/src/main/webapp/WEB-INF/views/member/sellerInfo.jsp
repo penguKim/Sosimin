@@ -21,14 +21,16 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
-<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <%-- sweetalert --%>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
+
+	
+
 <script type="text/javascript">
 	
 
@@ -76,7 +78,7 @@
 				}
 			});
 		
-		// 좋아요 버튼 클릭 이벤트
+		// 찜 버튼 클릭 이벤트
         $(".heart").on("click", function () {
         	let heart = $(this);
     		$.ajax({
@@ -99,7 +101,7 @@
         				});
     				} else if(result == 'true') { // 찜을 삭제하는 경우
 						$(heart).removeClass("is-active");
-						$(heart).parent().remove();
+// 						$(heart).parent().remove();
         				Swal.fire({
         					position: 'center',
         					icon: 'success',
@@ -370,6 +372,7 @@
 </head>
 
 <body>
+	<jsp:include page="../report/report.jsp"></jsp:include>
 	
 	<%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1 로 저장) --%>
 	<c:set var="pageNum" value="1" />
@@ -456,10 +459,16 @@
 							<img src="${pageContext.request.contextPath}/resources/images/member/reviewicon.png">
 							받은 후기
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
-<!-- 						<a href="#myPageModifyInfoModal" data-bs-toggle="modal" id="myPageModifyInfoFrom"> -->
-<%-- 							<img src="${pageContext.request.contextPath}/resources/images/member/usericon.png"> --%>
-<!-- 							내 정보 수정 -->
-<!-- 						</a>&nbsp;&nbsp;&nbsp;&nbsp; -->
+						<a href="" data-bs-toggle="modal" data-bs-target="#reportModal" id="reportButton">
+                       		<input type="hidden" name="reportee_id" id="reportee_id" value="${MyProfileMember.member_id }">
+<%-- 							<img src="${pageContext.request.contextPath}/resources/images/member/reporticon.png"> --%>
+							<span class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:small; white-space: nowrap">신고하기</span>
+						</a>
+<!--                        	<div class="reportBtn2"> -->
+                       		
+<!-- 						</div> -->
+						
+						
 					</div>
 					<section id="profileRightMiddle" class="row align-items-center">
 						<span class="col auto">Lv. ${MyProfileMember.member_level }</span>
@@ -567,7 +576,7 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 n개
+									찜 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									채팅 n회
@@ -605,7 +614,7 @@
 										${mypage.product_datetime }
 									</div>
 									<div id="singleProductContactArea">
-										찜 n개
+										찜 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										채팅 n회
@@ -649,7 +658,7 @@
 								${mypage.product_datetime }
 							</div>
 							<div id="singleProductContactArea">
-								찜 n개
+								찜 ${mypage.count}개
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								채팅 n회
@@ -687,7 +696,7 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 n개
+									찜 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									채팅 n회
@@ -731,7 +740,7 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 n개
+									찜 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									채팅 n회
@@ -770,7 +779,7 @@
 										${mypage.product_datetime }
 									</div>
 									<div id="singleProductContactArea">
-										찜 n개
+										찜 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										채팅 n회
@@ -961,8 +970,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
-	
-
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </body>
 
 </html>

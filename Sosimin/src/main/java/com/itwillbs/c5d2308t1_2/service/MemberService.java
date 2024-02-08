@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.itwillbs.c5d2308t1_2.mapper.MemberMapper;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
+import com.itwillbs.c5d2308t1_2.vo.ProductLikeVO;
 import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 
 import edu.emory.mathcs.backport.java.util.Arrays;
@@ -142,8 +143,8 @@ public class MemberService {
 
 	// 상품 찜 등록, 삭제
 	public String getLike(String sId, int product_id) {
-		int count = mapper.selectLike(sId, product_id);
-		if(count > 0) {
+		ProductLikeVO dbLike = mapper.selectLike(sId, product_id);
+		if(dbLike != null) {
 			mapper.deleteLike(sId, product_id);
 			return "true";
 		} else {

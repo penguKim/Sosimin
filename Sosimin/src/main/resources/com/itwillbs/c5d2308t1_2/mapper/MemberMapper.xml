@@ -120,11 +120,11 @@
 				<when test="category == 1">
 					<choose>
 						<when test="filter == 0">
-							FROM Product 
+							FROM ProductView 
 							WHERE member_id = #{sId}
 						</when>
 						<when test="filter == 1">
-							FROM Product 
+							FROM ProductView 
 							WHERE member_id = #{sId}
 							AND trade_status = 0
 						</when>
@@ -144,8 +144,8 @@
 				</when>
 				<when test="category == 3">
 					FROM ProductLike
-					JOIN Product
-					ON ProductLike.product_id = Product.product_id
+					JOIN ProductView
+					ON ProductLike.product_id = ProductView.product_id
 					WHERE ProductLike.member_id = #{sId}
 					<choose>
 						<when test="filter == 1">
@@ -223,11 +223,11 @@
 				<when test="category == 1">
 					<choose>
 						<when test="filter == 0">
-							FROM Product
+							FROM ProductView
 							WHERE member_id = #{sId}
 						</when>
 						<when test="filter == 1">
-							FROM Product 
+							FROM ProductView 
 							WHERE member_id = #{sId}
 							AND trade_status = 0
 						</when>
@@ -247,8 +247,8 @@
 				</when>
 				<when test="category == 3">
 					FROM ProductLike 
-					JOIN Product
-					ON ProductLike.product_id = Product.product_id
+					JOIN ProductView
+					ON ProductLike.product_id = ProductView.product_id
 					WHERE ProductLike.member_id = #{sId}
 					<choose>
 						<when test="filter == 1">
@@ -315,7 +315,7 @@
 	</select>
 	
 	<!-- 상품 찜 등록, 삭제를 위한 조회 -->
-	<select id="selectLike" resultType="int">
+	<select id="selectLike" resultType="productlike">
 		SELECT product_like
 		FROM ProductLike
 		WHERE member_id = #{sId}

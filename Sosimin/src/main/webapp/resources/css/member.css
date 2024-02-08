@@ -330,10 +330,33 @@ input[readonly] {
 	color: #fecb00 !important;
 }
 
-#reportBtn {
+#reportButton {
 	font-size: small;
 	color: red !important;
 }
+
+.reportBtn2 {
+	display:inline-block;
+	position:relative;
+	color: #888;
+	cursor: pointer;
+	transition: 0.5s;
+	left: 350px;
+	width:10px;
+}
+
+.reportBtn2:hover{
+	color: #f00;
+	transform: scale(1.2);
+	transition: 0.5s;
+}
+
+.reportBtn2:hover .reportBtn,
+.reportBtn2:hover #policeText{
+	color: #f00;
+}
+
+
 
 #profileRightUpperRight a:hover {
 	color: #39d274 !important;

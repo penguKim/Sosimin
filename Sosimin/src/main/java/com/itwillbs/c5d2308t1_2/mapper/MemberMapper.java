@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
+import com.itwillbs.c5d2308t1_2.vo.ProductLikeVO;
 import com.itwillbs.c5d2308t1_2.vo.ProductVO;
 
 @Mapper
@@ -85,7 +86,7 @@ public interface MemberMapper {
 	List<Map<String, Object>> selectMemberInterest(String sId);
 
 	// 상품 찜 등록, 삭제를 위한 조회
-	int selectLike(@Param("sId")String sId, @Param("product_id")int product_id);
+	ProductLikeVO selectLike(@Param("sId")String sId, @Param("product_id")int product_id);
 
 	// 상품 찜 삭제
 	void deleteLike(@Param("sId")String sId, @Param("product_id")int product_id);
