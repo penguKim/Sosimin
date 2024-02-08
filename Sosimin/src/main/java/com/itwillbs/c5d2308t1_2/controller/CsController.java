@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.c5d2308t1_2.service.CsService;
@@ -128,7 +129,7 @@ public class CsController {
 	}
 	
 	// 고객센터 공지사항 글쓰기 작업
-	@GetMapping("CsNoticeWritePro")
+	@PostMapping("CsNoticeWritePro")
 	public String csNoticeWritePro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null || !sId.equals("admin")) {
@@ -167,7 +168,7 @@ public class CsController {
 	}
 	
 	// 고객센터 공지사항 수정 작업
-	@GetMapping("CsNoticeModifyPro")
+	@PostMapping("CsNoticeModifyPro")
 	public String csNoticeModifyPro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null || !sId.equals("admin")) {
@@ -205,7 +206,7 @@ public class CsController {
 	}
 	
 	// 고객센터 자주묻는질문 글쓰기 작업
-	@GetMapping("CsFaqWritePro")
+	@PostMapping("CsFaqWritePro")
 	public String csFaqWritePro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null || !sId.equals("admin")) {
@@ -242,7 +243,7 @@ public class CsController {
 	}
 	
 	// 고객센터 자주묻는질문 수정 작업
-	@GetMapping("CsFaqModifyPro")
+	@PostMapping("CsFaqModifyPro")
 	public String csFaqModifyPro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null || !sId.equals("admin")) {
