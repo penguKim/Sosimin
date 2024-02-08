@@ -169,8 +169,16 @@ $(function() {
  							
 							singleProduct += ' <div class="product-info heartPosition">'
 								+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
-								+ ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
-								+ ' <ul class="review">'
+								
+								if(id != "") {
+									if(productList[i].member_id == id) {
+										singleProduct += '<div class="myProduct">MY</div>'
+									} else if (productList[i].member_id != id) {
+										singleProduct += ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
+									}
+								} 
+								
+								singleProduct += ' <ul class="review">'
 									+ ' <li><span>' +  productList[i].dong + '</span></li>'
 									+ ' <li><span>|</span></li>'
 									+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
@@ -495,8 +503,16 @@ function filtering(data) {
 	 							
 								singleProduct += ' <div class="product-info heartPosition">'
 									+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
-									+ ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
-									+ ' <ul class="review">'
+									
+									if(id != "") {
+										if(productList[i].member_id == id) {
+											singleProduct += '<div class="myProduct">MY</div>'
+										} else if (productList[i].member_id != id) {
+											singleProduct += ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
+										}
+									} 
+									
+									singleProduct += ' <ul class="review">'
 										+ ' <li><span>' +  productList[i].dong + '</span></li>'
 										+ ' <li><span>|</span></li>'
 										+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
@@ -729,9 +745,6 @@ function filtering(data) {
 	                            
 	                    <div style="margin-bottom: 20px;"></div>        
                         <%-- 3. 신고하기 기능 버튼 --%>
-                        <div class="product-info heartPosition">
-                        	<div class="heart" id="heartLike"></div>
-                        </div>
                         <button type="button" class="btn btn-primary" id="testBtn" value="테스트중입니다">
 								테스트버튼
 						</button>
