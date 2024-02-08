@@ -18,15 +18,25 @@ public class ReportService {
 	public int insertReport(Map<String, String> map) {
 		return mapper.insertReport(map);
 	}
-
+	
+	// 회원 신고 목록 요청
 	public List<Map<String, Object>> memberReportList() {
-		
 		return mapper.memberReportList();
 	}
 
+	// 상품 신고 목록 요청
 	public List<Map<String, Object>> boardReportList() {
-		
 		return mapper.boardReportList();
+	}
+
+	// 커뮤니티 신고 목록 요청
+	public List<Map<String, Object>> communityReportList() {
+		return mapper.communityReportList();
+	}
+
+	// 댓글 신고 목록 요청
+	public List<Map<String, Object>> replyReportList() {
+		return mapper.replyReportList();
 	}
 	
 	

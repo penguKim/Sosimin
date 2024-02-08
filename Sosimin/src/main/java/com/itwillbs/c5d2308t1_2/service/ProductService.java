@@ -192,4 +192,9 @@ public class ProductService {
 		return mapper.selectProductPayStatus(product);
 	}
 	
+	// 판매자 중 페이 가입자 조회 요청
+	public List<Map<String, Object>> selectPayUser() {
+		return mapper.selectPayUser();
+	}
+	
 }

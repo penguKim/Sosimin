@@ -1454,6 +1454,7 @@
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									채팅 n회
 								</div>
+								
 								<div id="singleProductButtonArea">
 									<c:choose>
 										<c:when test="${mypage.trade_status eq '0' }"> <%-- 거래 대기 --%>

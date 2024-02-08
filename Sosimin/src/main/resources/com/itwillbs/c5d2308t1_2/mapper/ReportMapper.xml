@@ -14,7 +14,7 @@
 			, 0
 			, #{report_reason}
 			, #{report_content}
-			, #{report_txt}
+			, #{report_name}
 			, #{report_type_id}
 			, #{report_type}
 		)
@@ -28,11 +28,30 @@
 		ORDER BY report_id DESC
 	</select>
 	
+	<!-- 상품 신고 목록 조회 -->
 	<select id="boardReportList" resultType="map">
 		SELECT *
 		FROM Report  
 		WHERE report_type = 2
 		ORDER BY report_id DESC
 	</select>
+	
+	<!-- 커뮤 신고 목록 조회 -->
+	<select id="communityReportList" resultType="map">
+		SELECT *
+		FROM Report  
+		WHERE report_type = 3
+		ORDER BY report_id DESC
+	</select>
+	
+	<!-- 댓글 신고 목록 조회 -->
+	<select id="replyReportList" resultType="map">
+		SELECT *
+		FROM Report  
+		WHERE report_type = 4
+		ORDER BY report_id DESC
+	</select>
+	
+	
 	
 </mapper>

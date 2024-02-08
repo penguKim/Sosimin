@@ -46,12 +46,12 @@ $(function() {
 
 <%-- sweetalert confirm --%>
 function reportRegist(reason) {
-	<%-- 신고 분류 0: 게시물 신고, 1: 사용자 신고--%>
+	<%-- 신고 분류 1: 회원 2: 상품 3: 커뮤니티 4: 댓글--%>
 	let report_type = $("#report_type").val();
 	let report_content = ""; 
 	let reportee_id = $("#reportee_id").val();
 	let report_type_id = $("#report_type_id").val();
-	let report_txt = $("#report_txt").val();
+	let report_name = $("#report_name").val();
 	
 	
 	// 신고사유에 따른 내용 저장
@@ -129,7 +129,7 @@ function reportRegist(reason) {
 							reportee_id: reportee_id, // 피신고자 아이디
 							report_reason: reason, // 신고 사유
 							report_content: report_content, // 신고 내용
-							report_txt : report_txt, // 신고된 게시물 내용
+							report_name : report_name, // 신고된 게시물 내용
 							report_type_id : report_type_id // 신고된 페이지이동을 위한 id
 						},
 						success: function() {

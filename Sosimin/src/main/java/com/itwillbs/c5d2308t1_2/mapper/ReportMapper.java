@@ -9,9 +9,17 @@ import org.apache.ibatis.annotations.Mapper;
 public interface ReportMapper {
 
 	int insertReport(Map<String, String> map);
-
+	
+	// 회원 신고 목록
 	List<Map<String, Object>> memberReportList();
 
+	// 상품 신고 목록
 	List<Map<String, Object>> boardReportList();
+
+	// 커뮤 신고 목록
+	List<Map<String, Object>> communityReportList();
+
+	// 댓글 신고 목록
+	List<Map<String, Object>> replyReportList();
 	
 }

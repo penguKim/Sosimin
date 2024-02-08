@@ -149,16 +149,20 @@ public class ProductController {
 		}
 		System.out.println(">>>>>>>>>>>>>>>>>>> 페이지넘 라스트" + pageNum);
 		// ===============================================================================================
+		
+		List<Map<String, Object>> payUser = service.selectPayUser();
+		
 		JSONArray jsonArray = new JSONArray();
 		jsonArray.put(productList);
-		
 		JSONObject jPage = new JSONObject(pageInfo); 
 		jsonArray.put(jPage);
 		jsonArray.put(pageNum);
-		
+		jsonArray.put(payUser);
+		System.out.println(">>>>>>>>>>>>>>>>>> 가입자 :" + payUser);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>> 리스트" + productList);
 //		System.out.println(">>>>>>>>>>>>>>>>>>>> 페이징" + jPage);
 //		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> : " + jsonArray);
+		
 		
 		return jsonArray.toString();
 	}

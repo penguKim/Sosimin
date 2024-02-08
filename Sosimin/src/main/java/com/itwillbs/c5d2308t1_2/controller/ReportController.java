@@ -46,50 +46,53 @@ public class ReportController {
 	
 	// *================================= adminReport
 	// 회원 신고 목록 
-	@GetMapping("MemberReport")
+	@GetMapping("ReportMember")
 	public String reportMember(@RequestParam Map<String, String> map, HttpSession session, Model model) {
-		
 		List<Map<String, Object>> memberReportList = service.memberReportList();
-		
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + memberReportList);
-		
 		model.addAttribute("memberReportList", memberReportList);
-		
 		return "admin/reportMember";
 	}
 	
 	@GetMapping("ReportMemberDetail")
 	public String reportMember() {
-		
 		return "admin/reportMemberDetail";
 	}
 	
-	// 게시글 신고 목록
-	@GetMapping("BoardReport")
-	public String reportBoard(@RequestParam Map<String, String> map, HttpSession session, Model model) {
-		
+	// 상품 신고 목록
+	@GetMapping("ReportProduct")
+	public String reportProduct(@RequestParam Map<String, String> map, HttpSession session, Model model) {
 		List<Map<String, Object>> boardReportList = service.boardReportList();
-		
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + boardReportList);
-		
 		model.addAttribute("boardReportList", boardReportList);
-		
-		return "admin/reportBoard";
+		return "admin/reportProduct";
 	}
 	
 	
 	@GetMapping("ReportDetail")
 	public String reportDetail() {
-		
-		
-		
 		return "admin/reportBoardDetail";
 			
 	}
 	
 	
+	// 커뮤니티 신고 목록
+	@GetMapping("ReportCommunity")
+	public String reportCommunity(@RequestParam Map<String, String> map, HttpSession session, Model model) {
+		List<Map<String, Object>> communityReportList = service.communityReportList();
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + communityReportList);
+		model.addAttribute("communityReportList", communityReportList);
+		return "admin/reportCommunity";
+	} 
 	
-	
+	// 댓글 신고 목록
+	@GetMapping("ReportReply")
+	public String reportReply(@RequestParam Map<String, String> map, HttpSession session, Model model) {
+		List<Map<String, Object>> replyReportList = service.replyReportList();
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>" + replyReportList);
+		model.addAttribute("replyReportList", replyReportList);
+		return "admin/reportReply";
+	}
 	
 	
 	

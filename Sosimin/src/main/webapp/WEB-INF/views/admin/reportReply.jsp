@@ -96,12 +96,12 @@ function reportStatus() {
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>게시글 신고관리</h1>
+			<h1>댓글 신고관리</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
 					<li class="breadcrumb-item active">신고관리</li>
-					<li class="breadcrumb-item active">게시글신고관리</li>
+					<li class="breadcrumb-item active">댓글신고관리</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->
@@ -154,7 +154,7 @@ function reportStatus() {
 													<div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header">
-																<h5 class="modal-title">게시물 신고 상세</h5><!-- 모달 제목 -->
+																<h5 class="modal-title">댓글 신고 상세</h5><!-- 모달 제목 -->
 																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 															</div>
 															<div class="modal-body">
@@ -174,7 +174,17 @@ function reportStatus() {
 																	</tr>
 																	<tr>
 																		<th scope="row">신고사유</th>
-																		<td>${reportList.report_reason}</td>
+																		<td>
+																			<c:choose>
+																				<c:when test="${reportList.report_reason eq 1}">금지품목</c:when>
+																				<c:when test="${reportList.report_reason eq 2}">광고</c:when>
+																				<c:when test="${reportList.report_reason eq 3}">분쟁</c:when>
+																				<c:when test="${reportList.report_reason eq 4}">사기</c:when>
+																				<c:when test="${reportList.report_reason eq 5}">비매너</c:when>
+																				<c:when test="${reportList.report_reason eq 6}">욕설</c:when>
+																				<c:when test="${reportList.report_reason eq 7}">기타</c:when>
+																			</c:choose>
+																		</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">신고내용</th>

@@ -443,6 +443,7 @@
         WHERE member_id = #{sId}
 	</select>
 	
+<<<<<<< HEAD
 	<select id="getProductMemberLevel">
 		SELECT *
 		FROM MemberLevelView
@@ -460,3 +461,33 @@
 	</select>
 	
 </mapper>
+=======
+	<select id="selectPayUser" resultType="map">
+		SELECT DISTINCT member_id 
+		FROM Product p 
+		WHERE EXISTS (SELECT 1
+					FROM Pay 
+					WHERE p.member_id = Pay.member_id
+					AND pay_status = 0)
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> stash
