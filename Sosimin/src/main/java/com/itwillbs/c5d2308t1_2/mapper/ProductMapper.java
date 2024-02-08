@@ -86,6 +86,8 @@ public interface ProductMapper {
 	List<Map<String, Object>> adminProductList();
 
 	Map<String, String> getGuDong(Map<String, String> map);
+
+	int selectPayStatus(Map<String, String> map);
 	
 	 
 	

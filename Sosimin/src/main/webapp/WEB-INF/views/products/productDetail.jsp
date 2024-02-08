@@ -635,7 +635,7 @@ function chat() {
 	        allowOutsideClick: false
 	    }).then((result) => {
 	        if (result.isConfirmed) {
-	        	location.href="ChatMain?product_id=" + product_id;
+	        	location.href="ChatMain2?product_id=" + product_id;
 	        }
 	    });
 	} else{
@@ -797,8 +797,10 @@ function chat() {
                             	</div>
 	                            <div>
 	                            <h3 class="price2" style="font-size: 40px"><fmt:formatNumber value="${Product.product_price}" pattern="###,###"/><span style="font-size: 20px">원</span></h3>&nbsp;&nbsp;&nbsp;
-		                            	<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"
-	                            	style="height: 40px;" id="payImage">
+	                            	<c:if test="${Product.trade_method eq 1 }">
+			                            	<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"
+		                            	style="height: 40px;" id="payImage">
+	                            	</c:if>
 	                            </div>
                             </div>
                         <hr>
@@ -1007,22 +1009,22 @@ function chat() {
                                 <b><span style="font-size: 20px; padding-top: 30px;">판매자정보</span></b>
                                 <hr>
                                 <div>
-                                	<a href="MyPage?member_id=${SellerInfo.member_id }"  id="profileImage">
+                                	<a href="SellerInfo?member_id=${SellerInfo.member_id }"  id="profileImage">
                                 		<img src="${pageContext.request.contextPath}/resources/upload/${SellerInfo.member_profile}" class="img" alt="#">
                                 	</a>
                                 	<div id="nickname">
-                                		<a href="MyPage?member_id=${SellerInfo.member_id }" id="nicknameA">${SellerInfo.member_nickname }</a>
+                                		<a href="SellerInfo?member_id=${SellerInfo.member_id }" id="nicknameA">${SellerInfo.member_nickname }</a>
                                 	</div>
                                 </div>
                                 <div id="myProductDiv">
                                 	<div id="myProducts">
-                                		<a href="MyPage?member_id=${SellerInfo.member_id }" id="aTag">
+                                		<a href="SellerInfo?member_id=${SellerInfo.member_id }" id="aTag">
                                 			<span style="font-size: 17px;">상품 ${SellerProductCount}</span>
                                 		</a>
                                 		<span id="after"></span>
                                 	</div>
                                 	<div id="reviews">
-                                		<a href="MyPage?member_id=${SellerInfo.member_id }" id="aTag">
+                                		<a href="SellerInfo?member_id=${SellerInfo.member_id }" id="aTag">
                                 			<span style="font-size: 17px;">후기 13</span>
                                 		</a>
                                 	</div>
@@ -1048,7 +1050,7 @@ function chat() {
 <!--                                 	</div> -->
                                 </div>
                                 <div style="text-align: center; margin-top: 20px;">
-                                	<a href="MyPage?member_id=${SellerInfo.member_id }" id="productPlus">
+                                	<a href="SellerInfo?member_id=${SellerInfo.member_id }" id="productPlus">
                                 		<span id="productCount">${SellerProductCount }개</span>
 	                                	<span style="color: black;">상품 더보기 ></span>
                                 	</a>

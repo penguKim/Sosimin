@@ -175,5 +175,9 @@ public class ProductService {
 		
 		return mapper.getGuDong(map);
 	}
+	public int selectPayStatus(Map<String, String> map) {
+		
+		return mapper.selectPayStatus(map);
+	}
 	
 }

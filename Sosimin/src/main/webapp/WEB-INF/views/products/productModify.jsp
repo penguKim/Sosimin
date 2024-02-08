@@ -401,6 +401,15 @@ padding-top: 21px;
  	position: relative;
  	bottom:11px;
  }
+   #sosimPay{ 
+ 	display: inline-block; 
+ 	position: relative; 
+ 	left:119px; 
+  } 
+  #paySelect{
+	position:relative;
+	top:2px; 
+}
 </style>
 </head>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
@@ -1384,12 +1393,19 @@ document.addEventListener("DOMContentLoaded", function() {
 			                <input type="radio" id="trade_method1" name="trade_method" value="0" ${productModify.trade_method == 0 ? 'checked' : ''}> 대면거래
 			            </label><br>
 			            <label id="radioChoise2">
-			                <input type="radio" id="trade_method2" name="trade_method" value="1" ${productModify.trade_method == 1 ? 'checked' : ''}> 소심거래
+			                <input type="radio" id="trade_method2" name="trade_method" value="1" ${productModify.trade_method == 1 ? 'checked' : ''} <c:if test="${payStatus eq 0 }">disabled</c:if>> 소심거래<c:if test="${payStatus eq 0 }">(선택불가)</c:if>
 			            </label><br>
 			        </li>
 			    </ul>
 			</div>
-				
+			<c:if test="${payStatus eq 0 }">
+				<div id="sosimPay">
+					<a href="AccountVerification">
+						<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png" width=100px;" height="30px;" >
+					</a>
+					<span id="paySelect">가입자만 선택 가능합니다.</span>
+				</div>
+			</c:if>
 				<hr>
 				<div>
 					<div id="divLine" class="price">
