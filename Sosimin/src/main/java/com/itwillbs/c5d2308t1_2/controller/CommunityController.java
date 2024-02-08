@@ -20,6 +20,8 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +46,8 @@ import net.coobird.thumbnailator.geometry.Positions;
 
 @Controller
 public class CommunityController {
+	// 로그 출력을 위한 변수 선언
+	private static final Logger log = LoggerFactory.getLogger(CommunityController.class);
 	
 	@Autowired
 	private CommunityService communityService;
@@ -58,10 +62,6 @@ public class CommunityController {
 						    @RequestParam(defaultValue = "") String category,
 					        @RequestParam(defaultValue = "1") int pageNum, 
 					        HttpSession session, Model model) {
-		
-		System.out.println("검색으로 넘어온 문자열" + searchKeyword);
-		System.out.println("검색으로 넘어온 셀렉트박스" + searchType);
-		System.out.println("검색으로 넘어온 카테고리" + category);
 		
 		String id = (String)session.getAttribute("sId");
 		
@@ -78,7 +78,7 @@ public class CommunityController {
 		PageDTO page = new PageDTO(pageNum, 15);
 		// 전체 게시글 갯수 조회
 		int listCount = communityService.getCommunityListCount(searchKeyword, searchType, category, gu);
-		System.out.println(listCount);
+//		System.out.println(listCount);
 		// 페이징 처리
 		PageInfo pageInfo = new PageInfo(page, listCount, 3);
 		// 한 페이지에 불러올 게시글 목록 조회
@@ -214,7 +214,7 @@ public class CommunityController {
 	@GetMapping("CommunityDetail")
 	public String communityDetail(CommunityVO com, Model model) {
 		
-		System.out.println("파라미터로 넘어온 com은 : " + com);
+		log.info("파라미터로 넘어온 com은 : " + com);
 		if(com == null || com.getCommunity_id() == 0) {
 			model.addAttribute("msg", "존재하지 않는 게시물입니다.");
 			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
@@ -324,9 +324,9 @@ public class CommunityController {
         // 경험치 퍼센트 계산
         float percentage = (float)levelExp.get("member_exp") / levelExp.get("level_max_exp") * 100;
         percentage = Math.round(percentage * 10) / 10;
-        System.out.println("회원의 경험치는 : " + (float)levelExp.get("member_exp"));
-        System.out.println("최대 경험치는 : " + levelExp.get("level_max_exp"));
-        System.out.println("퍼센트는 : " + percentage);
+//        System.out.println("회원의 경험치는 : " + (float)levelExp.get("member_exp"));
+//        System.out.println("최대 경험치는 : " + levelExp.get("level_max_exp"));
+//        System.out.println("퍼센트는 : " + percentage);
         
 		model.addAttribute("com", map);
 		model.addAttribute("likeCount", likeCount);
@@ -355,7 +355,7 @@ public class CommunityController {
 		// 조회수 증가 여부 false
 		Map<String, Object> map = new HashMap<String, Object>();
 		map = communityService.getCommunity(com, false);
-		System.out.println("삭제하려고 조회한 게시글입니다 : " + map);
+		log.info("삭제하려고 조회한 게시글입니다 : " + map);
 		
 		// 게시글이 없거나 작성자와 관리자가 아닐 경우 fail_back
 		if(map == null || !sId.equals(map.get("community_writer")) && !sId.equals("admin")) {
@@ -533,7 +533,7 @@ public class CommunityController {
 			}
 		}
 		
-		System.out.println("파일 수정후 파일명 : " + fileNames);
+//		System.out.println("파일 수정후 파일명 : " + fileNames);
 		
 		// 파일명넣기
 		com.setCommunity_image1(fileNames.get(0));
@@ -613,10 +613,10 @@ public class CommunityController {
 			
 			like.put("member_id", sId);
 			like = communityService.getmemberLike(like);
-			System.out.println("회원의 좋아요는 : " + like);
+			log.info("회원의 좋아요는 : " + like);
 			
 			JSONObject object = new JSONObject(like);
-			System.out.println("오브젝트는 뭔가요 : " + object);
+			log.info("오브젝트는 뭔가요 : " + object);
 			
 			return object.toString();
 		}
@@ -692,7 +692,7 @@ public class CommunityController {
 	@PostMapping("CommunityReReplyWrite")
 	public String communityRereplyWrite(CommunityReplyVO reply, HttpSession session) {
 		
-		System.out.println("대댓글 작성 시 넘어온 값은 : " + reply);
+//		System.out.println("대댓글 작성 시 넘어온 값은 : " + reply);
 		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
@@ -717,7 +717,6 @@ public class CommunityController {
 	@ResponseBody
 	@PostMapping("TempRegist")
 	public String tempRegist(CommunityVO com, HttpSession session) {
-		System.out.println("ajax로 넘어온 데이터 제발넘어와 : " + com);
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			return "false";
@@ -747,7 +746,7 @@ public class CommunityController {
 		}
 		com.setCommunity_writer(sId);
 		Map<String, Object> map = communityService.getTempCommunity(com);
-		System.out.println("임시저장한 게시글 : " + map);
+		log.info("임시저장한 게시글 : " + map);
 		
 		if(map == null) {
 			return "[]";
@@ -763,7 +762,7 @@ public class CommunityController {
 	@PostMapping("TempDelete")
 	public String tempDelete(CommunityVO com, HttpSession session) {
 		
-		System.out.println("임시저장 젤 처음 넘어온거 : " + com); 
+		log.info("임시저장 젤 처음 넘어온거 : " + com); 
 		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
@@ -784,7 +783,7 @@ public class CommunityController {
 	@ResponseBody
 	@PostMapping("ImageUpload")
 	public String imageUpload(CommunityVO com, HttpSession session, Model model) {
-		System.out.println("내가 받은 파일은 : " + com);
+//		System.out.println("내가 받은 파일은 : " + com);
 		
 		String image = ""; // 리턴할 이미지 경로
 		
@@ -805,7 +804,7 @@ public class CommunityController {
 		subDir = now.format(dtf);
 		
 		saveDir += File.separator + subDir; // File.separator 대신 / 또는 \ 지정도 가능
-		System.out.println(saveDir);
+//		System.out.println(saveDir);
 		try {
 			Path path = Paths.get(saveDir); // 파라미터로 업로드 경로 전달
 			Files.createDirectories(path); // 파라미터로 Path 객체 전달
@@ -855,11 +854,11 @@ public class CommunityController {
 		com.setCommunity_image4(fileNames.get(3));
 		com.setCommunity_image5(fileNames.get(4));
 		
-		System.out.println("실제 업로드 파일명1 : " + com.getCommunity_image1());
-		System.out.println("실제 업로드 파일명2 : " + com.getCommunity_image2());
-		System.out.println("실제 업로드 파일명3 : " + com.getCommunity_image3());
-		System.out.println("실제 업로드 파일명4 : " + com.getCommunity_image4());
-		System.out.println("실제 업로드 파일명5 : " + com.getCommunity_image5());
+//		System.out.println("실제 업로드 파일명1 : " + com.getCommunity_image1());
+//		System.out.println("실제 업로드 파일명2 : " + com.getCommunity_image2());
+//		System.out.println("실제 업로드 파일명3 : " + com.getCommunity_image3());
+//		System.out.println("실제 업로드 파일명4 : " + com.getCommunity_image4());
+//		System.out.println("실제 업로드 파일명5 : " + com.getCommunity_image5());
 		
 		int insertCount = communityService.registTempImage(com);
 		
@@ -908,7 +907,7 @@ public class CommunityController {
 		if(sId == null) {
 			return "login";
 		}
-		System.out.println("내가 삭제하려는 파일은 : " + com);
+		log.info("내가 삭제하려는 파일은 : " + com);
 		
 		com.setCommunity_writer(sId);
 		
@@ -932,7 +931,7 @@ public class CommunityController {
 		
 		com.setCommunity_writer(sId);
 		
-		System.out.println("내가 삭제하려는 파일은 : " + com);
+		log.info("내가 삭제하려는 파일은 : " + com);
 		
 		int removeCount = communityService.removeCommunityImage(com, session);
 		
@@ -947,7 +946,7 @@ public class CommunityController {
 	@ResponseBody
 	@PostMapping("ReviewRegist")
 	public String reviewRegist(ReviewVO re, HttpSession session) {
-		System.out.println(re);
+//		System.out.println(re);
 		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
@@ -974,7 +973,7 @@ public class CommunityController {
 	@ResponseBody
 	@PostMapping("ReviewView")
 	public String reviewView(ReviewVO re, HttpSession session) {
-		System.out.println("보려는 후기 : " + re);
+//		System.out.println("보려는 후기 : " + re);
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			return "login"; // dataType json이므로 응답은 error로 발생
@@ -993,7 +992,7 @@ public class CommunityController {
 	@ResponseBody
 	@PostMapping("ReviewDelete")
 	public String reviewDelete(ReviewVO re, HttpSession session) {
-		System.out.println("삭제하려는 후기 : " + re);
+		log.info("삭제하려는 후기 : " + re);
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
 			return "login"; // dataType json이므로 응답은 error로 발생

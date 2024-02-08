@@ -419,7 +419,7 @@ function acceptPayment() {
 				type: "GET",
 				url: "AcceptPayment",
 				data: {
-					"product_id": 53,
+					"product_id": 57,
 					"product_buyer": "leess"
 				},
 				success:  function(data) {
@@ -497,7 +497,7 @@ function payment() {
         reverseButtons: true,
     }).then((result) => {
     	if (result.isConfirmed) {
-			location.href="Payment?product_id=53";
+			location.href="Payment?product_id=57";
     	} else {
 			event.preventDefault();
 		}
@@ -526,7 +526,7 @@ function confirmPayment() {
 				type: "GET",
 				url: "ConfirmPayment",
 				data: {
-					"product_id": 53
+					"product_id": 57
 				},
 				success:  function(data) {
 					if(data == "not-login") {
@@ -637,7 +637,7 @@ function stopPayment() {
 				type: "GET",
 				url: "StopPayment",
 				data: {
-					"product_id": 53
+					"product_id": 57
 				},
 				success:  function(data) {
 					if(data == "not-login") {
@@ -736,12 +736,12 @@ function stopPayment() {
         </div>
     </div>
     <!-- End Breadcrumbs -->
-<!--     <div id="buttonArea"> -->
-<!--     	<input type="button" id="acceptBtn" value="(임시)거래수락" onclick="acceptPayment()">    	 -->
-<!-- 	    <input type="button" value="(임시)결제하기" onclick="payment()"> -->
-<!-- 	    <input type="button" value="(임시)구매확정" onclick="confirmPayment()"> -->
-<!--    		<input type="button" id="stopBtn" value="거래중단" onclick="stopPayment()"> -->
-<!--     </div> -->
+    <div id="buttonArea">
+    	<input type="button" id="acceptBtn" value="(임시)거래수락" onclick="acceptPayment()">    	
+	    <input type="button" value="(임시)결제하기" onclick="payment()">
+	    <input type="button" value="(임시)구매확정" onclick="confirmPayment()">
+   		<input type="button" id="stopBtn" value="거래중단" onclick="stopPayment()">
+    </div>
 	
 <!-- ============================================ 메인영역 시작 ================================================================= -->	
 	 <div class="account-login section">

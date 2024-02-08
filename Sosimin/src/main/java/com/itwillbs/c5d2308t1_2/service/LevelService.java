@@ -3,10 +3,13 @@ package com.itwillbs.c5d2308t1_2.service;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itwillbs.c5d2308t1_2.controller.CommunityController;
 import com.itwillbs.c5d2308t1_2.mapper.LevelMapper;
 import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
@@ -14,6 +17,8 @@ import com.itwillbs.c5d2308t1_2.vo.ReviewVO;
 
 @Service
 public class LevelService {
+	// 로그 출력을 위한 변수 선언
+	private static final Logger log = LoggerFactory.getLogger(LevelService.class);
 	
 	@Autowired
 	LevelMapper mapper;
@@ -35,15 +40,15 @@ public class LevelService {
 		
 		if(currentExp >= map.get("level_max_exp")) { // 경험치 초과 시 레벨 업
 		    if(level < maxLevel) { // 최대 레벨 미만인 경우
-		        System.out.println("레벨을 올릴거에요");
+		    	log.info("레벨을 올릴거에요");
 		        map.put("member_level", level + 1);
 		        map.put("member_exp", currentExp - map.get("level_max_exp"));
 		    } else { // 최대 레벨인 경우
-		        System.out.println("경험치를 최대로 유지할거에요");
+		    	log.info("경험치를 최대로 유지할거에요");
 		        map.put("member_exp", map.get("level_max_exp"));
 		    }
 		} else { // 경험치만 증가
-			System.out.println("경험치만 올릴거에요");
+			log.info("경험치만 올릴거에요");
 			map.put("member_exp", currentExp);
 		}
 		
@@ -76,7 +81,7 @@ public class LevelService {
 		
 		if(currentExp >= (int)map.get("level_max_exp")) { // 경험치 초과 시 레벨 업
 		    if(level < maxLevel) { // 최대 레벨 미만인 경우
-		        System.out.println("레벨을 올릴거에요");
+		    	log.info("레벨을 올릴거에요");
 		        map.put("member_level", level + 1);
 		        map.put("member_exp", currentExp - (int)map.get("level_max_exp"));
 		    } else { // 최대 레벨인 경우
@@ -85,15 +90,15 @@ public class LevelService {
 		    }
 		} else if(currentExp <= (int)map.get("level_min_exp")) { // 레벨 다운
 		    if(level > 1) { // 레벨이 2이상인 경우
-		        System.out.println("레벨을 내릴거에요");
+		    	log.info("레벨을 내릴거에요");
 		        map.put("member_level", level - 1);
 		        map.put("member_exp", (int)prevLevel.get("level_max_exp") + currentExp);
 		    } else { // 레벨이 1인 경우
-		        System.out.println("경험치를 0으로 만들거에요");
+		    	log.info("경험치를 0으로 만들거에요");
 		        map.put("member_exp", 0);
 		    }
 		} else { // 경험치만 증가
-			System.out.println("경험치만 올릴거에요");
+			log.info("경험치만 올릴거에요");
 			map.put("member_exp", currentExp);
 		}
 		
@@ -139,35 +144,35 @@ public class LevelService {
 		if(re.getReview_check4() != null && re.getReview_check4().equals("on")) exp += 5;
 		
 		if(re.getReview_status().equals("good")) { // 최고예요
-			System.out.println("경험치를 올릴거에요");
+			log.info("경험치를 올릴거에요");
 			currentExp += exp;
 			System.out.println("계산된 경험치는 : " + currentExp);
 		} else if(re.getReview_status().equals("bad")) { // 별로예요
-			System.out.println("경험치를 내릴거에요");
+			log.info("경험치를 내릴거에요");
 			currentExp -= exp;
-			System.out.println("계산된 경험치는 : " + currentExp);
+			log.info("계산된 경험치는 : " + currentExp);
 		}
 		
 		if(currentExp >= (int)map.get("level_max_exp")) { // 경험치 초과 시 레벨 업
 		    if(level < maxLevel) { // 최대 레벨 미만인 경우
-		        System.out.println("레벨을 올릴거에요");
+		    	log.info("레벨을 올릴거에요");
 		        map.put("member_level", level + 1);
 		        map.put("member_exp", currentExp - (int)map.get("level_max_exp"));
 		    } else { // 최대 레벨인 경우
-		        System.out.println("경험치를 최대로 유지할거에요");
+		    	log.info("경험치를 최대로 유지할거에요");
 		        map.put("member_exp", (int)map.get("level_max_exp"));
 		    }
 		} else if(currentExp <= (int)map.get("level_min_exp")) { // 레벨 다운
 		    if(level > 1) { // 레벨이 2이상인 경우
-		        System.out.println("레벨을 내릴거에요");
+		    	log.info("레벨을 내릴거에요");
 		        map.put("member_level", level - 1);
 		        map.put("member_exp", (int)prevLevel.get("level_max_exp") + currentExp);
 		    } else { // 레벨이 1인 경우
-		        System.out.println("경험치를 0으로 만들거에요");
+		    	log.info("경험치를 0으로 만들거에요");
 		        map.put("member_exp", 0);
 		    }
 		} else { // 경험치만 증가
-			System.out.println("경험치만 올릴거에요");
+			log.info("경험치만 올릴거에요");
 			map.put("member_exp", currentExp);
 		}
 		
@@ -183,9 +188,37 @@ public class LevelService {
 	}
 
 	// 회원의 리뷰 삭제
+	@Transactional
 	public int deleteReview(ReviewVO re) {
 		
-		// 삭제하는쪽 경험치 차감..................
+		// 회원 정보 조회
+		Map<String, Integer> map = mapper.selectMemberLevel(re.getMember_id());
+		// 이전 레벨정보 가져오기
+		Map<String, Integer> prevLevel = mapper.selectLevel((int)map.get("member_level") - 1);
+		// 현재레벨
+		int level = map.get("member_level");
+		// 현재경험치
+		int currentExp = map.get("member_exp");
+		// 계산경험치
+		int exp = 10;
+		
+		currentExp -= exp;
+		if(currentExp <= (int)map.get("level_min_exp")) { // 레벨 다운
+		    if(level > 1) { // 레벨이 2이상인 경우
+		    	log.info("레벨을 내릴거에요");
+		        map.put("member_level", level - 1);
+		        map.put("member_exp", (int)prevLevel.get("level_max_exp") + currentExp);
+		    } else { // 레벨이 1인 경우
+		    	log.info("경험치를 0으로 만들거에요");
+		        map.put("member_exp", 0);
+		    }
+		} else { // 경험치만 감소
+			log.info("경험치만 내릴거에요");
+			map.put("member_exp", currentExp);
+		}
+		
+		// 회원 레벨 업데이트
+		mapper.updateMemberLevel(map);
 		
 		return mapper.deleteReview(re);
 	}
@@ -193,9 +226,7 @@ public class LevelService {
 	// 회원 상품 등록
 	// levelService.updateProExp(map); // 경험치 증가
 	public void updateProExp(Map<String, String> map) {
-		System.out.println(">>>>>>>>>>>>>>>>>>이제부터 레벨을 테스트한다.");
-		System.out.println(map);
-		System.out.println(">>>>>>>>>>>>>>>>>>이제부터 레벨을 테스트한다.");
+//		System.out.println(map);
 		
 		Map<String, Integer> member = mapper.selectMemberLevel(map.get("sId"));
 		System.out.println("회원 레벨 정보 : " + member);
@@ -213,15 +244,15 @@ public class LevelService {
 		
 		if(currentExp >= member.get("level_max_exp")) { // 경험치 초과 시 레벨 업
 		    if(level < maxLevel) { // 최대 레벨 미만인 경우
-		        System.out.println("레벨을 올릴거에요");
+		    	log.info("레벨을 올릴거에요");
 		        member.put("member_level", level + 1);
 		        member.put("member_exp", currentExp - member.get("level_max_exp"));
 		    } else { // 최대 레벨인 경우
-		        System.out.println("경험치를 최대로 유지할거에요");
+		    	log.info("경험치를 최대로 유지할거에요");
 		        map.put("member_exp", map.get("level_max_exp"));
 		    }
 		} else { // 경험치만 증가
-			System.out.println("경험치만 올릴거에요");
+			log.info("경험치만 올릴거에요");
 			member.put("member_exp", currentExp);
 		}
 		
@@ -233,16 +264,14 @@ public class LevelService {
 	// 회원 결제
 	// levelService.updatePaymentExp(map, 10);
 	public void updatePaymentExp(Map<String, Object> map, int point) {
-		System.out.println(">>>>>>>>>>>>>>>>>>이제부터 레벨을 테스트한다.");
 		System.out.println(map);
-		System.out.println(">>>>>>>>>>>>>>>>>>이제부터 레벨을 테스트한다.");
 		// 구매자 : product_buyer
 		// 판매자 : product_seller
 		String[] memberList = {(String)map.get("product_buyer") , (String)map.get("product_seller")};
 		
 		for(String member : memberList) {
 			Map<String, Integer> memberLevel = mapper.selectMemberLevel(member);
-			System.out.println("회원 레벨 정보 : " + memberLevel);
+//			System.out.println("회원 레벨 정보 : " + memberLevel);
 			
 			// 현재레벨
 			int level = memberLevel.get("member_level");
@@ -257,15 +286,15 @@ public class LevelService {
 			
 			if(currentExp >= memberLevel.get("level_max_exp")) { // 경험치 초과 시 레벨 업
 			    if(level < maxLevel) { // 최대 레벨 미만인 경우
-			        System.out.println("레벨을 올릴거에요");
+			    	log.info("레벨을 올릴거에요");
 			        memberLevel.put("member_level", level + 1);
 			        memberLevel.put("member_exp", currentExp - memberLevel.get("level_max_exp"));
 			    } else { // 최대 레벨인 경우
-			        System.out.println("경험치를 최대로 유지할거에요");
+			    	log.info("경험치를 최대로 유지할거에요");
 			        map.put("member_exp", map.get("level_max_exp"));
 			    }
 			} else { // 경험치만 증가
-				System.out.println("경험치만 올릴거에요");
+				log.info("경험치만 올릴거에요");
 				memberLevel.put("member_exp", currentExp);
 			}
 			
@@ -275,7 +304,40 @@ public class LevelService {
 		
 	}
 
-
+	// 회원 신고 처리
+	@Transactional
+	public void updateReportExp(String reportee_id) {
+		
+		// 회원 정보 조회
+		Map<String, Integer> map = mapper.selectMemberLevel(reportee_id);
+		// 이전 레벨정보 가져오기
+		Map<String, Integer> prevLevel = mapper.selectLevel((int)map.get("member_level") - 1);
+		// 현재레벨
+		int level = map.get("member_level");
+		// 현재경험치
+		int currentExp = map.get("member_exp");
+		// 계산경험치
+		int exp = 50;
+		
+		currentExp -= exp;
+		if(currentExp <= (int)map.get("level_min_exp")) { // 레벨 다운
+		    if(level > 1) { // 레벨이 2이상인 경우
+		    	log.info("레벨을 내릴거에요");
+		        map.put("member_level", level - 1);
+		        map.put("member_exp", (int)prevLevel.get("level_max_exp") + currentExp);
+		    } else { // 레벨이 1인 경우
+		    	log.info("경험치를 0으로 만들거에요");
+		        map.put("member_exp", 0);
+		    }
+		} else { // 경험치만 감소
+			log.info("경험치만 내릴거에요");
+			map.put("member_exp", currentExp);
+		}
+		
+		// 회원 레벨 업데이트
+		mapper.updateMemberLevel(map);
+		
+	}
 
 
 

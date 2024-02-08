@@ -131,8 +131,7 @@
 		
 		// 후기 보기
 		$(".reviewViewFrom").on("click", function() {
-// 			let order_id = $(this).data("id");
-			let order_id = 16;
+			let order_id = $(this).data("id");
 			$("#staticBackdropLabel").text("보낸 후기");
 			$(".modal-body input[type='radio']").attr("disabled", true);
 			$("#reviewCheck").empty();

@@ -678,7 +678,7 @@
 						$(btn).val("거래후기작성");
 						$(btn).remove();
 						
-						$(parent).append('<input type="button" class="num' + product_id + ' btnWriteReview" data-id="' + product_id + '" value="거래후기작성"> onclick="reviewRegist()"');
+						$(parent).append('<input type="button" class="num' + product_id + ' btnReviewView reviewViewFrom" data-id="' + product_id + '" data-bs-target="#staticBackdrop" value="거래후기보기" onclick="reviewView()">');
 					} else if(data == "none") {
 						Swal.fire({
 							position: 'center',
@@ -1015,6 +1015,39 @@
 		reader.readAsDataURL(fileInput.files[0]);
 	}
 	
+	// ---- 리뷰 쓰기 카테고리 ----
+// 		$(".option1").on("change", function() {
+// 			$(".modal-body input[type='checkbox']").prop('checked', false);
+// 			$("#hugiLabel1").text("약속 장소에 나타나지 않아요");
+// 			$("#hugiLabel2").text("상품 상태가 설명과 달라요");
+// 			$("#hugiLabel3").text("시간 약속을 못 지켜요");
+// 			$("#hugiLabel4").text("응답이 없어요");
+// 		});
+		
+// 		$(".option2").on("change", function() {
+// 			$(".modal-body input[type='checkbox']").prop('checked', false);
+// 			$("#hugiLabel1").text("제가 있는곳까지 와서 거래했어요");
+// 			$("#hugiLabel2").text("친절하고 매너가 좋아요");
+// 			$("#hugiLabel3").text("시간 약속을 잘 지켜요");
+// 			$("#hugiLabel4").text("응답이 빨라요");
+// 		});
+		
+	function option1(opt) {
+		$(".modal-body input[type='checkbox']").prop('checked', false);
+		$("#hugiLabel1").text("약속 장소에 나타나지 않아요");
+		$("#hugiLabel2").text("상품 상태가 설명과 달라요");
+		$("#hugiLabel3").text("시간 약속을 못 지켜요");
+		$("#hugiLabel4").text("응답이 없어요");
+	}
+	function option2(opt) {
+		$(".modal-body input[type='checkbox']").prop('checked', false);
+		$("#hugiLabel1").text("약속 장소에 나타나지 않아요");
+		$("#hugiLabel2").text("상품 상태가 설명과 달라요");
+		$("#hugiLabel3").text("시간 약속을 못 지켜요");
+		$("#hugiLabel4").text("응답이 없어요");
+	}
+	// ----------------------------
+	
 	// 내정보수정 모달 수정버튼 클릭 시 호출되는 함수
 	function submitForm(event) {
 // 	function submitForm(event) {
@@ -1235,7 +1268,195 @@
 	
 	// 후기작성하기 버튼 클릭 시 호출되는 함수 정의
 	function writeReview() {
+		let order_id = $(this).data("id");
+		let btn = $(this);
+		let parent = $(btn).parent();
 		
+		$("#staticBackdropLabel").text("후기 등록");
+		$(".modal-body input[type='radio']").attr("disabled", false);
+		$("#reviewCheck").empty();
+		
+		$("#reviewCheck").html(
+				'<ul class="list-group">'
+					+ '<li class="list-group-item">'
+						+ '<input class="form-check-input me-1" type="checkbox" name="review_check1" id="review_check1">'
+						+ '<label class="form-check-label" for="review_check1" id="hugiLabel1">'
+							+ '제가 있는곳까지 와서 거래했어요'
+						+ '</label>'
+					+ '</li>'
+					+ '<li class="list-group-item">'
+						+ '<input class="form-check-input me-1" type="checkbox" name="review_check2" id="review_check2">'
+						+ '<label class="form-check-label" for="review_check2" id="hugiLabel2">'
+							+ '친절하고 매너가 좋아요'
+						+ '</label>'
+					+ '</li>'
+					+ '<li class="list-group-item">'
+						+ '<input class="form-check-input me-1" type="checkbox" name="review_check3" id="review_check3">'
+						+ '<label class="form-check-label" for="review_check3" id="hugiLabel3">'
+							+ '시간 약속을 잘 지켜요'
+						+ '</label>'
+					+ '</li>'
+					+ '<li class="list-group-item">'
+						+ '<input class="form-check-input me-1" type="checkbox" name="review_check4" id="review_check4">'
+						+ '<label class="form-check-label" for="review_check4" id="hugiLabel4">'
+							+ '응답이 빨라요'
+						+ '</label>'
+					+ '</li>'
+				+ '</ul>'
+		);
+		
+		$(".modal-footer").html(
+				'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
+				+ '<button type="submit" class="btn btn-primary" id="reviewBtn" onclick="reviewRegist(' + order_id + ')">'
+				+'후기 등록</button>'	
+		);
+	}
+	
+	// 후기 작성하기 버튼을 눌러 후기 작성하기
+	function reviewRegist(order_id) {
+		if($(".modal-body input[type='checkbox']:checked").length == 0) {
+			Swal.fire({
+				position: 'center',
+				icon: 'warning',
+				title: '후기를 선택해주세요.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+		} else {
+			Swal.fire({
+		        title: '후기를 등록하시겠습니까?',
+// 		        text: "",
+		        icon: 'question',
+		        showCancelButton: true,
+		        confirmButtonColor: '#39d274',
+		        cancelButtonColor: '#d33',
+		        confirmButtonText: '등록',
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		    }).then((result) => {
+		    	if (result.isConfirmed) {
+					let data = new FormData();
+
+					$(".modal input:checked").each(function() {
+						data.append($(this).attr('name'), $(this).val());
+// 					    data[$(this).attr('name')] = $(this).val();
+					});
+					data.append("order_id", 20);
+					console.log(data);
+					$.ajax({
+						type: "POST",
+						url: "ReviewRegist",
+						data: data,
+					    processData: false,
+					    contentType: false,
+						success: function(result) {
+							if(result == 'true') {
+								Swal.fire({
+									position: 'center',
+									icon: 'success',
+									title: '후기를 등록했습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});
+								$("#reviewClose").click();
+							} else if(result == 'false') {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '후기 등록을 실패했습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});
+							}
+						}
+					});
+		    	}
+		    });
+		}
+	}
+	
+	
+	
+	// 후기보기 버튼 클릭 시 호출되는 함수 정의
+	function reviewView() {
+		let order_id = $(this).data("id");
+		let btn = $(this);
+		let parent = $(btn).parent();
+		
+		$("#staticBackdropLabel").text("보낸 후기");
+		$(".modal-body input[type='radio']").attr("disabled", true);
+		$("#reviewCheck").empty();
+		
+		$.ajax({
+			type: "POST",
+			url: "reviewView",
+			data: {
+				order_id: order_id
+			},
+			dataType: "json",
+			success: function(result) {
+				console.log(result);
+				$("#reviewCheck").html('<ul class="list-group list-group-flush reviewList"></ul>');
+				
+				if(result.review_status == "good") {
+					$("#option1").prop("checked", false);
+					$("#option2").prop("checked", true);
+					
+					if(result.review_check1 == "on") {
+						$(".reviewList").append('<li class="list-group-item">제가 있는곳까지 와서 거래했어요</li>');
+					}
+					if(result.review_check2 == "on") {
+						$(".reviewList").append('<li class="list-group-item">친절하고 매너가 좋아요</li>');
+					}
+					if(result.review_check3 == "on") {
+						$(".reviewList").append('<li class="list-group-item">시간 약속을 잘 지켜요</li>');
+					}
+					if(result.review_check4 == "on") {
+						$(".reviewList").append('<li class="list-group-item">응답이 빨라요</li>');
+					}
+					
+				} else {
+					$("#option1").prop("checked", true);
+					$("#option2").prop("checked", false);
+					
+					if(result.review_check1 == "on") {
+						$(".reviewList").append('<li class="list-group-item">약속 장소에 나타나지 않아요</li>');
+					}
+					if(result.review_check2 == "on") {
+						$(".reviewList").append('<li class="list-group-item">친절하고 매너가 좋아요</li>');
+					}
+					if(result.review_check3 == "on") {
+						$(".reviewList").append('<li class="list-group-item">시간 약속을 못 지켜요</li>');
+					}
+					if(result.review_check4 == "on") {
+						$(".reviewList").append('<li class="list-group-item">응답이 없어요</li>');
+					}
+				}
+				
+				$(".modal-footer").html(
+						'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
+						+ '<button type="button" class="btn btn-primary" id="reviewBtn" onclick="reviewDelete(' + order_id + ')">'
+						+'후기 삭제</button>'	
+				);
+				
+				$(btn).remove();
+				$(parent).append('<input type="button" class="num' + product_id + ' btnWriteReview reviewCheckFrom" data-id="' + product_id + '" value="거래후기작성" data-bs-target="#staticBackdrop" onclick="writeReview()">');
+
+			},
+			error: function(xhr, textStatus, errorThrown) {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '비정상적인 접근입니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+			}
+		});
 	}
 	
 	
@@ -1594,14 +1815,63 @@
 								<div id="singleProductButtonArea">
 									<c:choose>
 										<c:when test="${empty mypage.review_id }">
-											<input type="button" value="거래후기작성">
+											<input type="button" class="num${mypage.product_id } btnWriteReview reviewCheckFrom" data-id="${mypage.product_id}" value="거래후기작성" data-bs-toggle="modal" data-bs-target="#staticBackdrop${mypage.product_id}">
+<%-- 											<input type="button" class="num${mypage.product_id } btnWriteReview reviewCheckFrom" data-id="${mypage.product_id}" value="거래후기작성" data-bs-toggle="modal" data-bs-target="#staticBackdropLabel${mypage.product_id}" onclick="writeReview()"> --%>
 										</c:when>
 										<c:otherwise>
-											<input type="button" value="거래후기보기">
+											<input type="button" class="num${mypage.product_id } btnReviewView reviewViewFrom" data-id="${mypage.product_id}" data-bs-toggle="modal" data-bs-target="#staticBackdrop${mypage.product_id}" value="거래후기보기" onclick="reviewView()">
 										</c:otherwise>
 									</c:choose>
 								</div>
 					        </div>
+					            <%-- 후기 모달 설정 --%>
+								<div class="modal" id="staticBackdrop${mypage.product_id}" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="staticBackdropLabel${mypage.product_id}" aria-hidden="true">
+									<div class="modal-dialog modal-dialog-centered">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" id="staticBackdropLabel${mypage.product_id}">후기 등록</h1>
+								<!-- 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+											</div>
+											<div class="modal-body">
+												<div class="d-flex justify-content-center" id="reviewModalButtonArea${mypage.product_id}">
+													<input type="radio" class="btn-check" name="options" id="option1_${mypage.product_id}" value="bad" autocomplete="off" onchange="option1(this)">
+													<label class="btn btn-outline-primary mx-4" for="option1_${mypage.product_id}">별로예요</label>
+													<input type="radio" class="btn-check" name="options" id="option2_${mypage.product_id}" value="good" autocomplete="off" onchange="option2(this)" checked>
+													<label class="btn btn-outline-primary mx-4" for="option2_${mypage.product_id}">최고예요</label>
+												</div>
+												<div id="reviewCheck" class="mx-auto my-5 w-75">
+												</div>
+											</div>
+											<div class="modal-footer">
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+					        
 							</c:when>
 						</c:choose>
 				        </div> <%--singleProductArea 끝 --%>
@@ -1852,8 +2122,6 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-<!-- 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button> -->
-<!-- 					<button type="submit" class="btn btn-primary" id="reviewRegist">후기 등록</button> -->
 				</div>
 			</div>
 		</div>
@@ -1973,6 +2241,29 @@
 			</div>
 		</div>
 	</div>		
+	
+	<%------------ 후기 모달 설정 ------------%>
+<!-- 	<div class="modal" id="reviewModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true"> -->
+<!-- 		<div class="modal-dialog modal-dialog-centered"> -->
+<!-- 			<div class="modal-content"> -->
+<!-- 				<div class="modal-header"> -->
+<!-- 					<h1 class="modal-title fs-5" id="reviewModalLabel">후기 등록</h1> -->
+<!-- 				</div> -->
+<!-- 				<div class="modal-body" style="height:300px;"> -->
+<!-- 					<div class="d-flex justify-content-center"> -->
+<!-- 						<input type="radio" class="btn-check" name="review_status" id="option1" value="bad" autocomplete="off"> -->
+<!-- 						<label class="btn btn-outline-primary mx-4" for="option1">별로예요</label> -->
+<!-- 						<input type="radio" class="btn-check" name="review_status" id="option2" value="good" autocomplete="off" checked> -->
+<!-- 						<label class="btn btn-outline-primary mx-4" for="option2">최고예요</label> -->
+<!-- 					</div> -->
+<!-- 					<div id="reviewCheck" class="mx-auto my-5 w-75"> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 				<div class="modal-footer"> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
  <!-- ============================================ 메인영역 끝 ================================================================= -->	
 	<footer class="footer">
 		<jsp:include page="../inc/bottom.jsp"></jsp:include>

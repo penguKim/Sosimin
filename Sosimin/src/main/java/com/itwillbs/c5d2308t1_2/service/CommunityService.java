@@ -65,7 +65,7 @@ public class CommunityService {
 		
 		// 임시게시글 조회
 		Map<String, Object> map = mapper.selectTempCommunity(com);
-		System.out.println("임시게시글 조회 : " + map); 
+//		System.out.println("임시게시글 조회 : " + map); 
 		if(map != null) { // 임시게시글이 있다면
 			com.setCommunity_image1((String)map.get("temp_image1"));
 			com.setCommunity_image2((String)map.get("temp_image2"));
@@ -181,9 +181,9 @@ public class CommunityService {
 	public String getLike(Map<String, String> like) {
 		Map<String, String> map = new HashMap<String, String>();
 		map = mapper.selectLike(like);
-		System.out.println("셀렉트한 좋아요 : " + map);
+//		System.out.println("셀렉트한 좋아요 : " + map);
 		
-		if(map != null) { // 해당 영화를 찜한 경우
+		if(map != null) { // 해당 게시글을 찜한 경우
 			mapper.deleteLike(like); // 찜하기 삭제 수행
 			return "true";
 		} else { // 찜을 안한 경우
@@ -204,7 +204,7 @@ public class CommunityService {
 		
 		// 임시저장한 게시글 조회
 		Map<String, Object> map = mapper.selectTempCommunity(com);
-		System.out.println("map에는 뭐가들었나 : " + map);
+//		System.out.println("map에는 뭐가들었나 : " + map);
 		if(map == null) { // 임시저장 게시글이 없을 때
 			count = mapper.insertTempCommunity(com);
 		} else {
@@ -269,7 +269,7 @@ public class CommunityService {
 		int count = 0;
 		
 		int index = com.getCommunity_readcount();
-		System.out.println("삭제하려는 인덱스는 : " + index);
+//		System.out.println("삭제하려는 인덱스는 : " + index);
 		
 		// 삭제하려는 파일 지정
 //		List<MultipartFile> mFiles = new ArrayList<MultipartFile>();
@@ -364,12 +364,12 @@ public class CommunityService {
 		
 		// 삭제 이미지 이후의 이미지 옮기기
 		for(int i = index; i < imageNames.length; i++) {
-			System.out.println("삭제한 파일 다음의 파일 : " + imageNames[i]);
+//			System.out.println("삭제한 파일 다음의 파일 : " + imageNames[i]);
 			map.put("community_image" + (i), imageNames[i]);
 		}
 		map.put("community_image5", "");
 		
-		System.out.println("삭제하고 난 이후의 게시글 : " + map);
+//		System.out.println("삭제하고 난 이후의 게시글 : " + map);
 		
 		return mapper.moveCommunityImage(map);
 	}

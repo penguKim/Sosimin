@@ -97,58 +97,70 @@
 		
 		// 좋아요 버튼 클릭 이벤트
         $(".heart").on("click", function () {
-    		$.ajax({
-    			type: "POST",
-    			url: "likeCheck",
-    			data: {
-    				community_like_status: 0,
-    				community_num: ${param.community_id}
-    			},
-    			dataType: "json",
-    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-    				if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
-						$(".heart").addClass("is-active");
-    					$(".likeCount").text(result.likeCount);
+        	if($(this).hasClass("isSameWriter")) {
+				Swal.fire({
+					position: 'center',
+					icon: 'warning',
+					title: '본인의 게시글은 좋아요할 수 없습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+        	} else {
+        		$.ajax({
+        			type: "POST",
+        			url: "likeCheck",
+        			data: {
+        				community_like_status: 0,
+        				community_num: ${param.community_id}
+        			},
+        			dataType: "json",
+        			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+        				if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
+    						$(".heart").addClass("is-active");
+        					$(".likeCount").text(result.likeCount);
+            				Swal.fire({
+            					position: 'center',
+            					icon: 'success',
+            					title: '게시글을 추천했습니다.',
+            					showConfirmButton: false,
+            					timer: 2000,
+            					toast: true
+            				});
+        				} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
+    						$(".heart").removeClass("is-active");
+        					$(".likeCount").text(result.likeCount);
+            				Swal.fire({
+            					position: 'center',
+            					icon: 'success',
+            					title: '게시글 추천을 삭제했습니다.',
+            					showConfirmButton: false,
+            					timer: 2000,
+            					toast: true
+            				});
+        				}
+        			},
+        			error: function(xhr, textStatus, errorThrown) {
         				Swal.fire({
-        					position: 'center',
-        					icon: 'success',
-        					title: '게시글을 추천했습니다.',
-        					showConfirmButton: false,
-        					timer: 2000,
-        					toast: true
-        				});
-    				} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
-						$(".heart").removeClass("is-active");
-    					$(".likeCount").text(result.likeCount);
-        				Swal.fire({
-        					position: 'center',
-        					icon: 'success',
-        					title: '게시글 추천을 삭제했습니다.',
-        					showConfirmButton: false,
-        					timer: 2000,
-        					toast: true
-        				});
-    				}
-    			},
-    			error: function(xhr, textStatus, errorThrown) {
-    				Swal.fire({
-    	    	        title: '회원만 사용가능합니다.',
-    	    	        text: '로그인 페이지로 이동하시겠습니까?',
-    	    	        icon: 'error',
-    	    	        showCancelButton: true,
-    	    	        confirmButtonColor: '#39d274',
-    	    	        cancelButtonColor: '#d33',
-    	    	        confirmButtonText: '이동',
-    	    	        cancelButtonText: '취소',
-    	    	        reverseButtons: true,
-    	    	        allowOutsideClick: false
-    	    	    }).then((result) => {
-    	    	        if (result.isConfirmed) {
-    	    	        	location.href="MemberLogin";
-    	    	        }
-    	    	    });
-    			}
-    		});
+        	    	        title: '회원만 사용가능합니다.',
+        	    	        text: '로그인 페이지로 이동하시겠습니까?',
+        	    	        icon: 'error',
+        	    	        showCancelButton: true,
+        	    	        confirmButtonColor: '#39d274',
+        	    	        cancelButtonColor: '#d33',
+        	    	        confirmButtonText: '이동',
+        	    	        cancelButtonText: '취소',
+        	    	        reverseButtons: true,
+        	    	        allowOutsideClick: false
+        	    	    }).then((result) => {
+        	    	        if (result.isConfirmed) {
+        	    	        	location.href="MemberLogin";
+        	    	        }
+        	    	    });
+        			}
+        		});
+        	}
+
         });
 		
 		// 신고 버튼 클릭 이벤트
@@ -568,18 +580,18 @@
 			    	</c:forEach>
 					</div>
 					<div class="row" style="height: 80px;">
-						<c:choose>
-							<c:when test="${com.community_writer ne sessionScope.sId}">
+<%-- 						<c:choose> --%>
+<%-- 							<c:when test="${com.community_writer ne sessionScope.sId}"> --%>
 								<div class="col-1">
-									<div class="heart"></div>
+									<div class="heart <c:if test="${com.community_writer eq sessionScope.sId }">isSameWriter</c:if>"></div>
 								</div>
 								<span class="likeCount col-1 align-self-end ps-0" style="font-size: 20px;">${likeCount }</span>
-							</c:when>
-							<c:otherwise>
-								<div class="col-1"></div>
-								<div class="col-1"></div>
-							</c:otherwise>
-						</c:choose>
+<%-- 							</c:when> --%>
+<%-- 							<c:otherwise> --%>
+<!-- 								<div class="col-1"></div> -->
+<!-- 								<div class="col-1"></div> -->
+<%-- 							</c:otherwise> --%>
+<%-- 						</c:choose> --%>
 						<div class="col align-self-end btn btn-outline-secondary btn-sm align-top" id="replyBtn">
 							댓글 숨기기
 						</div>

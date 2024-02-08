@@ -41,8 +41,8 @@ public class SchedulerService {
 //		logger.info("스케쥴러를 실행합니다.");
 //	}
 	
-	// 크론 표현식으로 매일 새벽 1시 10분 0초에 실행된다.
-	@Scheduled(cron="00 10 10 * * ?")
+	// 크론 표현식으로 매일 새벽 04시 30분 0초에 실행된다.
+	@Scheduled(cron="00 30 04 * * ?")
 	public void RemoveTempCommunity() {
 		logger.info("임시 커뮤니티 삭제를 실행합니다.");
 		
