@@ -290,7 +290,6 @@ $(function() {
 
 <%-- 좋아요 등록 --%>
 function heartLike(heart, product_id) {
-	
     $.ajax({
     	url:"ProductLikeRegist",
     	data: {
@@ -404,7 +403,7 @@ function filtering(data) {
 	<%-- 필터링 옵션 처리를 위한 변수 정의 --%>
 	let id = "${sessionScope.sId}";
 	let pageNum = 1;
-	let category = "${param.keyword}";
+	let category = "${param.product_category}";
 	let keyword = "${param.keyword}";
 	let price = "";
 	let	word = "";
@@ -496,7 +495,7 @@ function filtering(data) {
 	 							
 								singleProduct += ' <div class="product-info heartPosition">'
 									+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
-									+ ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ')"></div>'
+									+ ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
 									+ ' <ul class="review">'
 										+ ' <li><span>' +  productList[i].dong + '</span></li>'
 										+ ' <li><span>|</span></li>'
