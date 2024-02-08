@@ -45,6 +45,9 @@
 	
 	<!-- 페이 가입(계좌등록) - INSERT -->
 	<insert id="insertPay">
+		<selectKey keyProperty="pay_id" resultType="INT" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
 		INSERT INTO Pay
 		VALUES (
 			null
@@ -53,11 +56,26 @@
 			, #{fintech_use_num}
 			, #{bank_name}
 			, #{account_num_masked}
-			, 0
+			, 3000
 			, now()
 			, 0
 			, null
 			, #{pay_password}
+		)
+	</insert>
+	
+	<!-- 가입축하금 지급 기록 -->
+	<insert id="insertPayHistoryFirst">
+		INSERT INTO PayHistory
+		VALUES (
+			null
+			, #{pay_id}
+			, 3000
+			, 3000
+			, 1
+			, '가입축하금'
+			, now()
+			, null
 		)
 	</insert>
 	
@@ -71,6 +89,7 @@
 			, account_num_masked = #{account_num_masked}
 			, pay_password = #{pay_password}
 			, pay_status = 0
+			, pay_withdraw_date = null
 		WHERE member_id = #{member_id}
 	</update>
 	
@@ -111,6 +130,33 @@
 			AND DATE(pay_history_date) BETWEEN #{start_date} AND #{end_date}
 		</if>
 	</select>
+	
+	<!-- 엑세스토큰 삭제(탈퇴처리) -->
+	<delete id="deleteToken">
+		DELETE FROM Token
+		WHERE member_id = #{member_id}
+	</delete>
+	
+	<!-- 페이 정보 변경(탈퇴처리) -->
+	<update id="updatePayStatus">
+		UPDATE Pay
+		SET 
+			pay_status = 1
+			, user_name = ''
+			, fintech_use_num = ''
+			, bank_name = ''
+			, account_num_masked = ''
+			, pay_balance = 0
+			, pay_withdraw_date = now()
+			, pay_password = ''
+		WHERE pay_id = #{pay_id}
+	</update>
+	
+	<!-- 페이사용내역 삭제(탈퇴처리)  -->
+	<delete id="deletePayHistory">
+		DELETE FROM PayHistory
+		WHERE pay_id = #{pay_id}
+	</delete>
 	
 	<!-- 페이 잔액 충전 -->
 	<update id="updatePayBalance">

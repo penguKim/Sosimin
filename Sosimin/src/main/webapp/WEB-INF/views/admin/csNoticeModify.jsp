@@ -57,15 +57,14 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 $(function() {
-	$("#write").click(function() {
-		event.preventDefault();
+	$("#modify").click(function() {
 		Swal.fire({
-	        title: '공지사항을 등록하시겠습니까?',
+	        title: '공지사항을 수정하시겠습니까?',
 	        icon: 'question',
 	        showCancelButton: true,
 	        confirmButtonColor: '#39d274',
 	        cancelButtonColor: '#d33',
-	        confirmButtonText: '등록',
+	        confirmButtonText: '수정',
 	        cancelButtonText: '취소',
 	        reverseButtons: true,
 	        allowOutsideClick: false
@@ -104,8 +103,20 @@ $(function() {
 					});
 					$("#content").focus();
 					return false;
+				} else if($("#select").val() == "${detail.cs_type_detail}"
+						&& $("#subject").val() == "${detail.cs_subject}"
+						&& $("#content").val() == "${detail.cs_content}") { 
+					Swal.fire({
+						position: 'center',
+						icon: 'warning',
+						title: '변경된 내용이 없습니다.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+					return false;
 				}
-	        	$("#notice-write").submit();
+	        	$("#notice-modify").submit();
 	        } else {
 	        	return false;
 	        }
@@ -113,9 +124,29 @@ $(function() {
 		
 	});
 	
-	$("#cancel").on("click", function() {
+	$("#delete").click(function() {
 		Swal.fire({
-	        title: '등록을 취소하시겠습니까?',
+	        title: '게시글을 삭제하시겠습니까?',
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '삭제',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+				location.href="CsNoticeDelete?cs_id=${detail.cs_id}";
+			} else {
+	        	return false;
+	        }
+	    });
+	});
+	
+	$("#cancel").click(function() {
+		Swal.fire({
+	        title: '수정을 취소하시겠습니까?',
 	        icon: 'question',
 	        showCancelButton: true,
 	        confirmButtonColor: '#39d274',
@@ -152,13 +183,13 @@ $(function() {
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>공지사항등록</h1>
+			<h1>공지사항수정</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
 					<li class="breadcrumb-item">고객센터관리</li>
 					<li class="breadcrumb-item">공지사항관리</li>
-					<li class="breadcrumb-item active">공지사항등록</li>
+					<li class="breadcrumb-item active">공지사항수정</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->
@@ -168,36 +199,39 @@ $(function() {
 				<div class="col-lg-12">
 					<div class="card">
 						<div class="card-body">
-							<h5 class="card-title">공지사항 등록</h5>
+							<h5 class="card-title">공지사항 수정</h5>
 							<!-- General Form Elements -->
-							<form action="CsNoticeWritePro" method="post" id="notice-write">
+							<form action="CsNoticeModifyPro" method="post" id="notice-modify">
 								<div class="row mb-3">
+									<input type="hidden" value="${detail.cs_id}" name="cs_id">
 									<label for="select" class="col-sm-2 col-form-label">유형선택</label>
 									<div class="col-sm-10">
 										<select class="form-select" aria-label="Default select example" name="cs_type_detail" id="select">
 											<option value=''>유형을 선택해주세요</option>
-											<option value="1">공지</option>
-											<option value="2">정책변경</option>
-											<option value="3">사기예방</option>
+											<c:if test="${detail.cs_type_detail eq '1'}">selected</c:if>
+											<option value="1" <c:if test="${detail.cs_type_detail eq '1'}">selected</c:if>>공지</option>
+											<option value="2" <c:if test="${detail.cs_type_detail eq '2'}">selected</c:if>>정책변경</option>
+											<option value="3" <c:if test="${detail.cs_type_detail eq '3'}">selected</c:if>>사기예방</option>
 										</select>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<label for="subject" class="col-sm-2 col-form-label">제목</label>
 									<div class="col-sm-10">
-										<input type="text" class="form-control" name="cs_subject" id="subject">
+										<input type="text" class="form-control" name="cs_subject" id="subject" value="${detail.cs_subject}">
 									</div>
 								</div>
 								<div class="row mb-3">
 									<label for="content" class="col-sm-2 col-form-label">내용</label>
 									<div class="col-sm-10">
-										<textarea class="form-control" name="cs_content" id="content"></textarea>
+										<textarea class="form-control" name="cs_content" id="content">${detail.cs_content}</textarea>
 									</div>
 								</div>
 								<div class="row mb-3">
 									<div class="col-sm-12" id="btnArea">
 										<button type="button" id="cancel" class="btn btn-secondary">나가기</button>
-										<button type="button" class="btn btn-primary" id="write">등록하기</button>
+										<button type="button" class="btn btn-primary" id="delete">삭제하기</button>
+										<button type="button" class="btn btn-primary" id="modify">수정하기</button>
 									</div>
 								</div>
 							</form><!-- End General Form Elements -->

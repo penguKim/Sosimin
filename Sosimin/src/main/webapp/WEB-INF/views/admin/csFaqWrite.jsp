@@ -57,6 +57,82 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 $(function() {
+	$("form").submit(function() {
+		event.preventDefault();
+		Swal.fire({
+	        title: '자주묻는질문을 등록하시겠습니까?',
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '등록',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	        	if($("#select").val() == "") { 
+					Swal.fire({
+						position: 'center',
+						icon: 'warning',
+						title: '유형을 선택해주세요.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+					$("#select").focus();
+					return false;
+				} else if($("#subject").val() == "") { 
+					Swal.fire({
+						position: 'center',
+						icon: 'warning',
+						title: '제목을 입력해주세요.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+					$("#subject").focus();
+					return false;
+				} else if($("#content").val() == "") { 
+					Swal.fire({
+						position: 'center',
+						icon: 'warning',
+						title: '내용을 입력해주세요.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+					$("#content").focus();
+					return false;
+				}
+	        	$("#faq-write").submit();
+	        } else {
+	        	return false;
+	        }
+	    });
+		
+	});
+	
+	$("#cancel").on("click", function() {
+		Swal.fire({
+	        title: '등록을 취소하시겠습니까?',
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '확인',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+				location.href="CsFaqList";
+			} else {
+	        	return false;
+	        }
+	    });
+	});
+	
 });
 
 </script>
@@ -76,13 +152,13 @@ $(function() {
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>자주묻는질문작성</h1>
+			<h1>자주묻는질문등록</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
 					<li class="breadcrumb-item">고객센터관리</li>
 					<li class="breadcrumb-item">자주묻는질문관리</li>
-					<li class="breadcrumb-item active">자주묻는질문작성</li>
+					<li class="breadcrumb-item active">자주묻는질문등록</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->
@@ -92,14 +168,14 @@ $(function() {
 				<div class="col-lg-12">
 					<div class="card">
 						<div class="card-body">
-							<h5 class="card-title">자주묻는질문 작성</h5>
+							<h5 class="card-title">자주묻는질문 등록</h5>
 							<!-- General Form Elements -->
 							<form action="CsFaqWritePro" method="post" id="faq-write">
 								<div class="row mb-3">
 									<label for="select" class="col-sm-2 col-form-label">유형선택</label>
 									<div class="col-sm-10">
 										<select class="form-select" aria-label="Default select example" name="cs_type_detail" id="select">
-											<option selected>유형을 선택해주세요</option>
+											<option value=''>유형을 선택해주세요</option>
 											<option value="4">회원</option>
 											<option value="5">거래분쟁</option>
 											<option value="6">소심페이</option>
@@ -121,7 +197,7 @@ $(function() {
 								</div>
 								<div class="row mb-3">
 									<div class="col-sm-12" id="btnArea">
-										<button type="reset" class="btn btn-secondary">나가기</button>
+										<button type="button" id="cancel" class="btn btn-secondary">나가기</button>
 										<button type="submit" class="btn btn-primary">등록하기</button>
 									</div>
 								</div>

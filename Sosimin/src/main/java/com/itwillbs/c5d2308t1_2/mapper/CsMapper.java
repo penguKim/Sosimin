@@ -18,14 +18,20 @@ public interface CsMapper {
 	// 한 페이지에 표시할 게시글 목록 조회 작업 요청 
 	List<Map<String, Object>> selectCsList(@Param("searchKeyword") String searchKeyword, @Param("searchType") String searchType, @Param("category") String category, @Param("page") PageDTO page, @Param("map") Map<String, Object> map);
 
-	// 고객센터관리
-	List<Map<String, Object>> selectCsListAdmin(@Param("map") Map<String, Object> map);
-
 	// 고객센터 상세 조회
 	Map<String, Object> selectCsDetail(int cs_id);
 
+	// 고객센터관리
+	List<Map<String, Object>> selectCsListAdmin(@Param("map") Map<String, Object> map);
+	
 	// 고객센터 글 작성
 	int insertCs(Map<String, Object> map);
+
+	// 관리자 - 고객센터 글 수정
+	int updateCs(Map<String, Object> map);
+
+	// 관리자 - 고객센터 글 삭제
+	int deleteCs(Map<String, Object> map);
 	
 
 }

@@ -1,9 +1,5 @@
 package com.itwillbs.c5d2308t1_2.controller;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +87,22 @@ public class CsController {
 		
 		return "cs/csFaq";
 	}
+
+	// 고객센터 상세페이지로 이동
+	@GetMapping("CsNoticeDetail")
+	public String csDetail(@RequestParam(defaultValue = "0") int cs_id, Model model) {
+		// 서블릿 주소로만 들어올 경우 처리
+		if(cs_id == 0) {
+			return "error/404";
+		}
+		
+		// 게시글 조회
+		Map<String, Object> map = service.getCsDetail(cs_id);
+		
+		model.addAttribute("detail", map);
+		
+		return "cs/csDetail";
+	}
 	
 //	@GetMapping("CsOneOnOne")
 //	public String csOneOnOne() {
@@ -128,6 +140,7 @@ public class CsController {
 		return "admin/csNoticeWrite";
 	}
 	
+	
 	// 고객센터 공지사항 글쓰기 작업
 	@PostMapping("CsNoticeWritePro")
 	public String csNoticeWritePro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
@@ -155,16 +168,23 @@ public class CsController {
 	
 	// 고객센터 공지사항 상세보기 페이지로 이동
 	@GetMapping("CsNoticeModifyForm")
-	public String csNoticeModifyForm(Model model, HttpSession session) {
+	public String csNoticeModifyForm(@RequestParam(defaultValue = "0") int cs_id, Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null || !sId.equals("admin")) {
 			return "error/404";
 		}
+
+		// 서블릿 주소로만 들어올 경우 처리
+		if(cs_id == 0) {
+			return "error/404";
+		}
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("cs_type", 1);
+		// 게시글 조회
+		Map<String, Object> map = service.getCsDetail(cs_id);
 		
-		return "admin/csNoticeWrite";
+		model.addAttribute("detail", map);
+	
+		return "admin/csNoticeModify";
 	}
 	
 	// 고객센터 공지사항 수정 작업
@@ -175,7 +195,38 @@ public class CsController {
 			return "error/404";
 		}
 		
-		return "redirect:/CsNoticeList";
+		int updateCount = service.updateCs(map);
+		
+		if(updateCount > 0) {
+			return "redirect:/CsNoticeList";
+		} else {
+			model.addAttribute("msg", "글 수정 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
+			return "fail_back";
+		}
+		
+	}
+	
+	// 고객센터 공지사항 삭제 작업
+	@GetMapping("CsNoticeDelete")
+	public String csNoticeDelete(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		int deleteCount = service.deleteCs(map);
+		
+		if(deleteCount > 0) {
+			return "redirect:/CsFaqList";
+		} else {
+			model.addAttribute("msg", "글 삭제 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
+			return "fail_back";
+		}
+		
 	}
 	
 	
@@ -230,38 +281,12 @@ public class CsController {
 	
 	// 고객센터 자주묻는질문 상세 페이지로 이동
 	@GetMapping("CsFaqModifyForm")
-	public String csFaqModifyForm(Model model, HttpSession session) {
-		String sId = (String)session.getAttribute("sId");
-		if(sId == null || !sId.equals("admin")) {
-			return "error/404";
-		}
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("cs_type", 2);
-		
-		return "admin/csFaqWrite";
-	}
-	
-	// 고객센터 자주묻는질문 수정 작업
-	@PostMapping("CsFaqModifyPro")
-	public String csFaqModifyPro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
+	public String csFaqModifyForm(@RequestParam(defaultValue = "0") int cs_id, Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null || !sId.equals("admin")) {
 			return "error/404";
 		}
 		
-		return "redirect:/CsFaqList";
-	}
-	
-	
-	@GetMapping("CsOneOnOneList")
-	public String csOneOnOneList() {
-		
-		return "admin/csOneOnOneList";
-	}
-	
-	@GetMapping("CsNoticeDetail")
-	public String csDetail(@RequestParam(defaultValue = "0") int cs_id, Model model) {
 		// 서블릿 주소로만 들어올 경우 처리
 		if(cs_id == 0) {
 			return "error/404";
@@ -272,7 +297,58 @@ public class CsController {
 		
 		model.addAttribute("detail", map);
 		
-		return "cs/csDetail";
+		return "admin/csFaqModify";
 	}
+	
+	// 고객센터 자주묻는질문 수정 작업
+	@PostMapping("CsFaqModifyPro")
+	public String csFaqModifyPro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		int updateCount = service.updateCs(map);
+		
+		if(updateCount > 0) {
+			return "redirect:/CsFaqList";
+		} else {
+			model.addAttribute("msg", "글 수정 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
+			return "fail_back";
+		}
+		
+	}
+	
+	// 고객센터 자주묻는질문 삭제 작업
+	@GetMapping("CsFaqDelete")
+	public String csFaqDelete(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		int deleteCount = service.deleteCs(map);
+		
+		if(deleteCount > 0) {
+			return "redirect:/CsFaqList";
+		} else {
+			model.addAttribute("msg", "글 삭제 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
+			return "fail_back";
+		}
+		
+	}
+	
+	
+	
+	@GetMapping("CsOneOnOneList")
+	public String csOneOnOneList() {
+		
+		return "admin/csOneOnOneList";
+	}
+
 	
 }

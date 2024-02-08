@@ -22,6 +22,9 @@ public interface PaymentMapper {
 
 	// 페이 가입(계좌 insert)
 	int insertPay(Map<String, Object> map);
+	
+	// 페이가입 축하금 지급
+	void insertPayHistoryFirst(Map<String, Object> map);
 
 	// 페이 수정(계좌 update)
 	int updatePay(Map<String, Object> map);
@@ -35,6 +38,15 @@ public interface PaymentMapper {
 
 	// 페이 내역 개수 세기(페이징)
 	int selectPayHistoryCount(Map<String, Object> map);
+	
+	// 계좌 인증 정보(토큰) 삭제(탈퇴처리)
+	void deleteToken(Map<String, Object> map);
+
+	// 페이 상태 변경(탈퇴처리)
+	int updatePayStatus(Map<String, Object> map);
+	
+	// 페이 사용 내역 삭제(탈퇴처리)
+	void deletePayHistory(Map<String, Object> map);
 
 	// 페이 충전/환급 요청
 	int updatePayBalance(Map<String, Object> map);
@@ -115,6 +127,8 @@ public interface PaymentMapper {
 	
 	// 약정계좌 내역 불러오기
 	List<Map<String, Object>> selectSosiminAccount();
+
+
 
 
 

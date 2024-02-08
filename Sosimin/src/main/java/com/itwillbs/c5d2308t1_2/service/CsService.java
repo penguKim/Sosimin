@@ -24,20 +24,30 @@ public class CsService {
 	public List<Map<String, Object>> getCsList(String searchKeyword, String searchType, String category, PageDTO page, Map<String, Object> map) {
 		return mapper.selectCsList(searchKeyword, searchType, category, page, map);
 	}
-
-	// 고객센터관리
-	public List<Map<String, Object>> getCsListAdmin(Map<String, Object> map) {
-		return mapper.selectCsListAdmin(map);
-	}
-
+	
 	// 고객센터 상세 조회
 	public Map<String, Object> getCsDetail(int cs_id) {
 		return mapper.selectCsDetail(cs_id);
 	}
 
+	// 관리자 - 고객센터관리
+	public List<Map<String, Object>> getCsListAdmin(Map<String, Object> map) {
+		return mapper.selectCsListAdmin(map);
+	}
+
 	// 공지사항 등록
 	public int insertCs(Map<String, Object> map) {
 		return mapper.insertCs(map);
+	}
+
+	// 관리자 - 고객센터 글 수정
+	public int updateCs(Map<String, Object> map) {
+		return mapper.updateCs(map);
+	}
+
+	// 관리자 - 고객센터 글 삭제
+	public int deleteCs(Map<String, Object> map) {
+		return mapper.deleteCs(map);
 	}
 	
 }

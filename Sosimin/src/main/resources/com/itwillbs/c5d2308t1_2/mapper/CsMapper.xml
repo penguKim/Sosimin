@@ -98,4 +98,17 @@
 		)
 	</insert>
 
+	<update id="updateCs">
+		UPDATE Cs
+		SET 
+			cs_type_detail = #{cs_type_detail}
+			, cs_subject = #{cs_subject}
+			, cs_content = #{cs_content}
+		WHERE cs_id = #{cs_id}
+	</update>
+
+	<delete id="deleteCs">
+		DELETE FROM Cs
+		WHERE cs_id = #{cs_id}
+	</delete>
 </mapper>

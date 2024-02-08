@@ -51,16 +51,13 @@
 	
 	#buttonArea {
 		position: absolute;
-		right: 30px;
-		bottom: 20px;
+		right: 255px;
+		top: 9px;
 		text-align: right;
 	}
 </style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
-$(function() {
-});
-
 </script>
 </head>
 <body>
@@ -93,6 +90,13 @@ $(function() {
 				<div class="col-lg-12">
 					<div class="card">
 						<div class="card-body">
+							<div id="buttonArea">
+								<a href="CsNoticeWriteForm">
+									<button type="button" class="btn btn-primary">
+										새글 등록하기
+									</button>
+								</a>
+							</div>
 							<!-- Table with stripped rows -->
 							<table class="table datatable">
 								<thead>
@@ -122,7 +126,7 @@ $(function() {
 												${date}
 											</td>
 											<td class="green">
-												<a href="CsNoticeModifyForm">
+												<a href="CsNoticeModifyForm?cs_id=${notice.cs_id}">
 													<button type="button" class="btn btn-primary">
 														상세보기
 													</button>
@@ -133,13 +137,6 @@ $(function() {
 								</tbody>
 							</table>
 							<!-- End Table with stripped rows -->
-							<div id="buttonArea">
-								<a href="CsNoticeWriteForm">
-									<button type="button" class="btn btn-primary">
-										새글 작성하기
-									</button>
-								</a>
-							</div>
 						</div>
 	 				</div>
 				</div>

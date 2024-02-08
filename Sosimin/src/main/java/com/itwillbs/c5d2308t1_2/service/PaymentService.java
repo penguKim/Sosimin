@@ -58,6 +58,7 @@ public class PaymentService {
 	}
 
 	// 페이 가입 정보 저장 요청(계좌 등록 / 수정)
+	@Transactional
 	public int registPay(Map<String, Object> map) {
 		int count = 0;
 		
@@ -67,6 +68,7 @@ public class PaymentService {
 		// 아이디가 존재하지 않을 경우 pay정보 insert
 		if(idCount == 0) {
 			count = mapper.insertPay(map);
+			mapper.insertPayHistoryFirst(map);
 		} else { // 아이디가 존재할 경우 pay정보 update
 			count = mapper.updatePay(map);			
 		}
@@ -94,6 +96,19 @@ public class PaymentService {
 		return mapper.selectPayHistoryCount(map);
 	}
 
+	// 페이 탈퇴하기
+	@Transactional
+	public int withdrawPay(Map<String, Object> map) {
+		// 계좌 인증 정보(토큰)를 삭제
+		mapper.deleteToken(map);
+		
+		// 페이 이용 내역을 삭제
+		mapper.deletePayHistory(map);
+		
+		// 페이 상태를 탈퇴로 변경하고 정보 삭제
+		return mapper.updatePayStatus(map);
+	}
+	
 	// 계좌 상세정보 조회 요청
 	public Map<String, Object> requestAccountDetail(Map<String, Object> map) {
 		// BankApiClient - requestAccountDetail()
@@ -225,7 +240,6 @@ public class PaymentService {
 		if(map.get("pay_balance") != null && !map.get("pay_balance").toString().equals("")) {
 			mapper.insertPayHistory2(map);			
 		}
-		
 		return mapper.updatePayInfo(map);
 	}
 	

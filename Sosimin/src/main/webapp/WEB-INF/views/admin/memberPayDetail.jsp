@@ -80,6 +80,28 @@ $(function() {
 		
 	});
 	
+	$("#withdrawPay").click(function() {
+		
+		Swal.fire({
+	        title: "해당 회원의 소심페이 탈퇴를<br> 진행하시겠습니까?",
+	        text: "탈퇴를 누르시면 관련 정보가 모두 삭제됩니다.",
+	        icon: 'question',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: "탈퇴",
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	    }).then((result) => {
+	    	if (result.isConfirmed) {
+	    		location.href="PayWithdraw?pay_id=${payList.pay_id}&member_id=${payList.member_id}";
+		    } else {
+				 event.preventDefault();
+			}
+	    }); 	
+
+	});
+	
 	
 });
 
@@ -446,15 +468,6 @@ $(function() {
 																</td>
 															</tr>
 															<tr>
-																<th scope="row">소심페이상태</th>
-																<td>
-																	<select id="new-status">
-																		<option value="0" <c:if test="${payList.pay_status eq '0'}">selected</c:if>>정상</option>
-																		<option value="1" <c:if test="${payList.pay_status eq '1'}">selected</c:if>>탈퇴</option>
-																	</select>
-																</td>
-															</tr>
-															<tr>
 																<th scope="row">비밀번호변경</th>
 																<td><input type="password" id="new-passwd1" maxlength="6" placeholder="변경시에만 입력"></td>
 															</tr>
@@ -466,6 +479,7 @@ $(function() {
 													</div>
 													<div class="modal-footer">
 														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">뒤로가기</button>
+														<button type="button" id="withdrawPay" class="btn btn-primary">페이탈퇴</button>
 														<button type="button" class="btn btn-primary" onclick="CheckPayInfo(${payList.pay_id})">변경하기</button>
 													</div>
 												</div>

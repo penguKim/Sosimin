@@ -220,6 +220,41 @@ $(function() {
 		
 	});
 	
+	
+	$("#withdrawPay").click(function() {
+		
+		if (!$("input:checkbox[name=agree]").prop("checked")) {
+	    	Swal.fire({
+				position: 'center',
+				icon: 'error',
+				title: '설명을 읽고 동의 해주세요.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+		} else {
+			Swal.fire({
+		        title: "정말로 소심페이를 탈퇴하시겠습니까?",
+		        text: "탈퇴를 누르시면 탈퇴가 진행됩니다.",
+		        icon: 'question',
+		        showCancelButton: true,
+		        confirmButtonColor: '#39d274',
+		        cancelButtonColor: '#d33',
+		        confirmButtonText: "탈퇴",
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		    }).then((result) => {
+		    	if (result.isConfirmed) {
+		    		location.href="PayWithdraw?pay_id=${payInfo.pay_id}";
+			    } else {
+					 event.preventDefault();
+				}
+		    }); 	
+		}
+
+	});
+	
+	
 });
 
 <%-- 게시물 목록을 AJAX와 JSON으로 처리하는 함수 --%>
@@ -397,6 +432,9 @@ function select_date() {
 	$('input[name="period"]').prop('checked', false);
 	
 }
+
+
+
 
 // 임시로 테스트용 거래수락 버튼 추가
 function acceptPayment() {
@@ -803,6 +841,39 @@ function stopPayment() {
 							</div>
                         </div>
                     </div>
+					<div style="text-align: right;">
+						<button class="btn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal">소심페이 탈퇴하기</button>
+					</div>
+					<!-- Review Modal -->
+				    <div class="modal review-modal" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+				        aria-hidden="true">
+				        <div class="modal-dialog">
+				            <div class="modal-content">
+				               	<form action="AccountRegistPro" method="post" class="account-regist">
+					                <div class="modal-header">
+					                    <h5 class="modal-title" id="exampleModalLabel">탈퇴 전 읽어주세요</h5>
+					                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					                </div>
+					                <div class="modal-body">
+					                    <div class="row">
+					                        <div class="col-sm-12">
+					                        	1. 소심페이 탈퇴 시 소심페이 잔액과 이용 내역이 모두 삭제됩니다.<br>
+					                        	2. 본 서비스 해지 이후에도 소시민 계정은 그대로 사용하실 수 있습니다.<br>
+					                        	3. 소심페이 잔액 및 이용내역 복구는 불가능합니다.
+					                        	<br>
+					                        	<br>
+					                        	<label><input type="checkbox" name="agree"> 설명을 모두 읽었으며 동의합니다.</label>
+					                        </div>
+					                    </div>
+					                </div>
+					                <div class="modal-footer button">
+						            	<button type="button" class="btn" id="withdrawPay">소심페이 탈퇴하기</button>
+					                </div>
+				               	</form>
+				            </div>
+				        </div>
+				    </div>
+				    <!-- End Review Modal -->
                 </div>
             </div>
         </div>
