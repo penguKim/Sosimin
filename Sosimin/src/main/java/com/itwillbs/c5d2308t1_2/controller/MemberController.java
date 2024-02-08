@@ -698,21 +698,47 @@ public class MemberController {
 	// 판매자 페이지 상품 관련 탭(판매내역, 구매내역, 관심목록)
 	@GetMapping("SellerInfo")
 	public String sellerInfo(HttpSession session, Model model, @RequestParam(defaultValue = "") String member_id, @RequestParam(defaultValue = "1") int community_id, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "1") String category, @RequestParam(defaultValue = "0") String filter) {
-		if(member_id.equals("")) {
-			   model.addAttribute("msg", "잘못된 접근입니다!");
-			   model.addAttribute("msg2", "메인페이지로 이동합니다!");
-			   model.addAttribute("msg3", "error");
-			   model.addAttribute("targetURL", "./");
-			   return "forward";
-		}
-		
-		
-		
 		String sId = (String)session.getAttribute("sId");
 		System.out.println("필터 : " + filter);
 		System.out.println("카테고리 : " + category);
 		System.out.println("세션 아이디 확인 : " + sId);
-		
+		System.out.println("파라미터로 넘긴 판매자멤버아이디: " + member_id);
+		MemberVO member = service.getMemberStatus(member_id);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>판매자 회원상태 확인: " + member.getMember_status());
+		if(member_id.equals("") || member_id == null) {
+			System.out.println("111111111111111111111111111111111111111");
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("msg2", "메인페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "./");
+			return "forward";
+		}
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>111111111111111");
+		if(sId == null || sId.equals("")) {
+			System.out.println("222222222222222222222111111111111111111111111111111111111111");
+			model.addAttribute("msg", "잘못된 접근입니다!");
+			model.addAttribute("msg2", "메인페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			model.addAttribute("targetURL", "./");
+			return "forward";
+		}
+		if(member.getMember_status() == 2) {
+			System.out.println("22333333333331111111111111111111111111111111111111");
+
+			model.addAttribute("msg", "탈퇴한 회원의 페이지입니다!");
+			model.addAttribute("msg2", "이전페이지로 이동합니다!");
+			model.addAttribute("msg3", "error");
+			return "fail_back";
+		}
+		if(sId.equals(member_id)) {
+			System.out.println("222444444444444411111111111111111111111111111111111");
+
+			model.addAttribute("msg", "나의 판매자페이지입니다!");
+			model.addAttribute("msg2", "마이페이지로 이동합니다!");
+			model.addAttribute("msg3", "info");
+			model.addAttribute("targetURL", "MyPage");
+			return "forward";
+		} 
 		// 페이지 번호와 글의 개수를 파라미터로 전달
 		PageDTO page = new PageDTO(pageNum, 15);
 		// 전체 게시글 갯수 조회
@@ -736,6 +762,7 @@ public class MemberController {
 		
 		// 회원 경험치 조회
         Map<String, Integer> levelExp = communityService.getMemberLevel(member_id); 
+     
         // 경험치 퍼센트 계산
         float percentage = (float)levelExp.get("member_exp") / levelExp.get("level_max_exp") * 100;
         percentage = Math.round(percentage * 10) / 10;
@@ -745,6 +772,12 @@ public class MemberController {
 		List<HashMap<String, Object>> MyPageList = service.getMyPageList(member_id, category, page, filter);
 		System.out.println("컨트롤러에서 넘긴 마이페이지 리스트 확인 : " + MyPageList);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> 커뮤니티 아이디 : " + community_id);
+		
+		// 소심페이 가입한 회원 목록 조회
+		List<MemberVO> payUser = service.getPayUsers();
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>아이디 값 : " + member_id);
+		System.out.println(">>>>>>>>>>>>>>>>>>>> 소심페이 : " + payUser);
+		
 		
 		// 시간 변환
         LocalDateTime now = LocalDateTime.now();
@@ -812,15 +845,10 @@ public class MemberController {
         model.addAttribute("filter", filter);
         model.addAttribute("pageInfo", pageInfo);
 		model.addAttribute("percentage", percentage);
+		model.addAttribute("payUser", payUser);
 
 		
 		return "member/sellerInfo";
-	}
-	
-	// 판매자 페이지 커뮤니티 관련 탭(커뮤니티 작성글, 커뮤니티 작성 댓글)
-	@GetMapping("SellerInfo2")
-	public String SellerInfo2() {
-		return "member/sellerInfo2";
 	}
 	
 	// ********* 관리자페이지 회원관리 *************

@@ -153,6 +153,16 @@ public class MemberService {
 		}
 	}
 
+	// 회원 상태 조회
+	public MemberVO getMemberStatus(String member_id) {
+		return mapper.selectMemberStatus(member_id);
+	}
+
+	// 소심페이 가입한 회원 목록 조회
+	public List<MemberVO> getPayUsers() {
+		return mapper.selectPayUsers();
+	}
+
 
 
 

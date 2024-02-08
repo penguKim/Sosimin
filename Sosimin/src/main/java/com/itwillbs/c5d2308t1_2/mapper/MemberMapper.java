@@ -94,6 +94,12 @@ public interface MemberMapper {
 	// 상품 찜 등록
 	void insertLike(@Param("sId")String sId, @Param("product_id")int product_id);
 
+	// 회원상태 조회
+	MemberVO selectMemberStatus(String member_id);
+	
+	// 소심페이 가입한 회원 조회
+	List<MemberVO> selectPayUsers();
+
 
 
 

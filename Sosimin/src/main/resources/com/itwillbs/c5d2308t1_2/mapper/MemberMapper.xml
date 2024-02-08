@@ -143,10 +143,8 @@
 					WHERE ProductView.product_buyer = #{sId}
 				</when>
 				<when test="category == 3">
-					FROM ProductLike
-					JOIN ProductView
-					ON ProductLike.product_id = ProductView.product_id
-					WHERE ProductLike.member_id = #{sId}
+					FROM ProductAndLikeView
+					WHERE sellerinfo_id = #{sId}
 					<choose>
 						<when test="filter == 1">
 							AND trade_status = 0
@@ -246,10 +244,8 @@
 					ORDER BY product_datetime DESC
 				</when>
 				<when test="category == 3">
-					FROM ProductLike 
-					JOIN ProductView
-					ON ProductLike.product_id = ProductView.product_id
-					WHERE ProductLike.member_id = #{sId}
+					FROM ProductAndLikeView
+					WHERE sellerinfo_id = #{sId}
 					<choose>
 						<when test="filter == 1">
 							AND trade_status = 0
@@ -331,11 +327,29 @@
 	
 	<!-- 상품 찜 등록 -->
 	<insert id="insertLike">
-		insert into ProductLike
-		Values (
+		INSERT INTO ProductLike
+		VALUES (
 			null
 			, #{product_id}
 			, #{sId}
 		)
 	</insert>
+	
+	<!-- 회원상태 조회 -->
+	<select id="selectMemberStatus" resultType="member">
+		SELECT member_status
+		FROM Member
+		WHERE member_id = #{member_id}
+	</select>
+	
+	<!-- 소심페이 가입한 회원 목록 조회 -->
+	<select id="selectPayUsers" resultType="hashmap">
+		SELECT DISTINCT member_id 
+		FROM Product p 
+		WHERE EXISTS (SELECT 1
+		                FROM Pay 
+		                WHERE p.member_id = Pay.member_id
+		                AND pay_status = 0)
+	</select>
+	
 </mapper>

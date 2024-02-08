@@ -80,39 +80,52 @@
 		
 		// 찜 버튼 클릭 이벤트
         $(".heart").on("click", function () {
-        	let heart = $(this);
-    		$.ajax({
-    			type: "POST",
-    			url: "CheckLike",
-    			data: {
-    				product_id: $(this).parent().data("id")
-    			},
-//     			dataType: "json",
-    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-    				if(result == 'false') { // 찜을 등록하는 경우
-						$(heart).addClass("is-active");
-        				Swal.fire({
-        					position: 'center',
-        					icon: 'success',
-        					title: '찜 추가했습니다.',
-        					showConfirmButton: false,
-        					timer: 2000,
-        					toast: true
-        				});
-    				} else if(result == 'true') { // 찜을 삭제하는 경우
-						$(heart).removeClass("is-active");
-// 						$(heart).parent().remove();
-        				Swal.fire({
-        					position: 'center',
-        					icon: 'success',
-        					title: '찜 삭제했습니다.',
-        					showConfirmButton: false,
-        					timer: 2000,
-        					toast: true
-        				});
-    				}
-    			}
-    		});
+        	if($(this).hasClass("isSameUser")) {
+   				Swal.fire({
+   					position: 'center',
+   					icon: 'warning',
+   					title: '내 상품은 좋아요를 누를 수 없어요!',
+   					showConfirmButton: false,
+   					timer: 2000,
+   					toast: true
+   				});
+        	} else {
+	        	let heart = $(this);
+	    		$.ajax({
+	    			type: "POST",
+	    			url: "CheckLike",
+	    			data: {
+	    				product_id: $(this).parent().data("id")
+	    			},
+	//     			dataType: "json",
+	    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+	    				if(result == 'false') { // 찜을 등록하는 경우
+							$(heart).addClass("is-active");
+	        				Swal.fire({
+	        					position: 'center',
+	        					icon: 'success',
+	        					title: '찜 추가했습니다.',
+	        					showConfirmButton: false,
+	        					timer: 2000,
+	        					toast: true
+	        				});
+	    				} else if(result == 'true') { // 찜을 삭제하는 경우
+							$(heart).removeClass("is-active");
+	// 						$(heart).parent().remove();
+	        				Swal.fire({
+	        					position: 'center',
+	        					icon: 'success',
+	        					title: '찜 삭제했습니다.',
+	        					showConfirmButton: false,
+	        					timer: 2000,
+	        					toast: true
+	        				});
+	    				}
+	    			}
+	    		});
+        		
+        		
+        	}
         });
 		
 		// 필터 선택
@@ -557,7 +570,7 @@
 								<a href="ProductDetail?product_id=${mypage.product_id }">
 									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
 								</a>								
-								<span class="heart"></span>
+								<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
 									<span id="dealInProcess">거래중</span>
 								</c:if>
@@ -583,7 +596,12 @@
 									찜 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									채팅 n회
+<!-- 										채팅 n회 -->
+									<c:forEach var="pay" items="${payUser }">
+										<c:if test="${pay.member_id eq mypage.member_id }">
+											<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">
+										</c:if>
+									</c:forEach>
 								</div>
 								<div id="singleProductButtonArea">
 									<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
@@ -598,7 +616,7 @@
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 										<b>판매 완료</b>
 									</span>				
-									<span class="heart"></span>
+									<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 									<div id="singleProductTitleArea">
 									<b>
 									<c:choose>
@@ -621,7 +639,12 @@
 										찜 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										채팅 n회
+	<!-- 										채팅 n회 -->
+										<c:forEach var="pay" items="${payUser }">
+											<c:if test="${pay.member_id eq mypage.member_id }">
+											<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+											</c:if>
+										</c:forEach>
 									</div>
 									<div id="singleProductButtonArea">
 										<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
@@ -641,7 +664,7 @@
 							<a href="ProductDetail?product_id=${mypage.product_id }">
 								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
 							</a>							
-							<span class="heart"></span>
+							<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 							<span id="dealInProcess">거래중</span>
 							<div id="singleProductTitleArea">
 								<b>
@@ -665,7 +688,12 @@
 								찜 ${mypage.count}개
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								채팅 n회
+<!-- 										채팅 n회 -->
+								<c:forEach var="pay" items="${payUser }">
+									<c:if test="${pay.member_id eq mypage.member_id }">
+										<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">
+									</c:if>
+								</c:forEach>
 							</div>
 							<div id="singleProductButtonArea">
 								<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
@@ -680,7 +708,7 @@
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 									<b>구매 완료</b>
 								</span>				
-								<span class="heart"></span>
+								<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 								<div id="singleProductTitleArea">
 								<b>
 								<c:choose>
@@ -703,7 +731,12 @@
 									찜 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									채팅 n회
+<!-- 										채팅 n회 -->
+									<c:forEach var="pay" items="${payUser }">
+										<c:if test="${pay.member_id eq mypage.member_id }">
+											<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">
+										</c:if>
+									</c:forEach>
 								</div>
 								<div id="singleProductButtonArea">
 									<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
@@ -721,7 +754,7 @@
 								<a href="ProductDetail?product_id=${mypage.product_id }">
 									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
 								</a>				
-								<span class="heart"></span>
+								<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
 									<span id="dealInProcess">거래중</span>
 								</c:if>
@@ -747,7 +780,12 @@
 									찜 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									채팅 n회
+<!-- 										채팅 n회 -->
+									<c:forEach var="pay" items="${payUser }">
+										<c:if test="${pay.member_id eq mypage.member_id }">
+											<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">
+										</c:if>
+									</c:forEach>
 								</div>
 								<div id="singleProductButtonArea">
 									<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
@@ -763,7 +801,7 @@
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 										<b>판매 완료</b>
 									</span>				
-									<span class="heart"></span>
+									<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 									<div id="singleProductTitleArea">
 									<b>
 									<c:choose>
@@ -786,7 +824,12 @@
 										찜 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										채팅 n회
+<!-- 										채팅 n회 -->
+										<c:forEach var="pay" items="${payUser }">
+											<c:if test="${pay.member_id eq mypage.member_id }">
+												<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">
+											</c:if>
+										</c:forEach>
 									</div>
 									<div id="singleProductButtonArea">
 										<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
