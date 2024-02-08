@@ -30,6 +30,8 @@ public class ReportController {
 	@GetMapping("ReportRegist")
 	public String reportRegist(@RequestParam Map<String, String> map, HttpSession session, Model model) {
 		System.out.println(map);
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 신고데이터 " + map);
 		
 		int seccess = service.insertReport(map);
 		

@@ -214,9 +214,7 @@ public class ProductController {
 	public String productList(HttpSession session, Model model) {
 		List<Map<String, Object>> productList = service.adminProductList();
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>" + productList);
-		
 		model.addAttribute("productList", productList);
-		
 		return "admin/productList";
 	}
 	

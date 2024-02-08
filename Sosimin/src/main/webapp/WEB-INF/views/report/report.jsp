@@ -284,14 +284,11 @@ function guide(url) {
 							<div id="collapse6" class="accordion-collapse collapse" aria-labelledby="heading6"
 							   		data-bs-parent="#accordionExample">
 								<div class="accordion-body">
-									<form>
 										<p class="accordion-body-1">어떤 행위를 했나요?</p> 
 										<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
 										<p><a href="#">이런 행위는 비매너행위에요!</a></p>		
 										<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
 										<button type="submit" class="btn btn-primary" id="reportBtn" onclick="reportRegist(5)">신고 하기</button>
-										
-									</form>
 								</div>
 							</div>
 						</div>
