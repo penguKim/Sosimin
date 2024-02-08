@@ -410,6 +410,7 @@ public class ProductController {
 			        System.out.println("회원의 경험치는 : " + (float)levelExp.get("member_exp"));
 			        System.out.println("최대 경험치는 : " + levelExp.get("level_max_exp"));
 			        System.out.println("퍼센트는 : " + percentage);
+			        System.out.println("levelExp : " + levelExp);
 					
 					
 					System.out.println(" >>>>>>>>>>>>>>>> 몇개 들었노: " + SellerProductCount);
@@ -474,6 +475,7 @@ public class ProductController {
 								model.addAttribute("guDong", guDong);
 								model.addAttribute("payStatus", payStatus);
 								model.addAttribute("percentage", percentage);
+								model.addAttribute("levelExp", levelExp);
 								// 리스트를 무작위로 섞어 조회한 상품중 랜덤한 값 뿌리기
 								
 								System.out.println("여기에 뭐가들었니? : " + percentage);

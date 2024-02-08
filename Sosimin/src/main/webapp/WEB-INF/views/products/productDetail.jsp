@@ -448,6 +448,13 @@
 	position: relative;
 }
 
+.progress{
+	display:inline-block;
+	position: relative;
+	top:3px;
+	left:15px;
+}
+
 .progress-bar {
   animation-name: progress-animation;
   animation-duration: 2s; 
@@ -1077,8 +1084,9 @@ function chat() {
 	                                	<span style="color: black;">상품 더보기 ></span>
                                 	</a>
                                 </div> 
-                                <div class="col-xl-4 col-3">
-                                	
+                                	<span>
+                                		Lv. ${levelExp.member_level }
+                               		</span>
 									<div class="progress" style="width: 250px;">
 										<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
 									</div>
@@ -1090,7 +1098,6 @@ function chat() {
                     </div>
                 </div>
               </div>
-             </div>
 <!--          </form> -->
    </section>
 <!--   </form> -->
