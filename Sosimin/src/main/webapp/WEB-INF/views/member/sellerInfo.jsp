@@ -553,7 +553,8 @@
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
 								<a href="ProductDetail?product_id=${mypage.product_id }">
 									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
-								</a>								<span class="heart"></span>
+								</a>								
+								<span class="heart"></span>
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
 									<span id="dealInProcess">거래중</span>
 								</c:if>
@@ -594,7 +595,7 @@
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 										<b>판매 완료</b>
 									</span>				
-<!-- 									<span class="heart"></span> -->
+									<span class="heart"></span>
 									<div id="singleProductTitleArea">
 									<b>
 									<c:choose>
@@ -835,14 +836,14 @@
 								</div>
 								<div id="communityLeftBottom">
 									<p>
-										<c:choose>
-									        <c:when test="${fn:length(mypage.community_content) gt 30}">
-									        	${fn:substring(mypage.community_content, 0, 29)} ...
-									        </c:when>
-									        <c:otherwise>
-									        	${mypage.community_content }
-									        </c:otherwise>
-										</c:choose>
+									<c:choose>
+								        <c:when test="${fn:length(mypage.community_content) gt 30}">
+								        	${fn:substring(mypage.community_content, 0, 29)} ...
+								        </c:when>
+								        <c:otherwise>
+								        	${mypage.community_content }
+								        </c:otherwise>
+									</c:choose>
 									</p>
 								</div>
 							</div>

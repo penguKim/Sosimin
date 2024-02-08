@@ -325,10 +325,18 @@ input[readonly] {
 	color: #888;
 }
 
-#startChat {
-	font-size: small;
-	color: #fecb00 !important;
+.progress-bar {
+  animation-name: progress-animation;
+  animation-duration: 2s; 
+  /* 애니메이션 지속 시간을 설정합니다. */
+  animation-timing-function: ease-out; 
+  /* 애니메이션 속도 곡선을 설정합니다. */
 }
+
+/* #startChat { */
+/* 	font-size: small; */
+/* 	color: #fecb00 !important; */
+/* } */
 
 #reportButton {
 	font-size: small;
@@ -740,9 +748,10 @@ input[readonly] {
     display: inline-block;
     margin: 25px;
     box-sizing: border-box;
-	margin-left: 235px;
+	margin-left: 253px;
     margin-bottom: 500px;
-    margin-top: -20px;
+    margin-top: 308px;
+    z-index: 1000;
 }
 
 .heart.is-active {

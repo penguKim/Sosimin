@@ -4,7 +4,7 @@
 <ul class="sidebar-nav" id="sidebar-nav">
 
 	<li class="nav-item">
-		<a class="nav-link " href="AdminMain">
+		<a class="nav-link collapsed" href="AdminMain">
 			<i class="bi bi-house"></i>
 			<span>관리자메인</span>
 		</a>
