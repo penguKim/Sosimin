@@ -79,4 +79,23 @@
 		FROM Cs
 		WHERE cs_id = #{cs_id}
 	</select>
+
+	<insert id="insertCs">
+		<selectKey keyProperty="cs_type_list_num" resultType="INT" order="BEFORE">
+			SELECT COUNT(*)
+			FROM Cs
+			WHERE cs_type = #{cs_type}
+		</selectKey>
+		INSERT INTO Cs
+		VALUES (
+			null
+			, #{cs_subject}
+			, #{cs_content}
+			, now()
+			, #{cs_type}
+			, #{cs_type_detail}
+			, #{cs_type_list_num} + 1
+		)
+	</insert>
+
 </mapper>

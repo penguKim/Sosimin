@@ -1278,13 +1278,9 @@ public class PaymentController {
 	@GetMapping("MemberPay")
 	public String memberAccount(Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
-//		if(sId == null || !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다!");
-//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-//			model.addAttribute("msg3", "error");
-//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-//			return "fail_back";
-//		}
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
 		
 		List<Map<String, Object>> payList = service.getPayListAll();
 		log.info(payList.toString());
@@ -1298,13 +1294,9 @@ public class PaymentController {
 	@GetMapping("MemberPayDetail")
 	public String memberAccountDetail(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
-//		if(sId == null || !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다!");
-//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-//			model.addAttribute("msg3", "error");
-//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-//			return "fail_back";
-//		}
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
 		
 		log.info("map은 " + map);
 		
@@ -1325,13 +1317,9 @@ public class PaymentController {
 	@GetMapping("ChangePayInfo")
 	public String changePayInfo(@RequestParam Map<String, Object> map, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
-//		if(sId == null || !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다!");
-//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-//			model.addAttribute("msg3", "error");
-//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-//			return "fail_back";
-//		}
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
 		
 		log.info(map.toString());
 		
@@ -1370,13 +1358,9 @@ public class PaymentController {
 	@GetMapping("RefundPay")
 	public String refundPay(@RequestParam Map<String, Object> map, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
-//		if(sId == null || !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다!");
-//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-//			model.addAttribute("msg3", "error");
-//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-//			return "fail_back";
-//		}
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
 		
 		// member_id로 페이 정보 조회
 		Map<String, Object> payInfo = service.getPayInfo(map.get("member_id").toString());
@@ -1448,13 +1432,9 @@ public class PaymentController {
 	@GetMapping("SosiminAccount")
 	public String sosiminAccount(Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
-//		if(sId == null || !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다!");
-//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-//			model.addAttribute("msg3", "error");
-//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-//			return "fail_back";
-//		}
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
 		
 		List<Map<String, Object>> sosiminAccount = service.getSosiminAccount();
 		
@@ -1468,13 +1448,9 @@ public class PaymentController {
 	@GetMapping("ChargeRefund")
 	public String chargeRefund(Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
-//		if(sId == null || !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다!");
-//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-//			model.addAttribute("msg3", "error");
-//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-//			return "fail_back";
-//		}
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
 		
 		List<Map<String, Object>> payHistoryList = service.getPayHistoryChargeRefund();
 		log.info(payHistoryList.toString());
@@ -1488,13 +1464,9 @@ public class PaymentController {
 	@GetMapping("SpentRevenue")
 	public String spentRevenue(Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
-//		if(sId == null || !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다!");
-//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-//			model.addAttribute("msg3", "error");
-//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-//			return "fail_back";
-//		}
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
 		
 		List<Map<String, Object>> payHistoryList = service.getPayHistorySpentRevenue();
 		log.info(payHistoryList.toString());
@@ -1508,13 +1480,9 @@ public class PaymentController {
 	@GetMapping("OrderList")
 	public String orderList(Model model, HttpSession session) {
 		String sId = (String)session.getAttribute("sId");
-//		if(sId == null || !sId.equals("admin")) {
-//			model.addAttribute("msg", "잘못된 접근입니다!");
-//			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-//			model.addAttribute("msg3", "error");
-//			// targetURL 속성명으로 로그인 폼 페이지 서블릿 주소 저장
-//			return "fail_back";
-//		}
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
 		
 		List<Map<String, Object>> orderList = service.getOrderList();
 		

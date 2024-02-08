@@ -34,5 +34,10 @@ public class CsService {
 	public Map<String, Object> getCsDetail(int cs_id) {
 		return mapper.selectCsDetail(cs_id);
 	}
+
+	// 공지사항 등록
+	public int insertCs(Map<String, Object> map) {
+		return mapper.insertCs(map);
+	}
 	
 }

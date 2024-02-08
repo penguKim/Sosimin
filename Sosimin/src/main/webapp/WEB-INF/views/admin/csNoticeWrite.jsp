@@ -45,14 +45,12 @@
 * License: https://bootstrapmade.com/license/
 ======================================================== -->
 <style type="text/css">
-	.card-body {
-		position: relative;
+	#content {
+		height: 300px;
+		resize: none;
 	}
-	
-	#buttonArea {
-		position: absolute;
-		right: 30px;
-		bottom: 20px;
+
+	#btnArea {
 		text-align: right;
 	}
 </style>
@@ -78,12 +76,13 @@ $(function() {
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>공지사항관리</h1>
+			<h1>공지사항작성</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
 					<li class="breadcrumb-item">고객센터관리</li>
-					<li class="breadcrumb-item active">공지사항관리</li>
+					<li class="breadcrumb-item">공지사항관리</li>
+					<li class="breadcrumb-item active">공지사항작성</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->
@@ -93,55 +92,41 @@ $(function() {
 				<div class="col-lg-12">
 					<div class="card">
 						<div class="card-body">
-							<!-- Table with stripped rows -->
-							<table class="table datatable">
-								<thead>
-									<tr>
-										<th>번호</th>
-										<th>유형</th>
-										<th>제목</th>
-										<th>게시시간</th>
-										<th>상세보기</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="notice" items="${csNoticeList}">
-										<tr>
-											<td>${notice.cs_type_list_num}</td>
-											<td>
-												<c:choose>
-													<c:when test="${notice.cs_type_detail eq '1'}">공지</c:when>
-													<c:when test="${notice.cs_type_detail eq '2'}">정책변경</c:when>
-													<c:when test="${notice.cs_type_detail eq '3'}">사기예방</c:when>
-												</c:choose>
-											</td>
-											<td>${notice.cs_subject}</td>
-											<td>
-												<c:set var="datetime" value="${fn:split(notice.cs_date, 'T')}" />
-												<c:set var="date" value="${datetime[0]}" />
-												${date}
-											</td>
-											<td class="green">
-												<a href="CsNoticeModifyForm">
-													<button type="button" class="btn btn-primary">
-														상세보기
-													</button>
-												</a>
-											</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-							<!-- End Table with stripped rows -->
-							<div id="buttonArea">
-								<a href="CsNoticeWriteForm">
-									<button type="button" class="btn btn-primary">
-										새글 작성하기
-									</button>
-								</a>
-							</div>
+							<h5 class="card-title">공지사항 작성</h5>
+							<!-- General Form Elements -->
+							<form action="CsNoticeWritePro" method="post" id="notice-write">
+								<div class="row mb-3">
+									<label for="select" class="col-sm-2 col-form-label">유형선택</label>
+									<div class="col-sm-10">
+										<select class="form-select" aria-label="Default select example" name="cs_type_detail" id="select">
+											<option selected>유형을 선택해주세요</option>
+											<option value="1">공지</option>
+											<option value="2">정책변경</option>
+											<option value="3">사기예방</option>
+										</select>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="subject" class="col-sm-2 col-form-label">제목</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" name="cs_subject" id="subject">
+									</div>
+								</div>
+								<div class="row mb-3">
+									<label for="content" class="col-sm-2 col-form-label">내용</label>
+									<div class="col-sm-10">
+										<textarea class="form-control" name="cs_content" id="content"></textarea>
+									</div>
+								</div>
+								<div class="row mb-3">
+									<div class="col-sm-12" id="btnArea">
+										<button type="reset" class="btn btn-secondary">나가기</button>
+										<button type="submit" class="btn btn-primary">등록하기</button>
+									</div>
+								</div>
+							</form><!-- End General Form Elements -->
 						</div>
-	 				</div>
+					</div>
 				</div>
 			</div>
 		</section>

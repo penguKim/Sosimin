@@ -44,22 +44,23 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 ======================================================== -->
+<style type="text/css">
+	.card-body {
+		position: relative;
+	}
+	
+	#buttonArea {
+		position: absolute;
+		right: 30px;
+		bottom: 20px;
+		text-align: right;
+	}
+</style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 $(function() {
-	// 파라미터에 order_id 값이 있을 경우 값을 저장
-	let order_id = ${param.order_id};
-	
-	console.log(order_id);
-	
-	if (order_id) {
-	    openModal(order_id);
-	}
 });
 
-function openModal(order_id) {
-	$("#modal-" + order_id).modal('show');
-}
 </script>
 </head>
 <body>
@@ -122,68 +123,24 @@ function openModal(order_id) {
 												${date}
 											</td>
 											<td class="green">
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${faq.cs_id}">
-													상세보기
-												</button>
-												<!-- Basic Modal -->
-												<div class="modal fade" id="modal-${faq.cs_id}" tabindex="-1">
-													<div class="modal-dialog">
-														<div class="modal-content">
-															<div class="modal-header">
-																<h5 class="modal-title">자주묻는질문 상세보기</h5><!-- 모달 제목 -->
-																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-															</div>
-															<div class="modal-body">
-																<!-- 모달 내용이 들어가는 부분 -->
-																<table class="table modal_table">
-																	<tr>
-																		<th scope="row">번호</th>
-																		<td>${faq.cs_type_list_num}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">유형</th>
-																		<td>
-																			<c:choose>
-																				<c:when test="${faq.cs_type_detail eq '4'}">회원</c:when>
-																				<c:when test="${faq.cs_type_detail eq '5'}">거래분쟁</c:when>
-																				<c:when test="${faq.cs_type_detail eq '6'}">소심페이</c:when>
-																				<c:when test="${faq.cs_type_detail eq '7'}">사이트이용</c:when>
-																			</c:choose>
-																		</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">제목</th>
-																		<td>${faq.cs_subject}</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">게시시간</th>
-																		<td>
-																			<c:set var="datetime" value="${fn:split(faq.cs_date, 'T')}" />
-																			<c:set var="date" value="${datetime[0]}" />
-																			${date}
-																		</td>
-																	</tr>
-																	<tr>
-																		<th scope="row">내용</th>
-																		<td>${faq.cs_content}</td>
-																	</tr>
-																</table>
-															</div>
-															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-																<button type="button" class="btn btn-primary">수정하기</button>
-																<button type="button" class="btn btn-primary">삭제하기</button>
-															</div>
-														</div>
-													</div>
-												</div>
-												<!-- End Basic Modal-->
+												<a href="CsFaqModifyForm">
+													<button type="button" class="btn btn-primary">
+														상세보기
+													</button>
+												</a>
 											</td>
 										</tr>
 									</c:forEach>
 								</tbody>
 							</table>
 							<!-- End Table with stripped rows -->
+							<div id="buttonArea">
+								<a href="CsFaqWriteForm">
+									<button type="button" class="btn btn-primary">
+										새글 작성하기
+									</button>
+								</a>
+							</div>
 						</div>
 	 				</div>
 				</div>

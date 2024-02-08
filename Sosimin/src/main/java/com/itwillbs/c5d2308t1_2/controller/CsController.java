@@ -97,9 +97,18 @@ public class CsController {
 //		return "cs/csOneOnOne";
 //	}
 	
+	
+	// ----------------------- 관리자페이지 ----------------------
+	
+	
 	// 고객센터 공지사항 관리로 이동
 	@GetMapping("CsNoticeList")
-	public String csNoticeList(Model model) {
+	public String csNoticeList(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("cs_type", 1);
 		List<Map<String, Object>> csNoticeList = service.getCsListAdmin(map);
@@ -107,15 +116,142 @@ public class CsController {
 		return "admin/csNoticeList";
 	}
 	
+	// 고객센터 공지사항 글쓰기 페이지로 이동
+	@GetMapping("CsNoticeWriteForm")
+	public String csNoticeWriteForm(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		return "admin/csNoticeWrite";
+	}
+	
+	// 고객센터 공지사항 글쓰기 작업
+	@GetMapping("CsNoticeWritePro")
+	public String csNoticeWritePro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		// cs_type을 공지사항인 1로 설정
+		map.put("cs_type", 1);
+		
+		// 공지사항 등록 
+		int insertCount = service.insertCs(map);
+		
+		if(insertCount > 0) { // 등록성공
+			return "redirect:/CsNoticeList";			
+		} else { // 등록실패
+			model.addAttribute("msg", "글쓰기 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
+			return "fail_back";
+		}
+		
+	}
+	
+	// 고객센터 공지사항 상세보기 페이지로 이동
+	@GetMapping("CsNoticeModifyForm")
+	public String csNoticeModifyForm(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("cs_type", 1);
+		
+		return "admin/csNoticeWrite";
+	}
+	
+	// 고객센터 공지사항 수정 작업
+	@GetMapping("CsNoticeModifyPro")
+	public String csNoticeModifyPro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		return "redirect:/CsNoticeList";
+	}
+	
+	
 	// 고객센터 자주묻는질문 관리로 이동
 	@GetMapping("CsFaqList")
-	public String csFaqList(Model model) {
+	public String csFaqList(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("cs_type", 2);
 		List<Map<String, Object>> csFaqList = service.getCsListAdmin(map);
 		model.addAttribute("csFaqList", csFaqList);
 		return "admin/csFaqList";
 	}
+	
+	// 고객센터 자주묻는질문 글쓰기 페이지로 이동
+	@GetMapping("CsFaqWriteForm")
+	public String csFaqWriteForm(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		return "admin/csFaqWrite";
+	}
+	
+	// 고객센터 자주묻는질문 글쓰기 작업
+	@GetMapping("CsFaqWritePro")
+	public String csFaqWritePro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		// cs_type을 자주묻는질문인 2로 설정
+		map.put("cs_type", 2);
+		
+		// 공지사항 등록 
+		int insertCount = service.insertCs(map);
+		
+		if(insertCount > 0) { // 등록성공
+			return "redirect:/CsFaqList";			
+		} else { // 등록실패
+			model.addAttribute("msg", "글쓰기 실패!");
+			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
+			return "fail_back";
+		}
+	}
+	
+	// 고객센터 자주묻는질문 상세 페이지로 이동
+	@GetMapping("CsFaqModifyForm")
+	public String csFaqModifyForm(Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("cs_type", 2);
+		
+		return "admin/csFaqWrite";
+	}
+	
+	// 고객센터 자주묻는질문 수정 작업
+	@GetMapping("CsFaqModifyPro")
+	public String csFaqModifyPro(@RequestParam Map<String, Object> map, Model model, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		return "redirect:/CsFaqList";
+	}
+	
 	
 	@GetMapping("CsOneOnOneList")
 	public String csOneOnOneList() {

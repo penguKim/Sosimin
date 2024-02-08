@@ -23,6 +23,9 @@ public interface CsMapper {
 
 	// 고객센터 상세 조회
 	Map<String, Object> selectCsDetail(int cs_id);
+
+	// 고객센터 글 작성
+	int insertCs(Map<String, Object> map);
 	
 
 }
