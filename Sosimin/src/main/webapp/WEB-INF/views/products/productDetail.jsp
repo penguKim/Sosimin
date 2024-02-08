@@ -30,110 +30,17 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
     
      <!-- ========================= JS here ========================= -->
+     <%-- 신고하기 아코디언 부서짐 필요하면 다시 살리기 --%>
+<%--     <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script> --%>
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
-    
-    
-    <%--  --%>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
 </head>
 <style>
-
-#policeText{
-	position: relative;
-	bottom:48px;
-	left:128px;
-}
-.reportBtn2 {
-	display:inline-block;
-	position:relative;
-	color: #888;
-	cursor: pointer;
-	transition: 0.5s;
-	left: 350px;
-	width:10px;
-}
-
-.reportBtn2:hover{
-	color: #f00;
-	transform: scale(1.2);
-	transition: 0.5s;
-}
-
-.reportBtn2:hover .reportBtn,
-.reportBtn2:hover #policeText{
-	color: #f00;
-}
-
-/* 판매 완료 */
-#singleProductAreaDealComplete {
-	border: none;
-	width: 290px;
-	height: 400px;
-	display: inline-block;
-	margin-right: 2px !important;
-	margin-top: 0px;
-	box-sizing: content-box !important;
-	padding: 0 !important;
-	position: relative;
-/* 	background-color: rgba(0, 0, 0, 0.5); */
-/* 	opacity: 0.4; */
-}
-
-#singleProductArea::before {
-    content: " " ;
-	width: 620px;
-	height: 620px;
-	position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-	opacity: 0.7;
-	transform: scale(1.0);
-	display: inline-block;
-	margin-bottom: 10px !important;
-	margin-left: 2px !important;
-	margin-right: 2px !important;
-	box-sizing: content-box !important;
-	padding: 0 !important;
-	background-color: white;
-	z-index: 999;
-}
-
-#checkmark{
-	border: none;
-}
-#dealComplete {
-	position: absolute;
-	z-index: 1000;
-/* 	width: 250px; */
-/* 	height: 250px; */
-	left: 177px;
-	bottom:160px;
-	border: none;
-/*     display: none; */
-}
-#tradeEnd {
-	color: #27B24A;
-	font-weight: bold;
-	position: relative;
-	font-size: 30px;
-	left: 83px;
-}
-
-#dealComplete img {
-	width: 300px !important;
-	height: 300px !important;
-}
 .product-info{
 	position: relative;
 	top: 28px;
@@ -144,7 +51,7 @@
 #payImage{
 	margin-bottom: 12px;
 }
-#Like , #LikeImage{
+#Like{
 	display: inline-block;
 }
 .police{
@@ -230,7 +137,7 @@
 #likeImage{
 	display:inline-block;
 	position:relative;
-	right:88px;
+	right:70px;
 	bottom:4px;
 	z-index: 2;
 }
@@ -242,13 +149,8 @@
 	display: inline-block;
 }
 #productName{
-	width: 250px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
 	text-align: center;
-	color:black;
-	font-size: 15px;
-	font-weight: bold;
 }
-
 #productNameContent{
 	width: 900px;
 	border-width: thin thin thin thin;
@@ -274,7 +176,6 @@
 #nicknameA , #aTag{
   color: inherit !important;
   text-decoration: none !important;
-  font-weight: bolder;
 }
 
 #info_body{
@@ -411,300 +312,79 @@
 	display:inline-block;
 	position: relative;
 }
-
-.idqEnN {
-    width: 100%;
-    height: 100%;
-    font-weight: 600;
-    color: rgb(255, 255, 255);
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    line-height: 1;
-    background: rgb(51, 51, 51);
-}
-
-#productModify{
-	width: 600px;
-	background-color: #39d274;
-	font-size: 20px;
-	color:white;
-}
-#productTradeIng{
-	width: 600px;
-	background-color: #f9f9f9;
-	font-size: 20px;
-	color: blue;
-}
-#productTradeEnd{
-	width: 600px;
-	background-color: #f9f9f9;
-	font-size: 20px;
-	color: red;
-}
-.main-img{
-	position: relative;
-}
-
-.progress-bar {
-  animation-name: progress-animation;
-  animation-duration: 2s; 
-  /* 애니메이션 지속 시간을 설정합니다. */
-  animation-timing-function: ease-out; 
-  /* 애니메이션 속도 곡선을 설정합니다. */
-}
 </style>
 <script>
 
+// 메인사진 클릭시 전체 사진 다 띄우기 <사용할지 안할지 모름> 
 
-
-$(function() {
-	console.log("세션에 저장된 아이디 ; " + '${sessionScope.sId}');
-	// 찜정보 가져오기
-	$.ajax({
-		type: "POST",
-		url: "interestShow", <%-- 회원의 관심 정보 가져오기 --%>
-			data: {
-				product_id: ${param.product_id}
-			},
-			dataType: "json",
-			success: function(result) {
-				console.log(result);
-// 				if(Object.keys(result) == 0) {
-					if(result.product_id == ${param.product_id}) {
-						$("#Like").text(result.intersetCount);
-						$("#likeButtonSpan").text(result.intersetCount);
-						$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGNzJGMzMiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
-						$("#likeButton").css("background-color", "rgb(51, 51, 51)");
-					}
-// 				}
-			},
-			error: function(xhr, textStatus, errorThrown) {
-					alert("관심 불러오기를 실패했습니다.\n새로고침을 해주세요.");
-			}
-		});
- 
-$("#likeButton").on("click", function () {
-	$.ajax({
-		type: "POST",
-		url: "interestCheck", 
-		data: {
-//			community_like_status: 0,
-			product_id: ${param.product_id}
-		},
-		dataType: "json",
-		success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-			if(result.isChecked == 'false') { <%-- 찜을 등록하는 경우 --%>
-				const Toast = Swal.mixin({
-				    toast: true,
-				    position: 'center-center',
-				    showConfirmButton: false,
-				    timer: 2000,
-				    timerProgressBar: false,
-				})
-				Toast.fire({
-				    icon: 'success',
-				    title: '좋아요가 등록되었습니다!'
-				})		
-			$("#likeText").addClass("is-active");
-				$("#likeButtonSpan").text(result.intersetCount);
-				$("#Like").text(result.intersetCount);
-				$("#likeButton").css("background-color", "rgb(51, 51, 51)");
-				$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGNzJGMzMiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
-			} else if(result.isChecked == 'true') { <%-- 찜을 삭제하는 경우 --%>
-				const Toast = Swal.mixin({
-				    toast: true,
-				    position: 'center-center',
-				    showConfirmButton: false,
-				    timer: 2000,
-				    timerProgressBar: false,
-				})
-				Toast.fire({
-				    icon: 'error',
-				    title: '좋아요가 삭제되었습니다!'
-				})	
-			$("#likeText").removeClass("is-active");
-				$("#likeButtonSpan").text(result.intersetCount);
-				$("#Like").text(result.intersetCount);
-				$("#likeButton").css("background-color", "rgb(204, 204, 204)");
-				$("#likeImage").attr("src","data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K");
-			}
-		},
-		error: function(xhr, textStatus, errorThrown) {
-			Swal.fire({
- 	        title: '회원만 사용가능합니다.',
- 	        text: '로그인 페이지로 이동하시겠습니까?',
- 	        icon: 'error',
- 	        showCancelButton: true,
- 	        confirmButtonColor: '#39d274',
- 	        cancelButtonColor: '#d33',
- 	        confirmButtonText: '이동',
- 	        cancelButtonText: '취소',
- 	        reverseButtons: true,
- 	        allowOutsideClick: false
- 	    }).then((result) => {
- 	        if (result.isConfirmed) {
- 	        	location.href="MemberLogin";
- 	        }
- 	    });
-		}
-	});
-});
-});
-
-
-
-//메인사진 클릭시 전체 사진 다 띄우기 <사용할지 안할지 모름> 
-
-//function openPopup() {
-//var images = document.querySelectorAll('.images img');
-//var imageSrcs = [];
-
-//images.forEach(function(image) {
-// imageSrcs.push(image.src);
-//});
-
-//var popupWindow = window.open('', '_blank', 'width=900,height=620');
-
-//popupWindow.document.write('<div style="display:flex; flex-direction: row;">');
-
-//imageSrcs.forEach(function(src) {
-// popupWindow.document.write('<img src="' + src + '" style="width: 540px; height: 540px; margin-right: 10px; margin-top : 20px;">');
-//});
-
-//popupWindow.document.write('</div>');
-//popupWindow.document.close();
-//}
+// function openPopup() {
+//     var images = document.querySelectorAll('.images img');
+//     var imageSrcs = [];
+    
+//     images.forEach(function(image) {
+//         imageSrcs.push(image.src);
+//     });
+    
+//     var popupWindow = window.open('', '_blank', 'width=900,height=620');
+    
+//     popupWindow.document.write('<div style="display:flex; flex-direction: row;">');
+    
+//     imageSrcs.forEach(function(src) {
+//         popupWindow.document.write('<img src="' + src + '" style="width: 540px; height: 540px; margin-right: 10px; margin-top : 20px;">');
+//     });
+    
+//     popupWindow.document.write('</div>');
+//     popupWindow.document.close();
+// }
 
 function imagePopup(src) {
-var newWindow = window.open('', '_blank', 'width=800,height=600');
-newWindow.document.write('<html><head><title>Image</title></head><body style="background-color: black; margin: 0; display: flex; justify-content: center; align-items: center;"><img src="' + src + '" style="max-width: 100%; max-height: 100%;"></body></html>');
+  var newWindow = window.open('', '_blank', 'width=800,height=600');
+  newWindow.document.write('<html><head><title>Image</title></head><body style="background-color: black; margin: 0; display: flex; justify-content: center; align-items: center;"><img src="' + src + '" style="max-width: 100%; max-height: 100%;"></body></html>');
 }
-
 
 function Proposal() {
-var sId = "${sId}";
-var product_id = ${Product.product_id};
+	var width = 700; // 팝업 창의 가로 크기
+	var height = 500; // 팝업 창의 세로 크기
+	var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
+	var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
 
-if(sId) {
+	var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
 
-var width = 640; // 팝업 창의 가로 크기
-var height = 480; // 팝업 창의 세로 크기
-var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
-var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
-
-var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
-
-window.open("Proposal?product_id=" + product_id, "상품이미지", options);
-} else{
-	Swal.fire({
-	        title: '회원만 사용가능합니다.',
-	        text: '로그인 페이지로 이동하시겠습니까?',
-	        icon: 'error',
-	        showCancelButton: true,
-	        confirmButtonColor: '#39d274',
-	        cancelButtonColor: '#d33',
-	        confirmButtonText: '이동',
-	        cancelButtonText: '취소',
-	        reverseButtons: true,
-	        allowOutsideClick: false
-	    }).then((result) => {
-	        if (result.isConfirmed) {
-	        	location.href="MemberLogin";
-	        }
-	    });
-	}
+	window.open("Proposal", "상품이미지", options);
 }
-
-function chat() {
-	var sId = "${sId}";
-	var product_id = ${Product.product_id};
 	
-	if(sId) {
-		Swal.fire({
-	        title: '채팅방으로 이동하시겠습니까?',
-	        icon: 'question',
-	        showCancelButton: true,
-	        confirmButtonColor: '#39d274',
-	        cancelButtonColor: '#d33',
-	        confirmButtonText: '이동',
-	        cancelButtonText: '취소',
-	        reverseButtons: true,
-	        allowOutsideClick: false
-	    }).then((result) => {
-	        if (result.isConfirmed) {
-	        	location.href="ChatMain?product_id=" + product_id;
-	        }
-	    });
-	} else{
-		Swal.fire({
-		        title: '회원만 사용가능합니다.',
-		        text: '로그인 페이지로 이동하시겠습니까?',
-		        icon: 'error',
-		        showCancelButton: true,
-		        confirmButtonColor: '#39d274',
-		        cancelButtonColor: '#d33',
-		        confirmButtonText: '이동',
-		        cancelButtonText: '취소',
-		        reverseButtons: true,
-		        allowOutsideClick: false
-		    }).then((result) => {
-		        if (result.isConfirmed) {
-		        	location.href="MemberLogin";
-		        }
-		    });
-		}
-};
 
-//function Proposal() {
+window.onload = function() {
+	  function getTimeAgo(productTime) {
+	    var pastTime = new Date(productTime);
+	    var currentTime = new Date();
+	    var duration = currentTime - pastTime;
 
-//$.ajax({
-// type: "GET",
-// url: "Proposal", // 로그인 상태를 확인하는 서버의 URL
-// data:{
-// 	product_id: ${param.product_id}
-// },
-// success: function(result) {
-// 	alert(result)
-//     // 로그인이 되어 있는 경우
-//     if(result.isLoggedIn) {
-//         var product_id = ${Product.product_id};
-//         var width = 640; // 팝업 창의 가로 크기
-//         var height = 480; // 팝업 창의 세로 크기
-//         var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
-//         var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
+	    var minutes = Math.floor(duration / (1000 * 60));
+	    if (minutes < 60) {
+	      return minutes + "분 전";
+	    }
 
-//         var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
+	    var hours = Math.floor(duration / (1000 * 60 * 60));
+	    if (hours < 24) {
+	      return hours + "시간 전";
+	    }
 
-//         window.open("Proposal?product_id=" + product_id, "상품이미지", options);
-//     } 
-//     // 로그인이 안 되어 있는 경우
-//     else {
-//     	Swal.fire({
-//  	        title: '회원만 사용가능합니다.',
-//  	        text: '로그인 페이지로 이동하시겠습니까?',
-//  	        icon: 'error',
-//  	        showCancelButton: true,
-//  	        confirmButtonColor: '#39d274',
-//  	        cancelButtonColor: '#d33',
-//  	        confirmButtonText: '이동',
-//  	        cancelButtonText: '취소',
-//  	        reverseButtons: true,
-//  	        allowOutsideClick: false
-//  	    }).then((result) => {
-//  	        if (result.isConfirmed) {
-//  	        	location.href="MemberLogin";
-//  	        }
-//  	    });
-//     }
-// },
-// error: function(xhr, textStatus, errorThrown) {
-//     // 에러 처리 코드를 여기에 작성하세요.
-// }
-//});
-//}
+	    var days = Math.floor(duration / (1000 * 60 * 60 * 24));
+	    if (days < 7) {
+	      return days + "일 전";
+	    }
+
+	    var weeks = Math.floor(days / 7);
+	    return weeks + "주 전";
+	  }
+
+	  var productTime = "${Product.product_datetime}";
+	  var timeAgo = getTimeAgo(productTime);
+
+	  var whatTimeSpan = document.getElementById("whatTime");
+	  whatTimeSpan.innerText = timeAgo;
+	}
 </script>
 <body>
 
@@ -741,9 +421,9 @@ function chat() {
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html"><i class="lni lni-home"></i> 홈</a></li>
-                        <li><a href="index.html">상품</a></li>
-                        <li>상품상세</li>
+                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="index.html">Shop</a></li>
+                        <li>Single Product</li>
                     </ul>
                 </div>
             </div>
@@ -761,30 +441,15 @@ function chat() {
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-images">
                             <main id="gallery">
-                            <c:choose>
-                            	<c:when test="${Product.trade_status eq 0}">
                                 <div class="main-img">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
+                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
                                 </div>
-                            	</c:when>
-                            	<c:when test="${Product.trade_status eq 2}">
-                                <div class="main-img" id="singleProductArea">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
-                           			<span id="dealComplete">
-										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png" id="checkmark"><br>
-										<span id="tradeEnd">판매 완료</span>
-									</span>		
-                                </div>
-                            	</c:when>
-                            </c:choose>
-<!--                                 </div> -->
                                 <div class="images">
-					             <c:forEach var="i" begin="1" end="5">
-									 <c:set var="i" value="product_image${i}" />
-									 <c:if test="${not empty Product[i]}">
-									    <img src="${pageContext.request.contextPath}/resources/upload/${Product[i]}" class="img" alt="# " height="100px">
-									 </c:if>
-								</c:forEach>
+                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" class="img" alt="# " height="100px">
+                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#" height="100px">
+                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" class="img" alt="#" height="100px">
+                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/karina.jpg" class="img" alt="#" height="100px">
+                                    <img src="${pageContext.request.contextPath}/resources/images/product-details/karina2.jpg" class="img" alt="#" height="100px">
                                 </div>
                             </main>
                         </div>
@@ -797,20 +462,22 @@ function chat() {
                             	</div>
 	                            <div>
 	                            <h3 class="price2" style="font-size: 40px"><fmt:formatNumber value="${Product.product_price}" pattern="###,###"/><span style="font-size: 20px">원</span></h3>&nbsp;&nbsp;&nbsp;
-		                            	<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"
-	                            	style="height: 40px;" id="payImage">
+	                            	<c:if test="${Product.trade_method == 0}">
+		                            	<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMzIiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCAxMzIgNjAiIGZpbGw9Im5vbmUiPgogICAgPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzE5MjhfMzQzNTUpIj4KICAgICAgICA8cmVjdCB3aWR0aD0iMTMyIiBoZWlnaHQ9IjYwIiBmaWxsPSJ3aGl0ZSIgLz4KICAgICAgICA8cGF0aAogICAgICAgICAgICBkPSJNMTMyIDU0LjQ4MTZWNS41MjY1MkMxMzIgMi40NzQzMSAxMjkuNDY0IDAgMTI2LjMzNSAwSDUuNjY0ODdDMi41MzYyNSAwIDAgMi40NzQzMSAwIDUuNTI2NTJWNTQuNDgxNkMtMS42Nzc1OGUtMDYgNTUuOTQ2NSAwLjU5NzEwMSA1Ny4zNTE0IDEuNjU5NzEgNTguMzg2NUMyLjcyMjMzIDU5LjQyMTYgNC4xNjMyMyA2MC4wMDIgNS42NjQ4NyA1OS45OTk4SDEyNi4zMDFDMTI3LjgwOSA2MC4wMTA4IDEyOS4yNTggNTkuNDM0MyAxMzAuMzI4IDU4LjM5ODJDMTMxLjM5OCA1Ny4zNjIyIDEzMiA1NS45NTIzIDEzMiA1NC40ODE2WiIKICAgICAgICAgICAgZmlsbD0iI0Q4MEMxOCIgLz4KICAgICAgICA8cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIKICAgICAgICAgICAgZD0iTTMyLjkzMyAyNy44ODU0SDQzLjYzODdWMjcuODg4N0M0My44NCAyNy44ODg3IDQzLjk0MDcgMjguMTQ2IDQzLjc5NDQgMjguMjkxOUwyNC4xNTA3IDQ4LjA4NDdDMjMuOTk5NyA0OC4yMzU1IDIzLjc0OTYgNDguMTEwOSAyMy43NzAxIDQ3Ljg5M0wyNS4yNjU4IDMxLjc1MTNMMTQuODI3NCAzMS44Njc2QzE0LjYyNDUgMzEuODY5MiAxNC41MjIzIDMxLjYxMDMgMTQuNjcwMSAzMS40NjI4TDM0LjI5MDIgMTEuOTE1OEMzNC40NDI4IDExLjc2NSAzNC42OTI5IDExLjg5NDUgMzQuNjY5MyAxMi4xMTI0TDMyLjkzMyAyNy44ODU0Wk03Ni4xOTM5IDEzLjkwOTFIODEuMTExM1Y0Ni4xMTk2SDc2LjE5MzlWMTMuOTA5MVpNNzQuMjY1NiAxNC4wODgyVjQ1LjUxNTFINjkuNDIyN1YzMC41MTkzSDY2LjUwMDRWMjUuNzg0Nkg2OS40MjI3VjE0LjA4ODJINzQuMjY1NlpNNTEuMzUwMiAzOC43MzZWNDMuMTkwMkw2OC4xODAyIDQyLjQ3MjZWMzguMDkyNkw2NS44NjIzIDM4LjE4MzRMNjUuOTI4NSAxOS4xNTRINjcuOTIzNlYxNC42OTk4SDUxLjYzOTlWMTkuMTU0SDUzLjY0MzNMNTMuNzAxMiAzOC42NDUzTDUxLjM1MDIgMzguNzM2Wk01OC40NTMgMTkuMTU0NUg2MS4xMTg3TDYxLjA1MjUgMzguMzY1NEw1OC41MTEgMzguNDY0M0w1OC40NTMgMTkuMTU0NVpNMTEyLjkwMSAxMy45MDkxSDEwNy44NDNWNDYuMTE5NkgxMTIuOTAxVjEzLjkwOTFaTTg4LjA2NTQgNDEuNDk5M0M4Ni4zOTg3IDM5Ljk5MjYgODUuNDgyNiAzNy42OTY3IDg1LjMxNyAzNC42MTE4Qzg1LjMwNTggMzQuMzM0IDg1LjI5NTEgMzQuMDU4NiA4NS4yODQ2IDMzLjc4NjJDODUuMjU2NCAzMy4wNTU2IDg1LjIyOSAzMi4zNDYgODUuMTkyOCAzMS42NjdDODUuMTQzMSAzMC43MzUgODUuMTQzMSAyOS44MDI5IDg1LjE0MzEgMjguODg3M0M4NS4xNDMxIDI3Ljk3MTcgODUuMTUxNCAyNy4wMzk2IDg1LjE5MjggMjYuMTA3NUM4NS4yMzQyIDI1LjE3NTQgODUuMjc1NiAyNC4xOTM5IDg1LjMxNyAyMy4xNzExQzg1LjQ4MjYgMjAuMDg2MSA4Ni40MDk4IDE3Ljc4NDggODguMDY1NCAxNi4yODM1Qzg5Ljg2NzEgMTQuNzIxMiA5Mi4yMDI4IDEzLjkwOTEgOTQuNTg4OSAxNC4wMTUyQzk1LjgyODMgMTQuMDAyNyA5Ny4wNjE1IDE0LjE5MjIgOTguMjM5NiAxNC41NzYxQzk5LjMxMTEgMTQuOTI4OCAxMDAuMjkyIDE1LjUxMTcgMTAxLjExMiAxNi4yODM1QzEwMS45NTIgMTcuMDkyMiAxMDIuNjA2IDE4LjA3MTEgMTAzLjAzMyAxOS4xNTRDMTAzLjUzNiAyMC40MzYzIDEwMy44MTYgMjEuNzk0OCAxMDMuODYxIDIzLjE3MTFDMTAzLjg2OCAyMy4zMjE4IDEwMy44NzYgMjMuNDcxOSAxMDMuODgzIDIzLjYyMTRDMTAzLjkyNiAyNC40ODY3IDEwMy45NjggMjUuMzMwNSAxMDMuOTY4IDI2LjEzMjNWMjguOTI4NUMxMDMuOTY4IDI5LjIzMTggMTAzLjk3MSAyOS41MzY4IDEwMy45NzQgMjkuODQzMVYyOS44NDQyVjI5Ljg0NTNDMTAzLjk3OSAzMC40NjMgMTAzLjk4NSAzMS4wODU3IDEwMy45NjggMzEuNzA4M0MxMDMuOTQzIDMyLjY0MDQgMTAzLjkxIDMzLjYwNTQgMTAzLjg2MSAzNC42MTE4QzEwMy44MiAzNS45OTM3IDEwMy41NCAzNy4zNTgyIDEwMy4wMzMgMzguNjQ1M0MxMDIuNjAxIDM5LjcyMDQgMTAxLjk0NiA0MC42OTI5IDEwMS4xMTIgNDEuNDk5M0MxMDAuMjkyIDQyLjI3MTEgOTkuMzExMSA0Mi44NTQgOTguMjM5NiA0My4yMDY3Qzk3LjA2MSA0My41ODc5IDk1LjgyNzkgNDMuNzc0NSA5NC41ODg5IDQzLjc1OTRDOTIuMjAzOSA0My44Njc4IDg5Ljg2ODQgNDMuMDU4NiA4OC4wNjU0IDQxLjQ5OTNaTTkwLjgwNTggMjEuNjIwMkM5MC41Njg1IDIyLjU2MzIgOTAuNDI3IDIzLjUyNzYgOTAuMzgzNiAyNC40OTg5QzkwLjI4NDMgMjUuOTA5NCA5MC4yMzQ2IDI3LjM2OTQgOTAuMjM0NiAyOC44ODcxQzkwLjIzNDYgMzAuNDA0OCA5MC4yODQzIDMxLjg3MzEgOTAuMzgzNiAzMy4yODM2QzkwLjQyNyAzNC4yNTIxIDkwLjU2ODQgMzUuMjEzOSA5MC44MDU4IDM2LjE1NDFDOTAuOTY0NyAzNi44MTU3IDkxLjI0NTQgMzcuNDQyMSA5MS42MzM3IDM4LjAwMTdDOTEuOTU3OSAzOC40NDQxIDkyLjM5NTMgMzguNzkxNiA5Mi45MDAzIDM5LjAwODFDOTMuNDI1MyAzOS4yMjE4IDkzLjk4ODkgMzkuMzI1NiA5NC41NTYgMzkuMzEzM0M5NS4xMjI4IDM5LjMyMzYgOTUuNjg2IDM5LjIxOTcgOTYuMjExNiAzOS4wMDgxQzk2LjcxNjYgMzguNzkxNiA5Ny4xNTQgMzguNDQ0MSA5Ny40NzgyIDM4LjAwMTdDOTcuODY2NiAzNy40NDIyIDk4LjE0NzMgMzYuODE1NyA5OC4zMDYxIDM2LjE1NDFDOTguNTQ2NyAzNS4yMTQyIDk4LjY5MDkgMzQuMjUyNSA5OC43MzY2IDMzLjI4MzZDOTguODI3NiAzMS44NzMxIDk4Ljg3NzMgMzAuNDIxMyA5OC44NzczIDI4LjkxMTlDOTguODc3MyAyNy40MDI0IDk4LjgyNzYgMjUuOTI1OSA5OC43MzY2IDI0LjQ5ODlDOTguNjkwOCAyMy41MjczIDk4LjU0NjYgMjIuNTYyOCA5OC4zMDYxIDIxLjYyMDJDOTguMTQ3MyAyMC45NjExIDk3Ljg2NjUgMjAuMzM3MyA5Ny40NzgyIDE5Ljc4MDdDOTcuMTU2NSAxOS4zMzYxIDk2LjcxODMgMTguOTg4IDk2LjIxMTYgMTguNzc0NEM5NS42ODYgMTguNTYyNyA5NS4xMjI4IDE4LjQ1ODkgOTQuNTU2IDE4LjQ2OTJDOTMuOTg4OSAxOC40NTY4IDkzLjQyNTMgMTguNTYwNyA5Mi45MDAzIDE4Ljc3NDRDOTIuMzkzNiAxOC45ODggOTEuOTU1NCAxOS4zMzYxIDkxLjYzMzcgMTkuNzgwN0M5MS4yNDU0IDIwLjMzNzMgOTAuOTY0NiAyMC45NjExIDkwLjgwNTggMjEuNjIwMloiCiAgICAgICAgICAgIGZpbGw9IndoaXRlIiAvPgogICAgPC9nPgogICAgPGRlZnM+CiAgICAgICAgPGNsaXBQYXRoIGlkPSJjbGlwMF8xOTI4XzM0MzU1Ij4KICAgICAgICAgICAgPHJlY3Qgd2lkdGg9IjEzMiIgaGVpZ2h0PSI2MCIgZmlsbD0id2hpdGUiIC8+CiAgICAgICAgPC9jbGlwUGF0aD4KICAgIDwvZGVmcz4KPC9zdmc+"
+	                            	style="height: 28px;" id="payImage">
+	                            	</c:if>
 	                            </div>
                             </div>
                         <hr>
                         <div id="eyeLikeTime">
                         	<div>
-	                        	<div id="LikeImage">
+	                        	<div id="Like">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/하트모양.png" width="25" height="25">
-	                        		<div id="Like">${intersetCount}</div>
+	                        		<div id="Like">516</div>
 	                        	</div>
 	                        	<div id="eye">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/눈깔.png" width="25" height="25">
-	                        		${count.product_readcount}
+	                        		516
                        			</div>
 	                        	<div id="time">
 	                        		<img src="${pageContext.request.contextPath}/resources/images/products/시간.png" width="25" height="25">
@@ -819,14 +486,13 @@ function chat() {
 	                        		</c:forEach>
 	                        	</div>
 	                        	<%-- 신고하기 --%>
+	                        	<button class="police" id="reviewCheckForm" type="button" class="btn btn-primary" 
+	                        	data-bs-toggle="modal" data-bs-target="#reportModal">
+	                        		<img src="${pageContext.request.contextPath}/resources/images/product-details/신고하기.png" width="25" height="25">
+	                        		신고하기
+	                        	</button>
 	                        </div>
                         </div>
-                        	<c:if test="${Product.member_id ne sessionScope.sId}">
-                        	<div class="reportBtn2">
-                        		<input type="hidden" name="reportee_id" id="reportee_id" value="${Product.member_id }">
-								<span class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size:20px; white-space: nowrap">신고하기</span>
-							</div>
-							</c:if>
                         <br><br>
                         <div>
                         	<div id="productStatusDiv">
@@ -835,11 +501,11 @@ function chat() {
                         	 </div>
                         	 <div id="productStatusData">
                         	 	<c:choose>
-                        	 		<c:when test="${Product.product_status eq 0}">
+                        	 		<c:when test="${Product.product_status eq 1}">
                         	 			보통
                         	 		</c:when>
-                        	 		<c:when test="${Product.product_status eq 1}">
-                        	 			좋은상태
+                        	 		<c:when test="${Product.product_status eq 2}">
+                        	 			좋은상품
                         	 		</c:when>
                         	 		<c:otherwise>
                         	 			새상품
@@ -852,7 +518,7 @@ function chat() {
                         				<div id="productStatus">거래지역</div>
 	                        	 </div>
 	                        	 <div id="productStatusData">
-									${guDong.gu}  ${guDong.dong }                        	 
+									${Product.gu }  ${Product.dong }	                        	 
 	                        	 </div>
                         	 </div>
                         	 <div>
@@ -860,73 +526,36 @@ function chat() {
 	                        		<span style="font-size: 6px;">●</span>
 	                        			<div id="productStatus">거래방법</div>
 	                        	 </div>
-									<div id="productStatusData">
-									  <c:if test="${Product.trade_method eq 0 }">
-									    대면거래
-									  </c:if>
-									  <c:if test="${Product.trade_method eq 1 }">
-									    소심거래
-									  </c:if>
-									</div>
+	                        	 <div id="productStatusData">
+	                        	 	<c:if test="${Product.trade_method eq 0 } ">
+	                        	 		대면거래
+	                        	 	</c:if>
+	                        	 		비대면거래
+	                        	 </div>
                         	 </div>
                         </div>
                          <div class="bottom-content" id="threeButton">
                              <div class="row align-items-end">
-                             <c:choose>
-<%--                             	 <c:if test="${Product.trade_status eq 0 }"> --%>
-	                             	<c:when test="${Product.member_id eq sessionScope.sId and Product.trade_status eq 0}">
-		                                 <div class="col-lg-4 col-md-4 col-12">
-		                                     <div class="wish-button">
-		                                     	<a href="ProductModify?product_id=${Product.product_id }">
-		                                         <button class="btn" style="height: 60px;" id="productModify"> 상품수정 </button>
-		                                         </a>
-		                                     </div>
-		                                 </div>
-                                 	</c:when>
-                                 	<c:when test="${Product.member_id ne sessionScope.sId and Product.trade_status eq 0 }">
-	                                 <div class="col-lg-4 col-md-4 col-12">
-	<%--                                  <c:if test="${Product.member_id != sId }"> --%>
-	                                     <div class="button cart-button" id="likeButtonDiv">
-	                                     	<button class="btn" style="width: 100%; height: 60px;" id="likeButton" >
-	<!--                                         <button class="btn" style="width: 100%; height: 60px;" id="likeButton"  > -->
-	                                        <span id="likeText">좋아요</span>
-	                                     		<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij4KICAgIDxwYXRoIGZpbGw9IiNGRkYiIGZpbGwtcnVsZT0ibm9uemVybyIgZD0iTTcuMDA1IDEuMDQ1aC4yMzNjLjI4LjIyOC41MzcuNDkuNzYyLjc3Ny4yMjUtLjI4OC40ODEtLjU0OS43NjItLjc3N2guMjMzYTYuMTYgNi4xNiAwIDAgMC0uMDktLjExM0M5LjY4NC4zNDQgMTAuNjI4IDAgMTEuNiAwIDE0LjA2NCAwIDE2IDIuMTEgMTYgNC43OTZjMCAzLjI5Ni0yLjcyIDUuOTgxLTYuODQgMTAuMDYyTDggMTZsLTEuMTYtMS4xNTFDMi43MiAxMC43NzcgMCA4LjA5MiAwIDQuNzk2IDAgMi4xMSAxLjkzNiAwIDQuNCAwYy45NzIgMCAxLjkxNi4zNDQgMi42OTUuOTMyYTYuMTYgNi4xNiAwIDAgMC0uMDkuMTEzeiIvPgo8L3N2Zz4K" width="20" height="20" id="likeImage">
-	<%--                                      		<img src="${pageContext.request.contextPath}/resources/images/product-details/찜하트모양.png" width="25" height="25" id="likeImage"> --%>
-	                                        <span id="likeButtonSpan">${intersetCount}</span>
-	                                        </button>
-	                                     </div>
-	<%--                                 </c:if> --%>
-	                                 </div>
-	                                 <div class="col-lg-4 col-md-4 col-12">
-	                                     <div class="wish-button">
-<%-- 	                                         <button class="btn" style="height: 60px;" id="chatButton" onclick="location.href='ChatMain?product_id=${Product.product_id}'"> 1:1채팅</button> --%>
-	                                         <button class="btn" style="height: 60px;" id="chatButton" onclick="chat()"> 1:1채팅</button>
-	                                     </div>
-	                                 </div>
-		     						 <div class="col-lg-4 col-md-4 col-12">
-			                         <div class="wish-button" id="priceProposal">
-			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="Proposal()">가격제안</button>
-		                            </div>
-	                              </div>
-                                  </c:when>
-                                  <c:when  test="${Product.trade_status eq 1 }">
-	                                 <div class="col-lg-4 col-md-4 col-12">
-	                                     <div class="wish-button">
-	                                         <button class="btn" style="height: 60px;" id="productTradeIng"> 판매중 </button>
-	                                     </div>
-                                 	</div>
-                                  </c:when>
-                          	<c:otherwise>
-                             	    <c:if test="${Product.trade_status eq 2 }">
-	                                 <div class="col-lg-4 col-md-4 col-12">
-	                                     <div class="wish-button">
-	                                         <button class="btn" style="height: 60px;" id="productTradeEnd"> 판매완료 </button>
-	                                     </div>
-                                 	</div>
-                                	</c:if>
-                           	</c:otherwise>
-                           	</c:choose>
-                           </div>
+                                 <div class="col-lg-4 col-md-4 col-12">
+                                     <div class="button cart-button" id="likeButtonDiv">
+                                        <button class="btn" style="width: 100%; height: 60px;" id="likeButton">
+                                        <span id="likeText">관심</span>
+                                     		<img src="${pageContext.request.contextPath}/resources/images/product-details/찜하트모양.png" width="25" height="25" id="likeImage">
+                                        <span id="likeButtonSpan">516</span>
+                                        </button>
+                                     </div>
+                                 </div>
+                                 <div class="col-lg-4 col-md-4 col-12">
+                                     <div class="wish-button">
+                                         <button class="btn" style="height: 60px;" id="chatButton"> 1:1채팅</button>
+                                     </div>
+                                 </div>
+	     						 <div class="col-lg-4 col-md-4 col-12">
+		                         <div class="wish-button" id="priceProposal">
+		                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; background-color: #39d274" onclick="Proposal()">가격제안</button>
+		                         </div>
+                         </div>
+                             </div>
                          </div>
                          <hr>
                          <div id="tradeAddressTag">
@@ -935,7 +564,7 @@ function chat() {
 	                         		<span id="tradeAddressSpan">거래지역</span>
 	                         		<img src="${pageContext.request.contextPath}/resources/images/product-details/거래지역.png" width="25" height="25" id="tradeImage">
                          		</div>
-                         		<div id="addressDetail">${guDong.gu }  ${guDong.dong }</div>
+                         		<div id="addressDetail">${Product.gu }  ${Product.dong }</div>
                          	</div>
                          	<div id="tradeAddress" style="text-align: center">
                          		<div id="tradeAddressName">
@@ -943,7 +572,7 @@ function chat() {
 	                         		<img src="${pageContext.request.contextPath}/resources/images/product-details/카테고리이미지.png" width="25" height="25" id="tradeImage">
                          		</div>
                          		<div id="categoryDiv">
-                         			<a href="SearchProduct?product_category=${Product.product_category}" id="addressDetailA" style="text-align: center;">
+                         			<a href="" id="addressDetailA" style="text-align: center;">
 	                         			<span id="categoryDetail">${Product.product_category }</span>
 	                         		</a>
                          		</div>
@@ -955,15 +584,10 @@ function chat() {
 	                         		<img src="${pageContext.request.contextPath}/resources/images/product-details/상품태그이미지.png" width="25" height="25" id="tradeImage">
                          		</div>
                          		<div id="tagDiv">
-                         		<c:forEach var="i" begin="1" end="4">
-								  <c:set var="tagName" value="tag_name${i}" />
-								  <c:if test="${not empty Product[tagName] and Product[tagName] ne '#null' }">
-								  	<c:set var="modifiedTagName" value="${fn:replace(Product[tagName],'#','%23')}" />
-								    <a href="SearchProduct?keyword=${modifiedTagName}" id="addressDetailA">
-								      <span id="tagDetail">${Product[tagName]}</span>
-								    </a>
-								  </c:if>
-								</c:forEach>
+                         			<c:forEach var="Product2" items="${Product2 }">
+	                         			<a href="" id="addressDetailA">
+	                         				<span id="tagDetail">${Product2.tag_name}</span></a>
+                         			</c:forEach>
                          		</div>
                          	</div>
                          </div>
@@ -977,18 +601,35 @@ function chat() {
             		<span id="relatedProducts"><b>연관상품</b></span>
 	            	<div id="relatedProductsImage">
 	            		<div id="productImageName">
-	            			<c:forEach var="product" items="${RelatedProducts }" varStatus="status">
-	            				 <c:if test="${status.count <= 5 && product != null && !empty product.product_image1}">
-		            			<a href="ProductDetail?product_id=${product.product_id}">
-	            				   <img src="${pageContext.request.contextPath}/resources/upload/${product.product_image1}" id="current" alt="#" height="250px" width=250px;>
-			            	 	<div id="productName">${product.product_name}</div>
-			            	 	</a>
-            				   </c:if>
-	            			</c:forEach>
+	            			<a href="">
+		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/iu6.png" id="current" alt="#" height="250px" width=250px;" >
+		            	 	</a>
+		            	 	<div id="productName">상품 이름 뿌릴곳</div>
 	            	 	</div>
-<!-- 	            		<div id="productImageName"> -->
-<%-- 		            	 		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" id="current" alt="#" height="250px" width=250px;> --%>
-<!-- 	            	 	</div> -->
+	            		<div id="productImageName">
+	            			<a href="">
+		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" id="current" alt="#" height="250px" width=250px;">
+		            	 	</a>
+		            	 	<div id="productName">상품 이름 뿌릴곳</div>
+	            	 	</div>
+	            		<div id="productImageName">
+     	 	    			<a href="">
+		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" id="current" alt="#" height="250px" width=250px;">
+		            	 	</a>
+		            	 	<div id="productName">상품 이름 뿌릴곳</div>
+	            	 	</div>
+	            		<div id="productImageName">
+	            			<a href="">
+		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/karina.jpg" id="current" alt="#" height="250px" width=250px;">
+		            	 	</a>
+		            	 	<div id="productName">상품 이름 뿌릴곳</div>
+	            	 	</div>
+	            		<div id="productImageName">
+		            	 	<a href="">
+		            	 	<img src="${pageContext.request.contextPath}/resources/images/product-details/karina2.jpg" id="current" alt="#" height="250px" width=250px;">
+		            	 	</a>
+		            	 	<div id="productName">상품 이름 뿌릴곳</div>
+	            	 	</div>
 	            	</div>
             	</div>
             </div>
@@ -999,7 +640,7 @@ function chat() {
                         <div id="productNameContent">
                             <div class="info-body custom-responsive-margin">
                                 <b><span style="font-size: 20px; padding-top: 30px;">상품정보</span></b><hr>
-                                <p style="font-size: 15px;">${Product.product_txt }</p>
+                                <p style="font-size: 15px;">존나좋은 상품 훌륭함</p>
                             </div>
                         </div>
                         <div class="col-lg-6 col-12" style="width: 350px;">
@@ -1007,57 +648,50 @@ function chat() {
                                 <b><span style="font-size: 20px; padding-top: 30px;">판매자정보</span></b>
                                 <hr>
                                 <div>
-                                	<a href="MyPage?member_id=${SellerInfo.member_id }"  id="profileImage">
-                                		<img src="${pageContext.request.contextPath}/resources/upload/${SellerInfo.member_profile}" class="img" alt="#">
+                                	<a href=""  id="profileImage">
+                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#">
                                 	</a>
                                 	<div id="nickname">
-                                		<a href="MyPage?member_id=${SellerInfo.member_id }" id="nicknameA">${SellerInfo.member_nickname }</a>
+                                		<a href="" id="nicknameA">닉네임자리</a>
                                 	</div>
                                 </div>
                                 <div id="myProductDiv">
                                 	<div id="myProducts">
-                                		<a href="MyPage?member_id=${SellerInfo.member_id }" id="aTag">
-                                			<span style="font-size: 17px;">상품 ${SellerProductCount}</span>
+                                		<a href="" id="aTag">
+                                			<span style="font-size: 17px;">상품 30</span>
                                 		</a>
                                 		<span id="after"></span>
                                 	</div>
                                 	<div id="reviews">
-                                		<a href="MyPage?member_id=${SellerInfo.member_id }" id="aTag">
+                                		<a href="" id="aTag">
                                 			<span style="font-size: 17px;">후기 13</span>
                                 		</a>
                                 	</div>
                                 </div>
                                 <div style="height: 150px">
                                 	<div id="myProductImage">
-                                		<c:forEach var="SellerProductInfo" items="${SellerProductInfo }" begin="0" end="2" >
-	                                	<a href="ProductDetail?product_id=${SellerProductInfo.product_id}" style="height: 150px;">
-	                                		<img src="${pageContext.request.contextPath}/resources/upload/${SellerProductInfo.product_image1 }" class="img" alt="#" height="150px" width="150px">
+	                                	<a href="" style="height: 150px;">
+	                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/winter1.jpg" class="img" alt="#" height="150px" width="150px">
 	                                		<div id="imgPrice">
-	                                			<span>${SellerProductInfo.product_price }</span>원
+	                                			<span>40,000</span>원
 	                                		</div>
 	                                	</a>
-                                		</c:forEach>
                                 	</div>
-<!--                                 	<div id="myProductImage"> -->
-<!-- 	                                	<a href="" style="height: 150px;"> -->
-<%-- 	                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#" height="150px" width="150px"> --%>
-<!--                     						<div id="imgPrice"> -->
-<!-- 	                                			<span>160,000</span>원 -->
-<!-- 	                                		</div> -->
-<!-- 	                                	</a> -->
-<!--                                 	</div> -->
+                                	<div id="myProductImage">
+	                                	<a href="" style="height: 150px;">
+	                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#" height="150px" width="150px">
+                    						<div id="imgPrice">
+	                                			<span>160,000</span>원
+	                                		</div>
+	                                	</a>
+                                	</div>
                                 </div>
                                 <div style="text-align: center; margin-top: 20px;">
-                                	<a href="MyPage?member_id=${SellerInfo.member_id }" id="productPlus">
-                                		<span id="productCount">${SellerProductCount }개</span>
+                                	<a href="" id="productPlus">
+                                		<span id="productCount">30개</span>
 	                                	<span style="color: black;">상품 더보기 ></span>
                                 	</a>
-                                </div> 
-                                <div class="col-xl-4 col-3">
-									<div class="progress">
-										<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">75%</div>
-									</div>
-			        		    </div>
+                                </div>
                                 <hr>
                                 <br>
                             </div>
@@ -1083,7 +717,6 @@ function chat() {
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <script type="text/javascript">
         const current = document.getElementById("current");
         const opacity = 0.6;

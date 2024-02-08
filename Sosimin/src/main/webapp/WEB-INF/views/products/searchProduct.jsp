@@ -44,7 +44,7 @@
 	text-overflow: ellipsis;
 }
 
-/* 거래완료인 상품 opacity */
+/* 거래완료인 상품이다 opacity */
 /* 부모요소 opacity 적용되어있음 */
 #singleProductAreaDealComplete {
 	border: none;
@@ -169,13 +169,8 @@ $(function() {
  							
 							singleProduct += ' <div class="product-info heartPosition">'
 								+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
-								
-							if(productList[i].member_id == id) {
-								singleProduct += '<div class="myProduct">MY</div>'
-							} else if (productList[i].member_id != id) {
-								singleProduct += ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
-							}	
-								singleProduct += ' <ul class="review">'
+								+ ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
+								+ ' <ul class="review">'
 									+ ' <li><span>' +  productList[i].dong + '</span></li>'
 									+ ' <li><span>|</span></li>'
 									+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
@@ -334,23 +329,7 @@ function heartLike(heart, product_id) {
 			}
 		},
 		error: function() {
-			Swal.fire({
-	 	        title: '회원만 사용가능합니다.',
-	 	        text: '로그인 페이지로 이동하시겠습니까?',
-	 	        icon: 'error',
-	 	        showCancelButton: true,
-	 	        confirmButtonColor: '#39d274',
-	 	        cancelButtonColor: '#d33',
-	 	        confirmButtonText: '이동',
-	 	        cancelButtonText: '취소',
-	 	        reverseButtons: true,
-	 	        allowOutsideClick: false
- 	    	}).then((result) => {
-	 	        if (result.isConfirmed) {
-	 	        	location.href="MemberLogin";
-	 	        }
-	 	    });
-			
+			alert("설마 여기냐")
 		}
     }); // ajax 끝
 }
@@ -517,13 +496,7 @@ function filtering(data) {
 	 							
 								singleProduct += ' <div class="product-info heartPosition">'
 									+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
-									
-								if(productList[i].mebmer_id == id) {
-									singleProduct += '<div class=myProduct>MY</div>'
-								} else if (productList[i].member_id != id) {
-									singleProduct += ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
-								}
-									
+									+ ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ')"></div>'
 									+ ' <ul class="review">'
 										+ ' <li><span>' +  productList[i].dong + '</span></li>'
 										+ ' <li><span>|</span></li>'
@@ -757,6 +730,9 @@ function filtering(data) {
 	                            
 	                    <div style="margin-bottom: 20px;"></div>        
                         <%-- 3. 신고하기 기능 버튼 --%>
+                        <div class="product-info heartPosition">
+                        	<div class="heart" id="heartLike"></div>
+                        </div>
                         <button type="button" class="btn btn-primary" id="testBtn" value="테스트중입니다">
 								테스트버튼
 						</button>

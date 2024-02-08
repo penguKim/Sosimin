@@ -49,8 +49,7 @@ public class ProductController {
 	LevelService levelService;
 	// 메인 상품 목록 페이지 이동
 	@GetMapping("SearchProduct")
-	public String searchProduct(@RequestParam String keyword) {
-		System.out.println("keyword : " + keyword);
+	public String searchProduct() {
 		return "products/searchProduct";
 	}
 	
