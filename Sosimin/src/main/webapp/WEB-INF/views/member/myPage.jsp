@@ -646,6 +646,8 @@
 		// 구매확정하기 버튼 클릭 이벤트 처리
 		$(".btnConfirmDeal").on("click", function() {
 			let product_id = $(this).data("id");
+			let btn = $(this);
+			let parent = $(btn).parent();
 // 			alert(product_id);
 			<%-- 서블릿 요청 --%>
 			$.ajax({
@@ -673,8 +675,10 @@
 							timer: 2000,
 							toast: true
 						});
-						$(".btnConfirmDeal").val("거래후기작성");
-						$(".btnConfirmDeal").attr("class", "btnWriteReview");
+						$(btn).val("거래후기작성");
+						$(btn).remove();
+						
+						$(parent).append('<input type="button" class="num' + product_id + ' btnWriteReview" data-id="' + product_id + '" value="거래후기작성"> onclick="reviewRegist()"');
 					} else if(data == "none") {
 						Swal.fire({
 							position: 'center',
@@ -1187,6 +1191,7 @@
 		
 	}
 	
+	// 커뮤니티 글 삭제
 	function deleteCommunityReply(reply_id, btn) {
 		Swal.fire({
 	        title: '댓글을 삭제하시겠습니까?',
@@ -1228,6 +1233,10 @@
 	    });
 	}
 	
+	// 후기작성하기 버튼 클릭 시 호출되는 함수 정의
+	function writeReview() {
+		
+	}
 	
 	
 </script>
