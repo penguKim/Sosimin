@@ -767,8 +767,8 @@ function chat() {
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html"><i class="lni lni-home"></i> 홈</a></li>
-                        <li><a href="index.html">상품</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
+                        <li><a href="http://localhost:8081/c5d2308t1_2/SearchProduct">상품</a></li>
                         <li>상품상세</li>
                     </ul>
                 </div>
