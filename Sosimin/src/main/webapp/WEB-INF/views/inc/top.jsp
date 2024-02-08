@@ -46,6 +46,14 @@ let recentClick = true;
 let popularClick = true; 
 	
 $(function(){
+// 	var searchList = ${contentArr};
+// 	localStorage.setItem("popularSearchKeyword", JSON.stringify(searchList));
+// 	alert("popularSearchKeyword 배열이 로컬 스토리지에 저장되었습니다.");
+	
+// 	let popularHtml = "";
+// 	for(let i=0; i<20; i++){
+// 		popularHtml += ""
+// 	}
 // ######################테스트 데이터 설정######################
 	var clickCount = 0;
 	$('.nav-inner').click(function() {
@@ -254,7 +262,6 @@ $(function(){
 	function PopularSearches(){
 		$("#Recent").hide();
 		$("#Popular").show();
-		$("#Popular").removeClass("hidden");
 		$(".recentWordColor").css("color","black");
 		$(".popularWordColor").css("color","#39d274");
 		popularClick = true;
@@ -498,7 +505,8 @@ $(function(){
                 <div id="Relation" >
                 	<!-- 연관검색어 테이블이 표시될 영역 -->
                 </div>
-                <div id="Popular" class="hidden">
+                <div id="Popular">
+                	<!-- 인기검색어 테이블이 표시될 영역 -->
                 	<table id="PopularTableBoarder">
                 		<tr class="PopularCenter">
                 			<td class="RecentborderBottom"><a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a></td>

@@ -31,5 +31,10 @@ public class SosimhamService {
 	public String getMemberid(String q) {
 		return SosimMapper.selectMemberId(q);
 	}
+	
+	// 인기검색어 TOP10 조회
+	public List<Map<String, String>> getSearchList() {
+		return SosimMapper.selectSearchList();
+	}
 
 }

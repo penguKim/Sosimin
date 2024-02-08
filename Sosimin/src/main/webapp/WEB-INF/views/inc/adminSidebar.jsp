@@ -33,9 +33,9 @@
 	</li><!-- End Profile Page Nav -->
   
 	<li class="nav-item">
-		<a class="nav-link collapsed" href="">
-		<i class="bi bi-credit-card-2-back"></i>
-		<span>소심함관리</span>
+		<a class="nav-link collapsed" href="NowSearchList">
+		<i class="bi bi-search"></i>
+		<span>실시간 검색어 관리</span>
 		</a>
 	</li><!-- End Register Page Nav -->
 

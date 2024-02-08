@@ -15,5 +15,7 @@ public interface SosimhamMapper {
 	List<String> selectRelationKeyWord(String searchKeyWord);
 	// 멤버아이디 조회(닉네임으로)
 	String selectMemberId(String q);
+	// 인기검색어 TOP10 조회
+	List<Map<String, String>> selectSearchList();
 
 }

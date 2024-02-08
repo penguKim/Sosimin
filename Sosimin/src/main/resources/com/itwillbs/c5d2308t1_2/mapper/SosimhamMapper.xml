@@ -26,4 +26,11 @@
 		FROM Member
 		WHERE member_nickname = #{q}
 	</select>
+	
+	<select id="selectSearchList" resultType="map">
+		SELECT search_content, search_count 
+		FROM Search 
+		ORDER BY search_count DESC 
+		LIMIT 20;
+	</select>
 </mapper>

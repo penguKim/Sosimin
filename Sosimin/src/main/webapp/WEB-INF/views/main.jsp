@@ -372,7 +372,7 @@
                             <h2>안전한 중고거래 문화</h2>
                             <p>소심페이 안전결제</p>
                             <div class="button">
-                                <a href="product-grids.html" class="btn">소심페이 바로가기</a>
+                                <a href="PayInfo" class="btn">소심페이 바로가기</a>
                             </div>
                         </div>
                     </div>
