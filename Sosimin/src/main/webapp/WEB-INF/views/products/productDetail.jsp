@@ -825,7 +825,10 @@ function chat() {
                         </div>
                         	<c:if test="${Product.member_id ne sessionScope.sId}">
                         	<div class="reportBtn2">
-                        		<input type="hidden" name="reportee_id" id="reportee_id" value="${Product.member_id }">
+                        		<input type="hidden"  id="report_type" value="2">
+                        		<input type="hidden"  id="report_txt" value="${Product.product_txt }">
+                        		<input type="hidden"  id="report_type_id" value="${Product.product_id }">
+                        		<input type="hidden"  id="reportee_id" value="${Product.member_id }">
 								<span class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size:20px; white-space: nowrap">신고하기</span>
 							</div>
 							</c:if>

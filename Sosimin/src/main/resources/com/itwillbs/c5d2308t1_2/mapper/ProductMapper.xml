@@ -144,7 +144,7 @@
 	<select id="adminProductList" resultType="map">
 		SELECT *
 		FROM Product
-		ORDER BY 
+		ORDER BY product_id DESC
 	</select>
 		
 	<!-- 관심 상품 목록 조회 -->

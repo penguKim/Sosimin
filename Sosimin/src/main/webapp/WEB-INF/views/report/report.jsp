@@ -45,11 +45,14 @@ $(function() {
 // });
 
 <%-- sweetalert confirm --%>
-function reportRegist(index, reason) {
+function reportRegist(reason) {
 	<%-- 신고 분류 0: 게시물 신고, 1: 사용자 신고--%>
-	let report_type = index;
+	let report_type = $("#report_type").val();
 	let report_content = ""; 
 	let reportee_id = $("#reportee_id").val();
+	let report_type_id = $("#report_type_id").val();
+	let report_txt = $("#report_txt").val();
+	
 	
 	// 신고사유에 따른 내용 저장
 	if(reason === 1) {
@@ -121,11 +124,13 @@ function reportRegist(index, reason) {
 		    	$.ajax({
 						url: "ReportRegist",
 						data: {
-							report_type: index, // 신고 종류
+							report_type: report_type, // 신고 종류
 							reporter_id: reporter_id, // 신고자 아이디
 							reportee_id: reportee_id, // 피신고자 아이디
 							report_reason: reason, // 신고 사유
-							report_content: report_content // 신고 내용
+							report_content: report_content, // 신고 내용
+							report_txt : report_txt, // 신고된 게시물 내용
+							report_type_id : report_type_id // 신고된 페이지이동을 위한 id
 						},
 						success: function() {
 							const Toast = Swal.mixin({
@@ -206,7 +211,7 @@ function guide(url) {
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
 									<p><a href="javascript:void(0)" onclick="guide('ProhibitionOnsale')">거래 금지 품목을 살펴봅시다</a></p>
 									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
-									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(0, 1)">신고 하기</button>		
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(1)">신고 하기</button>		
 								</div>
 							</div>
 						</div>
@@ -225,7 +230,7 @@ function guide(url) {
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
 									<p><a href="#">이런 종류의 내용은 광고 입니다.</a></p>		
 									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
-									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(0, 2)">신고 하기</button>	
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(2)">신고 하기</button>	
 								</div>
 							</div>
 						</div>
@@ -244,7 +249,7 @@ function guide(url) {
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다 </p>
 									<p><a href="#">분쟁 시 이렇게 대처 하세요</a></p>
 									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
-									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(0, 3)">신고 하기</button>	
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(3)">신고 하기</button>	
 								</div>
 							</div>
 						</div>
@@ -263,7 +268,7 @@ function guide(url) {
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
 									<p><a href="#">이런 내용은 사기니까 조심하세요!</a></p>
 									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
-									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(0, 4)">신고 하기</button>
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(4)">신고 하기</button>
 								</div>
 							</div>
 						</div>
@@ -284,7 +289,7 @@ function guide(url) {
 										<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
 										<p><a href="#">이런 행위는 비매너행위에요!</a></p>		
 										<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
-										<button type="submit" class="btn btn-primary" id="reportBtn" onclick="reportRegist(1, 5)">신고 하기</button>
+										<button type="submit" class="btn btn-primary" id="reportBtn" onclick="reportRegist(5)">신고 하기</button>
 										
 									</form>
 								</div>
@@ -305,7 +310,7 @@ function guide(url) {
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
 									<p><a href="#">이런 말은 하면 안되요!!</a></p>		
 									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
-									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(1, 6)">신고 하기</button>	
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(6)">신고 하기</button>	
 								</div>
 							</div>
 						</div>
@@ -324,7 +329,7 @@ function guide(url) {
 									<p class="accordion-body-1">어떤 문제가 있나요?</p> 
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다</p>
 									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
-									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(1, 7)">신고 하기</button>
+									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(7)">신고 하기</button>
 								</div>
 							</div>
 						</div>
