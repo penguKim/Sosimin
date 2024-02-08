@@ -28,10 +28,10 @@
 		ORDER BY report_id DESC
 	</select>
 	
-	<select id="boardReportList">
+	<select id="boardReportList" resultType="map">
 		SELECT *
 		FROM Report  
-		WHERE report_type = 0
+		WHERE report_type = 2
 		ORDER BY report_id DESC
 	</select>
 	

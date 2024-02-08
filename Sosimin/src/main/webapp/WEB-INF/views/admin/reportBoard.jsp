@@ -182,7 +182,7 @@ function reportStatus() {
 																	</tr>
 																	<tr>
 																		<th scope="row">신고날짜</th>
-																		<c:set var="datetime" value="${fn:split(reportList.report_datetime, 'T')}" />
+																		<c:set var="datetime" value="${fn:replace(reportList.report_datetime, 'T', ' ')}" />
 																		<td>${datetime}</td>
 																	</tr>
 																	<tr>
