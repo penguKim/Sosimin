@@ -682,13 +682,13 @@
 										<th>이름</th>
 										<th>아이디</th>
 										<th>닉네임</th>
-										<th>생년월일</th>
-										<th>동네</th>
+										<th width="7.5%">생년월일</th>
+										<th width="11%">동네</th>
 										<th>이메일</th>
-										<th>휴대폰번호</th>
-										<th>회원레벨</th>
-										<th>회원상태</th>
-										<th>관리</th>
+										<th width="11%">휴대폰번호</th>
+										<th width="8%">회원레벨</th>
+										<th width="8%">회원상태</th>
+										<th width="5%">관리</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -708,9 +708,29 @@
 											<td>${member.member_id}</td>
 											<td>${member.member_nickname}</td>
 											<td>${member.member_birth}</td>
-											<td>${member.gu} ${member.dong }</td>
+											<td>
+											${member.gu} ${member.dong }
+											<c:choose>
+												<c:when test="${member.member_neighbor_auth eq 0 }"> <%-- 미인증 --%>
+													<img class="auth" src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 
+												</c:when>
+												<c:otherwise> <%-- 인증 --%>
+													<img class="auth" src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
+												</c:otherwise>
+											</c:choose>
+											</td>
 											<td>${member.member_email}</td>
-											<td>${member.member_phone}</td>
+											<td>
+											${member.member_phone}
+											<c:choose>
+												<c:when test="${member.member_phone_auth eq 0 }"> <%-- 미인증 --%>
+													<img class="auth" src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 
+												</c:when>
+												<c:otherwise> <%-- 인증 --%>
+													<img class="auth" src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
+												</c:otherwise>
+											</c:choose>
+											</td>
 											<td>Lv. ${member.member_level}</td>
 											<td>
 											<c:choose>

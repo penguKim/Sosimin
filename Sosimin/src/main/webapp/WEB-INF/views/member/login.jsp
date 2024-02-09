@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
-<title>Sosimin</title>
+<title>소시민</title>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
                         <li>로그인</li>
                     </ul>
                 </div>
@@ -67,7 +67,7 @@
     <div class="account-login section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+                <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12 d-flex justify-content-center">
                     <form class="card login-form" method="post" action="MemberLoginPro">
                         <div class="card-body">
                             <div class="title">
@@ -75,7 +75,7 @@
                                 <p>소셜 로그인도, 일반 로그인도 가능!</p>
                             </div>
                             <div class="social-login" id="socialLoginArea">
-                                <div class="row">
+                                <div class="row d-flex justify-content-center">
                                 	<div class="col-lg-4 col-md-4 col-12" id="naver_id_login">
                                 		<a class="btn facebook-btn" id="joinWithNaver" href="${url}">
                                 			<img id="socialIcons" src="${pageContext.request.contextPath}/resources/images/member/naver_circle.png" width="20px" height="20px"/>
@@ -112,12 +112,12 @@
                             </div>
                             <div class="d-flex flex-wrap justify-content-between bottom-content">
                                 <div class="form-check" id="rememberIdArea">
-                                    <input type="checkbox" class="form-check-input width-auto" id="exampleCheck1" name="rememberId"<c:if test="${not empty cookie.cookieId.value}">checked</c:if>>
-                                    <label class="form-check-label">아이디 기억하기</label>
+                                    <input type="checkbox" class="form-check-input width-auto" id="rememberId" name="rememberId"<c:if test="${not empty cookie.cookieId.value}">checked</c:if>>
+                                    <label class="form-check-label" for="rememberId">아이디 기억하기</label>
                                 </div>
                                 <div id="findArea">
-	                                <a class="lost-pass" href="MemberFindId">아이디 찾기</a>
-	                                <a class="lost-pass" href="MemberFindPasswd">비밀번호 찾기</a>
+	                                <a class="lost-pass d-flex justify-content-end" href="MemberFindId">아이디 찾기</a>
+	                                <a class="lost-pass d-flex justify-content-end" href="MemberFindPasswd">비밀번호 찾기</a>
                                 </div>
                             </div>
                             <div class="button">

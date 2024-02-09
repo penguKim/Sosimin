@@ -39,6 +39,20 @@
 		
 		memberExp(${percentage});
 		
+		// url에서 filter 값 추출
+		let urlParams = new URLSearchParams(window.location.search);
+		let filterValue = urlParams.get("filter");
+		  
+		// filterValue 값에 따라 해당 필터 글자 굵게 처리
+		if(filterValue == null || filterValue == '0') {
+			$('.eachFilter:eq(0) a').css('font-weight', 'bold');
+		} else if(filterValue == '1') {
+			$('.eachFilter:eq(1) a').css('font-weight', 'bold');
+		} else if(filterValue == '2') {
+			$('.eachFilter:eq(2) a').css('font-weight', 'bold');
+		}
+
+		
 		// 페이징 처리
 		if(${pageInfo.page.pageNum <= 1 }) {
 			$("#prevPage").addClass("disabled");
@@ -55,7 +69,7 @@
 	
 	
 		
-		// 찜정보 가져오기
+		// 좋아요정보 가져오기
 		$.ajax({
 			type: "POST",
 			url: "ShowLikeInfo", <%-- 회원의 관심 정보 가져오기 --%>
@@ -78,7 +92,7 @@
 				}
 			});
 		
-		// 찜 버튼 클릭 이벤트
+		// 좋아요 버튼 클릭 이벤트
         $(".heart").on("click", function () {
         	if($(this).hasClass("isSameUser")) {
    				Swal.fire({
@@ -99,23 +113,23 @@
 	    			},
 	//     			dataType: "json",
 	    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-	    				if(result == 'false') { // 찜을 등록하는 경우
+	    				if(result == 'false') { // 좋아요을 등록하는 경우
 							$(heart).addClass("is-active");
 	        				Swal.fire({
 	        					position: 'center',
 	        					icon: 'success',
-	        					title: '찜 추가했습니다.',
+	        					title: '좋아요 추가했습니다.',
 	        					showConfirmButton: false,
 	        					timer: 2000,
 	        					toast: true
 	        				});
-	    				} else if(result == 'true') { // 찜을 삭제하는 경우
+	    				} else if(result == 'true') { // 좋아요을 삭제하는 경우
 							$(heart).removeClass("is-active");
 	// 						$(heart).parent().remove();
 	        				Swal.fire({
 	        					position: 'center',
 	        					icon: 'success',
-	        					title: '찜 삭제했습니다.',
+	        					title: '좋아요 삭제했습니다.',
 	        					showConfirmButton: false,
 	        					timer: 2000,
 	        					toast: true
@@ -387,6 +401,17 @@
 <body>
 	<jsp:include page="../report/report.jsp"></jsp:include>
 	
+	<c:set var="filter" value="${param.filter}" />
+	<c:choose>
+		<c:when test="${filter == 0}">
+			<c:set var="fontWeight" value="bold" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="fontWeight" value="normal" />
+		</c:otherwise>
+	</c:choose>
+	
+	
 	<%-- pageNum 파라미터 가져와서 저장(없을 경우 기본값 1 로 저장) --%>
 	<c:set var="pageNum" value="1" />
 	<c:if test="${not empty param.pageNum }">
@@ -522,7 +547,7 @@
 		  <input type="radio" class="btn-check" name="category" id="boughtCategory" value="2" autocomplete="off" <c:if test="${category eq '2' }">checked</c:if>>
 		  <label class="btn btn-outline-primary" for="boughtCategory">구매내역</label>
 		  <input type="radio" class="btn-check" name="category" id="likeCategory" value="3" autocomplete="off" <c:if test="${category eq '3' }">checked</c:if>>
-		  <label class="btn btn-outline-primary" for="likeCategory">찜 목록</label>
+		  <label class="btn btn-outline-primary" for="likeCategory">좋아요 목록</label>
 		  <input type="radio" class="btn-check" name="category" id="communityCategory" value="4" autocomplete="off" <c:if test="${category eq '4' }">checked</c:if>>
 		  <label class="btn btn-outline-primary" for="communityCategory">커뮤니티 작성 글</label>
 		  <input type="radio" class="btn-check" name="category" id="communityReplyCategory" value="5" autocomplete="off" <c:if test="${category eq '5' }">checked</c:if>>
@@ -539,7 +564,7 @@
 	   		<ul class="row allFilter filter-3">
 	   			<li class="col-3 eachFilter">
 	   				<a href="SellerInfo?filter=0&category=${category }&member_id=${param.member_id}">
-	   					전체
+						전체
 	   				</a>
    				</li>
 	   			<li class="col-3 eachFilter">
@@ -586,23 +611,23 @@
 									</c:choose>
 									</b>
 								</div>
-								<div id="singleProductInfoArea">
-									${mypage.product_price }원
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									${mypage.product_datetime }
-								</div>
-								<div id="singleProductContactArea">
-									찜 ${mypage.count}개
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<!-- 										채팅 n회 -->
-									<c:forEach var="pay" items="${payUser }">
-										<c:if test="${pay.member_id eq mypage.member_id }">
-											<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">
-										</c:if>
-									</c:forEach>
-								</div>
+									<div id="singleProductInfoArea">
+										${mypage.product_price }원
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										${mypage.product_datetime }
+									</div>
+									<div id="singleProductContactArea">
+										좋아요 ${mypage.count}개
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<!-- 										채팅 n회 -->
+										<c:forEach var="pay" items="${payUser }">
+											<c:if test="${pay.member_id eq mypage.member_id }">
+											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+											</c:if>
+										</c:forEach>
+									</div>
 								<div id="singleProductButtonArea">
 									<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
 								</div>
@@ -612,7 +637,8 @@
 								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
 										<a href="ProductDetail?product_id=${mypage.product_id }">
 											<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
-										</a>									<span id="dealComplete">
+										</a>									
+										<span id="dealComplete">
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 										<b>판매 완료</b>
 									</span>				
@@ -636,13 +662,13 @@
 										${mypage.product_datetime }
 									</div>
 									<div id="singleProductContactArea">
-										찜 ${mypage.count}개
+										좋아요 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<!-- 										채팅 n회 -->
 										<c:forEach var="pay" items="${payUser }">
 											<c:if test="${pay.member_id eq mypage.member_id }">
-											<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 											</c:if>
 										</c:forEach>
 									</div>
@@ -685,13 +711,13 @@
 								${mypage.product_datetime }
 							</div>
 							<div id="singleProductContactArea">
-								찜 ${mypage.count}개
+								좋아요 ${mypage.count}개
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 								<c:forEach var="pay" items="${payUser }">
 									<c:if test="${pay.member_id eq mypage.member_id }">
-										<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">
+										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 									</c:if>
 								</c:forEach>
 							</div>
@@ -728,13 +754,13 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 ${mypage.count}개
+									좋아요 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
-											<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">
+											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 										</c:if>
 									</c:forEach>
 								</div>
@@ -747,7 +773,7 @@
 				        </div> <%--singleProductArea 끝 --%>
 					</c:when> <%-- 구매내역 탭 끝 --%>
 					
-					<c:when test="${category eq '3' }"> <%-- 찜목록 탭 시작--%>
+					<c:when test="${category eq '3' }"> <%-- 좋아요목록 탭 시작--%>
 						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
@@ -777,13 +803,13 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 ${mypage.count}개
+									좋아요 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
-											<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">
+											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 										</c:if>
 									</c:forEach>
 								</div>
@@ -821,13 +847,13 @@
 										${mypage.product_datetime }
 									</div>
 									<div id="singleProductContactArea">
-										찜 ${mypage.count}개
+										좋아요 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 										<c:forEach var="pay" items="${payUser }">
 											<c:if test="${pay.member_id eq mypage.member_id }">
-												<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">
+												<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 											</c:if>
 										</c:forEach>
 									</div>
@@ -838,7 +864,7 @@
 							</c:when>
 						</c:choose>
 				        </div> <%--singleProductArea 끝 --%>
-					</c:when> <%-- 찜목록탭 끝 --%>
+					</c:when> <%-- 좋아요목록탭 끝 --%>
 					
 					
 					

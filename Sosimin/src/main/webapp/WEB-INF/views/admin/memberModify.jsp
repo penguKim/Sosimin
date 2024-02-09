@@ -726,7 +726,8 @@
 						<input type="file" name="file" id="memberProfilePicFile" accept="image/gif, image/png, image/jpeg">
 					</div>
 					<div class="col-auto align-self-center">
-						<div class="btn btn-primary" id="memberProfilePicResetButtonArea" style="width: 100px !important;" onclick="resetProfilePic('${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg')">삭제</div>
+						<div class="btn btn-primary" id="memberProfilePicResetButtonArea" style="width: 100px !important; margin-top: -1px !important;
+    					padding: 5px !important;" onclick="resetProfilePic('${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg')">삭제</div>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -747,7 +748,7 @@
 								<input class="form-control" value="${member.member_name }" maxlength="5" type="text" name="member_name" id="name" required>
 							</div>
 						</div>						
-						<div id="checkNameResult" class="resultArea col"></div>
+						<div id="checkNameResult" class="resultAreaForAdmin col"></div>
 					</div>
 				</div>
 				<div class="form-group row" >
@@ -765,7 +766,7 @@
 					</div>
 					<div class="col">
 						<input class="form-control" maxlength="16" placeholder="비밀번호를 수정할 경우에만 입력해주세요" type="password"  name="newPassword" id="newPassword">
-						<div id="checkPasswordResult" class="resultArea"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
+						<div id="checkPasswordResult" class="resultAreaForAdmin"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -774,7 +775,7 @@
 					</div>
 					<div class="col">
 						<input class="form-control" maxlength="16" placeholder="비밀번호를 한 번 더 입력해주세요" type="password" id="passwordConfirm">
-						<div id="checkPasswordConfirmResult" class="resultArea"></div>
+						<div id="checkPasswordConfirmResult" class="resultAreaForAdmin"></div>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -791,7 +792,7 @@
 							</div>			
 						</div>
 						<div class="row">
-							<div id="checkNicknameResult" class="resultArea"></div><%--2~10글자의 한글, 숫자(선택입력) --%>
+							<div id="checkNicknameResult" class="resultAreaForAdmin"></div><%--2~10글자의 한글, 숫자(선택입력) --%>
 						</div>
 					</div>
 				</div>
@@ -803,7 +804,7 @@
 					<div class="col">
 						<input class="form-control" type="date" name="member_birth" id="birthdate" value="${member.member_birth }">
 						<%--회원가입과 동일하게 범위제한하고 기존 생년월일 placeholder --%>
-						<div id="checkBirthdateResult" class="resultArea"></div>
+						<div id="checkBirthdateResult" class="resultAreaForAdmin"></div>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -823,7 +824,7 @@
 						</div>
 						<div class="row">
 							<%--회원가입과 동일. 기존 주소 placeholder --%>
-							<div id="checkAddressResult" class="resultArea"></div>
+							<div id="checkAddressResult" class="resultAreaForAdmin"></div>
 						</div>
 					</div>
 				</div>
@@ -842,7 +843,7 @@
 						</div>
 						<div class="row">
 							<%--회원가입과 동일하게 정규표현식 검증 및 중복확인. 기존 이메일 placeholder --%>
-							<div id="checkEmailResult" class="resultArea"></div>
+							<div id="checkEmailResult" class="resultAreaForAdmin"></div>
 						</div>
 					</div>
 				</div>
@@ -852,7 +853,7 @@
 					</div>
 					<div class="col">
 						<input class="form-control" maxlength="13" value="${member.member_phone }" type="tel" name="member_phone" id="phone" required>
-						<div id="checkPhoneResult" class="resultArea"></div>
+						<div id="checkPhoneResult" class="resultAreaForAdmin"></div>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -866,10 +867,10 @@
 							<option <c:if test="${member.member_status eq 2 }">selected</c:if> value="2">탈퇴</option>
 						</select>
 					</div>
-					<div class="col" id="checkReportCountResult" class="resultArea">최종 신고 횟수 : ${member.report_real_count }</div><%--신고 횟수 표시 --%>
+					<div class="col" id="checkReportCountResult" class="resultAreaForAdmin">최종 신고 횟수 : ${member.report_real_count }</div><%--신고 횟수 표시 --%>
 				</div>
 				<hr>
-				<div>
+				<div class="d-flex justify-content-center btnMemberModifyArea">
 					<button type="button" class="btn btn-secondary" onclick="history.back()"> 뒤로가기</button>
 					<button type="submit" class="btn btn-primary">수정</button>
 				</div>

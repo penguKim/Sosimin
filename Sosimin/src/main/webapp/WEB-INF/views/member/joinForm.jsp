@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
-<title>Sosimin</title>
+<title>소시민</title>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -145,7 +145,7 @@
 				$("#checkNameResult").text("2~5글자의 한글만 사용 가능합니다").css("color", "red");
 				iscorrectName = false;
 			} else if(regName.test($("#name").val())){
-				$("#checkNameResult").text("사용 가능한 이름입니다").css("color", "blue");
+				$("#checkNameResult").text("사용 가능한 이름입니다").css("color", "green");
 				iscorrectName = true;
 	        }
 		});	// 이름 blur 이벤트 끝	
@@ -793,8 +793,7 @@
 				</div>
 				<div class="col-lg-6 col-md-6 col-12">
 					<ul class="breadcrumb-nav">
-						<li><a href="./"><i class="lni lni-home"></i>
-								Home</a></li>
+						<li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
 						<li>회원가입</li>
 					</ul>
 				</div>
@@ -807,7 +806,7 @@
 	<div class="account-login section">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+				<div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12 d-flex justify-content-center">
 					<div class="register-form">
 						<h4>회원 정보 입력</h4>
 						<br>
@@ -819,13 +818,13 @@
 							<div class="form-group">
 								<label for="name" id="mgForTwo">이름</label> 
 								<input class="form-control" placeholder="2~5글자의 한글" maxlength="5" type="text" name="member_name" id="name" required>
-								<div id="checkNameResult" class="resultArea"></div>
+								<div id="checkNameResult" class="resultAreaForJoin"></div>
 							</div>
 							<div class="form-group" >
 								<label for="reg-ln" id="mgForThree">아이디</label> 
 								<input class="form-control" placeholder="5~20자의 영문 소문자, 숫자 조합" maxlength="20" type="text"  name="member_id" id="id" required>
 								<input type="button" value="중복확인" id="checkIdDupButton">
-								<div id="checkIdResult" class="resultArea"></div>
+								<div id="checkIdResult" class="resultAreaForJoin"></div>
 							</div>
 							<div class="form-group">
 								<label for="reg-ln" id="mgForThree">닉네임</label> 
@@ -833,23 +832,23 @@
 								<input type="button" value="중복확인" id="checkNicknameDupButton">
 <!-- 								<input type="button" value="닉네임만들기" id="generateNicknameButton"> -->
 								<%-- 입력값이 비어있을 경우 DB에서 임의로 난수발생해 insert 처리 --%>
-								<div id="checkNicknameResult" class="resultArea"></div>
+								<div id="checkNicknameResult" class="resultAreaForJoin"></div>
 							</div>
 
 							<div class="form-group">
 								<label for="reg-pass" id="mgForFour">비밀번호</label> 
 								<input class="form-control" maxlength="16" placeholder="8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*)" type="password"  name="member_password" id="password" required>
-								<div id="checkPasswordResult" class="resultArea"></div>
+								<div id="checkPasswordResult" class="resultAreaForJoin"></div>
 							</div>
 							<div class="form-group">
 								<label for="reg-pass-confirm" id="mgForSix">비밀번호 확인</label> 
 								<input class="form-control" maxlength="16" placeholder="비밀번호를 다시 입력해주세요" type="password" id="passwordConfirm" required>
-								<div id="checkPasswordConfirmResult" class="resultArea"></div>
+								<div id="checkPasswordConfirmResult" class="resultAreaForJoin"></div>
 							</div>
 							<div class="form-group">
 								<label for="reg-ln" id="mgForFour">생년월일</label> 
 								<input class="form-control" type="date" name="member_birth" id="birthdate" required>
-								<div id="checkBirthdateResult" class="resultArea"></div>
+								<div id="checkBirthdateResult" class="resultAreaForJoin"></div>
 							</div>
 							<div class="form-group">
 								<label for="reg-ln" id="mgForTwo">주소</label> 
@@ -858,25 +857,25 @@
 <!-- 								<input type="button" value="동네인증" id="myMapButton"> -->
 <!-- 								<input type="button" value="지도로찾기" id="myMapButton" onclick="AddressMap()"> -->
 								<input type="button" value="동네인증" id="myMapButton" onclick="AddressMap()">
-								<div id="checkAddressResult" class="resultArea"></div>
+								<div id="checkAddressResult" class="resultAreaForJoin"></div>
 							</div>
 							<div class="form-group">
 								<label for="email" id="mgForThree">이메일</label> 
 								<input class="form-control" type="email" name="member_email" id="email" required>
 								<input type="button" value="중복확인" id="checkEmailDupButton">
-								<div id="checkEmailResult" class="resultArea"></div>
+								<div id="checkEmailResult" class="resultAreaForJoin"></div>
 							</div>
 							<div class="form-group">
 								<label for="phone" id="mgForFive">휴대폰번호</label> 
 								<input class="form-control" placeholder="숫자만 입력해주세요" type="tel" name="member_phone" id="phone" required>
 								<input type="button" value="인증코드발급" id="requestPhoneAuthCodeButton">
-								<div id="checkPhoneResult" class="resultArea"></div>
+								<div id="checkPhoneResult" class="resultAreaForJoin"></div>
 							</div>
 							<div class="form-group">
 								<label for="phoneAuthCode" id="mgForFour">인증코드</label> 
 								<input class="form-control" placeholder="코드를 입력한 후 인증 버튼을 눌러주세요" type="text" name="phone_auth_code" id="phoneAuthCode" maxlength="4" required>
 								<input type="button" value="인증" id="completePhoneAuthButton">
-								<div id="checkPhoneAuthCodeResult" class="resultArea"></div>
+								<div id="checkPhoneAuthCodeResult" class="resultAreaForJoin"></div>
 							</div>
 								
 							<div class="button">

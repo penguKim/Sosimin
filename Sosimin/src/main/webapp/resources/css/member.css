@@ -12,15 +12,27 @@ input[readonly] {
 	color: #03C75A !important;
 }
 
+#joinWithNaver:hover {
+    background-color: #03C75A !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+
 #joinWithKakao {
 	border-color: #FEE500 !important;
 	color: #FEE500 !important;
 }
 
+#joinWithKakao:hover {
+    background-color: #FEE500 !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+
 #socialJoinArea > div {
 	margin: 0 auto;
 	text-align: center;
-	width: 650px;
+/* 	width: 650px; */
 }
 
 #socialJoinArea a {
@@ -78,6 +90,15 @@ input[readonly] {
 
 .form-control {
 	width: 58% !important;
+}
+
+.resultAreaForJoin {
+	width: 450px;
+    height: 15px;
+    font-size: 13px;
+    padding-left: 4%;
+    margin: -1px auto 15%;
+    display: block !important;
 }
 
 .resultArea {
@@ -163,9 +184,9 @@ input[readonly] {
 /* =========== */
 /* 로그인 메인 */
 #socialLoginArea > div {
-	margin: 0 auto 0 16%;
+	margin: 0 auto;
 	text-align: center;
-	width: 650px;
+/* 	width: 650px; */
 }
 
 #socialLoginArea a {
@@ -178,12 +199,13 @@ input[readonly] {
 }
 
 #findArea {
-	margin-right: 90px;
+/* 	margin-right: 90px; */
 /* 	margin-top: 30px; */
 }
 
 #findArea a {
 	margin-right: 20px;
+    display: inline-block !important;
 }
 
 #rememberIdArea {
@@ -569,6 +591,7 @@ input[readonly] {
 	display: inline-block !important;
 	max-width: 16.5% !important;
 }
+
 /* .filterArea ul { */
 /* 	float: right; */
 /* 	display: inline-block !important; */
@@ -729,6 +752,20 @@ input[readonly] {
     margin: 25px;
     box-sizing: border-box;
 }
+.productPrice {
+	font-size: 17px;
+    font-weight: 700;
+    color: #39d274;
+    display: inline-block;
+}
+
+.sosimPay {
+	width: 57px !important;
+    height: 20px !important;
+    display: inline-block;
+    margin: 0 !important;
+}
+
 /* ========= */
 /* 하트 버튼 */
 .heart {
@@ -969,6 +1006,15 @@ input[readonly] {
 	width: auto !important;
 }
 
+#adminMemberTableArea th {
+	text-align: center;
+}
+
+#adminMemberTableArea td {
+	vertical-align: middle !important;
+	text-align: center;
+}
+
 #adminMemberTdArea {
 	vertical-align: middle !important;
 }
@@ -1050,6 +1096,13 @@ input[readonly] {
     padding: 3px 9px;
 }
 
+.auth {
+	width: 12px;
+    height: 12px;
+    margin-left: 2px;
+    margin-bottom: 2px;
+}
+
 /* ============================ 관리자페이지 회원수정 페이지 CSS =================================== */
 #adminModifyForm .form-control {
 	width: 100% !important;
@@ -1057,4 +1110,24 @@ input[readonly] {
 
 #adminModifyForm .form-group {
 	margin: 0 auto 15px !important
+}
+
+#checkReportCountResult {
+	margin-left: -310px !important;
+	font-size: small !important;
+	margin-top: 2px !important;
+}
+
+.btnMemberModifyArea button {
+	margin-right: 10px !important;
+	width: auto !important;
+}
+
+.resultAreaForAdmin {
+/* 	width: 450px; */
+	height: 15px;
+	font-size: 13px;
+	padding-left: 1%;
+	margin: 0 auto 15px;
+	display: block !important;
 }

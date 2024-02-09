@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
-<title>Sosimin</title>
+<title>소시민</title>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -164,7 +164,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="./"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
                         <li><a href="MemberLogin"><i class="lni lni-home"></i> 로그인</a></li>
                         <li>아이디 찾기</li>
                     </ul>
