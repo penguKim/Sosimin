@@ -56,11 +56,6 @@ public class ReportController {
 		return "admin/reportMember";
 	}
 	
-	@GetMapping("ReportMemberDetail")
-	public String reportMember() {
-		return "admin/reportMemberDetail";
-	}
-	
 	// 상품 신고 목록
 	@GetMapping("ReportProduct")
 	public String reportProduct(@RequestParam Map<String, String> map, HttpSession session, Model model) {
@@ -69,14 +64,6 @@ public class ReportController {
 		model.addAttribute("boardReportList", boardReportList);
 		return "admin/reportProduct";
 	}
-	
-	
-	@GetMapping("ReportDetail")
-	public String reportDetail() {
-		return "admin/reportBoardDetail";
-			
-	}
-	
 	
 	// 커뮤니티 신고 목록
 	@GetMapping("ReportCommunity")
@@ -96,7 +83,15 @@ public class ReportController {
 		return "admin/reportReply";
 	}
 	
-	
+	// 신고 상태 변경
+	@ResponseBody
+	@GetMapping("ReportModify")
+	public String reportModify(@RequestParam Map<String, String> map, HttpSession session) {
+		
+		service.reportStatusUpt(map);
+		
+		return "";
+	}
 	
 	
 	

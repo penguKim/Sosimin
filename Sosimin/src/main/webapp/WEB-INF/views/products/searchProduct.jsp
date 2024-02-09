@@ -111,6 +111,12 @@
 	height: 80px !important;
 }
 
+#resultProduct {
+	font-size: 20px;
+	margin-top: 5px;
+	font-weight: bold;
+	margin-left: 20px;
+}
 </style>
 <script type="text/javascript">
 $(function() {
@@ -257,14 +263,14 @@ $(function() {
 			
 			<%-- 관심 목록 불러오기 --%> 
 			if(id == "") {
-			    alert("아이디가 없습니다");
+				console.log("아이디가 없습니다");
 			} else {
-			    alert("아이디는" + id);
+				console.log("아이디는" + id);
 			    $.ajax({
 			        url: 'ProductLikeList',
 			        dataType: 'json',
 			        success: function(data) {
-			            alert("리스트 목록 : " + productList.length);
+			        	console.log("리스트 목록 : " + productList.length);
 			            for(let i = 0; i < productList.length; i++) {
 			                for(let LikeList of data) {
 			                    if(productList[i].product_id === LikeList.product_id) {
@@ -349,7 +355,7 @@ function heartLike(heart, product_id) {
 			}
 		},
 		error: function() {
-			alert("설마 여기냐")
+			console.log("설마 여기냐")
 		}
     }); // ajax 끝
 }
@@ -394,13 +400,13 @@ function wordDel() {
 }
 	
 function wordPress(event) {
-    alert("제외할 모달");
+    console.log("제외할 모달");
     let key = event.key;
     let word = $("#wordExclude").val();
-    alert("제외할 단어11 :" +  word);
+    console.log("제외할 단어11 :" +  word);
         
 	if (key === 'Enter') { 
-    alert("제외할 단어22 :" +  word);
+		console.log("제외할 단어22 :" +  word);
 		<%-- 미포함 단어 없을경우 모달 출력 --%>
 		if(word != "") {
 		} else {
@@ -434,7 +440,7 @@ function filtering(data) {
 		trade = 2;	
 	}
 	
-	alert("트레이드 값 : " + trade);
+	console.log("트레이드 값 : " + trade);
 	<%-- 정렬 방식 설정--%>
 	let sort = 1;
 	if(data > 1) {
@@ -492,55 +498,61 @@ function filtering(data) {
 			    $(".pageing").empty();
 			    let singleProduct = '';
 			    
-				for(let i = 0; i < productList.length; i++) {
-					singleProduct +='<div class="col-lg-4-1 col-md-6 col-12" >'
-							+ ' <div class="single-product" >'
-							
-							if(productList[i].trade_status == 0) {
-							    singleProduct += ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
-							        + ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
-							    + ' </a>'
-							} else if(productList[i].trade_status == 2) {
-							    singleProduct 
-							        += ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
-							        + '<div class="single-block" id="singleProductAreaDealComplete">'
-							        + '     <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
-							        
-							        + '<span id="dealComplete">'
-							        + '     <img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>'
-							        + '     <b>판매 완료</b>'
-							        + '</span>'
-							        + '</div>'
-							        + ' </a>'
-							}
-	 							
-								singleProduct += ' <div class="product-info heartPosition">'
-									+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
-									
-									if(id != "") {
-										if(productList[i].member_id == id) {
-											singleProduct += '<div class="myProduct">MY</div>'
-										} else if (productList[i].member_id != id) {
-											singleProduct += ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
-										}
-									} 
-									
-									singleProduct += ' <ul class="review">'
-										+ ' <li><span>' +  productList[i].dong + '</span></li>'
-										+ ' <li><span>|</span></li>'
-										+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
-										+ ' <li><img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"'
-		                            	+ 'style="height: 20px;" id="payImage"></li>' 
-									+ ' </ul>'
-									+ ' <div class="price">'
-										+ ' <span>' + productList[i].product_price.toLocaleString() + '원</span>'
-									+ ' </div>'
-									+ ' <div>'
+			    
+			    if(productList.length == 0) {
+			    	singleProduct += '<div id="resultProduct">검색 결과 상품이 없습니다!</div>'
+			    } else {
+					for(let i = 0; i < productList.length; i++) {
+						singleProduct +='<div class="col-lg-4-1 col-md-6 col-12" >'
+								+ ' <div class="single-product" >'
+								
+								if(productList[i].trade_status == 0) {
+								    singleProduct += ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+								        + ' <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+								    + ' </a>'
+								} else if(productList[i].trade_status == 2) {
+								    singleProduct 
+								        += ' <a href="ProductDetail?product_id='+ productList[i].product_id + '" class="product-image">'
+								        + '<div class="single-block" id="singleProductAreaDealComplete">'
+								        + '     <img src="${pageContext.request.contextPath}/resources/upload/' + productList[i].product_image1 + '" alt="#" id="ok">'
+								        
+								        + '<span id="dealComplete">'
+								        + '     <img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>'
+								        + '     <b>판매 완료</b>'
+								        + '</span>'
+								        + '</div>'
+								        + ' </a>'
+								}
+		 							
+									singleProduct += ' <div class="product-info heartPosition">'
+										+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
+										
+										if(id != "") {
+											if(productList[i].member_id == id) {
+												singleProduct += '<div class="myProduct">MY</div>'
+											} else if (productList[i].member_id != id) {
+												singleProduct += ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
+											}
+										} 
+										
+										singleProduct += ' <ul class="review">'
+											+ ' <li><span>' +  productList[i].dong + '</span></li>'
+											+ ' <li><span>|</span></li>'
+											+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
+											+ ' <li><img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"'
+			                            	+ 'style="height: 20px;" id="payImage"></li>' 
+										+ ' </ul>'
+										+ ' <div class="price">'
+											+ ' <span>' + productList[i].product_price.toLocaleString() + '원</span>'
+										+ ' </div>'
+										+ ' <div>'
+										+ ' </div>'
 									+ ' </div>'
 								+ ' </div>'
-							+ ' </div>'
-					+ ' </div>'
-				}
+						+ ' </div>'
+					} <%-- 반복문 끝 --%>
+				
+			    }
 				
 				$(".productList").append(singleProduct);
 				
@@ -553,7 +565,7 @@ function filtering(data) {
 				if(word != "") url += '&word=' + word;
 				if(sort != "") url += '&sort=' + sort;
 			    
-				alert("현제 url은" + url);
+				console.log("현제 url은" + url);
 				
 			    let pages = '';
 				pages += '<nav aria-label="Page navigation">'
@@ -591,14 +603,14 @@ function filtering(data) {
 			
 			<%-- 관심 목록 불러오기 --%> 
 			if(id == "") {
-			    alert("아이디가 없습니다");
+				console.log("아이디가 없습니다");
 			} else {
-			    alert("아이디는" + id);
+				console.log("아이디는" + id);
 			    $.ajax({
 			        url: 'ProductLikeList',
 			        dataType: 'json',
 			        success: function(data) {
-			            alert("리스트 목록 : " + productList.length);
+			        	console.log("리스트 목록 : " + productList.length);
 			            for(let i = 0; i < productList.length; i++) {
 			                for(let LikeList of data) {
 			                    if(productList[i].product_id === LikeList.product_id) {
@@ -624,7 +636,7 @@ function filtering(data) {
 			}
 		},
 		error: function() {
-			alert("실패");
+			console.log("실패");
 		}
 		
 	}); // ajax 끝

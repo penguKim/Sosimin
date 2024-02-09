@@ -52,6 +52,12 @@
 		ORDER BY report_id DESC
 	</select>
 	
+	<!-- 신고 상태 변경 -->
+	<update id="reportStatusUpt">
+		UPDATE Report
+		SET report_status = #{report_status}
+		WHERE report_id = #{report_id}
+	</update>
 	
 	
 </mapper>

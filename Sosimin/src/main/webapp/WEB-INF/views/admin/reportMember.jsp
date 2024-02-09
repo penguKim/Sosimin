@@ -31,6 +31,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/admin/style2.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/payment.css" />
 
+
 <!-- Template Main CSS File -->
 <link href="${pageContext.request.contextPath}/resources/css/admin/style.css" rel="stylesheet">
 <!-- sweetalert -->
@@ -44,9 +45,30 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 ======================================================== -->
+<style type="text/css">
+.comAdmin th {
+	min-width: 100px;
+}
+
+.comAdmin .admin-title {
+	cursor: pointer;
+} 
+
+.comAdmin .admin-title:hover {
+	color: #4154f1;
+}
+
+.comAdmin .ellipsis {
+	max-width: 600px !important;
+}
+
+</style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
-function reportStatus() {
+function statusUpdate(report_id) {
+	let reportStatus = $("#reportStatus").val();
+	
+	console.log(report_id);
 	
 	Swal.fire({
 		   title: '정말 변경하시겠습니까?',
@@ -62,20 +84,19 @@ function reportStatus() {
 	}).then(result => {
 	    // 만약 Promise리턴을 받으면,
 	    if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-			Swal.fire('변경되었습니다!', '화끈하시네요!', 'success');
-			$("#modalDismiss").click();
-// 	    	$.ajax({
-// 					url: "ProductDelete",
-// 					data: {
-// 					},
-// 					success: function() {
-// 						Swal.fire('삭제되었습니다!', '화끈하시네요!', 'success');
-						
-// 					},
-// 					error: function() {
-// 						Swal.fire('삭제 실패했습니다!', '죄송하지만 다시 부탁해요~!', 'error');
-// 					}
-// 			}); // 신고 등록 ajax 끝
+	    	$.ajax({
+					url: "ReportModify",
+					data: {
+						report_status: reportStatus,
+						report_id: report_id
+					},
+					success: function() {
+						location.reload();
+					},
+					error: function() {
+						Swal.fire('삭제 실패했습니다!', '죄송하지만 다시 부탁해요~!', 'error');
+					}
+			}); // 신고 등록 ajax 끝
 	   	}
 	});
 }	
@@ -112,13 +133,13 @@ function reportStatus() {
 					<div class="card">
 						<div class="card-body">
 							<!-- Table with stripped rows -->
-							<table class="table datatable">
+							<table class="comAdmin table table-hover datatable text-center">
 								<thead>
 									<tr>
-										<th>신고번호</th>
-										<th>신고자</th>
-										<th>피신고자</th>
-										<th>신고날짜</th>
+										<th style="width: 130px;">신고번호</th>
+										<th style="width: 150px;">신고자</th>
+										<th style="width: 150px;">피신고자</th>
+										<th style="width: 200px;">신고날짜</th>
 										<th>신고사유</th>
 										<th>신고내용</th>
 										<th>처리상태</th>
@@ -128,20 +149,32 @@ function reportStatus() {
 								<tbody>
 									<c:forEach var="reportList" items="${memberReportList}">
 										<tr>
-											<td>${reportList.report_id}</td>
-											<td>${reportList.reporter_id}</td>
-											<td>${reportList.reportee_id}</td>
-											<td>
+											<td >${reportList.report_id}</td>
+											<td >${reportList.reporter_id}</td>
+											<td class="admin-title" onclick="location.href='SellerInfo?member_id=${reportList.reportee_id}'">
+												<span class="d-inline-block ellipsis ps-3">${reportList.reportee_id}</span>
+											</td>
+											<td >
 												<c:set var="datetime" value="${fn:split(reportList.report_datetime, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
 												${date}
 											</td>
-											<td>${reportList.report_reason}</td>
-											<td>${reportList.report_content}</td>
+											<td>
+												<c:choose>
+													<c:when test="${reportList.report_reason eq 1}">금지품목</c:when>
+													<c:when test="${reportList.report_reason eq 2}">광고</c:when>
+													<c:when test="${reportList.report_reason eq 3}">분쟁</c:when>
+													<c:when test="${reportList.report_reason eq 4}">사기</c:when>
+													<c:when test="${reportList.report_reason eq 5}">비매너</c:when>
+													<c:when test="${reportList.report_reason eq 6}">욕설</c:when>
+													<c:when test="${reportList.report_reason eq 7}">기타</c:when>
+												</c:choose>
+											</td>
+											<td class="admin-title" onclick="location.href='SellerInfo?member_id=${reportList.reportee_id}'">${reportList.report_content}</td>
 											<td>
 												<c:choose>
 													<c:when test="${reportList.report_status eq 0}">처리진행중</c:when>
-													<c:when test="${reportList.report_status eq 1}">처리완료</c:when>
+													<c:when test="${reportList.report_status eq 1}">신고확정</c:when>
 													<c:when test="${reportList.report_status eq 2}">문제없음</c:when>
 												</c:choose>
 											</td>
@@ -170,19 +203,29 @@ function reportStatus() {
 																	</tr>
 																	<tr>
 																		<th scope="row">피신고자</th>
-																		<td>${reportList.reportee_id}</td>
+																		<td class="admin-title" onclick="location.href='SellerInfo?member_id=${reportList.reportee_id}'">${reportList.reportee_id}</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">신고사유</th>
-																		<td>${reportList.report_reason}</td>
+																		<td>
+																			<c:choose>
+																				<c:when test="${reportList.report_reason eq 1}">금지품목</c:when>
+																				<c:when test="${reportList.report_reason eq 2}">광고</c:when>
+																				<c:when test="${reportList.report_reason eq 3}">분쟁</c:when>
+																				<c:when test="${reportList.report_reason eq 4}">사기</c:when>
+																				<c:when test="${reportList.report_reason eq 5}">비매너</c:when>
+																				<c:when test="${reportList.report_reason eq 6}">욕설</c:when>
+																				<c:when test="${reportList.report_reason eq 7}">기타</c:when>
+																			</c:choose>
+																		</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">신고내용</th>
-																		<td>${reportList.report_content}</td>
+																		<td class="admin-title" onclick="location.href='SellerInfo?member_id=${reportList.reportee_id}'">${reportList.report_content}</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">신고날짜</th>
-																		<c:set var="datetime" value="${fn:split(reportList.report_datetime, 'T')}" />
+																		<c:set var="datetime" value="${fn:replace(reportList.report_datetime, 'T', ' ')}" />
 																		<td>${datetime}</td>
 																	</tr>
 																	<tr>
@@ -190,13 +233,13 @@ function reportStatus() {
 																		<td>
 																			<c:choose>
 																				<c:when test="${reportList.report_status eq 0}">처리진행중</c:when>
-																				<c:when test="${reportList.report_status eq 1}">처리완료</c:when>
+																				<c:when test="${reportList.report_status eq 1}">신고확정</c:when>
 																				<c:when test="${reportList.report_status eq 2}">문제없음</c:when>
 																			</c:choose>
 																			<select>
 																				<optgroup label="신고상태">
 																					<option>처리중</option>
-																					<option>처리완료</option>
+																					<option>신고확정</option>
 																					<option>문제없음</option>
 																				</optgroup>
 																			</select>
@@ -206,7 +249,7 @@ function reportStatus() {
 															</div>
 															<div class="modal-footer">
 																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-																<button type="button" class="btn btn-primary">변경하기</button>
+																<button type="button" class="btn btn-primary" onclick="statusUpdate('${reportList.report_id}')">변경하기</button>
 															</div>
 														</div>
 													</div>

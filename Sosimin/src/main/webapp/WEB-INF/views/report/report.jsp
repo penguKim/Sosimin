@@ -146,11 +146,7 @@ function replyReport(reportee) {
 				}); // 신고 등록 ajax 끝
 		   	}
 		});
-	
-	
-	
 }
-
 
 <%-- sweetalert confirm --%>
 function reportRegist(reason) {

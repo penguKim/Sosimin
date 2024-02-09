@@ -39,5 +39,10 @@ public class ReportService {
 		return mapper.replyReportList();
 	}
 	
+	// 신고 상태 변경
+	public void reportStatusUpt(Map<String, String> map) {
+		mapper.reportStatusUpt(map);
+	}
+	
 	
 }

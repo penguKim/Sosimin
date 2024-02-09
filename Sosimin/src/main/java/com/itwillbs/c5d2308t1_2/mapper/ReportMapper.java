@@ -22,4 +22,7 @@ public interface ReportMapper {
 	// 댓글 신고 목록
 	List<Map<String, Object>> replyReportList();
 	
+	// 신고 상태 변경
+	void reportStatusUpt(Map<String, String> map);
+	
 }
