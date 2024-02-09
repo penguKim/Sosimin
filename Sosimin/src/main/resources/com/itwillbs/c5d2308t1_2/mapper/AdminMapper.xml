@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.c5d2308t1_2.mapper.AdminMapper">
+	<!-- 카테고리 점유율 차트 조회 -->
+	<select id="categoryShare" resultType="map">
+		SELECT count(*) AS count, product_category
+		FROM Product p 
+		GROUP BY product_category
+	</select>
+</mapper>

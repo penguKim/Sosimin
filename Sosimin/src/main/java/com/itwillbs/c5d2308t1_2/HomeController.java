@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +22,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.c5d2308t1_2.service.AdminService;
 import com.itwillbs.c5d2308t1_2.service.SosimhamService;
+
+import lombok.Getter;
 
 @Controller
 public class HomeController {
 	
 	private static final Logger log = LoggerFactory.getLogger(HomeController.class);
+	
+	@Autowired
+	AdminService adminService;
 	
 	@GetMapping("/")
 	public String home(Locale locale, Model model) {
@@ -53,15 +60,29 @@ public class HomeController {
 	}
 	
 	@GetMapping("AdminMain")
-	public String adminMain(HttpSession session) {
+	public String adminMain(HttpSession session, Model model) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null || !sId.equals("admin")) {
 			return "error/404";
 		}
 		
+		
 		return "admin/adminMain";
 	}
 	
+	@ResponseBody
+	@GetMapping("Chart")
+	public String chartList() {
+		System.out.println("111111111111111111111111111111111111111111");
+		// 점유율 차트
+		List<Map<String, Object>> categoryShareChart = adminService.categoryShare();
+		
+		JSONArray ja = new JSONArray();
+		ja.put(categoryShareChart);
+		log.info(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> :  차트 목록" + ja);
+		
+		return ja.toString();
+	}
 	
 	@Autowired
 	private SosimhamService service; 

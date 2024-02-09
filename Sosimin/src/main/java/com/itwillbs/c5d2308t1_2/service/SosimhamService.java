@@ -6,12 +6,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.c5d2308t1_2.mapper.AdminMapper;
 import com.itwillbs.c5d2308t1_2.mapper.SosimhamMapper;
 
 @Service
 public class SosimhamService {
 	@Autowired
 	SosimhamMapper SosimMapper;
+	
+	@Autowired
+	AdminMapper adminMapper;
+	
 	// 구랑 동 정보 가져오
 	public List<Map<String, Object>> getLocationLocker() {
 		return SosimMapper.selectLocation();
@@ -36,5 +41,6 @@ public class SosimhamService {
 	public List<Map<String, String>> getSearchList() {
 		return SosimMapper.selectSearchList();
 	}
+	
 
 }
