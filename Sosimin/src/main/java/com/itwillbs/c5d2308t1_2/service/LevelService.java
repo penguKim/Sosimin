@@ -106,7 +106,7 @@ public class LevelService {
 		mapper.updateMemberLevel(map);
 	}
 	
-	// 회원 리뷰 등록
+	// 회원 리뷰 등록 - 상대방만 경험치 획득
 	@Transactional
 	public int registReview(ReviewVO re) {
 
@@ -261,7 +261,7 @@ public class LevelService {
 		
 	}
 
-	// 회원 결제
+	// 회원 결제 - 구매자, 판매자 모두 경험치 획득
 	// levelService.updatePaymentExp(map, 10);
 	public void updatePaymentExp(Map<String, Object> map, int point) {
 		System.out.println(map);

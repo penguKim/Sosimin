@@ -946,7 +946,7 @@ public class CommunityController {
 	@ResponseBody
 	@PostMapping("ReviewRegist")
 	public String reviewRegist(ReviewVO re, HttpSession session) {
-//		System.out.println(re);
+		System.out.println("후기 등록을 할거에요 : " + re);
 		
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null) {
@@ -954,10 +954,6 @@ public class CommunityController {
 		}
 
 		re.setMember_id(sId);
-		
-		// 임시로 결제번호 등록 =========================================================================
-//		re.setOrder_id(16);
-		
 		
 		// 리뷰 등록
 		int insertCount = levelService.registReview(re);
@@ -984,7 +980,7 @@ public class CommunityController {
 		ReviewVO review = levelService.getReview(re);
 		
 		JSONObject object = new JSONObject(review);
-		
+		System.out.println(">>>>>>>>>>>>> 후기보기 : " + object.toString());
 		return object.toString();
 	}
 	
