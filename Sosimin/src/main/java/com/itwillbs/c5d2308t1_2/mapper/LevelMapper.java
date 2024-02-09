@@ -22,6 +22,9 @@ public interface LevelMapper {
 	// 회원의 리뷰 정보 가져오기
 	ReviewVO selectReview(ReviewVO re);
 	
+	// 회원의 리뷰 목록 ajax
+	List<ReviewVO> selectReviewList(String sId);
+	
 	// 회원 리뷰 삭제
 	int deleteReview(ReviewVO re);
 
@@ -33,10 +36,6 @@ public interface LevelMapper {
 	
 	// 회원 레벨 업데이트
 	void updateMemberLevel(Map<String, Integer> map);
-	
-
-
-
 
 
 }

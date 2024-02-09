@@ -439,6 +439,18 @@ input[readonly] {
     margin-top: 3%;
 }
 
+.list-group-item:hover {
+	background-color: #fff;
+	cursor: default;
+	color: #000;
+}
+
+.form-check {
+	background-color: #fff;
+	cursor: pointer;
+	color: #000;
+}
+
 /* ================= */
 /* 내 정보 수정 모달 */
 #myPageModifyInfoModal .modal-content {

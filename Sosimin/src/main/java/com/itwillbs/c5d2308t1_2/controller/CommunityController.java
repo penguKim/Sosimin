@@ -965,6 +965,22 @@ public class CommunityController {
 		return "false";
 	}
 	
+	@ResponseBody
+	@PostMapping("ReviewCheck")
+	public String reviewCheck(HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "login"; // dataType json이므로 응답은 error로 발생
+		}
+		
+		List<ReviewVO> reviewList = levelService.getReviewList(sId);
+		
+		JSONArray array = new JSONArray(reviewList);
+		
+		return array.toString();
+		
+	}
+	
 	// 후기 보기
 	@ResponseBody
 	@PostMapping("ReviewView")

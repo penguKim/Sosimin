@@ -187,6 +187,12 @@ public class LevelService {
 		return mapper.selectReview(re);
 	}
 
+
+	// 회원의 리뷰 목록 ajax
+	public List<ReviewVO> getReviewList(String sId) {
+		return mapper.selectReviewList(sId);
+	}
+	
 	// 회원의 리뷰 삭제
 	@Transactional
 	public int deleteReview(ReviewVO re) {
@@ -338,6 +344,7 @@ public class LevelService {
 		mapper.updateMemberLevel(map);
 		
 	}
+
 
 
 
