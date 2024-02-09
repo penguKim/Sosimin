@@ -5,9 +5,27 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<style type="text/css">
+	#replyreport {
+		width: 200;
+		height: 200;
+	}
+</style>
+
 <script type="text/javascript">
+
+<%-- 신고자 아이디 --%> 
 let reporter_id = "${sessionScope.sId}";
+let reportee_id = "";
+
 $(function() {
+	<%-- 댓글 신고를 위한 피신고자 아이디 판별 (댓글 신고일 경우만 사용)--%> 
+	$('.reportBtn').on('click', function() {
+        var id = $(this).data('id');
+        reportee_id = $('#replyreportee_' + id).val();
+        console.log(reportee_id);
+    });
+	
 	$("#testBtn").on("click", function() {
 		let test = $("#testBtn").val();
 		
@@ -27,22 +45,112 @@ $(function() {
 });
 </script>
 <script type="text/javascript">
-<%-- 게시글 신고에서 사용자 신고로 전환 시 기존 모달 제거 후 새모달 띄우기 --%>
-$(function() {
-	$("#memberReportModal").on("click", function() {
-		$("#modalDismiss").click();
+<%-- 댓글 신고 --%>
+function replyReport(reportee) {
+	let report_content = "";  
+	let report_name = $("#report_name").val();
+	let report_type_id = $("#report_type_id").val();
+	
 		
-		$("#memberModal").modal('show');
-	});
-});
+	if ($("#replyreport").val() != "") {
+		report_content = $("#replyreport").val();
+	}
 
-// $(function() {
-// 	$("#submenu-1-3>li").on("click", function() {
-// 		let length =  $("#submenu-1-3>li").length;
-// 		let	category = $(this).text();
-// 		location.href="SearchProduct?category=" + category;
-// 	});
-// });
+	// 신고 내용 미입력시 
+ 	if (report_content === "") {
+	    // textarea가 입력되지 않은 경우 모달 창 띄우기
+	    const Toast = Swal.mixin({
+		    toast: true,
+		    position: 'center-center',
+		    showConfirmButton: false,
+		    timer: 2000,
+		    timerProgressBar: false,
+		})
+		Toast.fire({
+		    icon: 'error',
+		    title: '신고 내용을 입력해주세요!!!'
+		})
+		return false;
+    }
+	
+ 	// 사용자 미로그인 시
+ 	if(reporter_id === "") {
+ 		 const Toast = Swal.mixin({
+ 		    toast: true,
+ 		    position: 'center-center',
+ 		    showConfirmButton: false,
+ 		    timer: 2000,
+ 		    timerProgressBar: false,
+ 		})
+ 		Toast.fire({
+ 		    icon: 'info',
+ 		    title: '로그인 후 이용해주세요!'
+ 		})
+ 		
+ 		$("#replyDismiss").click();
+ 		return false;
+ 	} 	
+		Swal.fire({
+			   title: '정말 신고하시겠습니까?',
+			   text: '내용과 사실이 다를 경우 불이익을 당할 수 있습니다',
+			   icon: 'warning',
+			   
+			   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+			   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+			   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+			   confirmButtonText: '신고하기', // confirm 버튼 텍스트 지정
+			   cancelButtonText: '취소하기', // cancel 버튼 텍스트 지정
+			   reverseButtons: true, // 버튼 순서 거꾸로
+		}).then(result => {
+		    // 만약 Promise리턴을 받으면,
+		    if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+		    	$("#replyDismiss").click();
+		    	$.ajax({
+					url: "ReportRegist",
+					data: {
+						report_type: "4", // 신고 종류(댓글 신고)
+						reporter_id: reporter_id, // 신고자 아이디
+						reportee_id: reportee_id, // 피신고자 아이디
+						report_reason: "8", // 신고 사유(댓글 신고)
+						report_content: report_content, // 신고 내용
+						report_name : report_name, // 신고된 게시물 내용
+						report_type_id : report_type_id // 신고된 페이지이동을 위한 id
+					},
+					success: function() {
+						const Toast = Swal.mixin({
+						    toast: true,
+						    position: 'center-center',
+						    showConfirmButton: false,
+						    timer: 2000,
+						    timerProgressBar: false,
+						})
+						Toast.fire({
+						    icon: 'success',
+						    title: '신고 감사합니다!'
+						})
+						
+					},
+					error: function() {
+						const Toast = Swal.mixin({
+						    toast: true,
+						    position: 'center-center',
+						    showConfirmButton: false,
+						    timer: 2000,
+						    timerProgressBar: false,
+						})
+						Toast.fire({
+						    icon: 'error',
+						    title: '죄송하지만 다시 시도해주세요 ㅠㅠ'
+						})
+					}
+				}); // 신고 등록 ajax 끝
+		   	}
+		});
+	
+	
+	
+}
+
 
 <%-- sweetalert confirm --%>
 function reportRegist(reason) {
@@ -69,7 +177,7 @@ function reportRegist(reason) {
 		report_content = $(".reportTextArea").eq(reason - 1).val();
 	} else if (reason === 7 ) {
 		report_content = $(".reportTextArea").eq(reason - 1).val();
-	} 
+	}
 	
 	// 신고 내용 미입력시 
  	if (report_content === "") {
@@ -341,6 +449,24 @@ function guide(url) {
 		</div>
 	</div>
 	
+	<%-- 댓글 신고하기 --%>	
+	<div class="modal fade review-modal" id="replyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="reportsubject">댓글 신고</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="replyDismiss"></button>
+				</div>
+				<div class="modal-body">
+					<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요" id="replyreport"></textarea>
+					<button type="button" class="btn btn-primary" id="reportBtn" onclick="replyReport()">신고 하기</button>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 </body>
 </html>

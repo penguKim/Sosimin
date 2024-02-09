@@ -473,7 +473,9 @@
 	// 프로그레스바 애니메이션을 시작합니다.
 	$('.progress-bar').css('width', percent + '%').attr('aria-valuenow', percent + '%').text(percent + '%');
 }
+
 </script>
+
 </head>
 <body>
 	<!--[if lte IE 9]>
@@ -597,6 +599,10 @@
 						</div>
 						<c:choose>
 							<c:when test="${com.community_writer ne sessionScope.sId and sessionScope.sId ne 'admin' and com.community_writer ne 'admin' }">
+								<input type="hidden" id="report_type" value="3">
+	                       		<input type="hidden" id="report_name" value="${com.community_subject}">
+	                       		<input type="hidden" id="report_type_id" value="${com.community_id}">
+	                       		<input type="hidden" id="reportee_id" value="${com.community_writer}">
 								<div class="col-1 align-self-end" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size:24px"></i></div>
 <!-- 								<span class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size:20px; white-space: nowrap">신고하기</span> -->
 							</c:when>
@@ -626,7 +632,7 @@
 				<label id="reLenth" for="replyTextarea">(0/100)자까지 입력이 가능합니다.</label>
 				<div id="replyListArea">
 					<table class="table">
-					<c:forEach var="reply" items="${replyList }">
+					<c:forEach var="reply" items="${replyList }" varStatus="index">
 						<tr id="replyTr_${reply.reply_id }" class="replyArea">
 							<td class="replyContent">
 								<div class="row">
@@ -676,16 +682,21 @@
 									<div class="col-3"> <%-- 삭제/신고 버튼 --%>
 										<div class="row mb-3">
 											<span class="text-end">${reply.reply_datetime }</span>
-										</div>							
+										</div>		
+															
 										<div class="row">
 											<c:choose>
 												<c:when test="${reply.reply_writer eq 'admin' }"><span></span></c:when>
 												<c:when test="${empty sessionScope.sId or sessionScope.sId ne reply.reply_writer and sessionScope.sId ne 'admin' }">
 <!-- 													<span class="text-end"> -->
-													<div class="col-1 offset-md-6" style="width: 80px;"><i class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size:18px"></i></div>
+													
+													<div class="col-1 offset-md-6" style="width: 80px;">
+														<input type="hidden" id="replyreportee_${index.index}" value="${reply.reply_writer }">
+    													<i class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#replyModal" style="font-size:18px" data-id="${index.index}"></i>
+													</div>
 													
 <!-- 														<i class="reportBtn fa fa-warning" style="font-size:18px"></i> -->
-													</span>
+<!-- 													</span> -->
 												</c:when>
 												<c:when test="${sessionScope.sId eq reply.reply_writer or sessionScope.sId eq 'admin' }">
 													<span class="reDelBtn text-end">

@@ -473,10 +473,10 @@
 							받은 후기
 						</a>&nbsp;&nbsp;&nbsp;&nbsp;
 						<a href="" data-bs-toggle="modal" data-bs-target="#reportModal" id="reportButton">
-                       		<input type="hidden" id="report_type" value="2">
-                       		<input type="hidden" id="report_name" value="">
-                       		<input type="hidden" id="report_type_id" value="${MyProfileMember.member_id }">
-                       		<input type="hidden" id="reportee_id" value="${MyProfileMember.member_id }">
+                       		<input type="hidden" id="report_type" value="1">
+                       		<input type="hidden" id="report_name" value="회원">
+                       		<input type="hidden" id="report_type_id" value="0">
+                       		<input type="hidden" id="reportee_id" value="${param.member_id }">
 <%-- 							<img src="${pageContext.request.contextPath}/resources/images/member/reporticon.png"> --%>
 							<span class="reportBtn fa fa-warning d-flex justify-content-end" style="font-size:small; white-space: nowrap">신고하기</span>
 						</a>
