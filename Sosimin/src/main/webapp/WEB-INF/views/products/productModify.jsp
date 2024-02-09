@@ -960,7 +960,7 @@ function ProductDelete(event) {
 	        showCancelButton: true,
 	        confirmButtonColor: '#39d274',
 	        cancelButtonColor: '#d33',
-	        confirmButtonText: '등록',
+	        confirmButtonText: '삭제',
 	        cancelButtonText: '취소',
 	        reverseButtons: true,
 	        allowOutsideClick: false

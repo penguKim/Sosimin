@@ -1,6 +1,6 @@
 package com.itwillbs.c5d2308t1_2.mapper;
 
-import java.util.List;
+import java.util.*;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,6 +28,8 @@ public interface ChatMapper {
 
 	// 이전 채팅 내역 조회
 	List<ChatMessage2> selectChatList(ChatMessage2 chatMessage);
+	// 채팅방에서 판매자 조회
+	Map<String, String> selectSellInfo(Map<String, String> map);
 
 }
 

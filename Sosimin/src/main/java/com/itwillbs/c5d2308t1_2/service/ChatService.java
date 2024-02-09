@@ -1,7 +1,6 @@
 package com.itwillbs.c5d2308t1_2.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +47,11 @@ public class ChatService {
 	public List<ChatMessage2> getChatList(ChatMessage2 chatMessage) {
 		// ChatMapper - selectChatList() 메서드 호출하여 이전 채팅 내역 조회 요청
 		return mapper.selectChatList(chatMessage);
+	}
+
+	public Map<String, String> selectSellInfo(Map<String, String> map) {
+		
+		return mapper.selectSellInfo(map);
 	}
 
 }

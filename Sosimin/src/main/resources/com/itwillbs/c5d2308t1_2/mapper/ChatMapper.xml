@@ -76,6 +76,13 @@
 		FROM chat_message
 		WHERE room_id = #{room_id}
 	</select>
+	
+	<select id="selectSellInfo" resultType="map">
+		SELECT *
+		FROM Product
+		WHERE
+			product_id = #{product_id}
+	</select>
 </mapper>
 
 

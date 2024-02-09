@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/chat.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
     
      <!-- ========================= JS here ========================= -->
@@ -47,7 +48,7 @@
 <style type="text/css">
 	/* 채팅방 전체 영역 */
 	#chatRoomArea {
-		width: 650px;
+		width: 450px;
 		height: 600px;
 		border: 1px solid black;
 		margin-top: 20px;
@@ -55,24 +56,27 @@
 		/* 지정한 영역 크기보다 컨텐츠 양이 더 많을 경우 수직 방향 스크롤바 추가 */
 		overflow-y: auto;
 		display: inline-block;
+		background-color: #eff3f7;
 	}
 	
 	/* 채팅방 1개 영역 */
 	.chatRoom {
-		margin-right: 10px;
-		margin-bottom: 20px;
-		display: inline-block;
-		border: 1px solid black;
+	width:430px;
+	height:450px;
+	margin-right: 10px;
+	margin-bottom: 20px;
+	display: inline-block;
+	border: 1px solid black;
 	}
 	
 	.chatRoomTitle:hover {
-		background-color: pink;
+		background-color: #5e616a;
 	}
 	
 	/* 채팅 메세지 표시 영역 */
 	.chatMessageArea {
-		width: 300px;
-		height: 200px;
+		width: 100%;
+		height: 100%;
 		border: 1px solid gray;
 		overflow-y: auto;
 	}
@@ -123,11 +127,59 @@
 		/* 지정한 영역 크기보다 컨텐츠 양이 더 많을 경우 수직 방향 스크롤바 추가 */
 		overflow-y: auto;
 		display: inline-block;
+		background-color:#3b3e49;
+	}
+	#article{
+		text-align: center;
 	}
 	
+	.chatMsg{
+		margin-top:10px;
+		margin-bottom:10px;
+	    resize: none;
+	    border: none;
+	    display: block;
+	    width: 100%;
+	    height: 80px;
+	    border-radius: 3px;
+	    padding: 20px;
+	    font-size: 13px;
+	    margin-bottom: 13px;
+	}
+	.chatRoomList {
+		position:relative;
+		vertical-align: middle;
+	}	
+	.chatRoomTitle{
+		vertical-align:middle;
+		position:relative;
+		height: 80px;
+	}
+	#chatSpan{
+		position: relative;
+		top:30px;
+	}
+	
+	.btnSend, .btnQuitRoom{
+	width: 100px;
+    height: 40px;
+    font-size: 16px;
+    color: white;
+    background-color: #39d274;
+    border: none;
+    border-radius: 5px;
+	}
 </style>
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.1.js"></script>
 <script>
+
+$(document).ready(function() {
+    // 상품 상세 페이지에서 가져온 판매자 아이디
+    var sellerId = "${productChat.member_id}";
+
+    // 페이지 로드 시 채팅 시작
+    startChat(sellerId);
+});
 	$(function() {
 		// 버튼 클릭 이벤트 처리
 		$("#btnJoin").click(function() {
@@ -351,13 +403,13 @@
 						+ "			<div class='commandArea'>"
 						+ "				<input type='hidden' class='room_id' value='" + room_id + "'>"
 						+ "				<input type='hidden' class='receiver_id' value='" + receiver_id + "'>"
-						+ "				<input type='text' class='chatMsg' onkeypress='checkEnter(this)'>"
+						+ "				<input type='text' class='chatMsg' onkeypress='checkEnter(this)' placeholder='메세지를 입력해주세요.'>"
 						+ "				<input type='button' class='btnSend' value='전송' onclick='sendMessage(this)'>"
 						+ "				<input type='button' class='btnQuitRoom' value='나가기' onclick='quitRoom(this)'>"
 						+ "			</div>"
 						+ "</div>"
 			
-			
+						
 			$("#chatRoomArea").append(room);
 		}
 		
@@ -370,7 +422,7 @@
 		// => 단, 해당 채팅방 목록이 없을 경우에만 추가
 		if(!$(".chatRoomList").hasClass(room_id)) {
 			let room = "<div class='chatRoomList " + room_id + "'>"
-						+ "		<div class='chatRoomTitle' ondblclick='createRoom(\"" + room_id + "\", \"" + receiver_id + "\")'>" + title + "</div>"						+ "</div>";
+						+ "		<div class='chatRoomTitle' ondblclick='createRoom(\"" + room_id + "\", \"" + receiver_id + "\")'><span id='chatSpan'>" + title + "</span></div>"	+ "</div>";
 			
 			$("#chatRoomListArea").append(room);
 		}
@@ -476,7 +528,7 @@
     </div>
 	
 	
-	<article>
+	<article id="article">
 		<!-- 본문 표시 영역 -->
 		<h1>채팅 페이지</h1>
 		<hr>
@@ -486,8 +538,8 @@
 		<input type="button" value="채팅 시작" id="btnJoin">
 		<input type="button" value="채팅방 나가기" id="btnQuit">
 		<hr>
-		<div id="chatRoomArea"><%-- 채팅방 추가될 위치 --%></div>
 		<div id="chatRoomListArea"><%-- 현재 사용자의 채팅방 목록 추가될 위치 --%></div>
+		<div id="chatRoomArea"><%-- 채팅방 추가될 위치 --%></div>
 	</article>
 	<footer class="footer">
 		<jsp:include page="../inc/bottom.jsp"></jsp:include>
@@ -496,6 +548,28 @@
     <a href="#" class="scroll-top">
         <i class="lni lni-chevron-up"></i>
     </a>
+	
+	   <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">1:1채팅</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
+                        <li>1:1 채팅</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+			<div><input type="button" value="채팅방 입장" id="btnJoin" onclick="onOpen()"></div>
+			<div><input type="button" value="채팅방 나가기" id="btnQuit" onclick="btnQuit()"></div>
+				
+				
 	
 	
 	    <!-- ========================= JS here ========================= -->

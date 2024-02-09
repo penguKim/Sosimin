@@ -415,14 +415,25 @@ public class ProductController {
 					System.out.println(" >>>>>>>>>>>>>>>> 판매자정보 : " + SellerInfo);
 					System.out.println(" >>>>>>>>>>>>>>>> 판매자상품정보 : " + SellerProductInfo);
 					LocalDateTime now = LocalDateTime.now();
-			        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 			        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
 					
 					for(Map<String, Object> datetime : Product2) {
-						LocalDateTime comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter);
+						LocalDateTime comDateTime;
+						if(datetime.get("product_datetime").toString().split(":").length > 2) {
+							comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter1);
+						} else {
+							comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter2);
+						}
 						Duration duration = Duration.between(comDateTime, now);
+						
 						Period period = Period.between(comDateTime.toLocalDate(), now.toLocalDate());
+
+//						LocalDateTime comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter);
+//						Duration duration = Duration.between(comDateTime, now);
+//						Period period = Period.between(comDateTime.toLocalDate(), now.toLocalDate());
 						
 						long minutes = duration.toMinutes() % 60;
 				        long hours = duration.toHours() % 24;
@@ -449,6 +460,7 @@ public class ProductController {
 				        }
 			            // 계산한 시간 목록
 			            datetime.put("product_datetime", timeAgo);
+			            System.out.println("여기에 시간들엇니?" + timeAgo);
 					}
 					
 					// 관심 갯수 불러오기
@@ -475,7 +487,6 @@ public class ProductController {
 								model.addAttribute("percentage", percentage);
 								model.addAttribute("levelExp", levelExp);
 								// 리스트를 무작위로 섞어 조회한 상품중 랜덤한 값 뿌리기
-								
 								System.out.println("여기에 뭐가들었니? : " + percentage);
 								
 								RelatedProducts = service.selectRelatedProducts(Product);
@@ -632,8 +643,8 @@ public class ProductController {
 				            if (deleteImages[i] - 1 < images.size() && deleteImages[i] - 1 >= 0) {
 				                String imagePath = images.remove(deleteImages[i] - 1);
 
-				                saveDir = session.getServletContext().getRealPath("/resources/upload");
-				                Path path = Paths.get(saveDir + "/" + imagePath);
+				                String deleteDir = session.getServletContext().getRealPath("/resources/upload");
+				                Path path = Paths.get(deleteDir + "/" + imagePath);
 				                try {
 				                    Files.deleteIfExists(path);
 				                } catch (IOException e) {
