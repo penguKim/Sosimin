@@ -53,15 +53,15 @@ public class MemberService {
 
 	// 휴대폰번호 인증코드 발급 요청 AJAX
 	public void certifyPhoneNumber(String member_phone, String numStr) {
-		String api_key = "NCSBOXGTUKZKMHND";
-		String api_secret = "1UMZ5TNK5BJSO02JTNIFR6VD2EMZLKFZ";
+		String api_key = "NCS7GFVD5SSVHBW2";
+		String api_secret = "V1VSVESA5PGJ2QU5KWVUCV8HQ4MNGA1R";
 		Message coolsms = new Message(api_key, api_secret);
 		
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("to", member_phone); // 수신자번호
-		params.put("from", "01024077916"); // 발신자번호 -> 테스트이므로 내 번호
+		params.put("from", "01093982536"); // 발신자번호 -> 테스트이므로 내 번호
 		params.put("type", "SMS");
-		params.put("text", "소시민 휴대폰 인증코드 발송 테스트 : 인증 번호는 [ " + numStr +" ]입니다.");
+		params.put("text", "소시민 휴대폰 인증코드 발송 : 인증 번호는 [ " + numStr +" ]입니다.");
 		params.put("app_version", "test app 1.2");
 		
 			try {

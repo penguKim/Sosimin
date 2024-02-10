@@ -9,7 +9,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
-<title>소시민</title>
+<title>Sosimin</title>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -479,7 +479,7 @@
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
 								</c:otherwise>
 							</c:choose>
-							&nbsp;&nbsp;&nbsp;&nbsp;본인인증
+							&nbsp;&nbsp;&nbsp;&nbsp;문자인증
 							<c:choose>
 								<c:when test="${MyProfileMember.member_phone_auth eq 0 }"> <%-- 미인증 --%>
 									<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 

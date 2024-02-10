@@ -9,7 +9,7 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-<title>소시민</title>
+<title>Sosimin</title>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta content="" name="description">
 <meta content="" name="keywords">

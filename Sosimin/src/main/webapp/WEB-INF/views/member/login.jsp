@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
-<title>소시민</title>
+<title>Sosimin</title>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />

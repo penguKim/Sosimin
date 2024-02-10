@@ -9,7 +9,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="x-ua-compatible" content="ie=edge" />
-<title>소시민</title>
+<title>Sosimin</title>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -122,7 +122,6 @@
 				}
 			});
 		
-<<<<<<< Updated upstream
 		// 리뷰 정보 가져오기
 		$.ajax({
 			type: "POST",
@@ -146,58 +145,55 @@
 			}
 		});
 		
-		// 찜 버튼 클릭 이벤트
-=======
-		// 좋아요 버튼 클릭 이벤트
->>>>>>> Stashed changes
-        $(".heart").on("click", function () {
-        	if($(this).hasClass("isSameUser")) {
-   				Swal.fire({
-   					position: 'center',
-   					icon: 'warning',
-   					title: '내 상품은 좋아요를 누를 수 없어요!',
-   					showConfirmButton: false,
-   					timer: 2000,
-   					toast: true
-   				});
-        	} else {
-	        	let heart = $(this);
-	    		$.ajax({
-	    			type: "POST",
-	    			url: "CheckLike",
-	    			data: {
-	    				product_id: $(this).parent().data("id")
-	    			},
-	//     			dataType: "json",
-	    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-	    				if(result == 'false') { // 좋아요을 등록하는 경우
-							$(heart).addClass("is-active");
-	        				Swal.fire({
-	        					position: 'center',
-	        					icon: 'success',
-	        					title: '좋아요 추가했습니다.',
-	        					showConfirmButton: false,
-	        					timer: 2000,
-	        					toast: true
-	        				});
-	    				} else if(result == 'true') { // 좋아요을 삭제하는 경우
-							$(heart).removeClass("is-active");
-	// 						$(heart).parent().remove();
-	        				Swal.fire({
-	        					position: 'center',
-	        					icon: 'success',
-	        					title: '좋아요 삭제했습니다.',
-	        					showConfirmButton: false,
-	        					timer: 2000,
-	        					toast: true
-	        				});
-	    				}
-	    			}
-	    		});
-        		
-        		
-        	}
-        });
+// 좋아요 버튼 클릭 이벤트
+$(".heart").on("click", function () {
+	if($(this).hasClass("isSameUser")) {
+			Swal.fire({
+				position: 'center',
+				icon: 'warning',
+				title: '내 상품은 좋아요를 누를 수 없어요!',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+	} else {
+    	let heart = $(this);
+		$.ajax({
+			type: "POST",
+			url: "CheckLike",
+			data: {
+				product_id: $(this).parent().data("id")
+			},
+//     			dataType: "json",
+			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+				if(result == 'false') { // 좋아요을 등록하는 경우
+					$(heart).addClass("is-active");
+    				Swal.fire({
+    					position: 'center',
+    					icon: 'success',
+    					title: '좋아요 추가했습니다.',
+    					showConfirmButton: false,
+    					timer: 2000,
+    					toast: true
+    				});
+				} else if(result == 'true') { // 좋아요을 삭제하는 경우
+					$(heart).removeClass("is-active");
+// 						$(heart).parent().remove();
+    				Swal.fire({
+    					position: 'center',
+    					icon: 'success',
+    					title: '좋아요 삭제했습니다.',
+    					showConfirmButton: false,
+    					timer: 2000,
+    					toast: true
+    				});
+				}
+			}
+		});
+		
+		
+	}
+});
 		
 		// 파일 change 이벤트 처리
 	    $("#profilePicFile").on("change", showPreviewImage);
@@ -1366,7 +1362,7 @@
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
 								</c:otherwise>
 							</c:choose>
-							&nbsp;&nbsp;&nbsp;&nbsp;본인인증
+							&nbsp;&nbsp;&nbsp;&nbsp;문자인증
 							<c:choose>
 								<c:when test="${MyProfileMember.member_phone_auth eq 0 }"> <%-- 미인증 --%>
 									<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 
