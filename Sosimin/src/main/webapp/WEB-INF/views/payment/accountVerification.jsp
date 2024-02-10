@@ -38,7 +38,7 @@ function authAccount() {
 	let requestUri = "https://testapi.openbanking.or.kr/oauth/2.0/authorize?"
 			+ "response_type=code"
 			+ "&client_id=4066d795-aa6e-4720-9383-931d1f60d1a9"
-			+ "&redirect_uri=http://localhost:8081/c5d2308t1_2/callback"
+			+ "&redirect_uri=http://c5d2308t1.itwillbs.com/Sosimin/callback"
 			+ "&scope=login inquiry transfer"
 			+ "&state=${sessionScope.state}"
 			+ "&auth_type=0";

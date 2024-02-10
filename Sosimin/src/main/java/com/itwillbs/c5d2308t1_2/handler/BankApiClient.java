@@ -60,7 +60,7 @@ public class BankApiClient {
 		parameters.add("code", authResponse.get("code")); // 응답받은 인증코드
 		parameters.add("client_id", client_id); // 클라이언트 아이디
 		parameters.add("client_secret", client_secret); // 클라이언트 시크릿
-		parameters.add("redirect_uri", "http://localhost:8081/c5d2308t1_2/callback"); // 리다이렉트 주소
+		parameters.add("redirect_uri", "http://c5d2308t1.itwillbs.com/Sosimin/callback"); // 리다이렉트 주소
 		parameters.add("grant_type", "authorization_code"); // 고정값임
 		
 		// HttpEntity 객체를 활용하여 요청에 사용될 파라미터를 관리하는 객체를 요청 방식에 맞게 변환
