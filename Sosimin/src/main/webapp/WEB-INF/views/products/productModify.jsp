@@ -1074,36 +1074,36 @@ function ProductDelete(event) {
 	    // 이미지 이름 값 삭제
 	    imageNameInput.parentNode.removeChild(imageNameInput);
 	  }
-		
+	  
 	  // 삭제할 이미지의 인덱스를 배열에 추가
 	  deleteImages.push(imageIndex);
 
+	  // div에서 삭제할 이미지의 URL 정보를 제거 
+	  var imageData = document.getElementById("image_data");
+	  var imageUrl = imageData.getAttribute("data-image" + (imageIndex + 1));
+	  if (imageUrl) {
+	    imageData.setAttribute("data-image" + (imageIndex + 1), '');  // 이미지 URL 정보를 빈 문자열로 설정
+	  }
+
 	  // 이미지 항목 삭제
 	  imageContainer.removeChild(imageItem);
-	
+
 	  var file = imageItem.file;  // 파일 객체를 가져옵니다.
 	  var index = selectedFiles.indexOf(file);  // selectedFiles 배열에서 해당 파일의 인덱스를 찾습니다.
 	  if (index > -1) {
 	    selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
 	  }
 	  
-// 	  var fileIndex = selectedFiles.findIndex(function(file) {
-// 		    return file.name === imageItem.file.name;
-// 		  });
-// 		  if (fileIndex > -1) {
-// 		    selectedFiles.splice(fileIndex, 1);
-// 		  }
-		  
-		    if (imageItem.querySelector(".mainImage")) {
+	  if (imageItem.querySelector(".mainImage")) {
 	    var nextImageItem = imageContainer.children[1]; 
 	    if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {
-	        var mainImageText = document.createElement("span");
-	        mainImageText.classList.add("mainImage");
-	        mainImageText.textContent = "대표이미지";
-	        nextImageItem.appendChild(mainImageText);
-	      }
+	      var mainImageText = document.createElement("span");
+	      mainImageText.classList.add("mainImage");
+	      mainImageText.textContent = "대표이미지";
+	      nextImageItem.appendChild(mainImageText);
 	    }
-		    
+	  }
+	  
 	  // 이미지 개수 감소
 	  var imageLength = parseInt(document.getElementById("imageLength").textContent);
 	  imageLength--;
@@ -1113,6 +1113,7 @@ function ProductDelete(event) {
 	  if (imageContainer.children.length === 1) {
 	    imageText.style.display = "none";
 	  }
+	}
 	  
 	  
 	  // 이미지 URL 삭제
@@ -1130,7 +1131,7 @@ function ProductDelete(event) {
 // 		      mainImageSpan.parentNode.removeChild(mainImageSpan);
 // 		    }
 // 		  }
-		}
+// 		}
 //   // imageCounter 감소
 //   if (imageCounter > 0) {
 //     imageCounter--;
