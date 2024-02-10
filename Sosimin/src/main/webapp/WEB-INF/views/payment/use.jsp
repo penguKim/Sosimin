@@ -272,7 +272,7 @@ function openModal() {
 	                            <div class="form-group input-group">
 	                                <label for="pay-amount">결제금액</label>
 	                                <fmt:formatNumber value="${productInfo.product_price}" pattern="###,###" var="formattedPrice" />
-									<input class="form-control" type="text" id="pay-amount" name="order_amount"
+									<input class="form-control" type="text" id="pay-amount" name="order_amount" maxlength="11"
 										value="${formattedPrice}">
 	                            </div>
 	                            <div class="btn-group">

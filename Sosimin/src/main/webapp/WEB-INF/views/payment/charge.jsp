@@ -222,7 +222,7 @@ function openModal() {
 		                            </div>
 	                           	<div class="form-group input-group">
 	                                <label for="pay-amount">충전금액</label>
-	                                <input class="form-control" type="text" id="pay-amount" name="pay_amount"
+	                                <input class="form-control" type="text" id="pay-amount" name="pay_amount" maxlength="11"
 	                                	placeholder="충전을 원하시는 금액을 입력해주세요">
 	                            </div>
 	                            <div class="btn-group">
