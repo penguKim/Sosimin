@@ -208,7 +208,7 @@ public class ProductController {
 	}
 	
 	
-	// =============================== 관리자 페이지
+	// =============================== 관리자 페이지 ====================================================
 	// 등록 상품 목록
 	@GetMapping("ProductList")
 	public String productList(HttpSession session, Model model) {
@@ -218,10 +218,22 @@ public class ProductController {
 		return "admin/productList";
 	}
 	
-	@GetMapping("ProductListDetail")
-	public String productListDetail() {
+	// 등록 상품 삭제
+	@ResponseBody
+	@GetMapping("ProductDelete")
+	public String productDelete(@RequestParam Map<String, String> map, HttpSession session) {
 		
-		return "admin/productListDetail";
+		int resultDel = service.productDel(map); 
+				
+		if(resultDel > 0) {
+			return "true";
+			
+		} else {
+			return "false";
+			
+		}
+		
+				
 	}
 	
 	// ======================================================================================================

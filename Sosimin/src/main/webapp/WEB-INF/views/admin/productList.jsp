@@ -46,7 +46,10 @@
 ======================================================== -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
-function deleteProduct() {
+function deleteProduct(id) {
+	let product_id = id;
+	
+	console.log("번호는:" + product_id);
 	
 	Swal.fire({
 		   title: '정말 삭제하시겠습니까?',
@@ -62,20 +65,40 @@ function deleteProduct() {
 	}).then(result => {
 	    // 만약 Promise리턴을 받으면,
 	    if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-			Swal.fire('삭제되었습니다!', '화끈하시네요!', 'success');
-			$("#modalDismiss").click();
-// 	    	$.ajax({
-// 					url: "ProductDelete",
-// 					data: {
-// 					},
-// 					success: function() {
-// 						Swal.fire('삭제되었습니다!', '화끈하시네요!', 'success');
-						
-// 					},
-// 					error: function() {
-// 						Swal.fire('삭제 실패했습니다!', '죄송하지만 다시 부탁해요~!', 'error');
-// 					}
-// 			}); // 신고 등록 ajax 끝
+	    	$.ajax({
+					url: "ProductDelete",
+					data: {
+						product_id : product_id
+					},
+					dataType: "json",
+					success: function(data) {
+						const Toast = Swal.mixin({
+						    toast: true,
+						    position: 'center-center',
+						    showConfirmButton: false,
+						    timer: 1000,
+						    timerProgressBar: false,
+						})
+						Toast.fire({
+						    icon: 'success',
+						    title: '상품이 삭제되었습니다'
+						})
+						location.reload();
+					},
+					error: function() {
+						const Toast = Swal.mixin({
+						    toast: true,
+						    position: 'center-center',
+						    showConfirmButton: false,
+						    timer: 1000,
+						    timerProgressBar: false,
+						})
+						Toast.fire({
+						    icon: 'error',
+						    title: '상품 삭제를 실패했습니다 ㅠㅠ'
+						})
+					}
+			}); // 신고 등록 ajax 끝
 	   	}
 	});
 }	
@@ -113,6 +136,21 @@ function deleteProduct() {
 	transform: scale(10);
 	z-index: 1000;
 }
+.comAdmin th {
+	min-width: 100px;
+}
+
+.comAdmin .admin-title {
+	cursor: pointer;
+} 
+
+.comAdmin .admin-title:hover {
+	color: #4154f1;
+}
+
+.comAdmin .ellipsis {
+	max-width: 600px !important;
+}
 
 </style>
 <body>
@@ -145,7 +183,7 @@ function deleteProduct() {
 					<div class="card">
 						<div class="card-body">
 							<!-- Table with stripped rows -->
-							<table class="table datatable">
+							<table class="comAdmin table table-hover datatable text-center">
 								<thead>
 									<tr>
 										<th>상품 사진</th>
@@ -158,29 +196,37 @@ function deleteProduct() {
 									</tr>
 								</thead>
 								<tbody id="tbody">
-									<c:forEach var="productList" items="${productList }">
+									<c:forEach var="productList" items="${productList }" varStatus="index">
 										<tr>
 											<td>
-												<img style="width: 80px; height: 80px;" alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image1}">	
+												<img style="width: 80px; height: 80px; " alt="" src="${pageContext.request.contextPath}/resources/upload/${productList.product_image1}">	
 											</td>
-											<td style="vertical-align: middle;">${productList.member_id}</td>
-											<td style="vertical-align: middle;">${productList.product_name}</td>
+											<td style="vertical-align: middle;" class="admin-title" onclick="location.href='SellerInfo?member_id=${productList.member_id}'">
+												<span class="d-inline-block ellipsis ps-3">${productList.member_id}</span>
+											</td>
+											<td style="width: 500px; vertical-align: middle;"class="admin-title text-start" onclick="location.href='ProductDetail?product_id=${productList.product_id}'">
+												<span class="d-inline-block ellipsis ps-3">${productList.product_name}</span>
+											</td>
 											<td style="vertical-align: middle;">
 												<fmt:formatNumber value="${productList.product_price}" pattern="#,##0" />원
 											</td>
 											<td style="vertical-align: middle;">${productList.product_category}</td>
-											<td style="vertical-align: middle;">${productList.product_datetime}</td>
+											<td style="vertical-align: middle;">
+												<c:set var="datetime" value="${fn:split(productList.product_datetime, 'T')}" />
+												<c:set var="date" value="${datetime[0]}" />
+												${date}
+											</td>
 											<td class="green" style="vertical-align: middle;">
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-">
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${productList.product_id}">
 													상세보기
 												</button>
 												<!-- Basic Modal -->
-												<div class="modal fade" id="modal-" tabindex="-1">
+												<div class="modal fade" id="modal-${productList.product_id}" tabindex="-1">
 													<div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header">
 																<h5 class="modal-title">등록된 상품 상세보기</h5><!-- 모달 제목 -->
-																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="prodismiss"></button>
 															</div>
 															<div class="modal-body">
 																<!-- 모달 내용이 들어가는 부분 -->
@@ -191,15 +237,21 @@ function deleteProduct() {
 																	</tr>
 																	<tr>
 																		<th scope="row">판매자</th>
-																		<td>${productList.member_id }</td>
+																		<td class="admin-title" onclick="location.href='SellerInfo?member_id=${productList.member_id}'">
+																			<span class="d-inline-block ellipsis ps-3">${productList.member_id}</span>
+																		</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">상품명</th>
-																		<td>${productList.product_name }</td>
+																		<td style="width: 500px; vertical-align: middle;"class="admin-title" onclick="location.href='ProductDetail?product_id=${productList.product_id}'">
+																			<span class="d-inline-block ellipsis ps-3">${productList.product_name}</span>
+																		</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">상품설명</th>
-																		<td>${productList.product_txt }</td>
+																		<td style="width: 500px; vertical-align: middle;"class="admin-title" onclick="location.href='ProductDetail?product_id=${productList.product_id}'">
+																			<span class="d-inline-block ellipsis ps-3">${productList.product_txt}</span>
+																		</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">판매가격</th>
@@ -209,11 +261,15 @@ function deleteProduct() {
 																	</tr>
 																	<tr>
 																		<th scope="row">판매위치</th>
-																		<td>${productList.gu }${productList_dong }</td>
+																		<td>부산광역시 ${productList.gu } ${productList.dong }</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">상품등록일</th>
-																		<td>${productList.product_datetime}</td>
+																		<td>
+																			<c:set var="datetime" value="${fn:split(productList.product_datetime, 'T')}" />
+																			<c:set var="date" value="${datetime[0]}" />
+																			${date}
+																		</td>
 																	</tr>
 																	<tr>
 																		<th scope="row">카테고리</th>
@@ -251,8 +307,8 @@ function deleteProduct() {
 																</table>
 															</div>
 															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-																<button type="button" class="btn btn-primary">취소하기</button>
+																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="productModal">닫기</button>
+																<button type="button" class="btn btn-primary" onclick="deleteProduct('${productList.product_id }')">삭제하기</button>
 															</div>
 														</div>
 													</div>
