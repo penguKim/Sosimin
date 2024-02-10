@@ -770,13 +770,13 @@ function filtering(data) {
 	                            
 	                    <div style="margin-bottom: 20px;"></div>        
                         <%-- 3. 신고하기 기능 버튼 --%>
-                        <button type="button" class="btn btn-primary" id="testBtn" value="테스트중입니다">
-								테스트버튼
-						</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" 
-                        		data-bs-target="#reportModal" >
-								신고하기
-						</button>
+<!--                         <button type="button" class="btn btn-primary" id="testBtn" value="테스트중입니다"> -->
+<!-- 								테스트버튼 -->
+<!-- 						</button> -->
+<!--                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"  -->
+<!--                         		data-bs-target="#reportModal" > -->
+<!-- 								신고하기 -->
+<!-- 						</button> -->
                         </div>
                    </div>
                </div>

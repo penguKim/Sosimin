@@ -68,7 +68,8 @@
 function statusUpdate(report_id) {
 	let reportStatus = $("#reportStatus").val();
 	
-	console.log(report_id);
+	console.log("머이냐" + report_id);
+	console.log("스테이터스 : " + reportStatus);
 	
 	Swal.fire({
 		   title: '정말 변경하시겠습니까?',
@@ -236,12 +237,10 @@ function statusUpdate(report_id) {
 																				<c:when test="${reportList.report_status eq 1}">신고확정</c:when>
 																				<c:when test="${reportList.report_status eq 2}">문제없음</c:when>
 																			</c:choose>
-																			<select>
-																				<optgroup label="신고상태">
-																					<option>처리중</option>
-																					<option>신고확정</option>
-																					<option>문제없음</option>
-																				</optgroup>
+																			<select id="reportStatus">
+																				<option value="0">처리중</option>
+																				<option value="1">신고확정</option>
+																				<option value="2">문제없음</option>
 																			</select>
 																		</td>
 																	</tr>

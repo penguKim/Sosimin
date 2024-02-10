@@ -67,6 +67,7 @@
 function statusUpdate(report_id) {
 	let reportStatus = $("#reportStatus").val();
 	
+	console.log("스테이터스 : " + reportStatus);
 	console.log(report_id);
 	
 	Swal.fire({

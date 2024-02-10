@@ -351,7 +351,7 @@ function guide(url) {
 								<div class="accordion-body">
 									<p class="accordion-body-1">어떤 분쟁이 발생했나요? </p> 
 									<p class="accordion-body-2">내용과 사실이 다를 경우 불이익을 당할 수 있습니다 </p>
-									<p><a href="#">분쟁 시 이렇게 대처 하세요</a></p>
+									<p><a href="CsNoticeDetail?cs_id=27">분쟁 시 이렇게 대처 하세요</a></p>
 									<textarea class="reportTextArea" placeholder="신고내용을 직접 입력해주세요"></textarea>
 									<button type="button" class="btn btn-primary" id="reportBtn" onclick="reportRegist(3)">신고 하기</button>	
 								</div>
