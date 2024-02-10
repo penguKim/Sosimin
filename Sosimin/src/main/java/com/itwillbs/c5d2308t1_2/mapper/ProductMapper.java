@@ -22,6 +22,11 @@ public interface ProductMapper {
 	// 관심 상품 목록 조회
 	List<Map<String, Object>> selectLikeList(Map<String, String> map);
 	
+	// 관리자 페이지 상품목록
+	List<Map<String, Object>> adminProductList();
+	
+	// 관리자 페이지 상품삭제
+	int prdouctDel(Map<String, String> map);
 	// =============================================================================
 	// 상품 등록 
 	int productInsert(Map<String, String> map);
@@ -81,9 +86,7 @@ public interface ProductMapper {
 	int removeProduct(Map<String, String> map);
 	
 	
-	// 관리자 페이지 상품목록
-	List<Map<String, Object>> adminProductList();
-
+	
 	Map<String, String> getGuDong(Map<String, String> map);
 
 	int selectPayStatus(Map<String, String> productModify);

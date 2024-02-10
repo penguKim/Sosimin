@@ -168,6 +168,13 @@ public class ProductService {
 	public List<Map<String, Object>> adminProductList() {
 		return mapper.adminProductList();
 	}
+	
+	// 관리자페이지 상품 삭제
+	public int productDel(Map<String, String> map) {
+		return mapper.prdouctDel(map);
+	}
+	
+	// ===================================================================
 	public List<Map<String, Object>> getLikeList(Map<String, String> map) {
 		return mapper.selectLikeList(map);
 	}
@@ -200,5 +207,6 @@ public class ProductService {
 		
 		return mapper.selectReviewCount(sellerInfo);
 	}
+	
 	
 }
