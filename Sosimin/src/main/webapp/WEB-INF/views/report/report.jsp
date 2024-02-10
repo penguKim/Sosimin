@@ -10,6 +10,11 @@
 		width: 200;
 		height: 200;
 	}
+	
+	#reportBtn {
+		background-color: red;
+		border: none;
+	}
 </style>
 
 <script type="text/javascript">
@@ -303,7 +308,7 @@ function guide(url) {
 						<div class="accordion-subject">게시글 신고</div>
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="heading1">
-								<button id="accordionBtn" class="accordion-button collapsed .accordioncolor" type="button" data-bs-toggle="collapse"
+								<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
 									data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
 									<span class="title">거래 금지 물품이에요</span>
 								</button>
