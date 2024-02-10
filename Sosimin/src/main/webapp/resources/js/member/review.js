@@ -184,7 +184,7 @@
 						$(list).append('<li class="list-group-item fs-6 fw-bold">약속 장소에 나타나지 않아요</li>');
 					}
 					if(result.review_check2 == "on") {
-						$(list).append('<li class="list-group-item fs-6 fw-bold">친절하고 매너가 좋아요</li>');
+						$(list).append('<li class="list-group-item fs-6 fw-bold">상품 상태가 설명과 달라요</li>');
 					}
 					if(result.review_check3 == "on") {
 						$(list).append('<li class="list-group-item fs-6 fw-bold">시간 약속을 못 지켜요</li>');

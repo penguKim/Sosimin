@@ -345,6 +345,23 @@ public class LevelService {
 		
 	}
 
+	// ============ 관리자 페이지 ==============
+	// 리뷰 목록 가져오기
+	public List<Map<String, String>> getAllReviewList() {
+		return mapper.selectAllReviewList();
+	}
+
+	// 회원의 리뷰 조회
+	public ReviewVO adminReviewView(ReviewVO re) {
+		return mapper.selectAdminReviewView(re);
+	}
+	
+	// 회원의 리뷰 삭제
+	public int adminRemoveReview(ReviewVO re) {
+		return mapper.deleteAdminReview(re);
+	}
+
+
 
 
 

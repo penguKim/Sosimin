@@ -1056,4 +1056,46 @@ public class CommunityController {
 		return "admin/communityReplyList";
 	}
 	
+	// 리뷰 관리
+	@GetMapping("ReviewList")
+	public String adminReviewList(HttpSession session, Model model) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		List<Map<String, String>> reviewList = levelService.getAllReviewList();
+		
+		model.addAttribute("reviewList", reviewList);
+		
+		return "admin/reviewList";
+	}
+	
+	// 회원의 리뷰 보기
+	@ResponseBody
+	@PostMapping("AdminReviewView")
+	public String adminReviewView(ReviewVO re) {
+		
+		re = levelService.adminReviewView(re);
+		
+		JSONObject object = new JSONObject(re);
+		
+		return object.toString();
+		
+	}
+	
+	// 회원의 리뷰 삭제
+	@ResponseBody
+	@PostMapping("AdminReviewDelete")
+	public String adminReviewDelete(ReviewVO re) {
+		
+		int deleteCount = levelService.adminRemoveReview(re);
+		
+		if(deleteCount > 0) {
+			return "true";
+		} else {
+			return "false";
+		}
+	}
+	
 }

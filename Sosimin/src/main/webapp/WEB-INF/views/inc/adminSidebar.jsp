@@ -31,6 +31,13 @@
 			<span>거래관리</span>
 		</a>
 	</li><!-- End Profile Page Nav -->
+	
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="ReviewList">
+			<i class="bi bi-cart2"></i>
+			<span>리뷰관리</span>
+		</a>
+	</li><!-- End Profile Page Nav -->
   
 	<li class="nav-item">
 		<a class="nav-link collapsed" href="">

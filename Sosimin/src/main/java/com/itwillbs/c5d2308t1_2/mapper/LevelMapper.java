@@ -37,5 +37,16 @@ public interface LevelMapper {
 	// 회원 레벨 업데이트
 	void updateMemberLevel(Map<String, Integer> map);
 
+	
+	// ================== 관리자 페이지 ======================
+	// 리뷰 목록 가져오기
+	List<Map<String, String>> selectAllReviewList();
+
+	// 회원의 리뷰 조회
+	ReviewVO selectAdminReviewView(ReviewVO re);
+
+	// 회원의 리뷰 삭제
+	int deleteAdminReview(ReviewVO re);
+
 
 }
