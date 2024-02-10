@@ -65,8 +65,8 @@
 </style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script type="text/javascript">
-function statusUpdate(report_id) {
-	let reportStatus = $("#reportStatus").val();
+function statusUpdate(report_id, index) {
+	let reportStatus = $("#reportStatus" + index).val();
 	
 	console.log("머이냐" + report_id);
 	console.log("스테이터스 : " + reportStatus);
@@ -148,7 +148,7 @@ function statusUpdate(report_id) {
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="reportList" items="${memberReportList}">
+									<c:forEach var="reportList" items="${memberReportList}" varStatus="index">
 										<tr>
 											<td >${reportList.report_id}</td>
 											<td >${reportList.reporter_id}</td>
@@ -237,7 +237,7 @@ function statusUpdate(report_id) {
 																				<c:when test="${reportList.report_status eq 1}">신고확정</c:when>
 																				<c:when test="${reportList.report_status eq 2}">문제없음</c:when>
 																			</c:choose>
-																			<select id="reportStatus">
+																			<select id="reportStatus${index.index}">
 																				<option value="0">처리중</option>
 																				<option value="1">신고확정</option>
 																				<option value="2">문제없음</option>
@@ -248,7 +248,7 @@ function statusUpdate(report_id) {
 															</div>
 															<div class="modal-footer">
 																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-																<button type="button" class="btn btn-primary" onclick="statusUpdate('${reportList.report_id}')">변경하기</button>
+																<button type="button" class="btn btn-primary" onclick="statusUpdate('${reportList.report_id}', '${index.index}')">변경하기</button>
 															</div>
 														</div>
 													</div>
