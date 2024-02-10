@@ -54,10 +54,9 @@
 		text-align: right;
 	}
 </style>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 $(function() {
-	$("form").submit(function() {
+	$("#write").on("click", function() {
 		event.preventDefault();
 		Swal.fire({
 	        title: '자주묻는질문을 등록하시겠습니까?',
@@ -133,6 +132,44 @@ $(function() {
 	    });
 	});
 	
+	// 제목 글자수 제한
+    $('#subject').on('keyup', function() {
+        var text = $(this).val();
+        
+        // 글자수 제한
+        if (text.length > 100) {
+        	// 제한수 넘으면 자르기
+            $(this).val($(this).val().substring(0, 100));
+			Swal.fire({
+				position: 'center',
+				icon: 'warning',
+				title: '글자수는 100자까지 입력 가능합니다.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+        };
+    });
+    
+	// 내용 글자수 제한
+    $('#content').on('keyup', function() {
+        var text = $(this).val();
+        
+        // 글자수 제한
+        if (text.length > 1000) {
+        	// 제한수 넘으면 자르기
+            $(this).val($(this).val().substring(0, 1000));
+			Swal.fire({
+				position: 'center',
+				icon: 'warning',
+				title: '글자수는 1000자까지 입력 가능합니다.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+        };
+    });
+	
 });
 
 </script>
@@ -198,7 +235,7 @@ $(function() {
 								<div class="row mb-3">
 									<div class="col-sm-12" id="btnArea">
 										<button type="button" id="cancel" class="btn btn-secondary">나가기</button>
-										<button type="submit" class="btn btn-primary">등록하기</button>
+										<button type="button" class="btn btn-primary" id="write">등록하기</button>
 									</div>
 								</div>
 							</form><!-- End General Form Elements -->
