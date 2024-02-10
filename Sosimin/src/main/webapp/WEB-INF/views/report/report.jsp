@@ -305,7 +305,7 @@ function guide(url) {
 				</div>
 				<div class="modal-body">
 					<div class="accordion" id="accordionExample">
-						<div class="accordion-subject">게시글 신고</div>
+						<div class="accordion-subject"><b>게시글 신고</b></div>
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="heading1">
 								<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
@@ -382,7 +382,7 @@ function guide(url) {
 							</div>
 						</div>
 						
-						<div class="accordion-subject">사용자 신고</div>
+						<div class="accordion-subject"><b>사용자 신고</b></div>
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="heading6">
 								<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"
@@ -421,7 +421,7 @@ function guide(url) {
 							</div>
 						</div>
 						
-						<div class="accordion-subject">기타</div>
+						<div class="accordion-subject"><b>기타</b></div>
 						<div class="accordion-item">
 							<h2 class="accordion-header" id="heading5">
 							<button id="accordionBtn" class="accordion-button collapsed accordioncolor" type="button" data-bs-toggle="collapse"

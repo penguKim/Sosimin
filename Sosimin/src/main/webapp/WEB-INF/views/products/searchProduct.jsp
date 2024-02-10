@@ -324,7 +324,7 @@ function heartLike(heart, product_id) {
     	},
     	dataType: "json",
     	success: function(result) {
-    		<%-- 찜을 등록하는 경우 --%>
+    		<%-- 좋아요을 등록하는 경우 --%>
     		if(result.isChecked == 'false') {
     			const Toast = Swal.mixin({
     			    toast: true,
@@ -338,7 +338,7 @@ function heartLike(heart, product_id) {
     			    title: '좋아요가 등록되었습니다!'
     			})		
 				$("#heartLike"+heart).addClass("is-active");
-			<%-- 찜을 삭제하는 경우 --%>
+			<%-- 좋아요을 삭제하는 경우 --%>
 			} else if(result.isChecked == 'true') {
 				const Toast = Swal.mixin({
 				    toast: true,
@@ -601,7 +601,7 @@ function filtering(data) {
 				$("#nextPage").addClass("disabled");
 			}
 			
-			<%-- 관심 목록 불러오기 --%> 
+			<%-- 좋아요 목록 불러오기 --%> 
 			if(id == "") {
 				console.log("아이디가 없습니다");
 			} else {
@@ -662,8 +662,8 @@ function filtering(data) {
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html"><i class="lni lni-home"></i> 홈</a></li>
-                        <li><a href="index.html">상품</a></li>
+                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
+                        <li><a href="SearchProduct">상품</a></li>
                         <li>상품목록</li>
                     </ul>
                 </div>
