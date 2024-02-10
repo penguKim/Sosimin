@@ -26,6 +26,13 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
+<style type="text/css">
+#content_table {
+	text-align: left;
+	margin: 0;
+	white-space: pre-wrap;
+}
+</style>
 <script type="text/javascript">
 	$(function() {
 		console.log(${percentage});
@@ -184,7 +191,7 @@
 			    </div>
 			    <div class="post-content position-relative mt-3">
 			    	<div class="contentText h-auto p-3 fs-6" style="min-height: 300px;">
-			    	${detail.cs_content }
+			    		<pre id="content_table">${detail.cs_content }</pre>
 					</div>
 					<hr>
 			    </div>
