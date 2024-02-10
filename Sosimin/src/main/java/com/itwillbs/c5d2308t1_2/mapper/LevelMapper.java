@@ -48,5 +48,14 @@ public interface LevelMapper {
 	// 회원의 리뷰 삭제
 	int deleteAdminReview(ReviewVO re);
 
+	// 회원 신고 처리
+	int updateReportStatus(Map<String, String> map);
+
+	// 회원 신고 횟수 리턴
+	Map<String, Object> reportCount(Map<String, String> map);
+
+	// 회원 레벨 0으로 만들기
+	void updateMemberLevelZero(Map<String, Object> map);
+
 
 }

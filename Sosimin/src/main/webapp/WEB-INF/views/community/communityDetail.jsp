@@ -641,13 +641,13 @@
 									</c:forEach>
 										<div class="col-auto align-self-center pe-0">
 											<a href="SellerInfo?member_id=${reply.reply_writer }">
-												<img class="rounded-circle " alt="" src="${pageContext.request.contextPath}/resources/upload/${com.member_profile}">
+												<img class="rounded-circle " alt="" src="${pageContext.request.contextPath}/resources/upload/${reply.member_profile}">
 											</a>
 										</div>
 									<div class="col">
 										<div class="row">
 											<div class="col-auto pe-0 align-self-center">
-												<a  href="SellerInfo?member_id=${com.member_id }"><span class="fs-6">${reply.member_nickname }</span></a>
+												<a  href="SellerInfo?member_id=${reply.reply_writer }"><span class="fs-6">${reply.member_nickname }</span></a>
 											</div>
 											<div class="col-auto pe-0">
 												<p>${reply.dong }</p>

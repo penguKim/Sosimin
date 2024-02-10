@@ -312,37 +312,48 @@ public class LevelService {
 
 	// 회원 신고 처리
 	@Transactional
-	public void updateReportExp(String reportee_id) {
+	public void updateReportStatusAndCount(Map<String, String> map) {
+		// 회원 상태 변경
+		mapper.updateReportStatus(map);
+		// reportee_id 신고횟수 관리할 객체 생성
+		Map<String, Object> count = mapper.reportCount(map);
 		
-		// 회원 정보 조회
-		Map<String, Integer> map = mapper.selectMemberLevel(reportee_id);
-		// 이전 레벨정보 가져오기
-		Map<String, Integer> prevLevel = mapper.selectLevel((int)map.get("member_level") - 1);
-		// 현재레벨
-		int level = map.get("member_level");
-		// 현재경험치
-		int currentExp = map.get("member_exp");
-		// 계산경험치
-		int exp = 50;
-		
-		currentExp -= exp;
-		if(currentExp <= (int)map.get("level_min_exp")) { // 레벨 다운
-		    if(level > 1) { // 레벨이 2이상인 경우
-		    	log.info("레벨을 내릴거에요");
-		        map.put("member_level", level - 1);
-		        map.put("member_exp", (int)prevLevel.get("level_max_exp") + currentExp);
-		    } else { // 레벨이 1인 경우
-		    	log.info("경험치를 0으로 만들거에요");
-		        map.put("member_exp", 0);
-		    }
-		} else { // 경험치만 감소
-			log.info("경험치만 내릴거에요");
-			map.put("member_exp", currentExp);
+//		System.out.println("신고 횟수를 알려줘 : " + ((Long)count.get("count")).intValue());
+		if(((Long)count.get("count")).intValue() >= 6) { // 신고가 6회인 경우
+			// 레벨을 0으로 만들고 탈퇴처리
+			map.put("member_level", "0");
+			map.put("member_exp", "0");
+			mapper.updateMemberLevelZero(count);
+		} else { // 신고가 6회 미만인 경우
+			// 회원 정보 조회
+			Map<String, Integer> member = mapper.selectMemberLevel(count.get("reportee_id").toString());
+			// 이전 레벨정보 가져오기
+			Map<String, Integer> prevLevel = mapper.selectLevel((int)member.get("member_level") - 1);
+			// 현재레벨
+			int level = member.get("member_level");
+			// 현재경험치
+			int currentExp = member.get("member_exp");
+			// 계산경험치
+			int exp = 50;
+			
+			currentExp -= exp;
+			if(currentExp <= (int)member.get("level_min_exp")) { // 레벨 다운
+			    if(level > 1) { // 레벨이 2이상인 경우
+			    	log.info("레벨을 내릴거에요");
+			    	member.put("member_level", level - 1);
+			    	member.put("member_exp", (int)prevLevel.get("level_max_exp") + currentExp);
+			    } else { // 레벨이 1인 경우
+			    	log.info("경험치를 0으로 만들거에요");
+			    	member.put("member_exp", 0);
+			    }
+			} else { // 경험치만 감소
+				log.info("경험치만 내릴거에요");
+				member.put("member_exp", currentExp);
+			}
+			
+			// 회원 레벨 업데이트
+			mapper.updateMemberLevel(member);
 		}
-		
-		// 회원 레벨 업데이트
-		mapper.updateMemberLevel(map);
-		
 	}
 
 	// ============ 관리자 페이지 ==============
@@ -360,10 +371,7 @@ public class LevelService {
 	public int adminRemoveReview(ReviewVO re) {
 		return mapper.deleteAdminReview(re);
 	}
-
-
-
-
+	
 
 
 }

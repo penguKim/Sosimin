@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.c5d2308t1_2.service.LevelService;
 import com.itwillbs.c5d2308t1_2.service.ReportService;
 
 @Controller
@@ -19,6 +20,9 @@ public class ReportController {
 	
 	@Autowired
 	ReportService service;
+	
+	@Autowired
+	LevelService levelService;
 	
 	@GetMapping("Report")
 	public String report() {
@@ -88,7 +92,12 @@ public class ReportController {
 	@GetMapping("ReportModify")
 	public String reportModify(@RequestParam Map<String, String> map, HttpSession session) {
 		
-		service.reportStatusUpt(map);
+		if(String.valueOf(map.get("report_status")).equals("1")) { // 신고확정인 경우
+			// 회원 신고 처리 후 경험치 및 탈퇴 처리
+			levelService.updateReportStatusAndCount(map);
+		} else {
+			service.reportStatusUpt(map);
+		}
 		
 		return "";
 	}

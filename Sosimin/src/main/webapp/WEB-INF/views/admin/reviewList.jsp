@@ -187,10 +187,10 @@
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>거래관리</h1>
+			<h1>리뷰관리</h1>
 			<nav>
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
+					<li class="breadcrumb-item"><a href="AdminMain">Home</a></li>
 					<li class="breadcrumb-item active">리뷰관리</li>
 				</ol>
 			</nav>

@@ -82,6 +82,29 @@
 			AND member_id= #{member_id}
 	</delete>
 	
+	<!-- 회원 신고 처리 -->
+	<update id="updateReportStatus">
+		UPDATE Report
+		SET report_status = #{report_status}
+		WHERE report_id = #{report_id}
+	</update>
+	
+	<!-- 신고 카운트 리턴 -->
+	<select id="reportCount" resultType="map">
+		SELECT *
+		FROM ReportCountView
+		WHERE report_id = #{report_id}
+	</select>
+	<!-- 회원 탈퇴를 위한 레벨0 처리 -->
+	<update id="updateMemberLevelZero">
+		UPDATE Member
+		SET
+			member_level = #{member_level}
+			, member_exp = #{member_exp}
+			, member_status = 2
+		WHERE member_id = #{reportee_id}
+	</update>
+	
 	<!-- ============ 관리자 페이지 =============== -->
 	<!-- 리뷰 목록 조회 -->
 	<select id="selectAllReviewList" resultType="map">
