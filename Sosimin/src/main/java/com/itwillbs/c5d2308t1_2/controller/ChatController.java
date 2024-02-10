@@ -17,20 +17,6 @@ public class ChatController {
 	@Autowired
 	ChatService service;
 	
-	// 단일 전체 채팅방
-	@GetMapping("ChatMain")
-	public String main(HttpSession session, Model model) {
-		String sId = (String) session.getAttribute("sId");
-		if (sId == null) {
-			model.addAttribute("msg", "로그인 후 사용 가능합니다.");
-			model.addAttribute("targetURL", "MemberLoginForm");
-			return "forward";
-		}
-		
-		return "chat/main";
-	}
-	
-	// 다중 1:1 채팅방
 	@GetMapping("ChatMain2")
 	public String main2(HttpSession session, Model model, @RequestParam Map<String, String> map) {
 		String sId = (String) session.getAttribute("sId");

@@ -194,6 +194,176 @@ $(document).ready(function() {
 		});
 	});
 	
+	//===============================================================
+		
+function payment() {
+	// 채팅방에서 produtct_id 들고오기
+	var product_id = "${param.product_id}";
+	location.href="Payment?product_id=" + product_id;
+}
+
+
+//임시로 테스트용 거래수락 버튼 추가
+function acceptPayment() {
+	$("#tradeOk").prop("disabled", false);
+	$("#payOk").prop("disabled", false);
+	// 채팅방에서 produtct_id 들고오기
+	<%-- 서블릿 요청 --%>
+	$.ajax({
+		type: "GET",
+		url: "AcceptPayment",
+		data: {
+			"product_id": "${sellProduct.product_id}",
+			"product_buyer": "leess"
+		},
+		success:  function(data) {
+			if(data == "not-login") {
+				Swal.fire({
+					icon: 'warning',
+					title: '로그인을 해주세요!',
+					text: '로그인 페이지로 이동합니다!',
+					allowOutsideClick: false
+				}).then((result) => {
+						location.href="MemberLogin";
+				});	
+			} else if(data == "true") {
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: '거래를 수락했습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+			} else if(data == "inconsistency") {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '판매자 정보가 일치하지 않습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});				
+			} else {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '거래 수락을 실패했습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});			
+			}
+		},
+		error: function(request, status, error) {
+	      // 요청이 실패한 경우 처리할 로직
+	      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+		}
+	});
+}
+
+//임시로 테스트용 구매확정 버튼 추가(에이젝스)
+function confirmPayment() {
+	
+	// 채팅방에서 produtct_id 들고오기
+// 	location.href="ConfirmPayment?product_id=303";
+	<%-- 서블릿 요청 --%>
+	$.ajax({
+		type: "GET",
+		url: "ConfirmPayment",
+		data: {
+			"product_id": "${sellProduct.product_id}",
+		},
+		success:  function(data) {
+
+			if(data == "not-login") {
+				Swal.fire({
+					icon: 'warning',
+					title: '로그인을 해주세요!',
+					text: '로그인 페이지로 이동합니다!',
+					allowOutsideClick: false
+				}).then((result) => {
+						location.href="MemberLogin";
+				});	
+			} else if(data == "true") {
+				Swal.fire({
+					
+					position: 'center',
+					icon: 'success',
+					title: '구매를 확정했습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+				$("#payOk").prop("disabled", false)
+				$("#buyOk").prop("disabled", true)
+			} else if(data == "none") {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '구매 확정 가능한 상품이 없습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});				
+			} else if(data == "inconsistency") {
+					Swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: '구매자 정보가 일치하지 않습니다.',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+				});			
+			} else if(data == "unpaid") {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '결제를 먼저 진행해주세요.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});			
+			} else if(data == "not-access_token") {
+				Swal.fire({
+					icon: 'warning',
+					title: '계좌 인증이 필요합니다',
+					text: '계좌 인증 페이지로 이동합니다.',
+					allowOutsideClick: false
+				}).then((result) => {
+						location.href="AccountVerification";
+				});	
+			} else if(data == "not-payInfo") {
+				Swal.fire({
+					icon: 'warning',
+					title: '계좌 등록이 필요합니다',
+					text: '계좌 등록 페이지로 이동합니다.',
+					allowOutsideClick: false
+				}).then((result) => {
+						location.href="AccountRegist";
+				});	
+			} else {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '구매 확정을 실패했습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});			
+			}
+		},
+		error: function(request, status, error) {
+	      // 요청이 실패한 경우 처리할 로직
+	      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+		}
+	});
+	
+}		
+		
+		
+		
+	
 	// ===============================================================
 	// 웹소켓 연결 요청
 	let ws; // 웹소켓 연결 시 웹소켓 객체를 저장할 변수 선언
@@ -538,6 +708,20 @@ $(document).ready(function() {
 		<input type="button" value="채팅 시작" id="btnJoin">
 		<input type="button" value="채팅방 나가기" id="btnQuit">
 		<hr>
+			<div>
+				<div id="tradeButtonDiv">
+					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton1" >
+						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="거래수락" onclick="acceptPayment()" id="tradeOk">
+					</div>
+					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton3" >
+						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="결제하기" onclick="payment()" id="payOk" disabled="disabled">
+					</div>
+					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton2" >
+						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="구매확정" onclick="confirmPayment()" id="buyOk" disabled="disabled">
+					</div>
+				</div>
+			</div>
+		
 		<div id="chatRoomListArea"><%-- 현재 사용자의 채팅방 목록 추가될 위치 --%></div>
 		<div id="chatRoomArea"><%-- 채팅방 추가될 위치 --%></div>
 	</article>
