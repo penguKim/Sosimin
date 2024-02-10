@@ -732,14 +732,14 @@ function handleTagRegistration() {
 window.onload = function() {
   var imageData = document.getElementById("image_data");
   var imageUrls = [
-    imageData.getAttribute("data-image1"),
-    imageData.getAttribute("data-image2"),
-    imageData.getAttribute("data-image3"),
-    imageData.getAttribute("data-image4"),
-    imageData.getAttribute("data-image5")
-  ].filter(function(url) { // map 대신 filter를 사용하여 비어있지 않은 url만 남깁니다.
-    return url && url !== '/c5d2308t1_2/resources/upload/';
-  });
+	  imageData.getAttribute("data-image1"),
+	  imageData.getAttribute("data-image2"),
+	  imageData.getAttribute("data-image3"),
+	  imageData.getAttribute("data-image4"),
+	  imageData.getAttribute("data-image5")
+	].filter(function(url) { // map 대신 filter를 사용하여 비어있지 않은 url만 남깁니다.
+	  return url && url.trim() !== '';
+	});
 
   var imageLength = 0;
   var mainImageSpan = document.querySelector(".mainImage");
@@ -939,22 +939,23 @@ function submitFiles(event) {
 	  // 삭제된 이미지의 인덱스를 서버로 전송
 	   formData.append('delete_image', deleteImages.join(','));
 	  // 사용자가 새 이미지를 선택하지 않았을 경우, 기존 이미지의 경로를 서버로 전송
-	  if (selectedFiles.length === 0) {
-	    var imageData = document.getElementById("image_data");
-	    var imageUrls = [
-	      imageData.getAttribute("data-image1"),
-	      imageData.getAttribute("data-image2"),
-	      imageData.getAttribute("data-image3"),
-	      imageData.getAttribute("data-image4"),
-	      imageData.getAttribute("data-image5")
-	    ];
-
-	    for (var i = 0; i < imageUrls.length; i++) {
-	      if (imageUrls[i] && imageUrls[i] !== '/c5d2308t1_2/resources/upload/') {
-	        formData.append('product_image' + (i + 1), imageUrls[i]);
-	      }
-	    }
-	  }
+		if (selectedFiles.length === 0) {
+		  var imageData = document.getElementById("image_data");
+		  var imageUrls = [
+		    imageData.getAttribute("data-image1"),
+		    imageData.getAttribute("data-image2"),
+		    imageData.getAttribute("data-image3"),
+		    imageData.getAttribute("data-image4"),
+		    imageData.getAttribute("data-image5")
+		  ];
+		  
+		  for (var i = 0; i < imageUrls.length; i++) {
+			  if (imageUrls[i] && !imageUrls[i].startsWith('/c5d2308t1_2/resources/upload/')) {
+			  formData.append('product_image' + (i + 1), imageUrls[i]);
+			}
+	  	}
+	}
+	  
 
 	  // 사용자가 새 이미지를 선택한 경우, 선택한 이미지를 서버로 전송
 	  for (var i = 0; i < selectedFiles.length; i++) {
@@ -1333,11 +1334,22 @@ document.addEventListener("DOMContentLoaded", function() {
 					    <span class="mainImage" style="display: none; padding-top: 5px;">대표이미지</span>
 					  </div>
 					  <div id="image_data" 
-					     data-image1="${pageContext.request.contextPath}/resources/upload/${productModify.product_image1}"
-					     data-image2="${pageContext.request.contextPath}/resources/upload/${productModify.product_image2}"
-					     data-image3="${pageContext.request.contextPath}/resources/upload/${productModify.product_image3}"
-					     data-image4="${pageContext.request.contextPath}/resources/upload/${productModify.product_image4}"
-					     data-image5="${pageContext.request.contextPath}/resources/upload/${productModify.product_image5}">
+					  		 <c:if test="${not empty productModify.product_image1}">
+						     data-image1="${pageContext.request.contextPath}/resources/upload/${productModify.product_image1}"
+						     </c:if>
+						     <c:if test="${not empty productModify.product_image2}">
+						     data-image2="${pageContext.request.contextPath}/resources/upload/${productModify.product_image2}"
+						     </c:if>
+						     <c:if test="${not empty productModify.product_image3}">
+						     data-image3="${pageContext.request.contextPath}/resources/upload/${productModify.product_image3}"
+						     </c:if>
+						     <c:if test="${not empty productModify.product_image4}">
+						     data-image4="${pageContext.request.contextPath}/resources/upload/${productModify.product_image4}"
+						     </c:if>
+						     <c:if test="${not empty productModify.product_image5}">
+						     data-image5="${pageContext.request.contextPath}/resources/upload/${productModify.product_image5}"
+						     </c:if>
+						     >
 					  </div>
 					</div>
 <!-- 					  	<span class="imageItem"> -->
