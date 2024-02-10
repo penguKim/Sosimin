@@ -21,7 +21,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 <script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>
@@ -29,8 +28,14 @@
 <script src="${pageContext.request.contextPath}/resources/js/member/review.js"></script>
 <%-- sweetalert --%>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
+
+
 <script type="text/javascript">
+
+
+
 	// 기존 회원 정보 저장
 	//	let member_intro = $("#intro").val();
 	let member_password = "";
@@ -57,7 +62,22 @@
 
 	$(function(){
 		
+		// 경험치
 		memberExp(${percentage});
+		
+		// url에서 filter 값 추출
+		let urlParams = new URLSearchParams(window.location.search);
+		let filterValue = urlParams.get("filter");
+		  
+		// filterValue 값에 따라 해당 필터 글자 굵게 처리
+		if(filterValue == null || filterValue == '0') {
+			$('.eachFilter:eq(0) a').css('font-weight', 'bold');
+		} else if(filterValue == '1') {
+			$('.eachFilter:eq(1) a').css('font-weight', 'bold');
+		} else if(filterValue == '2') {
+			$('.eachFilter:eq(2) a').css('font-weight', 'bold');
+		}
+		
 		
 		// 페이징 처리
 		if(${pageInfo.page.pageNum <= 1 }) {
@@ -79,10 +99,10 @@
 			openModifyMyInfoModal();
 		});
 		
-		// 찜정보 가져오기
+		// 좋아요정보 가져오기
 		$.ajax({
 			type: "POST",
-			url: "ShowLikeInfo", <%-- 회원의 찜 정보 가져오기 --%>
+			url: "ShowLikeInfo", <%-- 회원의 좋아요 정보 가져오기 --%>
 				dataType: "json",
 				success: function(result) {
 					console.log(result);
@@ -98,10 +118,11 @@
 					}
 				},
 				error: function(xhr, textStatus, errorThrown) {
-						alert("찜 불러오기를 실패했습니다.\n새로고침을 해주세요.");
+						alert("좋아요 불러오기를 실패했습니다.\n새로고침을 해주세요.");
 				}
 			});
 		
+<<<<<<< Updated upstream
 		// 리뷰 정보 가져오기
 		$.ajax({
 			type: "POST",
@@ -126,40 +147,56 @@
 		});
 		
 		// 찜 버튼 클릭 이벤트
+=======
+		// 좋아요 버튼 클릭 이벤트
+>>>>>>> Stashed changes
         $(".heart").on("click", function () {
-        	let heart = $(this);
-    		$.ajax({
-    			type: "POST",
-    			url: "CheckLike",
-    			data: {
-    				product_id: $(this).parent().data("id")
-    			},
-//     			dataType: "json",
-    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-    				if(result == 'false') { // 찜을 등록하는 경우
-						$(heart).addClass("is-active");
-        				Swal.fire({
-        					position: 'center',
-        					icon: 'success',
-        					title: '찜 추가했습니다.',
-        					showConfirmButton: false,
-        					timer: 2000,
-        					toast: true
-        				});
-    				} else if(result == 'true') { // 찜을 삭제하는 경우
-						$(heart).removeClass("is-active");
-						$(heart).parent().remove();
-        				Swal.fire({
-        					position: 'center',
-        					icon: 'success',
-        					title: '찜 삭제했습니다.',
-        					showConfirmButton: false,
-        					timer: 2000,
-        					toast: true
-        				});
-    				}
-    			}
-    		});
+        	if($(this).hasClass("isSameUser")) {
+   				Swal.fire({
+   					position: 'center',
+   					icon: 'warning',
+   					title: '내 상품은 좋아요를 누를 수 없어요!',
+   					showConfirmButton: false,
+   					timer: 2000,
+   					toast: true
+   				});
+        	} else {
+	        	let heart = $(this);
+	    		$.ajax({
+	    			type: "POST",
+	    			url: "CheckLike",
+	    			data: {
+	    				product_id: $(this).parent().data("id")
+	    			},
+	//     			dataType: "json",
+	    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+	    				if(result == 'false') { // 좋아요을 등록하는 경우
+							$(heart).addClass("is-active");
+	        				Swal.fire({
+	        					position: 'center',
+	        					icon: 'success',
+	        					title: '좋아요 추가했습니다.',
+	        					showConfirmButton: false,
+	        					timer: 2000,
+	        					toast: true
+	        				});
+	    				} else if(result == 'true') { // 좋아요을 삭제하는 경우
+							$(heart).removeClass("is-active");
+	// 						$(heart).parent().remove();
+	        				Swal.fire({
+	        					position: 'center',
+	        					icon: 'success',
+	        					title: '좋아요 삭제했습니다.',
+	        					showConfirmButton: false,
+	        					timer: 2000,
+	        					toast: true
+	        				});
+	    				}
+	    			}
+	    		});
+        		
+        		
+        	}
         });
 		
 		// 파일 change 이벤트 처리
@@ -1383,12 +1420,13 @@
     </section>
     <form action="" id="myPageCategory">
 		<div id="categoryArea" class="btn-group col categoryBtn" role="group" aria-label="Basic radio toggle button group">
+		<input type="hidden" name="member_id" value="${sessionScope.sId }">
 		  <input type="radio" class="btn-check" name="category" id="soldCategory" value="1" autocomplete="off" <c:if test="${category eq '1' }">checked</c:if>>
 		  <label class="btn btn-outline-primary" for="soldCategory">판매내역</label>
 		  <input type="radio" class="btn-check" name="category" id="boughtCategory" value="2" autocomplete="off" <c:if test="${category eq '2' }">checked</c:if>>
 		  <label class="btn btn-outline-primary" for="boughtCategory">구매내역</label>
 		  <input type="radio" class="btn-check" name="category" id="likeCategory" value="3" autocomplete="off" <c:if test="${category eq '3' }">checked</c:if>>
-		  <label class="btn btn-outline-primary" for="likeCategory">찜 목록</label>
+		  <label class="btn btn-outline-primary" for="likeCategory">좋아요 목록</label>
 		  <input type="radio" class="btn-check" name="category" id="communityCategory" value="4" autocomplete="off" <c:if test="${category eq '4' }">checked</c:if>>
 		  <label class="btn btn-outline-primary" for="communityCategory">커뮤니티 작성 글</label>
 		  <input type="radio" class="btn-check" name="category" id="communityReplyCategory" value="5" autocomplete="off" <c:if test="${category eq '5' }">checked</c:if>>
@@ -1402,13 +1440,13 @@
 <!--          <ul class="meta-info"> -->
 <!--              <li><a href="javascript:void(0)"><i class="lni lni-user"></i>판매내역</a></li> -->
 <!--              <li><a href="javascript:void(0)"><i class="lni lni-calendar"></i>구매내역</a></li> -->
-<!--              <li><a href="javascript:void(0)"><i class="lni lni-tag"></i>관심목록</a></li> -->
+<!--              <li><a href="javascript:void(0)"><i class="lni lni-tag"></i>좋아요목록</a></li> -->
 <!--              <li><a href="javascript:void(0)"><i class="lni lni-timer"></i>커뮤니티 작성 글</a></li> -->
 <!--              <li><a href="javascript:void(0)"><i class="lni lni-timer"></i>커뮤니티 작성 댓글</a></li> -->
 <!--          </ul> -->
 <!--      </div> -->
 
-	<%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 표시 --%>
+	<%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 좋아요목록) 선택 시 표시 --%>
 	<c:if test="${category eq '1' or category eq '3'}">
 	   	<div class="filterArea">
 	   		<ul class="row allFilter filter-3">
@@ -1440,6 +1478,7 @@
 				<c:choose> <%-- 탭선택 --%>
 					<c:when test="${category eq '1' }"> <%-- 판매내역 탭 시작--%>
 						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" data-order="${mypage.order_id }" id="singleProductArea">
+<%-- 						${mypage.member_id } --%>
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
 								<a href="ProductDetail?product_id=${mypage.product_id }">
@@ -1450,16 +1489,16 @@
 									<span id="dealInProcess">거래중</span>
 								</c:if>
 								<div id="singleProductTitleArea">
-									<b>
-									<c:choose>
-								        <c:when test="${fn:length(mypage.product_name) gt 9}">
-								        	${fn:substring(mypage.product_name, 0, 8)} ...
-								        </c:when>
-								        <c:otherwise>
-								        	${mypage.product_name }
-								        </c:otherwise>
-									</c:choose>
-									</b>
+								<b>
+								<c:choose>
+							        <c:when test="${fn:length(mypage.product_name) gt 9}">
+							        	${fn:substring(mypage.product_name, 0, 8)} ...
+							        </c:when>
+							        <c:otherwise>
+							        	${mypage.product_name }
+							        </c:otherwise>
+								</c:choose>
+								</b>
 								</div>
 								<div id="singleProductInfoArea">
 									${mypage.product_price }원
@@ -1468,12 +1507,16 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 ${mypage.count}개
+									좋아요 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									채팅 n회
+<!-- 										채팅 n회 -->
+									<c:forEach var="pay" items="${payUser }">
+										<c:if test="${pay.member_id eq mypage.member_id }">
+										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+										</c:if>
+									</c:forEach>
 								</div>
-								
 								<div id="singleProductButtonArea">
 									<c:choose>
 										<c:when test="${mypage.trade_status eq '0' }"> <%-- 거래 대기 --%>
@@ -1515,10 +1558,15 @@
 										${mypage.product_datetime }
 									</div>
 									<div id="singleProductContactArea">
-										찜 ${mypage.count}개
+										좋아요 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										채팅 n회
+	<!-- 										채팅 n회 -->
+										<c:forEach var="pay" items="${payUser }">
+											<c:if test="${pay.member_id eq mypage.member_id }">
+											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+											</c:if>
+										</c:forEach>
 									</div>
 									<div id="singleProductButtonArea">
 <%-- 										<c:choose> --%>
@@ -1549,7 +1597,7 @@
 							<a href="ProductDetail?product_id=${mypage.product_id }">
 								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
 							</a>										
-							<span class="heart"></span>
+							<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 							<span id="dealInProcess">거래중</span>
 							<div id="singleProductTitleArea">
 								<b>
@@ -1570,10 +1618,15 @@
 								${mypage.product_datetime }
 							</div>
 							<div id="singleProductContactArea">
-								찜 ${mypage.count}개
+								좋아요 ${mypage.count}개
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								채팅 n회
+<!-- 										채팅 n회 -->
+								<c:forEach var="pay" items="${payUser }">
+									<c:if test="${pay.member_id eq mypage.member_id }">
+										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+									</c:if>
+								</c:forEach>
 							</div>
 							<div id="singleProductButtonArea">
 								<input type="button" class="btnConfirmDeal num${mypage.product_id }" data-id="${mypage.product_id}" data-order="${mypage.order_id }" value="구매확정하기">
@@ -1592,7 +1645,7 @@
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 									<b>구매 완료</b>
 								</span>				
-								<span class="heart"></span>
+								<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 								<div id="singleProductTitleArea">
 								<b>
 								<c:choose>
@@ -1612,10 +1665,15 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 ${mypage.count}개
+									좋아요 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									채팅 n회
+<!-- 										채팅 n회 -->
+									<c:forEach var="pay" items="${payUser }">
+										<c:if test="${pay.member_id eq mypage.member_id }">
+											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+										</c:if>
+									</c:forEach>
 								</div>
 								<div id="singleProductButtonArea">
 									<input type="button" class="reviewBtn_${mypage.order_id }" data-id="${mypage.order_id}" value="거래 후기 작성" data-bs-toggle="modal" data-bs-target="#reviewModal_${mypage.order_id}" style="background-color: #fff; border: 1px solid; color: #39D274;" onclick="writeReview(this)">
@@ -1630,14 +1688,14 @@
 				        </div> <%--singleProductArea 끝 --%>
 					</c:when> <%-- 구매내역 탭 끝 --%>
 					
-					<c:when test="${category eq '3' }"> <%-- 찜목록 탭 시작--%>
+					<c:when test="${category eq '3' }"> <%-- 좋아요목록 탭 시작--%>
 						<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductArea">
 							<c:choose>
 								<c:when test="${mypage.trade_status eq '0' or mypage.trade_status eq '1'}"> <%-- 거래(판매) 대기/거래 중 --%>
 								<a href="ProductDetail?product_id=${mypage.product_id }">
 									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
 								</a>							
-								<span class="heart"></span>
+								<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
 									<span id="dealInProcess">거래중</span>
 								</c:if>
@@ -1660,10 +1718,15 @@
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									찜 ${mypage.count}개
+									좋아요 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									채팅 n회
+<!-- 										채팅 n회 -->
+									<c:forEach var="pay" items="${payUser }">
+										<c:if test="${pay.member_id eq mypage.member_id }">
+											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+										</c:if>
+									</c:forEach>
 								</div>
 								<div id="singleProductButtonArea">
 									<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
@@ -1679,7 +1742,7 @@
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 										<b>판매 완료</b>
 									</span>				
-									<span class="heart"></span>
+									<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 									<div id="singleProductTitleArea">
 									<b>
 									<c:choose>
@@ -1699,10 +1762,15 @@
 										${mypage.product_datetime }
 									</div>
 									<div id="singleProductContactArea">
-										찜 ${mypage.count}개
+										좋아요 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										채팅 n회
+<!-- 										채팅 n회 -->
+										<c:forEach var="pay" items="${payUser }">
+											<c:if test="${pay.member_id eq mypage.member_id }">
+												<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+											</c:if>
+										</c:forEach>
 									</div>
 									<div id="singleProductButtonArea">
 										<c:choose>
@@ -1718,7 +1786,7 @@
 							</c:when>
 						</c:choose>
 				        </div> <%--singleProductArea 끝 --%>
-					</c:when> <%-- 찜목록탭 끝 --%>
+					</c:when> <%-- 좋아요목록탭 끝 --%>
 					
 					
 					
@@ -1751,7 +1819,7 @@
 										</a></b><br>
 									</div>
 									<div class="col d-flex justify-content-end">
-										<input type="button" class="btn btn-primary" value="삭제" style="width:60% !important;" onclick="deleteCommunity('${mypage.community_id }', this)">
+										<input type="button" class="btn btn-primary btnCommunityDelete" value="삭제" onclick="deleteCommunity('${mypage.community_id }', this)">
 									</div>
 								</div>
 								<div id="communityMiddleArea">
@@ -1806,7 +1874,7 @@
 									</a></b><br>
 								</div>
 								<div class="col d-flex justify-content-end">
-									<input type="button" class="btn btn-primary" value="삭제" style="width:60% !important;" onclick="deleteCommunityReply('${mypage.reply_id }', this)">
+									<input type="button" class="btn btn-primary btnCommunityReplyDelete" value="삭제" onclick="deleteCommunity('${mypage.community_id }', this)">
 								</div>
 							</div>
 							<div id="communityReplyMiddleArea">
@@ -1913,7 +1981,7 @@
 							<div class="form-group">
 								<label for="intro" id="mgForThreeMod">소개글</label>
 								<input class="form-control" value="${MyProfileMember.member_intro }" maxlength="50" type="text" name="member_intro" id="intro" required>
-								<div id="checkIntroResult" class="resultArea"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
+								<div id="checkIntroResult" class="resultAreaForMyInfo"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
 							</div>
 
 							<div class="form-group">
@@ -1928,12 +1996,12 @@
 								<label for="newPassword" id="mgForFiveOneMod">새 비밀번호</label> 
 								<input type="hidden" name="member_password" id="member_password" value="${MyProfileMember.member_password }">	
 								<input class="form-control" maxlength="16" placeholder="비밀번호를 수정할 경우에만 입력해주세요" type="password"  name="newPassword" id="newPassword" required>
-								<div id="checkPasswordResult" class="resultArea"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
+								<div id="checkPasswordResult" class="resultAreaForMyInfo"></div><%--8~16자의 영문 대/소문자, 숫자, 특수문자(!@#%^&*) --%>
 							</div>
 							<div class="form-group">
 								<label for="passwordConfirm" id="mgForSevenTwoMod">새 비밀번호 확인</label> 
 								<input class="form-control" maxlength="16" placeholder="비밀번호를 한 번 더 입력해주세요" type="password" id="passwordConfirm" required>
-								<div id="checkPasswordConfirmResult" class="resultArea"></div>
+								<div id="checkPasswordConfirmResult" class="resultAreaForMyInfo"></div>
 							</div>
 							<div class="form-group">
 								<label for="nickname" id="mgForThreeMod">닉네임</label> 
@@ -1941,7 +2009,7 @@
 								<input type="button" value="중복확인" id="checkNicknameDupButton">
 <!-- 								<input type="button" value="닉네임만들기" id="generateNicknameButton"> -->
 								<%-- 입력값이 비어있을 경우 DB에서 임의로 난수발생해 insert 처리 --%>
-								<div id="checkNicknameResult" class="resultArea"></div><%--2~10글자의 한글, 숫자(선택입력) --%>
+								<div id="checkNicknameResult" class="resultAreaForMyInfo"></div><%--2~10글자의 한글, 숫자(선택입력) --%>
 							</div>
 
 							<div class="form-group">
@@ -1949,12 +2017,13 @@
 								<input class="form-control" type="date" name="member_birth" id="birthdate" value="${MyProfileMember.member_birth }" readonly>
 							</div>
 							<div class="form-group">
-								<label for="myMap" id="mgForTwoMod">주소</label> 
+								<label for="myMap" id="mgForTwoMod">동네</label> 
 								<input type="hidden" id="map">
 								<input type="hidden" id="member_neighbor_auth" name="member_neighbor_auth" value="${MyProfileMember.member_neighbor_auth }">
 								<c:choose>
 									<c:when test="${MyProfileMember.member_neighbor_auth eq 1 }">
-										<input class="form-control" type="text" value="부산광역시 ${MyProfileMember.gu } ${MyProfileMember.dong}" name="member_address" id="myMap" required readonly>
+										<input class="myMapForMyInfo form-control" type="text" value="부산광역시 ${MyProfileMember.gu } ${MyProfileMember.dong}" 
+										name="member_address" id="myMap" style="background-color: #fff !important; font-size: 0.85rem !important;" required readonly>
 									</c:when>
 									<c:otherwise>
 										<input class="form-control" type="text" placeholder="재인증을 해주세요" name="member_address" id="myMap" required readonly>
@@ -1962,27 +2031,27 @@
 								</c:choose>
 								<%--회원가입과 동일. 기존 주소 placeholder --%>
 								<input type="button" value="동네인증" id="myMapButton" onclick="AddressMap()">
-								<div id="checkAddressResult" class="resultArea"></div>
+								<div id="checkAddressResult" class="resultAreaForMyInfo"></div>
 							</div>
 							<div class="form-group">
 								<label for="email" id="mgForThreeMod">이메일</label> 
 								<input class="form-control" type="email" value ="${MyProfileMember.member_email }" name="member_email" id="email" required>
 								<%--회원가입과 동일하게 정규표현식 검증 및 중복확인. 기존 이메일 placeholder --%>
 								<input type="button" value="중복확인" id="checkEmailDupButton">
-								<div id="checkEmailResult" class="resultArea"></div>
+								<div id="checkEmailResult" class="resultAreaForMyInfo"></div>
 							</div>
 							<div class="form-group">
 								<label for="phone" id="mgForFiveMod">휴대폰번호</label> 
 								<input class="form-control" maxlength="13" value="${MyProfileMember.member_phone }" type="tel" name="member_phone" id="phone" required>
 								<%--회원가입과 동일하게 인증, 정규표현식 검증, 중복확인(회원아이디 일치하고 휴대폰 번호 동일한 경우 자바스크립트 처리?). 기존 폰번호 placeholder --%>
 								<input type="button" value="인증코드발급" id="requestPhoneAuthCodeButton">
-								<div id="checkPhoneResult" class="resultArea"></div>
+								<div id="checkPhoneResult" class="resultAreaForMyInfo"></div>
 							</div>
 							<div class="form-group">
 								<label for="phoneAuthCode" id="mgForFourMod">인증코드</label> 
 								<input class="form-control" placeholder="코드를 입력한 후 인증 버튼을 눌러주세요" type="text" name="phone_auth_code" id="phoneAuthCode" maxlength="4">
 								<input type="button" value="인증" id="completePhoneAuthButton">
-								<div id="checkPhoneAuthCodeResult" class="resultArea"></div>
+								<div id="checkPhoneAuthCodeResult" class="resultAreaForMyInfo"></div>
 							</div>
 						</form>
 					</div>
@@ -2032,6 +2101,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 	
 
 </body>

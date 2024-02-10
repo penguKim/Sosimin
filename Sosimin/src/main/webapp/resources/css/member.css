@@ -515,6 +515,14 @@ input[readonly] {
 	display: none !important;
 }
 
+.resultAreaForMyInfo {
+    height: 15px;
+    font-size: 12px;
+    padding-left: 142px;
+    margin: 0 auto 15px;
+    display: block !important;
+}
+
 /* 한글 한글자당 13px 차이 */
 /* 공백 하나 당 4px 차이 */
 #mgForTwoMod {
@@ -859,6 +867,12 @@ input[readonly] {
 }
 
 /* 커뮤니티 작성글 탭 */
+.btnCommunityDelete {
+	width: 32% !important;
+    height: 50% !important;
+    font-size: x-small !important;
+}
+
 #singleCommunityArea {
 	width: 1178px;
 	height: 200px;
@@ -943,6 +957,14 @@ input[readonly] {
 
 /* ================ */
 /* 커뮤니티 댓글 탭 */
+.btnCommunityReplyDelete {
+	width: 26% !important;
+    height: 50% !important;
+    font-size: x-small !important;
+    margin: 8% 17% !important;
+}
+
+
 #singleCommunityReplyArea {
 	width: 1178px;
 	height: 120px;

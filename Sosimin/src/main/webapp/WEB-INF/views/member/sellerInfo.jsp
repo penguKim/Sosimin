@@ -37,6 +37,7 @@
 
 	$(function(){
 		
+		// 경험치
 		memberExp(${percentage});
 		
 		// url에서 filter 값 추출
@@ -72,7 +73,7 @@
 		// 좋아요정보 가져오기
 		$.ajax({
 			type: "POST",
-			url: "ShowLikeInfo", <%-- 회원의 관심 정보 가져오기 --%>
+			url: "ShowLikeInfo", <%-- 회원의 좋아요 정보 가져오기 --%>
 				dataType: "json",
 				success: function(result) {
 					console.log(result);
@@ -88,7 +89,7 @@
 					}
 				},
 				error: function(xhr, textStatus, errorThrown) {
-						alert("관심 불러오기를 실패했습니다.\n새로고침을 해주세요.");
+						alert("좋아요 불러오기를 실패했습니다.\n새로고침을 해주세요.");
 				}
 			});
 		
@@ -558,7 +559,7 @@
     
     
 
-	<%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 관심목록) 선택 시 표시 --%>
+	<%-- 페이지 옵션1 : 상품 관련 탭(판매내역, 구매내역, 좋아요목록) 선택 시 표시 --%>
 	<c:if test="${category eq '1' or category eq '3'}">
 	   	<div class="filterArea">
 	   		<ul class="row allFilter filter-3">
@@ -611,23 +612,23 @@
 									</c:choose>
 									</b>
 								</div>
-									<div id="singleProductInfoArea">
-										${mypage.product_price }원
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										${mypage.product_datetime }
-									</div>
-									<div id="singleProductContactArea">
-										좋아요 ${mypage.count}개
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<!-- 										채팅 n회 -->
-										<c:forEach var="pay" items="${payUser }">
-											<c:if test="${pay.member_id eq mypage.member_id }">
-											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
-											</c:if>
-										</c:forEach>
-									</div>
+								<div id="singleProductInfoArea">
+									${mypage.product_price }원
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									${mypage.product_datetime }
+								</div>
+								<div id="singleProductContactArea">
+									좋아요 ${mypage.count}개
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<!-- 										채팅 n회 -->
+									<c:forEach var="pay" items="${payUser }">
+										<c:if test="${pay.member_id eq mypage.member_id }">
+										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+										</c:if>
+									</c:forEach>
+								</div>
 								<div id="singleProductButtonArea">
 									<input type="button" value="상세보기" onclick="location.href='ProductDetail?product_id=${mypage.product_id}'">
 								</div>
