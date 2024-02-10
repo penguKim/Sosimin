@@ -1407,8 +1407,8 @@ function checkInput() {
 						</ul>
 					</div>
 					<div id="ulLine">
-						<textarea rows="6" cols="100" style="resize: none;" id="ProductDescription" name="product_txt" maxlength="2000" onkeyup="ProductDescriptionKey()" 
-							oninput="limitInputLength2(this, 2000)" placeholder="구매시기,브랜드/모델명,제품의 상태(사용감,하자 유무) 등을 입력해 주세요"></textarea>
+					    <textarea rows="6" cols="100" style="resize: none; white-space: pre-line;" id="ProductDescription" name="product_txt" maxlength="2000" onkeyup="ProductDescriptionKey()" 
+					        oninput="limitInputLength2(this, 2000)" placeholder="구매시기,브랜드/모델명,제품의 상태(사용감,하자 유무) 등을 입력해 주세요" >${productModify.product_txt}</textarea>
 					</div>
 					<div id="explanationLength">
 						<span id="ProductDescriptionLength">0</span><span>/2000</span>

@@ -467,6 +467,13 @@
 					WHERE p.member_id = Pay.member_id
 					AND pay_status = 0)
 	</select>
+		
+	<select id="selectReviewCount" resultType="int">
+		SELECT COUNT(review_status) 
+		FROM ReviewCount
+		WHERE 
+			target_member_id = #{member_id};
+	</select>
 </mapper>
 	
 

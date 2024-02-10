@@ -398,6 +398,8 @@ public class ProductController {
 					Map<String,String> guDong = service.getGuDong(map);
 					// 회원 경험치 조회
 					System.out.println("너 뭐 들었어 : " + member);
+					// 판매자 후기 조회
+					int SellerReview = service.selectReviewCount(SellerInfo);
 					
 					
 					System.out.println("판매자의!!!정보는!! : " + payStatus);
@@ -486,8 +488,11 @@ public class ProductController {
 								model.addAttribute("payStatus", payStatus);
 								model.addAttribute("percentage", percentage);
 								model.addAttribute("levelExp", levelExp);
+								model.addAttribute("SellerReview", SellerReview);
 								// 리스트를 무작위로 섞어 조회한 상품중 랜덤한 값 뿌리기
 								System.out.println("여기에 뭐가들었니? : " + percentage);
+								System.out.println("여기에 몇개 카운트가 들었니? : " + SellerReview);
+								
 								
 								RelatedProducts = service.selectRelatedProducts(Product);
 								Collections.shuffle(RelatedProducts); // 

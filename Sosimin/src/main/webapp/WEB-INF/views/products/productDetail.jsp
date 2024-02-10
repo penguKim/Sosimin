@@ -716,6 +716,11 @@ function chat() {
 //});
 //}
 
+    window.onload = function() {
+        var product_txt = document.getElementById("product_txt");
+        product_txt.innerHTML = product_txt.innerHTML.replace(/\n/g, "<br />");
+    };
+
 	function memberExp(percent) {
 	// 스타일 요소를 만들고, @keyframes 규칙을 추가합니다.
 	$('<style>')
@@ -768,7 +773,7 @@ function chat() {
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
-                        <li><a href="http://localhost:8081/c5d2308t1_2/SearchProduct">상품</a></li>
+                        <li><a href="SearchProduct">상품</a></li>
                         <li>상품상세</li>
                     </ul>
                 </div>
@@ -1027,18 +1032,21 @@ function chat() {
                 <div class="single-block" id="single_block">
                 	<div></div>
                     <div class="row">
-                        <div id="productNameContent">
-                            <div class="info-body custom-responsive-margin">
-                                <b><span style="font-size: 20px; padding-top: 30px;">상품정보</span></b><hr>
-                                <p style="font-size: 15px;">${Product.product_txt }</p>
-                            </div>
-                        </div>
+				        <div id="productNameContent">
+						    <div class="info-body custom-responsive-margin">
+						        <b><span style="font-size: 20px; padding-top: 30px;">상품정보</span></b><hr>
+						        <p style="font-size: 15px; white-space: pre-line;">${Product.product_txt }</p>
+						    </div>
+						</div>
                         <div class="col-lg-6 col-12" style="width: 350px;">
                             <div class="info-body" id="info_body">
                                 <b><span style="font-size: 20px; padding-top: 30px;">판매자정보</span></b>
                                 <hr>
                                 <div>
                                 	<a href="SellerInfo?member_id=${SellerInfo.member_id }"  id="profileImage">
+                              	 	<c:if test="${SellerInfo.member_profile eq '' or SellerInfo.member_profile eq 'null'}">
+                                		<img src="/c5d2308t1_2/resources/images/member/Default_pfp.svg" class="img" alt="#">
+                                	</c:if>
                                 		<img src="${pageContext.request.contextPath}/resources/upload/${SellerInfo.member_profile}" class="img" alt="#">
                                 	</a>
                                 	<div id="nickname">
@@ -1054,7 +1062,7 @@ function chat() {
                                 	</div>
                                 	<div id="reviews">
                                 		<a href="SellerInfo?member_id=${SellerInfo.member_id }" id="aTag">
-                                			<span style="font-size: 17px;">후기 13</span>
+                                			<span style="font-size: 17px;">후기 ${SellerReview }</span>
                                 		</a>
                                 	</div>
                                 </div>

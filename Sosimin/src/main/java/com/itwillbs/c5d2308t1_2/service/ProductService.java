@@ -196,5 +196,9 @@ public class ProductService {
 	public List<Map<String, Object>> selectPayUser() {
 		return mapper.selectPayUser();
 	}
+	public int selectReviewCount(Map<String, String> sellerInfo) {
+		
+		return mapper.selectReviewCount(sellerInfo);
+	}
 	
 }

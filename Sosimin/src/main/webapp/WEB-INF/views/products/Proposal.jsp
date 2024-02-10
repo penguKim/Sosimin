@@ -121,24 +121,26 @@
 		bottom:36px;
 		color:red;
 		font-weight: bold;
+		height: 10px;
 	}
 
 </style>
 <script>
 
 $(function() {
-    $("#priceInput").on('input', function() {
-        var normalMoney = $(this).val(); // 입력된 값 가져오기
-        var moneyReplace = parseInt(normalMoney.replace(/,/g, "")); // 쉼표 제거 후 정수 변환
+	    $("#priceInput").on('input', function() {
+	        var normalMoney = $(this).val(); // 입력된 값 가져오기
+	        var moneyReplace = parseInt(normalMoney.replace(/,/g, "")); // 쉼표 제거 후 정수 변환
 
-        if (moneyReplace < 1000) { // 1000 이하인지 비교한다
-            $("#priceX").html("최소 가격인 1,000원보다 작을 수 없습니다.");
-        } else {
-            $("#priceX").empty(); // 조건이 만족하지 않으면 메시지 제거한다
-        }
-    });
-});
-
+	        if (moneyReplace < 1000) { // 1000 이하인지 비교한다
+	            $("#priceX").html("최소 가격인 1,000원보다 작을 수 없습니다.");
+	            $("#priceX").css("color", "red"); // 텍스트 색상을 빨간색으로 설정
+	        } else {
+	            $("#priceX").html("최소 가격인 1,000원보다 작을 수 없습니다.");
+	            $("#priceX").css("color", "transparent"); // 텍스트 색상을 투명으로 설정
+	        }
+	    });
+	});
 function submit() {
     var priceInput = $("#priceInput"); // 입력된 가격 가져오기
     var moneyReplace = parseInt(priceInput.val().replace(/,/g, "")); // 쉼표 제거 후 정수 변환
@@ -257,7 +259,8 @@ function proposalOk() {
 			value="<fmt:formatNumber value='${Product.product_price}' pattern='#,###' />"><span id="priceInput2" style="font-size: 40px">원</span>
 			<hr>
 		</div>
-		<div id="priceX"></div>
+		<div id="priceX" ></div>
+		<br><br><br>
         <div class="col-lg-4 col-md-4 col-12">
 	        <div class="wish-button" id="priceProposal">
 	        	<div id="priceContainer">

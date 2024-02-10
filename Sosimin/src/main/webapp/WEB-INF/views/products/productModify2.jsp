@@ -14,7 +14,6 @@
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 
 <meta charset="UTF-8">
-<title>소시민 상품등록</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
@@ -557,37 +556,6 @@ function limitInputLength2(input, maxLength) {
     document.getElementById("ProductDescriptionLength").textContent = input.value.length;
   }
 
-// 상품수정 시 기존에 입력되있던 상품글자수를 가져옴
-$(document).ready(function() {
-
-    function productKey() {
-        var productNameLength = $("#productName").val().length;
-        $("#productNameLength").text(productNameLength);
-    };
-
-    function ProductDescriptionKey() {
-        var ProductDescriptionLength = $("#ProductDescription").val().length;
-        $("#ProductDescriptionLength").text(ProductDescriptionLength);
-    };
-
-    function limitInputLength(input, maxLength) {
-        if (input.value.length > maxLength) {
-            input.value = input.value.slice(0, maxLength);
-        }
-        document.getElementById("productNameLength").textContent = input.value.length;
-    }
-
-    function limitInputLength2(input, maxLength) {
-        if (input.value.length > maxLength) {
-            input.value = input.value.slice(0, maxLength);
-        }
-        document.getElementById("ProductDescriptionLength").textContent = input.value.length;
-    }
-
-    productKey();
-    ProductDescriptionKey();
-});
-
 
 function addACategory() {
     var selectedCategory = $("#categoryName").val();
@@ -737,18 +705,22 @@ window.onload = function() {
     imageData.getAttribute("data-image3"),
     imageData.getAttribute("data-image4"),
     imageData.getAttribute("data-image5")
-  ].filter(function(url) { // map 대신 filter를 사용하여 비어있지 않은 url만 남깁니다.
-    return url && url !== '/c5d2308t1_2/resources/upload/';
-  });
-
-  var imageLength = 0;
+  ].map(function(url) {
+	  if (url === null || url === '/c5d2308t1_2/resources/upload/') {
+		    return '';  // null이나 기본 경로만 있는 경우 빈 문자열로 변환
+		  } else {
+		    return url;  // 그 외의 경우 URL 그대로 반환
+		  }
+		});
+//   var imageUrls = ['${productModify.product_image1}', '${productModify.product_image2}', '${productModify.product_image3}', '${productModify.product_image4}', '${productModify.product_image5}'];
+  var imageLength = 0;  // 이미지 개수를 저장할 변수
   var mainImageSpan = document.querySelector(".mainImage");
-
   imageUrls.forEach(function(url, index) {
-    if (url && url.trim() !== '') {
-      var img = document.createElement("img");
-      img.setAttribute("src", url);
-      img.setAttribute("class", "imageSize");
+	  console.log(url);
+	    if (url && url.trim() !== '') { // url이 빈 문자열이 아닐 때만 이미지 생성
+	      var img = document.createElement("img");
+	      img.setAttribute("src", url);
+	      img.setAttribute("class", "imageSize");
 
       var closeButton = document.createElement("button");
       closeButton.setAttribute("type", "button");
@@ -761,14 +733,13 @@ window.onload = function() {
       imageItem.appendChild(img);
       imageItem.appendChild(closeButton);
       document.getElementById("image_container").appendChild(imageItem);
-      imageLength++;
-
-      if (index === 0) {
-        mainImageSpan.style.display = "block";
-      }
+      imageLength++;  // 이미지 개수 증가
+      if (index === 0) {  // 첫 번째 이미지일 때
+          mainImageSpan.style.display = "block";  // 대표 이미지 span 요소를 표시합니다.
+        }
     }
   });
-  document.getElementById("imageLength").textContent = imageLength;  
+  document.getElementById("imageLength").textContent = imageLength;  // 이미지 개수를 화면에 표시
 }
 
 
@@ -834,72 +805,72 @@ function removeImage(button) {
 }
 
 function setThumbnail(event) {
-	  var newFiles = event.target.files;
-	  var imageCounter = document.querySelectorAll(".imageItem").length + 1;
+  var newFiles = event.target.files;
+  var imageCounter = document.querySelectorAll(".imageItem").length + 1;
 
-	  for (var i = 0; i < newFiles.length; i++) {
-	    var file = newFiles[i];
-	    var ext = file.name.split('.').pop().toLowerCase();
-	    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
+  for (var i = 0; i < newFiles.length; i++) {
+    var file = newFiles[i];
+    var ext = file.name.split('.').pop().toLowerCase();
+    var allowedExtensions = ['jpg', 'jpeg', 'gif', 'png'];
 
-	    if (!allowedExtensions.includes(ext)) {
-	      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
-	      event.target.value = "";
-	      return false;
-	    }
+    if (!allowedExtensions.includes(ext)) {
+      alert("jpg, gif, jpeg, png 파일만 업로드 할 수 있습니다.");
+      event.target.value = "";
+      return false;
+    }
 
-	    var imageLength = parseInt(document.getElementById("imageLength").textContent);
-	    imageLength++;
+    var imageLength = parseInt(document.getElementById("imageLength").textContent);
+    imageLength++;
 
-	    if (imageLength <= 5) {
-	      selectedFiles.push(file);
+    if (imageLength <= 5) {
+      selectedFiles.push(file);
 
-	      var reader = new FileReader();
-	      reader.onload = (function(file) {
-	        return function(e) {
-	          var img = document.createElement("img");
-	          img.setAttribute("src", e.target.result);
-	          img.setAttribute("class", "imageSize");
+      var reader = new FileReader();
+      reader.onload = (function(file) {
+        return function(e) {
+          var img = document.createElement("img");
+          img.setAttribute("src", e.target.result);
+          img.setAttribute("class", "imageSize");
 
-	          var closeButton = document.createElement("button");
-	          closeButton.setAttribute("type", "button");
-	          closeButton.setAttribute("class", "imageClose");
-	          closeButton.setAttribute("onclick", "removeImage(this)");
+          var closeButton = document.createElement("button");
+          closeButton.setAttribute("type", "button");
+          closeButton.setAttribute("class", "imageClose");
+          closeButton.setAttribute("onclick", "removeImage(this)");
 
-	          var imageItem = document.createElement("span");
-	          imageItem.classList.add("imageItem");
-	          imageItem.file = file;
+          var imageItem = document.createElement("span");
+          imageItem.classList.add("imageItem");
+          imageItem.file = file;
 
-	          imageItem.appendChild(img);
-	          imageItem.appendChild(closeButton);
-	          document.getElementById("image_container").appendChild(imageItem);
+          imageItem.appendChild(img);
+          imageItem.appendChild(closeButton);
+          document.getElementById("image_container").appendChild(imageItem);
 
-	          var firstImageItem = document.querySelector(".imageItem");
-	          var mainImageText = firstImageItem ? firstImageItem.querySelector(".mainImage") : null;
+          var firstImageItem = document.querySelector(".imageItem");
+          var mainImageText = firstImageItem ? firstImageItem.querySelector(".mainImage") : null;
 
-	          if (!mainImageText && imageCounter === 1) {
-	            mainImageText = document.createElement("span");
-	            mainImageText.classList.add("mainImage");
-	            mainImageText.textContent = "대표이미지";
-	            imageItem.appendChild(mainImageText);
-	          }
-	        };
-	      })(file);
-	      reader.readAsDataURL(file);
-	    } else if (imageLength > 5) {
-	      alert("사진 첨부는 최대 5장까지 가능합니다.");
-	      imageLength = 5;
-	    }
-	    document.getElementById("imageLength").textContent = imageLength;
-	  }
-	}
-	//파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
-	function addFileInput() {
-	document.getElementById("product_image").click();
-	}
+          if (!mainImageText && imageCounter === 1) {
+            mainImageText = document.createElement("span");
+            mainImageText.classList.add("mainImage");
+            mainImageText.textContent = "대표이미지";
+            imageItem.appendChild(mainImageText);
+          }
+        };
+      })(file);
+      reader.readAsDataURL(file);
+    } else if (imageLength > 5) {
+      alert("사진 첨부는 최대 5장까지 가능합니다.");
+      imageLength = 5;
+    }
+    document.getElementById("imageLength").textContent = imageLength;
+  }
+}
+//파일 선택 버튼 클릭 시 input[type=file] 클릭 이벤트 발생
+function addFileInput() {
+document.getElementById("product_image").click();
+}
 
 
-// var deleteImages = [];  // 삭제된 이미지의 인덱스를 저장할 배열
+var deleteImages = [];  // 삭제된 이미지의 인덱스를 저장할 배열
 
 	  
 function submitFiles(event) {
@@ -982,7 +953,6 @@ function submitFiles(event) {
 	    }).then((result) => {
 	        if (result.isConfirmed) {
 	      location.href =  "ProductDetail?product_id=" + data;
-	      deleteImages = [];
 	        }
         });
 	    },
@@ -1041,67 +1011,6 @@ function ProductDelete(event) {
         });
     }
 	
-
-// // 제출 버튼 클릭 시 서버로 모든 파일 전송
-// document.getElementById("submit").addEventListener("click", function() {
-//   var xhr = new XMLHttpRequest();
-//   xhr.open("POST", "/upload", true);
-  
-//   var data = new FormData();
-//   for (var i = 0; i < files.length; i++) {
-//     data.append(files[i].name, files[i].file);
-//   }
-//   xhr.send(data);
-// });
-
-// function removeImage(element) {
-//   var imageItem = element.parentNode;
-//   var imageContainer = document.getElementById("image_container");
-//   imageContainer.removeChild(imageItem);
-
-//   var imageLength = parseInt(document.getElementById("imageLength").textContent);
-//   imageLength--;
-//   document.getElementById("imageLength").textContent = imageLength;
-
-//   var imageIndex = Array.from(imageContainer.children).indexOf(imageItem);
-//   selectedFiles.splice(imageIndex, 1);  // 선택된 이미지 목록에서 해당 이미지 제거
-// }
-
-
-// 이미지 삭제
-// function removeImage(button) {
-//   var imageItem = button.parentNode; // 이미지 항목
-//   var imageContainer = imageItem.parentNode; // 이미지 컨테이너
-
-//   // 이미지 항목에서 input 요소(이미지 이름 값) 찾기
-//   var imageNameInput = imageItem.querySelector('input[name^="image_name"]');
-//   if (imageNameInput) {
-//     // 이미지 이름 값 삭제
-//     imageNameInput.parentNode.removeChild(imageNameInput);
-//   }
-  
-//   // 이미지 항목 삭제
-//   imageContainer.removeChild(imageItem);
-  
-//   var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
-//   imageLength--;
-//   document.getElementById("imageLength").textContent = imageLength;
-
-//   var imageIndex = Array.prototype.indexOf.call(imageContainer.children, imageItem);
-//   deleteImages.push(imageIndex);  // 인덱스를 배열에 추가 (인덱스는 1부터 시작)
-  
-//   imageContainer.removeChild(imageItem);
-  
-//   var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
-//   imageLength--;
-//   document.getElementById("imageLength").textContent = imageLength;
-  
-//   // 대표 이미지가 없는 경우 숨김 처리
-//   var imageText = document.querySelector(".mainImage");
-//   if (imageContainer.children.length === 1) {
-//     imageText.style.display = "none";
-//   }
-// }
 //   deleteImages = [];
 
 //   function removeImage(button) {
@@ -1115,36 +1024,36 @@ function ProductDelete(event) {
 // 	    // 이미지 이름 값 삭제
 // 	    imageNameInput.parentNode.removeChild(imageNameInput);
 // 	  }
-		
+	  
 // 	  // 삭제할 이미지의 인덱스를 배열에 추가
 // 	  deleteImages.push(imageIndex);
 
+// 	  // div에서 삭제할 이미지의 URL 정보를 제거 
+// 	  var imageData = document.getElementById("image_data");
+// 	  var imageUrl = imageData.getAttribute("data-image" + (imageIndex + 1));
+// 	  if (imageUrl) {
+// 	    imageData.setAttribute("data-image" + (imageIndex + 1), '');  // 이미지 URL 정보를 빈 문자열로 설정
+// 	  }
+
 // 	  // 이미지 항목 삭제
 // 	  imageContainer.removeChild(imageItem);
-	
+
 // 	  var file = imageItem.file;  // 파일 객체를 가져옵니다.
 // 	  var index = selectedFiles.indexOf(file);  // selectedFiles 배열에서 해당 파일의 인덱스를 찾습니다.
 // 	  if (index > -1) {
 // 	    selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
 // 	  }
 	  
-// // 	  var fileIndex = selectedFiles.findIndex(function(file) {
-// // 		    return file.name === imageItem.file.name;
-// // 		  });
-// // 		  if (fileIndex > -1) {
-// // 		    selectedFiles.splice(fileIndex, 1);
-// // 		  }
-		  
-// 		    if (imageItem.querySelector(".mainImage")) {
+// 	  if (imageItem.querySelector(".mainImage")) {
 // 	    var nextImageItem = imageContainer.children[1]; 
 // 	    if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {
-// 	        var mainImageText = document.createElement("span");
-// 	        mainImageText.classList.add("mainImage");
-// 	        mainImageText.textContent = "대표이미지";
-// 	        nextImageItem.appendChild(mainImageText);
-// 	      }
+// 	      var mainImageText = document.createElement("span");
+// 	      mainImageText.classList.add("mainImage");
+// 	      mainImageText.textContent = "대표이미지";
+// 	      nextImageItem.appendChild(mainImageText);
 // 	    }
-		    
+// 	  }
+	  
 // 	  // 이미지 개수 감소
 // 	  var imageLength = parseInt(document.getElementById("imageLength").textContent);
 // 	  imageLength--;
@@ -1154,23 +1063,24 @@ function ProductDelete(event) {
 // 	  if (imageContainer.children.length === 1) {
 // 	    imageText.style.display = "none";
 // 	  }
+// 	}
 	  
 	  
-// 	  // 이미지 URL 삭제
-// // 	  imageUrls[imageIndex] = '';
-// // 	  if (imageLength === 0) {
-// // 		    var mainImageSpan = document.querySelector('.mainImage');
-// // 		    if (mainImageSpan) {
-// // 		      mainImageSpan.parentNode.removeChild(mainImageSpan);
-// // 		    }
-// // 		  }
+	  // 이미지 URL 삭제
+// 	  imageUrls[imageIndex] = '';
+// 	  if (imageLength === 0) {
+// 		    var mainImageSpan = document.querySelector('.mainImage');
+// 		    if (mainImageSpan) {
+// 		      mainImageSpan.parentNode.removeChild(mainImageSpan);
+// 		    }
+// 		  }
 		  
-// // 		  // 이미지가 하나만 남았을 경우 "대표이미지" 텍스트 삭제
-// // 		  if (imageContainer.children.length === 1) {
-// // 		    if (mainImageSpan) {
-// // 		      mainImageSpan.parentNode.removeChild(mainImageSpan);
-// // 		    }
-// // 		  }
+// 		  // 이미지가 하나만 남았을 경우 "대표이미지" 텍스트 삭제
+// 		  if (imageContainer.children.length === 1) {
+// 		    if (mainImageSpan) {
+// 		      mainImageSpan.parentNode.removeChild(mainImageSpan);
+// 		    }
+// 		  }
 // 		}
 //   // imageCounter 감소
 //   if (imageCounter > 0) {
@@ -1200,8 +1110,8 @@ function setAddress(address) {
 function checkInput() {
     var fileInput = document.getElementById('product_image');
     var loadedImages = document.querySelectorAll(".imageItem").length;
-    if (fileInput.files.length + loadedImages === 0) {
-      alert('이미지파일 1개 이상 등록하셔야 됩니다.');
+    if (fileInput.files.length + loadedImages - deleteImages.length < 1) {
+    	alert('이미지파일 1개 이상 등록하셔야 됩니다.');
       	$("#product_image").focus();
       	$("html, body").animate({ // 페이지를 이동시켜준다.
       	  scrollTop: $("#required").offset().top
@@ -1268,15 +1178,6 @@ document.addEventListener("DOMContentLoaded", function() {
   var status = '${productModify.product_status}';
     document.querySelector(`input[name="product_status"][value="${status}"]`).checked = true;
   
-    window.onload = function() {
-        // 상품명 길이 계산
-        var productName = document.getElementById('productName');
-        document.getElementById('productNameLength').innerHTML = productName.value.length;
-
-        // 상품 설명 길이 계산
-        var productDescription = document.getElementById('ProductDescription');
-        document.getElementById('ProductDescriptionLength').innerHTML = productDescription.value.length;
-    };
   // 상품등록이 성공적으로 됐을 시 로컬스토리지 초기화
 </script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
@@ -1487,8 +1388,8 @@ document.addEventListener("DOMContentLoaded", function() {
 						</ul>
 					</div>
 					<div id="ulLine">
-					    <textarea rows="6" cols="100" style="resize: none; white-space: pre-line;" id="ProductDescription" name="product_txt" maxlength="2000" onkeyup="ProductDescriptionKey()" 
-				       	 oninput="limitInputLength2(this, 2000)" placeholder="구매시기,브랜드/모델명,제품의 상태(사용감,하자 유무) 등을 입력해 주세요" >${productModify.product_txt}</textarea>
+						<textarea rows="6" cols="100" style="resize: none;" id="ProductDescription" name="product_txt" maxlength="2000" onkeyup="ProductDescriptionKey()" 
+							oninput="limitInputLength2(this, 2000)" placeholder="구매시기,브랜드/모델명,제품의 상태(사용감,하자 유무) 등을 입력해 주세요" >${productModify.product_txt}</textarea>
 					</div>
 					<div id="explanationLength">
 						<span id="ProductDescriptionLength">0</span><span>/2000</span>

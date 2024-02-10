@@ -94,6 +94,8 @@ public interface ProductMapper {
 	
 	// 판매자 중 페이 가입자 조회 요청
 	List<Map<String, Object>> selectPayUser();
+
+	int selectReviewCount(Map<String, String> sellerInfo);
 	
 	 
 	
