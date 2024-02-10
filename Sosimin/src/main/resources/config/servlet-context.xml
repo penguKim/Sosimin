@@ -39,8 +39,5 @@
 
 	<context:property-placeholder location="classpath:/config/appdata.properties"/> <!-- 'appdata.properties'라는 속성 파일을 찾아서 해당 속성들을 사용할 수 있게 함 -->
 
-
-	<!-- NaverLoginVO Class에 대한 Bean설정 추가 -->
-	<beans:bean id="NaverLoginVO" class="com.itwillbs.c5d2308t1_2.vo.NaverLoginVO" />
 	
 </beans:beans>
