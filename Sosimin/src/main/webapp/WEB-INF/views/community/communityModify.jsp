@@ -97,6 +97,8 @@
 			}
 		});
 		
+		
+		$("#titleLenth").text('제목 (' + $("#title").val().length + '/40)');
 		// 제목 글자수 제한
 	    $('#title').on('keyup', function() {
 	        var text = $(this).val();
@@ -124,6 +126,7 @@
 	        };
 	    });
 	    
+	    $("#contentLength").text('내용 (' + $("#content").val().length + '/1000)');
 		// 내용 글자수 제한
 	    $('#content').on('keyup', function() {
 	        var text = $(this).val();
@@ -223,49 +226,6 @@
 	            
 	    }
 	}
-	
-	// 썸네일 제거하여 파일 제거
-// 	function removeThumbnail(del, fileId , path) {
-//    	    var imageArea = $(del).parent(); // x버튼의 부모인 imageArea 클래스 지정
-//    	    var thumbnail = imageArea.parent(); // imageArea의 부모인 thumnail 클래스 지정
-// 		var currentFileIndex = Number(fileId.replace('file', ''));
-// 		var nextFileIndex = currentFileIndex + 1; 
-// 		var newIdAndName;
-		
-// 		if(path != "false") {
-// 			console.log("false가 아니야");
-// 			Swal.fire({
-// 				title: '기존의 사진을 삭제하시겠습니까?',
-// 				text: "삭제한 사진은 복구하지 못합니다.",
-// 				icon: 'question',
-// 				showCancelButton: true,
-// 				confirmButtonColor: '#d33',
-// 				cancelButtonColor: '#6c757d',
-// 				confirmButtonText: '삭제',
-// 				cancelButtonText: '취소',
-// 				reverseButtons: true,
-// 			}).then((result) => {
-// 				if (result.isConfirmed) {
-// 					$.ajax({
-// 						type: "POST",
-// 						url: "CommunityImageDelete",
-// 						data: {
-// 							community_id: ${param.community_id},
-// 							['community_image' + fileId.substring(4)]: path
-// 						},
-// 						success: function(result) {
-// 							console.log(result);
-// 						}
-// 					}); // ajax
-// 				} else {
-// 					$(this).blur();
-// 				}
-// 			}); // alert 콜백
-// 		} // 서버 업로드 파일이면 ajax로 삭제
-		
-// 		// 인풋 파일 비우기
-// 		$("#" + fileId).val("");
-// 	}
 	
 	function removeThumbnail(del, fileId , path) {
         console.log("파일아이디 알려줘 ㅣ " + fileId);
@@ -446,7 +406,7 @@
 				   	</div>
 				    <div class="post-content mt-3">
 						<div class="form-floating">
-							<textarea class="form-control communityFormSubject formFocus" name="community_content" id="floatingTextarea" style="height: 500px;" required>${com.community_content }</textarea>
+							<textarea class="form-control communityFormSubject formFocus" name="community_content" id="content" style="height: 500px;" required>${com.community_content }</textarea>
 							<label id="contentLength" for="content">내용 (0/1000)</label>
 						</div>
 				    </div>

@@ -387,20 +387,20 @@
     			type: "POST",
     			url: "ImageUpload",
     			enctype: 'multipart/form-data',
-    			data: data,
+	  			data: data,
     			<%-- multipart/form-data로 전송 --%>
     			contentType: false, 
     			<%-- formData가 String이 되지않음 --%>
     			processData: false, 
+    			dataType: "json",
     			success: function(result) {
-    				console.log(result);
-    				console.log(typeof(result));
-    				if(result != 'false') {
+    				console.log("전달받은 이미지명 : " + result.image);
+    				if(Object.keys(result).length > 0) {
 	   	 	            var thumbnail = $(
   	 	            		'<div class="thumbnail col-auto mx-2 pt-3 px-1 ' + fileId + '">').html(
   	 	            				'<div class="imageArea position-relative">'
   	 	            			   +'	<img class="border rounded-3" src="${pageContext.request.contextPath}/resources/tempUpload/' 
-  	 	            			  		 + result + '" style=\"width: 80px; height: 80px;\">'
+  	 	            			  		 + result.image + '" style=\"width: 80px; height: 80px;\">'
   	 	            			   +'	<i class="delBtn material-icons position-absolute translate-middle"'
   	 	            			   +"onclick='removeThumbnail(this, \"" + fileId + "\")'>cancel</i>"
 	 	            			   +'</div>'
@@ -410,7 +410,10 @@
 					
     				$(".scrolling-wrapper").scrollLeft($(".scrolling-wrapper").width());
     				$(this).blur();
-    			}
+    			},
+    			error: function(xhr, textStatus, errorThrown) {
+					console.log(xhr, textStatus, errorThrown);
+				}
     		});
 	            
 	    }

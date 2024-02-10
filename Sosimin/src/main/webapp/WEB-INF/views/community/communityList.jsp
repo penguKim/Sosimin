@@ -45,6 +45,7 @@
 			url: "TownCheck",
 			dataType: "json",
 			success: function(data) {
+				console.log(data);
 				if(typeof data.gu !== 'undefined') {
 					$(".breadcrumbs-content").html(
 							'<h1 class="page-title">' + data.gu + '의 커뮤니티</h1>'
@@ -58,7 +59,6 @@
 			}
 		});
 		
-
 		// 카테고리 선택하여 필터링
 		$(".categoryBtn .btn-check").on("click", function() {
 			$('#CommunityForm #searchKeyword').val('');
@@ -66,265 +66,7 @@
 			
 			$("#CommunityForm").submit();
 		});
-		
-		<%-- 후기 코드 --%>
-		// 후기등록
-		$(".reviewCheckFrom").on("click", function() {
-// 			let order_id = $(this).data("id");
-			let order_id = 16;
-			$("#staticBackdropLabel").text("후기 등록");
-			$(".modal-body input[type='radio']").attr("disabled", false);
-			$("#reviewCheck").empty();
-			$("#reviewCheck").html(
-					'<ul class="list-group">'
-						+ '<li class="list-group-item">'
-							+ '<input class="form-check-input me-1" type="checkbox" name="review_check1" id="review_check1">'
-							+ '<label class="form-check-label" for="review_check1" id="hugiLabel1">'
-								+ '제가 있는곳까지 와서 거래했어요'
-							+ '</label>'
-						+ '</li>'
-						+ '<li class="list-group-item">'
-							+ '<input class="form-check-input me-1" type="checkbox" name="review_check2" id="review_check2">'
-							+ '<label class="form-check-label" for="review_check2" id="hugiLabel2">'
-								+ '친절하고 매너가 좋아요'
-							+ '</label>'
-						+ '</li>'
-						+ '<li class="list-group-item">'
-							+ '<input class="form-check-input me-1" type="checkbox" name="review_check3" id="review_check3">'
-							+ '<label class="form-check-label" for="review_check3" id="hugiLabel3">'
-								+ '시간 약속을 잘 지켜요'
-							+ '</label>'
-						+ '</li>'
-						+ '<li class="list-group-item">'
-							+ '<input class="form-check-input me-1" type="checkbox" name="review_check4" id="review_check4">'
-							+ '<label class="form-check-label" for="review_check4" id="hugiLabel4">'
-								+ '응답이 빨라요'
-							+ '</label>'
-						+ '</li>'
-					+ '</ul>'
-			);
-			
-			$(".modal-footer").html(
-					'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
-					+ '<button type="submit" class="btn btn-primary" id="reviewBtn" onclick="reviewRegist(' + order_id + ')">'
-					+'후기 등록</button>'	
-			);
-		});
-		
-		// 후기 등록의 카테고리 선택
-		$("#option1").on("change", function() {
-			$(".modal-body input[type='checkbox']").prop('checked', false);
-			$("#hugiLabel1").text("약속 장소에 나타나지 않아요");
-			$("#hugiLabel2").text("상품 상태가 설명과 달라요");
-			$("#hugiLabel3").text("시간 약속을 못 지켜요");
-			$("#hugiLabel4").text("응답이 없어요");
-		});
-		
-		$("#option2").on("change", function() {
-			$(".modal-body input[type='checkbox']").prop('checked', false);
-			$("#hugiLabel1").text("제가 있는곳까지 와서 거래했어요");
-			$("#hugiLabel2").text("친절하고 매너가 좋아요");
-			$("#hugiLabel3").text("시간 약속을 잘 지켜요");
-			$("#hugiLabel4").text("응답이 빨라요");
-		});
-		
-		
-		// 후기 보기
-		$(".reviewViewFrom").on("click", function() {
-			let order_id = $(this).data("id");
-			$("#staticBackdropLabel").text("보낸 후기");
-			$(".modal-body input[type='radio']").attr("disabled", true);
-			$("#reviewCheck").empty();
-			
-			$.ajax({
-				type: "POST",
-				url: "reviewView",
-				data: {
-					order_id: order_id
-				},
-				dataType: "json",
-				success: function(result) {
-					console.log(result);
-					$("#reviewCheck").html('<ul class="list-group list-group-flush reviewList"></ul>');
-					
-					if(result.review_status == "good") {
-						$("#option1").prop("checked", false);
-						$("#option2").prop("checked", true);
-						
-						if(result.review_check1 == "on") {
-							$(".reviewList").append('<li class="list-group-item">제가 있는곳까지 와서 거래했어요</li>');
-						}
-						if(result.review_check2 == "on") {
-							$(".reviewList").append('<li class="list-group-item">친절하고 매너가 좋아요</li>');
-						}
-						if(result.review_check3 == "on") {
-							$(".reviewList").append('<li class="list-group-item">시간 약속을 잘 지켜요</li>');
-						}
-						if(result.review_check4 == "on") {
-							$(".reviewList").append('<li class="list-group-item">응답이 빨라요</li>');
-						}
-						
-					} else {
-						$("#option1").prop("checked", true);
-						$("#option2").prop("checked", false);
-						
-						if(result.review_check1 == "on") {
-							$(".reviewList").append('<li class="list-group-item">약속 장소에 나타나지 않아요</li>');
-						}
-						if(result.review_check2 == "on") {
-							$(".reviewList").append('<li class="list-group-item">친절하고 매너가 좋아요</li>');
-						}
-						if(result.review_check3 == "on") {
-							$(".reviewList").append('<li class="list-group-item">시간 약속을 못 지켜요</li>');
-						}
-						if(result.review_check4 == "on") {
-							$(".reviewList").append('<li class="list-group-item">응답이 없어요</li>');
-						}
-					}
-					
-					$(".modal-footer").html(
-							'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
-							+ '<button type="button" class="btn btn-primary" id="reviewBtn" onclick="reviewDelete(' + order_id + ')">'
-							+'후기 삭제</button>'	
-					);
-				},
-				error: function(xhr, textStatus, errorThrown) {
-    				Swal.fire({
-    					position: 'center',
-    					icon: 'error',
-    					title: '비정상적인 접근입니다.',
-    					showConfirmButton: false,
-    					timer: 2000,
-    					toast: true
-    				});
-				}
-			});
-
-		});
-		
-		
-		
-
-		
-	});
-	
-	// 후기 등록
-	function reviewRegist(order_id) {
-		if($(".modal-body input[type='checkbox']:checked").length == 0) {
-			Swal.fire({
-				position: 'center',
-				icon: 'warning',
-				title: '후기를 선택해주세요.',
-				showConfirmButton: false,
-				timer: 2000,
-				toast: true
-			});
-		} else {
-			Swal.fire({
-		        title: '후기를 등록하시겠습니까?',
-// 		        text: "",
-		        icon: 'question',
-		        showCancelButton: true,
-		        confirmButtonColor: '#39d274',
-		        cancelButtonColor: '#d33',
-		        confirmButtonText: '등록',
-		        cancelButtonText: '취소',
-		        reverseButtons: true,
-		    }).then((result) => {
-		    	if (result.isConfirmed) {
-					let data = new FormData();
-
-					$(".modal input:checked").each(function() {
-						data.append($(this).attr('name'), $(this).val());
-// 					    data[$(this).attr('name')] = $(this).val();
-					});
-					data.append("order_id", 20);
-					console.log(data);
-					$.ajax({
-						type: "POST",
-						url: "ReviewRegist",
-						data: data,
-					    processData: false,
-					    contentType: false,
-						success: function(result) {
-							if(result == 'true') {
-								Swal.fire({
-									position: 'center',
-									icon: 'success',
-									title: '후기를 등록했습니다.',
-									showConfirmButton: false,
-									timer: 2000,
-									toast: true
-								});
-								$("#reviewClose").click();
-							} else if(result == 'false') {
-								Swal.fire({
-									position: 'center',
-									icon: 'error',
-									title: '후기 등록을 실패했습니다.',
-									showConfirmButton: false,
-									timer: 2000,
-									toast: true
-								});
-							}
-						}
-					});
-		    	}
-		    });
-		}
-	}
-	
-	// 후기 삭제
-	function reviewDelete(order_id) {
-		Swal.fire({
-	        title: '후기를 삭제하시겠습니까?',
-	        text: "회원님의 경험치가 차감됩니다.",
-	        icon: 'question',
-	        showCancelButton: true,
-	        confirmButtonColor: '#39d274',
-	        cancelButtonColor: '#d33',
-	        confirmButtonText: '등록',
-	        cancelButtonText: '취소',
-	        reverseButtons: true,
-	    }).then((result) => {
-	        if (result.isConfirmed) {
-	        	$.ajax({
-	        		type: "POST",
-	        		url: "ReviewDelete",
-	        		data: {
-	        			order_id: order_id
-	        		},
-	        		success: function(result) {
-						if(result == "true") {
-							Swal.fire({
-								position: 'center',
-								icon: 'success',
-								title: '후기를 삭제했습니다.',
-								showConfirmButton: false,
-								timer: 2000,
-								toast: true
-							});
-							$("#reviewClose").click();
-							// ======================== 후기 등록 버튼으로 변경하기 ===================
-						} else {
-							Swal.fire({
-								position: 'center',
-								icon: 'error',
-								title: '후기 삭제를 실패했습니다.',
-								showConfirmButton: false,
-								timer: 2000,
-								toast: true
-							});
-							$("#reviewClose").click();
-						}
-					}
-	        		
-	        	});
-	        } else {
-	        	$(this).blur();
-	        }
-	    });
-	}
+	});	
 </script>
 </head>
 <body>
@@ -378,35 +120,24 @@
    	<!-- End Breadcrumbs -->
 	<section class="communityArea section">
 		<div class="container-lg">
-			<button type="button" class="btn btn-primary reviewCheckFrom" data-id="" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="">
-				후기 작성 모달창
-			</button>
-			<button type="button" class="btn btn-primary reviewViewFrom" data-id="" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="">
-				후기 보기 모달창
-			</button>
-			<br>
-			<br>
-			<br>
-					<form action="" id="CommunityForm">
-			<div class="row mb-5 mx-auto">
-				<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
-					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" checked>
-<%-- 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>> --%>
-					<label class="btn btn-outline-primary" for="allCategory">전체</label>
-					<input type="radio" class="btn-check" name="category" id="hotCategory" value="4" autocomplete="off" <c:if test="${param.category eq '4' }">checked</c:if>>
-					<label class="btn btn-outline-primary" for="hotCategory">인기글</label>
-					<input type="radio" class="btn-check" name="category" id="infoCategory" value="1" autocomplete="off" <c:if test="${param.category eq '1' }">checked</c:if>>
-					<label class="btn btn-outline-primary" for="infoCategory">동네소식</label>
-					<input type="radio" class="btn-check" name="category" id="questionCategory" value="2" autocomplete="off" <c:if test="${param.category eq '2' }">checked</c:if>>
-					<label class="btn btn-outline-primary" for="questionCategory">동네질문</label>
-					<input type="radio" class="btn-check" name="category" id="dailyCategory" value="3" autocomplete="off" <c:if test="${param.category eq '3' }">checked</c:if>>
-					<label class="btn btn-outline-primary" for="dailyCategory">일상</label>
-				</div>
-				<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
-	<!-- 					<div class="form-group row row-cols-1 row-cols-sm-2 row-cols-md-2"> -->
+			<form action="" id="CommunityForm">
+				<div class="row mb-5 mx-auto">
+					<div class="btn-group categoryBtn px-0 col-xl-6 col-md-12 col-sm-12 col-12 mb-2" role="group" aria-label="Basic radio toggle button group">
+						<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" checked>
+	<%-- 					<input type="radio" class="btn-check" name="category" id="allCategory" value="" autocomplete="off" <c:if test="${param.category eq '' }">checked</c:if>> --%>
+						<label class="btn btn-outline-primary" for="allCategory">전체</label>
+						<input type="radio" class="btn-check" name="category" id="hotCategory" value="4" autocomplete="off" <c:if test="${param.category eq '4' }">checked</c:if>>
+						<label class="btn btn-outline-primary" for="hotCategory">인기글</label>
+						<input type="radio" class="btn-check" name="category" id="infoCategory" value="1" autocomplete="off" <c:if test="${param.category eq '1' }">checked</c:if>>
+						<label class="btn btn-outline-primary" for="infoCategory">동네소식</label>
+						<input type="radio" class="btn-check" name="category" id="questionCategory" value="2" autocomplete="off" <c:if test="${param.category eq '2' }">checked</c:if>>
+						<label class="btn btn-outline-primary" for="questionCategory">동네질문</label>
+						<input type="radio" class="btn-check" name="category" id="dailyCategory" value="3" autocomplete="off" <c:if test="${param.category eq '3' }">checked</c:if>>
+						<label class="btn btn-outline-primary" for="dailyCategory">일상</label>
+					</div>
+					<div class="col-xl-6 col-md-12 col-sm-12 col-12 mx-auto">
 						<div class="form-group row d-flex justify-content-end">
 							<div class="col-xl-2 col-md-2 col-sm-3 col-3 px-0 mb-2">
-<!-- 								<select class="form-select col-xl-1 col-md-3 col-sm-3 col-3" style="width: 20%;"> -->
 								<select class="form-select" name="searchType" id="searchType">
 									<option value="" <c:if test="${param.searchType eq '' }">selected</c:if>>전체</option>
 									<option value="writer" <c:if test="${param.searchType eq 'writer' }">selected</c:if>>작성자</option>
@@ -424,9 +155,9 @@
 								<input type="button" value="글쓰기" class="writeBtn btn btn-primary" onclick="location.href='CommunityWrite'" />
 							</div>
 						</div>
+					</div>
 				</div>
-			</div>
-					</form>
+			</form>
 			<div class="communityTable">
 				<table class="table table-hover contentList text-center">
 					<thead>
@@ -439,12 +170,6 @@
 							<th class="col-1 d-none d-md-table-cell">게시시간</th>
 							<th class="col-1 d-none d-md-table-cell">조회수</th>
 							<th class="col-1 d-none d-md-table-cell">좋아요</th>
-<!-- 							<th width=5%><span class="d-none d-md-inline">번호</span><span class="d-sm-block d-md-none">게시글</span></th> -->
-<!-- 							<th class="d-none d-md-table-cell" width=15%>유형</th> -->
-<!-- 							<th class="d-none d-md-table-cell">제목</th> -->
-<!-- 							<th class="d-none d-md-table-cell" width=15%>작성자</th> -->
-<!-- 							<th class="d-none d-md-table-cell" width=20%>게시시간</th> -->
-<!-- 							<th class="d-none d-md-table-cell" width=8%>조회수</th> -->
 						</tr>
 					</thead>
 					<c:choose>

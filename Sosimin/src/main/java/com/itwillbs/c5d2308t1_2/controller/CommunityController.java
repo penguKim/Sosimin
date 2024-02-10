@@ -2,6 +2,7 @@ package com.itwillbs.c5d2308t1_2.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -783,7 +785,7 @@ public class CommunityController {
 	@ResponseBody
 	@PostMapping("ImageUpload")
 	public String imageUpload(CommunityVO com, HttpSession session, Model model) {
-//		System.out.println("내가 받은 파일은 : " + com);
+		System.out.println("내가 받은 파일은 : " + com);
 		
 		String image = ""; // 리턴할 이미지 경로
 		
@@ -892,11 +894,12 @@ public class CommunityController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			return image;
+				
+			// JSON 객체로 리턴
+			return "{\"image\":\"" + image + "\"}";
 		
 		} else {
-			return "false";
+			return "{}";
 		}
 	}
 	
@@ -942,6 +945,8 @@ public class CommunityController {
 		}
 	}
 	
+	// ================ 리뷰 작성 ================
+	
 	// 후기 등록
 	@ResponseBody
 	@PostMapping("ReviewRegist")
@@ -965,6 +970,7 @@ public class CommunityController {
 		return "false";
 	}
 	
+	// 작성 리뷰 판별
 	@ResponseBody
 	@PostMapping("ReviewCheck")
 	public String reviewCheck(HttpSession session) {
