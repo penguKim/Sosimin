@@ -54,10 +54,9 @@
 		text-align: right;
 	}
 </style>
-<script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script>
 $(function() {
-	$("#write").click(function() {
+	$("#write").on("click", function() {
 		event.preventDefault();
 		Swal.fire({
 	        title: '공지사항을 등록하시겠습니까?',
@@ -132,6 +131,44 @@ $(function() {
 	        }
 	    });
 	});
+	
+	// 제목 글자수 제한
+    $('#subject').on('keyup', function() {
+        var text = $(this).val();
+        
+        // 글자수 제한
+        if (text.length > 100) {
+        	// 제한수 넘으면 자르기
+            $(this).val($(this).val().substring(0, 100));
+			Swal.fire({
+				position: 'center',
+				icon: 'warning',
+				title: '글자수는 100자까지 입력 가능합니다.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+        };
+    });
+    
+	// 내용 글자수 제한
+    $('#content').on('keyup', function() {
+        var text = $(this).val();
+        
+        // 글자수 제한
+        if (text.length > 1000) {
+        	// 제한수 넘으면 자르기
+            $(this).val($(this).val().substring(0, 1000));
+			Swal.fire({
+				position: 'center',
+				icon: 'warning',
+				title: '글자수는 1000자까지 입력 가능합니다.',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+        };
+    });
 	
 });
 
