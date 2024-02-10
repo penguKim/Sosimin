@@ -457,7 +457,7 @@ function acceptPayment() {
 				type: "GET",
 				url: "AcceptPayment",
 				data: {
-					"product_id": 57,
+					"product_id": 77,
 					"product_buyer": "leess"
 				},
 				success:  function(data) {
@@ -535,7 +535,7 @@ function payment() {
         reverseButtons: true,
     }).then((result) => {
     	if (result.isConfirmed) {
-			location.href="Payment?product_id=57";
+			location.href="Payment?product_id=77";
     	} else {
 			event.preventDefault();
 		}
@@ -564,7 +564,7 @@ function confirmPayment() {
 				type: "GET",
 				url: "ConfirmPayment",
 				data: {
-					"product_id": 57
+					"product_id": 77
 				},
 				success:  function(data) {
 					if(data == "not-login") {
@@ -675,7 +675,7 @@ function stopPayment() {
 				type: "GET",
 				url: "StopPayment",
 				data: {
-					"product_id": 57
+					"product_id": 77
 				},
 				success:  function(data) {
 					if(data == "not-login") {
@@ -789,11 +789,15 @@ function stopPayment() {
                     <div class="card login-form pay-card">
                         <div class="card-body">
                             <div class="title paytitle">
-                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
+	                            <h3 class="user-name">
+									<a href="MyPage">
+		                                ${sessionScope.sId} 님
+									</a>
+	                            </h3>
                                 <h3 class="pay-name">
                                 	<a href="PayInfo">
-	                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
-	                                	소심페이
+	                                	<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"
+		                            	style="height: 40px;" id="payImage">
                                 	</a>
                                 </h3>
                             </div>

@@ -155,39 +155,33 @@ $(function() {
                     <div class="card login-form">
                         <div class="card-body">
                             <div class="title paytitle">
-                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
+	                            <h3 class="user-name">
+									<a href="MyPage">
+		                                ${sessionScope.sId} 님
+									</a>
+	                            </h3>
                                 <h3 class="pay-name">
                                 	<a href="PayInfo">
-	                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
-	                                	소심페이
+	                                	<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"
+		                            	style="height: 40px;" id="payImage">
                                 	</a>
                                 </h3>
                             </div>
-<%--                             <c:choose> --%>
-<%--                             	<c:when test="${empty sessionScope.access_token}"> --%>
-		                           	<div class="msg">소심페이 가입하기</div>
-		                           	<p>소심페이에 가입하기 위해 계좌를 인증해주세요</p>
-		                           	<br>
-		                           	<input type="checkbox" class="form-check-input" id="agreeAll">
-		                           	<label for="agreeAll"> 약관 모두 동의</label><br>
-		                           	<hr>
-		                           	<input type="checkbox" class="form-check-input" name="agree" id="required1">
-		                           	<label for="required1"> (필수) 소심페이 서비스 약관</label> <a href="">(전문보기)</a> <br>
-		                           	<input type="checkbox" class="form-check-input" name="agree" id="required2">
-		                           	<label for="required2"> (필수) 고유식별정보처리 동의</label> <a href="">(전문보기)</a> <br>
-		                           	<input type="checkbox" class="form-check-input" name="agree" id="required3">
-		                           	<label for="required3"> (필수) 개인정보 제3자 동의</label> <a href="">(전문보기)</a> <br>
-		                            <div class="button">
-		                                <button class="btn">계좌인증하기</button>
-		                            </div>
-<%--                             	</c:when> --%>
-<%--                             	<c:otherwise> --%>
-<!-- 		                           	<div class="msg">계좌를 등록해주세요</div> -->
-<!-- 		                            <div class="button"> -->
-<!-- 		                                <button class="btn" onclick="location.href='AccountRegist'">계좌등록하기</button> -->
-<!-- 		                            </div>                            	 -->
-<%--                             	</c:otherwise> --%>
-<%--                             </c:choose> --%>
+                           	<div class="msg">소심페이 가입하기</div>
+                           	<p>소심페이에 가입하기 위해 계좌를 인증해주세요</p>
+                           	<br>
+                           	<input type="checkbox" class="form-check-input" id="agreeAll">
+                           	<label for="agreeAll"> 약관 모두 동의</label><br>
+                           	<hr>
+                           	<input type="checkbox" class="form-check-input" name="agree" id="required1">
+                           	<label for="required1"> (필수) 소심페이 서비스 약관</label> <a href="">(전문보기)</a> <br>
+                           	<input type="checkbox" class="form-check-input" name="agree" id="required2">
+                           	<label for="required2"> (필수) 고유식별정보처리 동의</label> <a href="">(전문보기)</a> <br>
+                           	<input type="checkbox" class="form-check-input" name="agree" id="required3">
+                           	<label for="required3"> (필수) 개인정보 제3자 동의</label> <a href="">(전문보기)</a> <br>
+                            <div class="button">
+                                <button class="btn">계좌인증하기</button>
+                            </div>
                         </div>
                     </div>
                 </div>

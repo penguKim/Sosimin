@@ -115,6 +115,9 @@ function openModal(order_id) {
 													<c:when test="${order_list.order_status eq 0}">
 														금액확인중
 													</c:when>
+													<c:when test="${order_list.order_type eq 1}">
+														현금거래
+													</c:when>
 													<c:otherwise>
 														<c:set var="payAmount" value="${order_list.payment_amount}" />
 														<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원

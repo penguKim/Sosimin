@@ -325,6 +325,7 @@
 	<update id="updateOrderStatus">
 		UPDATE Orders
 		SET order_type = 1
+			, order_date = now()
 		WHERE product_buyer = #{product_buyer}
 			AND product_id = #{product_id}
 	</update>

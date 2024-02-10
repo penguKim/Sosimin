@@ -137,11 +137,15 @@ $(function() {
                     <div class="card login-form">
                         <div class="card-body">
                             <div class="title paytitle">
-                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
+	                            <h3 class="user-name">
+									<a href="MyPage">
+		                                ${sessionScope.sId} 님
+									</a>
+	                            </h3>
                                 <h3 class="pay-name">
                                 	<a href="PayInfo">
-	                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
-	                                	소심페이
+	                                	<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"
+		                            	style="height: 40px;" id="payImage">
                                 	</a>
                                 </h3>
                             </div>

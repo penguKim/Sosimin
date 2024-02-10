@@ -31,11 +31,9 @@
 <script>
 $(function() {
 	<%-- 뒤로가기 방지 --%>
-	window.addEventListener('pageshow', function(event) { <%-- 페이지가 로드되거나 새로고침 발생 이벤트 --%>
-		if (event.persisted) { <%-- 뒤로가기나 앞으로가기로 이동했을 시 true 리턴 --%>
-		    location.reload(); <%-- 페이지 새로고침 --%>
-		}
-	});
+	if (performance.navigation.type === 2) { <%-- 0 : 처음 로딩/새로고침, 1 : 페이지가 앞/뒤로 이동, 2 : 페이지가 뒤로 이동  --%>
+		location.reload(); // 새로고침
+	}	
 	
 	let input_amount = 0; // 인풋텍스트에 입력한 값을 담을 변수
     let total_amount = 0; // 총 금액을 담을 변수
@@ -44,102 +42,107 @@ $(function() {
 		if(!$('#pay-amount').val() == "") {
 			input_amount = parseInt($('#pay-amount').val().replace(/,/g, '')); // 인풋텍스트에 있는 값 숫자로 변환하여 대입			
 		}
-// 		console.log(input_amount);
 		// 클릭한 버튼의 값을 더하기
-		total_amount = input_amount + parseInt($(this).val());
+		
+		console.log(total_amount);
+		if(total_amount < 999999999) {
+			total_amount = input_amount + parseInt($(this).val());
+		} else {
+			total_amount = input_amount;
+		}
+		
+		if(total_amount >= 999999999) {
+			total_amount = 999999999;
+		}
 
 		let formattedValue = total_amount.toLocaleString(); // 1000단위마다 ,
         $('#pay-amount').val(formattedValue);
 	});
     
-	// 금액에 자동으로 , 입력
-	$("#pay-amount").keyup(function() {
-	    var inputText = $(this).val();
-	    var formattedText = formatNumber(inputText);
-	    $(this).val(formattedText);
-	});
-
-	function formatNumber(number) {
-	    // 숫자에서 쉼표 제거
-	    var plainNumber = number.replace(/,/g, '');
-	    // 숫자를 1000단위로 쉼표로 구분하여 포맷팅
-	    var formattedNumber = plainNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	    return formattedNumber;
-	}
-
+	<%-- 비밀번호 입력창에서 엔터 키 이벤트 처리 --%>
+	$("#pay-password").keydown(function(event) {
+		if (event.keyCode === 13) { // 엔터 키 코드
+			event.preventDefault(); // 기본 동작(페이지 새로고침) 방지
 	
-	// 비밀번호를 입력하고 등록버튼을 눌렀을 때 
-	$("#passwd-btn").click(function() {
-		// 비밀번호 일치 여부 확인
-		let input_passwd = $('#pay-password').val();
-		let is_correct_passwd = false;
-		
-		console.log("input_passwd = " + input_passwd + ", is_correct_passwd = " + is_correct_passwd)
-		
-		$.ajax({
-			type: "GET",
-			url: "PasswdCheck",
-			data: {
-				"input_passwd": input_passwd
-			},
-			success:  function(data) {
-				if(data == "true") {
-					is_correct_passwd = true;
-				}
-			},
-			error: function(request, status, error) {
-		      // 요청이 실패한 경우 처리할 로직
-		      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
-			}
-		});
-		
-		let regPw = /^\d{6}$/; // 6자리의 숫자를 표현한 정규표현식
-			
-		event.preventDefault();
-		Swal.fire({
-	        title: "결제하시겠습니까?",
-	        text: "확인을 누르시면 결제가 완료됩니다.",
-	        icon: 'question',
-	        showCancelButton: true,
-	        confirmButtonColor: '#39d274',
-	        cancelButtonColor: '#d33',
-	        confirmButtonText: "결제",
-	        cancelButtonText: '취소',
-	        reverseButtons: true,
-	    }).then((result) => {
-	        if (result.isConfirmed) {
-	        	if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
-					event.preventDefault();
-					$('#pay-password').val('');
-					Swal.fire({
-						position: 'center',
-						icon: 'error',
-						title: '숫자 6자리를 입력해주세요.',
-						showConfirmButton: false,
-						timer: 2000,
-						toast: true
-					});
-				} else if(!is_correct_passwd) { // 비밀번호가 일치하지 않으면
-	        		event.preventDefault();
-	        		$('#pay-password').val('');
-	        		Swal.fire({
-						position: 'center',
-						icon: 'error',
-						title: '비밀번호가 일치하지 않습니다.',
-						showConfirmButton: false,
-						timer: 2000,
-						toast: true
-					});
-				} else {
-					$("#pay-use").submit();
-				}
-	        } else {
-	        	$('#password-modal').modal('hide'); // 모달창 닫기
-	        }
-	    });
+			// 버튼 클릭 이벤트 실행
+			submitBtn();
+		}
 	});
+
 
 });
+
+
+// 비밀번호를 입력하고 등록버튼을 눌렀을 때 
+function submitBtn() {
+	// 비밀번호 일치 여부 확인
+	let input_passwd = $('#pay-password').val();
+	let is_correct_passwd = false;
+	
+	console.log("input_passwd = " + input_passwd + ", is_correct_passwd = " + is_correct_passwd)
+	
+	$.ajax({
+		type: "GET",
+		url: "PasswdCheck",
+		data: {
+			"input_passwd": input_passwd
+		},
+		success:  function(data) {
+			if(data == "true") {
+				is_correct_passwd = true;
+			}
+		},
+		error: function(request, status, error) {
+	      // 요청이 실패한 경우 처리할 로직
+	      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+		}
+	});
+	
+	let regPw = /^\d{6}$/; // 6자리의 숫자를 표현한 정규표현식
+		
+	event.preventDefault();
+	Swal.fire({
+        title: "결제하시겠습니까?",
+        text: "확인을 누르시면 결제가 완료됩니다.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#39d274',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "결제",
+        cancelButtonText: '취소',
+        reverseButtons: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+        	if(!regPw.exec($('#pay-password').val())) { // 6자리의 숫자가 아니면
+				event.preventDefault();
+				$('#pay-password').val('');
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '숫자 6자리를 입력해주세요.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+			} else if(!is_correct_passwd) { // 비밀번호가 일치하지 않으면
+        		event.preventDefault();
+        		$('#pay-password').val('');
+        		Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: '비밀번호가 일치하지 않습니다.',
+					showConfirmButton: false,
+					timer: 2000,
+					toast: true
+				});
+			} else {
+				$("#pay-use").submit();
+			}
+        } else {
+        	$('#password-modal').modal('hide'); // 모달창 닫기
+        }
+    });
+}
 
 // 모달 창을 열 때
 function openModal() {
@@ -159,6 +162,22 @@ function openModal() {
     	$('#pay-password').val(''); // 입력 필드를 초기 값으로 설정
 	}
 } 
+
+//가격이 넘어가지 못하도록 막기
+function price(input) {
+	  
+	var payAmount = $("#pay-amount");
+
+	// 숫자 이외의 값을 입력 못하게한다.
+	var value = input.value.replace(/[^0-9]/g, '');
+	if (value.length > 9) {
+		value = value.substring(0, 9);
+	}
+	    
+	// 금액에 자동으로 , 입력
+	var formattedValue = Number(value).toLocaleString();
+		input.value = formattedValue;
+}
 </script>
 </head>
 <body>
@@ -205,11 +224,15 @@ function openModal() {
 	                    <div class="card login-form pay-card">
 	                        <div class="card-body">
 	                            <div class="title paytitle" id="payment-title">
-	                                <h3 class="user-name">${sessionScope.sId} 님</h3> <!-- 사용자프로필/sId -->
+		                            <h3 class="user-name">
+										<a href="MyPage">
+			                                ${sessionScope.sId} 님
+										</a>
+		                            </h3>
 	                                <h3 class="pay-name">
 	                                	<a href="PayInfo">
-		                                	<img src="${pageContext.request.contextPath}/resources/images/favicon.svg" height="35px">
-		                                	소심페이
+		                                	<img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"
+			                            	style="height: 40px;" id="payImage">
 	                                	</a>
 	                                </h3>
 	                            </div>
@@ -272,7 +295,7 @@ function openModal() {
 	                            <div class="form-group input-group">
 	                                <label for="pay-amount">결제금액</label>
 	                                <fmt:formatNumber value="${productInfo.product_price}" pattern="###,###" var="formattedPrice" />
-									<input class="form-control" type="text" id="pay-amount" name="order_amount" maxlength="11"
+									<input class="form-control" type="text" id="pay-amount" name="order_amount" oninput="price(this)" maxlength="11"
 										value="${formattedPrice}">
 	                            </div>
 	                            <div class="btn-group">
@@ -341,7 +364,7 @@ function openModal() {
 	                    </div>
 	                </div>
 	                <div class="modal-footer button">
-	                    <button type="submit" class="btn" id="passwd-btn">결제하기</button>
+	                    <button type="button" class="btn" id="passwd-btn" onclick="submitBtn()">결제하기</button>
 	                </div>
 	            </div>
 	        </div>

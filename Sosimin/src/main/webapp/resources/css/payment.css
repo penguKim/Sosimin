@@ -3,10 +3,24 @@
 .paytitle {
 	display: flex;
 	justify-content: space-between;
+	height: 40px;
 }
 
 .user-name {
 	display: inline-block;
+	margin: 0;
+	vertical-align: middle;
+	margin-bottom: 0 !important;
+}
+
+.user-name>a {
+	height: 40px;
+	line-height: 40px;
+	vertical-align: middle;
+}
+
+.user-name>a:hover {
+	color: black;
 }
 
 .pay-name {
@@ -331,4 +345,8 @@
 
 #payment-title {
 	margin-bottom: 0;
+}
+
+#pay-proposal {
+	color: red;
 }

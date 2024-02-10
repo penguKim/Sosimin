@@ -531,6 +531,7 @@ $(function() {
 										<th>페이내역번호</th>
 										<th>거래금액</th>
 										<th>거래유형</th>
+										<th>거래내용</th>
 										<th>소심페이잔액</th>
 										<th>거래일</th>
 									</tr>
@@ -551,6 +552,7 @@ $(function() {
 													<c:when test="${pay_list.pay_history_type eq '4'}">수익</c:when>
 												</c:choose>
 											</td>
+											<td>${pay_list.pay_history_message}</td>
 											<td>
 												<c:set var="payBalance" value="${pay_list.pay_history_balance}" />
 												<fmt:formatNumber value="${payBalance}" pattern="#,##0" />원
