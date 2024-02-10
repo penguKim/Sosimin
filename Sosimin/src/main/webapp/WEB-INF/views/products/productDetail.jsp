@@ -1045,7 +1045,7 @@ function chat() {
                                 <div>
                                 	<a href="SellerInfo?member_id=${SellerInfo.member_id }"  id="profileImage">
                               	 	<c:if test="${SellerInfo.member_profile eq '' or SellerInfo.member_profile eq 'null'}">
-                                		<img src="/c5d2308t1_2/resources/images/member/Default_pfp.svg" class="img" alt="#">
+                                		<img src="${pageContext.request.contextPath}/resources/images/products/평범한인간.svg" class="img" alt="#">
                                 	</c:if>
                                 		<img src="${pageContext.request.contextPath}/resources/upload/${SellerInfo.member_profile}" class="img" alt="#">
                                 	</a>

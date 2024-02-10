@@ -547,6 +547,13 @@ public class ProductController {
 					System.out.println("<<<<<<<<<<<<<< 뭐가 돌아왔지 " + productModify);
 					model.addAttribute("guDong", guDong);
 					model.addAttribute("productModify", productModify);
+					
+				    String uploadDir = "/resources/upload";
+				    String saveDir = session.getServletContext().getRealPath(uploadDir);
+				    String subDir = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+				    saveDir += File.separator + subDir;
+				    System.out.println("saveDir: " + saveDir);
+				    
 					return "products/productModify";
 				}
 				
@@ -720,7 +727,7 @@ public class ProductController {
 					model.addAttribute("modifyOk", modifyOk);
 					System.out.println("여긴 뭐가 넘어왔을까!!!!!!!!!!!!! : " + product);
 					String product_id = map.get("product_id");
-					
+					System.out.println("saveDir: " + saveDir);
 					return String.valueOf(product_id);
 				}
 				
