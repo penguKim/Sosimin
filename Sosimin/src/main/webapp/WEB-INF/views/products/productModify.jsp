@@ -751,7 +751,7 @@ window.onload = function() {
 // var imageCounter = 1;
 
 var selectedFiles = [];  // 사용자가 선택한 파일을 저장할 배열
-var deleteImages = [];
+deleteImages = [];
 
 function removeImage(button) {
   var imageItem = button.parentNode; // 이미지 항목
@@ -764,9 +764,16 @@ function removeImage(button) {
     // 이미지 이름 값 삭제
     imageNameInput.parentNode.removeChild(imageNameInput);
   }
-
+  
   // 삭제할 이미지의 인덱스를 배열에 추가
   deleteImages.push(imageIndex);
+
+  // div에서 삭제할 이미지의 URL 정보를 제거 
+  var imageData = document.getElementById("image_data");
+  var imageUrl = imageData.getAttribute("data-image" + (imageIndex + 1));
+  if (imageUrl) {
+    imageData.setAttribute("data-image" + (imageIndex + 1), '');  // 이미지 URL 정보를 빈 문자열로 설정
+  }
 
   // 이미지 항목 삭제
   imageContainer.removeChild(imageItem);
@@ -776,14 +783,9 @@ function removeImage(button) {
   if (index > -1) {
     selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
   }
-
-  // 이미지 개수 감소
-  var imageLength = parseInt(document.getElementById("imageLength").textContent);
-  imageLength--;
-  document.getElementById("imageLength").textContent = imageLength;
-
+  
   if (imageItem.querySelector(".mainImage")) {
-    var nextImageItem = imageContainer.children[1];
+    var nextImageItem = imageContainer.children[1]; 
     if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {
       var mainImageText = document.createElement("span");
       mainImageText.classList.add("mainImage");
@@ -791,8 +793,17 @@ function removeImage(button) {
       nextImageItem.appendChild(mainImageText);
     }
   }
-}
+  
+  // 이미지 개수 감소
+  var imageLength = parseInt(document.getElementById("imageLength").textContent);
+  imageLength--;
+  document.getElementById("imageLength").textContent = imageLength;
 
+  var imageText = document.querySelector(".mainImage");
+  if (imageContainer.children.length === 1) {
+    imageText.style.display = "none";
+  }
+}
 function setThumbnail(event) {
   var newFiles = event.target.files;
   var imageCounter = document.querySelectorAll(".imageItem").length + 1;
@@ -1000,120 +1011,59 @@ function ProductDelete(event) {
         });
     }
 	
+//   deleteImages = [];
 
-// // 제출 버튼 클릭 시 서버로 모든 파일 전송
-// document.getElementById("submit").addEventListener("click", function() {
-//   var xhr = new XMLHttpRequest();
-//   xhr.open("POST", "/upload", true);
-  
-//   var data = new FormData();
-//   for (var i = 0; i < files.length; i++) {
-//     data.append(files[i].name, files[i].file);
-//   }
-//   xhr.send(data);
-// });
+//   function removeImage(button) {
+// 	  var imageItem = button.parentNode; // 이미지 항목
+// 	  var imageContainer = imageItem.parentNode; // 이미지 컨테이너
+// 	  var imageIndex = Array.prototype.indexOf.call(imageContainer.children, imageItem);
 
-// function removeImage(element) {
-//   var imageItem = element.parentNode;
-//   var imageContainer = document.getElementById("image_container");
-//   imageContainer.removeChild(imageItem);
-
-//   var imageLength = parseInt(document.getElementById("imageLength").textContent);
-//   imageLength--;
-//   document.getElementById("imageLength").textContent = imageLength;
-
-//   var imageIndex = Array.from(imageContainer.children).indexOf(imageItem);
-//   selectedFiles.splice(imageIndex, 1);  // 선택된 이미지 목록에서 해당 이미지 제거
-// }
-
-
-// 이미지 삭제
-// function removeImage(button) {
-//   var imageItem = button.parentNode; // 이미지 항목
-//   var imageContainer = imageItem.parentNode; // 이미지 컨테이너
-
-//   // 이미지 항목에서 input 요소(이미지 이름 값) 찾기
-//   var imageNameInput = imageItem.querySelector('input[name^="image_name"]');
-//   if (imageNameInput) {
-//     // 이미지 이름 값 삭제
-//     imageNameInput.parentNode.removeChild(imageNameInput);
-//   }
-  
-//   // 이미지 항목 삭제
-//   imageContainer.removeChild(imageItem);
-  
-//   var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
-//   imageLength--;
-//   document.getElementById("imageLength").textContent = imageLength;
-
-//   var imageIndex = Array.prototype.indexOf.call(imageContainer.children, imageItem);
-//   deleteImages.push(imageIndex);  // 인덱스를 배열에 추가 (인덱스는 1부터 시작)
-  
-//   imageContainer.removeChild(imageItem);
-  
-//   var imageLength = parseInt(document.getElementById("imageLength").textContent); // 현재 카운트 가져오기
-//   imageLength--;
-//   document.getElementById("imageLength").textContent = imageLength;
-  
-//   // 대표 이미지가 없는 경우 숨김 처리
-//   var imageText = document.querySelector(".mainImage");
-//   if (imageContainer.children.length === 1) {
-//     imageText.style.display = "none";
-//   }
-// }
-  deleteImages = [];
-
-  function removeImage(button) {
-	  var imageItem = button.parentNode; // 이미지 항목
-	  var imageContainer = imageItem.parentNode; // 이미지 컨테이너
-	  var imageIndex = Array.prototype.indexOf.call(imageContainer.children, imageItem);
-
-	  // 이미지 항목에서 input 요소(이미지 이름 값) 찾기
-	  var imageNameInput = imageItem.querySelector('input[name^="image_name"]');
-	  if (imageNameInput) {
-	    // 이미지 이름 값 삭제
-	    imageNameInput.parentNode.removeChild(imageNameInput);
-	  }
+// 	  // 이미지 항목에서 input 요소(이미지 이름 값) 찾기
+// 	  var imageNameInput = imageItem.querySelector('input[name^="image_name"]');
+// 	  if (imageNameInput) {
+// 	    // 이미지 이름 값 삭제
+// 	    imageNameInput.parentNode.removeChild(imageNameInput);
+// 	  }
 	  
-	  // 삭제할 이미지의 인덱스를 배열에 추가
-	  deleteImages.push(imageIndex);
+// 	  // 삭제할 이미지의 인덱스를 배열에 추가
+// 	  deleteImages.push(imageIndex);
 
-	  // div에서 삭제할 이미지의 URL 정보를 제거 
-	  var imageData = document.getElementById("image_data");
-	  var imageUrl = imageData.getAttribute("data-image" + (imageIndex + 1));
-	  if (imageUrl) {
-	    imageData.setAttribute("data-image" + (imageIndex + 1), '');  // 이미지 URL 정보를 빈 문자열로 설정
-	  }
+// 	  // div에서 삭제할 이미지의 URL 정보를 제거 
+// 	  var imageData = document.getElementById("image_data");
+// 	  var imageUrl = imageData.getAttribute("data-image" + (imageIndex + 1));
+// 	  if (imageUrl) {
+// 	    imageData.setAttribute("data-image" + (imageIndex + 1), '');  // 이미지 URL 정보를 빈 문자열로 설정
+// 	  }
 
-	  // 이미지 항목 삭제
-	  imageContainer.removeChild(imageItem);
+// 	  // 이미지 항목 삭제
+// 	  imageContainer.removeChild(imageItem);
 
-	  var file = imageItem.file;  // 파일 객체를 가져옵니다.
-	  var index = selectedFiles.indexOf(file);  // selectedFiles 배열에서 해당 파일의 인덱스를 찾습니다.
-	  if (index > -1) {
-	    selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
-	  }
+// 	  var file = imageItem.file;  // 파일 객체를 가져옵니다.
+// 	  var index = selectedFiles.indexOf(file);  // selectedFiles 배열에서 해당 파일의 인덱스를 찾습니다.
+// 	  if (index > -1) {
+// 	    selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
+// 	  }
 	  
-	  if (imageItem.querySelector(".mainImage")) {
-	    var nextImageItem = imageContainer.children[1]; 
-	    if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {
-	      var mainImageText = document.createElement("span");
-	      mainImageText.classList.add("mainImage");
-	      mainImageText.textContent = "대표이미지";
-	      nextImageItem.appendChild(mainImageText);
-	    }
-	  }
+// 	  if (imageItem.querySelector(".mainImage")) {
+// 	    var nextImageItem = imageContainer.children[1]; 
+// 	    if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {
+// 	      var mainImageText = document.createElement("span");
+// 	      mainImageText.classList.add("mainImage");
+// 	      mainImageText.textContent = "대표이미지";
+// 	      nextImageItem.appendChild(mainImageText);
+// 	    }
+// 	  }
 	  
-	  // 이미지 개수 감소
-	  var imageLength = parseInt(document.getElementById("imageLength").textContent);
-	  imageLength--;
-	  document.getElementById("imageLength").textContent = imageLength;
+// 	  // 이미지 개수 감소
+// 	  var imageLength = parseInt(document.getElementById("imageLength").textContent);
+// 	  imageLength--;
+// 	  document.getElementById("imageLength").textContent = imageLength;
 
-	  var imageText = document.querySelector(".mainImage");
-	  if (imageContainer.children.length === 1) {
-	    imageText.style.display = "none";
-	  }
-	}
+// 	  var imageText = document.querySelector(".mainImage");
+// 	  if (imageContainer.children.length === 1) {
+// 	    imageText.style.display = "none";
+// 	  }
+// 	}
 	  
 	  
 	  // 이미지 URL 삭제
