@@ -645,7 +645,9 @@ function chat() {
 	        allowOutsideClick: false
 	    }).then((result) => {
 	        if (result.isConfirmed) {
-	        	location.href="ChatMain2?product_id=" + product_id;
+// 	        	location.href="ChatMain2?product_id=" + product_id;
+// 	        	window.open("ChatMain2?product_id=" + product_id, "", "width=800, height=700");
+	        	window.open("ChatMain3?product_id=" + product_id, "", "width=800, height=700");
 	        }
 	    });
 	} else{

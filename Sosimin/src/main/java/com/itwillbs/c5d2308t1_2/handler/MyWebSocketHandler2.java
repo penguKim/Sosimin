@@ -100,6 +100,7 @@ public class MyWebSocketHandler2 extends TextWebSocketHandler {
 			// => 파라미터 : 자신의 아이디(sender_id)   
 			//    리턴타입 : List<ChatRoomVO>(chatRoomList)
 			List<ChatRoomVO> chatRoomList = chatService.getChatRoomList(sender_id);
+			System.out.println("채팅방 조회 >>>>>>>>>>> : " + chatRoomList);
 //			System.out.println(chatRoomList);
 			// 조회 결과를 JSON 형식으로 변환하여 메세지로 설정
 			chatMessage.setMessage(gson.toJson(chatRoomList));
