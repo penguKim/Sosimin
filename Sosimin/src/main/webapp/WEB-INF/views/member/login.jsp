@@ -17,13 +17,40 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 <%-- sweetalert --%>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+
+		$("#joinWithKakao").on("click", function() {
+			Swal.fire({
+				position: 'center',
+				icon: 'warning',
+				title: '서비스 준비 중입니다!',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+		});
+		
+		$("#joinWithNaver").on("click", function() {
+			Swal.fire({
+				position: 'center',
+				icon: 'warning',
+				title: '서비스 준비 중입니다!',
+				showConfirmButton: false,
+				timer: 2000,
+				toast: true
+			});
+		});
+
+	});
+</script>
 </head>
 <body>
     <!-- Preloader -->
@@ -77,7 +104,7 @@
                             <div class="social-login" id="socialLoginArea">
                                 <div class="row d-flex justify-content-center">
                                 	<div class="col-lg-4 col-md-4 col-12" id="naver_id_login">
-                                		<a class="btn facebook-btn" id="joinWithNaver" href="${url}">
+                                		<a class="btn facebook-btn" id="joinWithNaver" href="javascript:void(0)">
                                 			<img id="socialIcons" src="${pageContext.request.contextPath}/resources/images/member/naver_circle.png" width="20px" height="20px"/>
 	                                		네이버로 로그인
                                 		</a>

@@ -62,9 +62,10 @@ public class MemberController {
 		String sId = (String)session.getAttribute("sId");
 		if(sId != null) {
 			model.addAttribute("msg", "이미 로그인된 상태입니다!");
-			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-			model.addAttribute("msg3", "error");
-			return "fail_back";
+			model.addAttribute("msg2", "메인 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "./");
+			return "forward";
 		}
 		return "member/join";
 	}
@@ -76,9 +77,10 @@ public class MemberController {
 		String sId = (String)session.getAttribute("sId");
 		if(sId != null) {
 			model.addAttribute("msg", "이미 로그인된 상태입니다!");
-			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-			model.addAttribute("msg3", "error");
-			return "fail_back";
+			model.addAttribute("msg2", "메인 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "./");
+			return "forward";
 		}
 		return "member/joinForm";
 	}
@@ -174,9 +176,10 @@ public class MemberController {
 		String sId = (String)session.getAttribute("sId");
 		if(sId != null) {
 			model.addAttribute("msg", "이미 로그인된 상태입니다!");
-			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-			model.addAttribute("msg3", "error");
-			return "fail_back";
+			model.addAttribute("msg2", "메인 페이지로 돌아갑니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "./");
+			return "forward";
 		}
 		
 		// "REFERER" 헤더(현재 요청을 보내는 페이지의 URL) 변수에 저장
@@ -211,24 +214,27 @@ public class MemberController {
 			System.out.println("dbMember 확인 : " + dbMember);
 			model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다");
 			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-			model.addAttribute("msg3", "error");
-			return "fail_back";
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "MemberLogin");
+		    return "forward";
 		}
 	    
 		// 회원 상태가 2인 경우(탈퇴 회원)
 	   if(dbMember.getMember_status() == 2) {
 		   model.addAttribute("msg", "이미 탈퇴한 회원입니다");
 			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-			model.addAttribute("msg3", "error");
-			return "fail_back";
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "MemberLogin");
+		    return "forward";
 	   }
 	   
 	   // 일치하는 회원정보가 없거나 패스워드가 일치하지 않는 경우
 	   if(dbMember == null || !passwordEncoder.matches(member.getMember_password(), dbMember.getMember_password())) {
 		   model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지않습니다");
 			model.addAttribute("msg2", "이전 페이지로 돌아갑니다.");
-			model.addAttribute("msg3", "error");
-			return "fail_back"; 
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "MemberLogin");
+		    return "forward";
 	   } else { // 그 외 = 로그인 성공
 		   // 쿠키에 아이디 저장
 		   Cookie cookie = new Cookie("cookieId", dbMember.getMember_id());
@@ -259,7 +265,7 @@ public class MemberController {
 		   if(dbMember.getMember_neighbor_auth() == 0) {
 			   model.addAttribute("msg", "위치 재인증 필요!");
 			   model.addAttribute("msg2", "내 정보 수정에서 동네 인증을 다시 해주세요!");
-			   model.addAttribute("msg3", "error");
+			   model.addAttribute("msg3", "warning");
 			   model.addAttribute("targetURL", "MyPage");
 			   return "forward";
 		   }
@@ -282,8 +288,8 @@ public class MemberController {
 	public String MemberFindId(HttpSession session, Model model) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId != null) { // 로그인한 경우
-			model.addAttribute("msg", "이미 로그인된 계정입니다");
-			model.addAttribute("msg2", "메인페이지로 이동합니다!");
+			model.addAttribute("msg", "이미 로그인된 상태입니다!");
+			model.addAttribute("msg2", "메인 페이지로 돌아갑니다.");
 			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "./");
 			return "forward";
@@ -722,7 +728,7 @@ public class MemberController {
 			System.out.println("111111111111111111111111111111111111111");
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			model.addAttribute("msg2", "메인페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "./");
 			return "forward";
 		}
@@ -731,7 +737,7 @@ public class MemberController {
 			System.out.println("222222222222222222222111111111111111111111111111111111111111");
 			model.addAttribute("msg", "잘못된 접근입니다!");
 			model.addAttribute("msg2", "메인페이지로 이동합니다!");
-			model.addAttribute("msg3", "error");
+			model.addAttribute("msg3", "warning");
 			model.addAttribute("targetURL", "./");
 			return "forward";
 		}

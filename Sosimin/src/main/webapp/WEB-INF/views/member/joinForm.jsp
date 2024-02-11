@@ -16,12 +16,12 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 <%-- sweetalert --%>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9a75e8ce5f3bdcb17d52cf91eac1f473&libraries=services"></script>
 <script type="text/javascript">
@@ -867,7 +867,7 @@
 							</div>
 							<div class="form-group">
 								<label for="phone" id="mgForFive">휴대폰번호</label> 
-								<input class="form-control" placeholder="숫자만 입력해주세요" type="tel" name="member_phone" id="phone" required>
+								<input class="form-control" maxlength="13" placeholder="숫자만 입력해주세요" type="tel" name="member_phone" id="phone" required>
 								<input type="button" value="인증코드발급" id="requestPhoneAuthCodeButton">
 								<div id="checkPhoneResult" class="resultAreaForJoin"></div>
 							</div>

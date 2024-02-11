@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
@@ -27,7 +28,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/member/review.js"></script>
 <%-- sweetalert --%>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 
@@ -1128,7 +1128,7 @@ $(".heart").on("click", function () {
 					text: '확인을 누르면 정보가 수정됩니다',
 					icon: 'info',
 					showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-					confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+					confirmButtonColor: '#39d274', // confrim 버튼 색깔 지정
 					cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
 					confirmButtonText: '확인', // confirm 버튼 텍스트 지정
 					cancelButtonText: '취소', // cancel 버튼 텍스트 지정
@@ -1504,11 +1504,11 @@ $(".heart").on("click", function () {
 								</div>
 								<div id="singleProductContactArea">
 									좋아요 ${mypage.count}개
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 										</c:if>
 									</c:forEach>
@@ -1555,11 +1555,11 @@ $(".heart").on("click", function () {
 									</div>
 									<div id="singleProductContactArea">
 										좋아요 ${mypage.count}개
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<!-- 										채팅 n회 -->
 										<c:forEach var="pay" items="${payUser }">
 											<c:if test="${pay.member_id eq mypage.member_id }">
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 											</c:if>
 										</c:forEach>
@@ -1615,12 +1615,12 @@ $(".heart").on("click", function () {
 							</div>
 							<div id="singleProductContactArea">
 								좋아요 ${mypage.count}개
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 								<c:forEach var="pay" items="${payUser }">
 									<c:if test="${pay.member_id eq mypage.member_id }">
-										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 									</c:if>
 								</c:forEach>
 							</div>
@@ -1662,12 +1662,12 @@ $(".heart").on("click", function () {
 								</div>
 								<div id="singleProductContactArea">
 									좋아요 ${mypage.count}개
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
-											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 										</c:if>
 									</c:forEach>
 								</div>
@@ -1715,12 +1715,12 @@ $(".heart").on("click", function () {
 								</div>
 								<div id="singleProductContactArea">
 									좋아요 ${mypage.count}개
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
-											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 										</c:if>
 									</c:forEach>
 								</div>
@@ -1759,12 +1759,12 @@ $(".heart").on("click", function () {
 									</div>
 									<div id="singleProductContactArea">
 										좋아요 ${mypage.count}개
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<!-- 										채팅 n회 -->
+	<!-- 										채팅 n회 -->
 										<c:forEach var="pay" items="${payUser }">
 											<c:if test="${pay.member_id eq mypage.member_id }">
-												<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 											</c:if>
 										</c:forEach>
 									</div>

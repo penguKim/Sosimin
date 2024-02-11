@@ -20,11 +20,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 <%-- sweetalert --%>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/member.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
@@ -620,11 +620,11 @@
 								</div>
 								<div id="singleProductContactArea">
 									좋아요 ${mypage.count}개
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 										</c:if>
 									</c:forEach>
@@ -664,11 +664,11 @@
 									</div>
 									<div id="singleProductContactArea">
 										좋아요 ${mypage.count}개
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<!-- 										채팅 n회 -->
 										<c:forEach var="pay" items="${payUser }">
 											<c:if test="${pay.member_id eq mypage.member_id }">
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 											</c:if>
 										</c:forEach>
@@ -713,12 +713,12 @@
 							</div>
 							<div id="singleProductContactArea">
 								좋아요 ${mypage.count}개
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 								<c:forEach var="pay" items="${payUser }">
 									<c:if test="${pay.member_id eq mypage.member_id }">
-										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 									</c:if>
 								</c:forEach>
 							</div>
@@ -756,12 +756,12 @@
 								</div>
 								<div id="singleProductContactArea">
 									좋아요 ${mypage.count}개
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
-											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 										</c:if>
 									</c:forEach>
 								</div>
@@ -805,12 +805,12 @@
 								</div>
 								<div id="singleProductContactArea">
 									좋아요 ${mypage.count}개
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
-											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 										</c:if>
 									</c:forEach>
 								</div>
@@ -849,12 +849,12 @@
 									</div>
 									<div id="singleProductContactArea">
 										좋아요 ${mypage.count}개
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<!-- 										채팅 n회 -->
+	<!-- 										채팅 n회 -->
 										<c:forEach var="pay" items="${payUser }">
 											<c:if test="${pay.member_id eq mypage.member_id }">
-												<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											<img class="sosimPay" src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png">											
 											</c:if>
 										</c:forEach>
 									</div>

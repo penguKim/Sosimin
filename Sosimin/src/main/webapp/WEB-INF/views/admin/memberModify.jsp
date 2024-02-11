@@ -67,21 +67,6 @@
 
 	
 	$(function(){
-			
-		// 찜 버튼 클릭 이벤트
-        $(".heart").on("click", function () {
-            $(this).toggleClass("is-active");
-    	    Swal.fire({
-    			title: '찜했습니다!',         // Alert 제목
-    			text: "감사합니다!",  // Alert 내용
-    			icon:'success',                         // Alert 타입
-    		});
-        });
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		// 찜버튼 재클릭 시 deactive처리 및 sweetalert처리 필요!!!
-		
 		// 파일 change 이벤트 처리
         $("#memberProfilePicFile").on("change", showPreviewImage);
 	
