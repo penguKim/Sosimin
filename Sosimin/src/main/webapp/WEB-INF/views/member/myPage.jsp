@@ -178,7 +178,7 @@ $(".heart").on("click", function () {
     				});
 				} else if(result == 'true') { // 좋아요을 삭제하는 경우
 					$(heart).removeClass("is-active");
-// 						$(heart).parent().remove();
+					$(heart).parent().remove();
     				Swal.fire({
     					position: 'center',
     					icon: 'success',

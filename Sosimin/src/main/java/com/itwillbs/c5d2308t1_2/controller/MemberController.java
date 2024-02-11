@@ -733,14 +733,7 @@ public class MemberController {
 			return "forward";
 		}
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>111111111111111");
-		if(sId == null || sId.equals("")) {
-			System.out.println("222222222222222222222111111111111111111111111111111111111111");
-			model.addAttribute("msg", "잘못된 접근입니다!");
-			model.addAttribute("msg2", "메인페이지로 이동합니다!");
-			model.addAttribute("msg3", "warning");
-			model.addAttribute("targetURL", "./");
-			return "forward";
-		}
+		
 		if(member.getMember_status() == 2) {
 			System.out.println("22333333333331111111111111111111111111111111111111");
 			model.addAttribute("msg", "탈퇴한 회원의 페이지입니다!");
@@ -748,7 +741,8 @@ public class MemberController {
 			model.addAttribute("msg3", "error");
 			return "fail_back";
 		}
-		if(sId.equals(member_id)) {
+		
+		if(member_id.equals(sId)) {
 			System.out.println("222444444444444411111111111111111111111111111111111");
 
 			model.addAttribute("msg", "나의 판매자페이지입니다!");
@@ -756,7 +750,11 @@ public class MemberController {
 			model.addAttribute("msg3", "info");
 			model.addAttribute("targetURL", "MyPage");
 			return "forward";
-		} 
+		}
+		
+		
+		
+		
 		// 페이지 번호와 글의 개수를 파라미터로 전달
 		PageDTO page = new PageDTO(pageNum, 15);
 		// 전체 게시글 갯수 조회
