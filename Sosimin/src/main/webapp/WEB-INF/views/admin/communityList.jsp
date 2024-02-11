@@ -78,20 +78,20 @@
 							<table class="comAdmin table table-hover datatable text-center">
 								<thead>
 									<tr>
-										<th>글번호</th>
-										<th>지역</th>
-										<th>유형</th>
+										<th class="admin-title-th text-center">글번호</th>
+										<th class="admin-title-th text-center">지역</th>
+										<th class="admin-title-th text-center">유형</th>
 										<th class="admin-title-th text-center" width=50%>제목</th>
-										<th>글쓴이</th>
-										<th>조회수</th>
-										<th>게시시간</th>
+										<th class="admin-title-th text-center">글쓴이</th>
+										<th class="admin-title-th text-center">조회수</th>
+										<th class="admin-title-th text-center">게시시간</th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var="com" items="${comList}">
 										<tr>
 											<td>${com.community_id}</td>
-											<td><span>임시</span></td>
+											<td class="text-start"><span class="pe-2">${com.gu } ${com.dong }</span></td>
 											<td>
 												<c:choose>
 													<c:when test="${com.community_category eq '1' }">동네소식</c:when>

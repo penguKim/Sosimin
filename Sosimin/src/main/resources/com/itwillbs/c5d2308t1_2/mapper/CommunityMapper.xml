@@ -589,7 +589,7 @@
 	<!-- 커뮤니티 게시판 조회 -->
 	<select id="selectAllList" resultType="map">
 		SELECT *
-		FROM Community
+		FROM CommunityAllView
 	</select>
 	
 	<!-- 커뮤니티 댓글 조회 -->

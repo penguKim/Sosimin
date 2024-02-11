@@ -18,10 +18,10 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/glightbox.min.css" />
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
+	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/report.css" />
@@ -545,12 +545,19 @@
 			        <div class="row mb-2">
 			        	<div class="profile_image col-xl-1 col-2 me-1 pe-0">
 						<a href="SellerInfo?member_id=${com.member_id }">
-							<img class="rounded-circle " alt="" src="${pageContext.request.contextPath}/resources/upload/${com.member_profile}">
+							<c:choose>
+								<c:when test="${empty com.member_profile }">
+									<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg">
+								</c:when>
+								<c:otherwise>
+									<img class="rounded-circle " src="${pageContext.request.contextPath}/resources/upload/${com.member_profile}">
+								</c:otherwise>
+							</c:choose>
 						</a>
 				        </div>
 				        <div class="col">
 				        	<div class="row align-items-center">
-						        <a class="col-auto" href="SellerInfo?member_id=${com.member_id }"><p class="fs-5">${com.member_nickname}</p></a>
+						        <a class="col-auto" href="SellerInfo?member_id=${com.member_id }"><p class="fs-5 fw-bold">${com.member_nickname}</p></a>
 						        <p class="col-auto fs-6">${com. dong}</p>
 				        	</div>
 				        	<div class="row align-items-center">
@@ -639,15 +646,22 @@
 									<c:forEach var="i" begin="1" end="${reply.reply_re_lev }">
 										<div class="col-1"></div>
 									</c:forEach>
-										<div class="col-auto align-self-center pe-0">
+										<div class="col-auto align-self-top pe-0">
 											<a href="SellerInfo?member_id=${reply.reply_writer }">
-												<img class="rounded-circle " alt="" src="${pageContext.request.contextPath}/resources/upload/${reply.member_profile}">
+												<c:choose>
+													<c:when test="${empty com.member_profile }">
+														<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg">
+													</c:when>
+													<c:otherwise>
+														<img class="rounded-circle " src="${pageContext.request.contextPath}/resources/upload/${reply.member_profile}">
+													</c:otherwise>
+												</c:choose>
 											</a>
 										</div>
 									<div class="col">
 										<div class="row">
 											<div class="col-auto pe-0 align-self-center">
-												<a  href="SellerInfo?member_id=${reply.reply_writer }"><span class="fs-6">${reply.member_nickname }</span></a>
+												<a  href="SellerInfo?member_id=${reply.reply_writer }"><span class="fs-6 fw-bold">${reply.member_nickname }</span></a>
 											</div>
 											<div class="col-auto pe-0">
 												<p>${reply.dong }</p>
@@ -667,7 +681,6 @@
 											<div class="col">
 												<span class="align-middle">${reply.reply_content }</span>
 											</div>
-
 										</div>
 										<c:if test="${not empty sessionScope.sId }">
 										<div class="row" id="reReplyBtn"> <%-- 대댓글 버튼 --%>

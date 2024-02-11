@@ -279,6 +279,10 @@ public class CommunityController {
         
         // 댓글 불러오기
         List<Map<String, Object>> replyList = communityService.getReplyList(com);
+        // 댓글 줄바꿈 처리
+        for(Map<String, Object> content : replyList) {
+        	content.put("reply_content", content.get("reply_content").toString().replace("\n", "<br>"));
+        }
         
         formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -329,6 +333,10 @@ public class CommunityController {
 //        System.out.println("회원의 경험치는 : " + (float)levelExp.get("member_exp"));
 //        System.out.println("최대 경험치는 : " + levelExp.get("level_max_exp"));
 //        System.out.println("퍼센트는 : " + percentage);
+        
+        // 텍스트 줄바꿈 처리
+        map.put("community_content", map.get("community_content").toString().replace("\n", "<br>"));
+//        System.out.println("글내용을 보여줘!!!! : " + map.get("community_content"));
         
 		model.addAttribute("com", map);
 		model.addAttribute("likeCount", likeCount);

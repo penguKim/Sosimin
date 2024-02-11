@@ -25,8 +25,8 @@
 
 .btn-group .btn-outline-primary:hover, .form-group .btn:hover, .modal .btn:hover:not(#reviewClose), .btn-primary:hover, .page-item.active .page-link {
     color: #fff;
-    background-color: #43c073 !important;
-    border-color: #43c073 !important;
+    background-color: #000 !important;
+    border-color: #000 !important;
 }
 
 .btn-check:checked+.btn-outline-primary, .btn-check:focus+.btn-primary, .btn-primary:focus {
@@ -113,7 +113,10 @@
 }
 
 /* 회원 아이디 색 */
-.post-title a:hover {
+.post-header a:hover {
+	color: #39d274;
+}
+.post-header a:hover p{
 	color: #43c073 !important;	
 }
 
@@ -242,14 +245,15 @@ textarea.form-control {
 	resize: none; /* 사이즈 조절 막기 */
 }
 
-/* 작성자 표시 */
-/* .writerInfo { */
-/* 	font-size: 12px; */
-/* 	padding-left: 0.1rem; */
-/* 	padding-right: 0.1rem; */
-/* 	background-color: #eee; */
-/* 	color: #000; */
-/* } */
+/* 회원 아이디 hover */
+/* 부트스트랩 기본 파란색 막기 */
+.replyContent a:hover {
+	color: #39d274;
+}
+.replyContent a:hover span {
+	color: #43c073 !important;	
+}
+
 .badge {
 	background-color: #39d274;
 }
@@ -299,6 +303,18 @@ textarea.form-control {
 	transition: background-color 1s;
 }
 
+/* 하단 버튼 hover 설정 */
+.btn-secondary:hover {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+
+.btn-danger:hover {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
 
 
 /* ========= 등록 페이지 ============ */

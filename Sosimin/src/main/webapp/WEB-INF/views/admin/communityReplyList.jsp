@@ -78,11 +78,11 @@
 							<table class="comAdmin table table-hover datatable text-center">
 								<thead>
 									<tr>
-										<th>댓글번호</th>
-										<th class="text-center" width=50%>내용</th>
-										<th>작성자</th>
-										<th>게시글번호</th>
-										<th>게시시간</th>
+										<th class="admin-title-th text-center">댓글번호</th>
+										<th class="admin-title-th text-center" width=50%>내용</th>
+										<th class="admin-title-th text-center">작성자</th>
+										<th class="admin-title-th text-center">게시글번호</th>
+										<th class="admin-title-th text-center">게시시간</th>
 									</tr>
 								</thead>
 								<tbody>

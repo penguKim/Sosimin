@@ -22,8 +22,8 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/main.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/community.css" />
 <script type="text/javascript">
 	$(function() {
@@ -162,8 +162,8 @@
 				<table class="table table-hover contentList text-center">
 					<thead>
 						<tr class="table-light">
-							<th class="col-1"><span class="d-none d-md-inline">번호</span><span class="d-sm-block d-md-none">게시글</span></th>
-							<th class="col-1 d-none d-md-table-cell">동네</th>
+							<th class="col-auto"><span class="d-none d-md-inline">번호</span><span class="d-sm-block d-md-none">게시글</span></th>
+							<th class="col-auto d-none d-md-table-cell">동네</th>
 							<th class="col-1 d-none d-md-table-cell">유형</th>
 							<th class="col-5 d-none d-md-table-cell">제목</th>
 							<th class="col-1 d-none d-md-table-cell">작성자</th>
@@ -196,7 +196,7 @@
 											</div>
 											<div class="row">
 												<div class="col text-start">
-													<span class="mobileComInfo">${com.community_writer } | ${com.dong} | 
+													<span class="mobileComInfo">${com.community_writer } | <c:if test="${empty sessionScope.sId }">${com.gu }</c:if> ${com.dong} | 
 														${com.community_datetime } | 조회수 ${com.community_readcount } | 좋아요 ${com.like_count }</span>
 												</div>
 											</div>
@@ -211,7 +211,7 @@
 								<div class="d-none d-md-table-cell px-2"><span>${com.community_id }</span></div>
 							</td>
 							<td class="d-none d-md-table-cell">
-								${com.dong }
+								<c:if test="${empty sessionScope.sId }">${com.gu }</c:if> ${com.dong }
 							</td>
 							<td class="d-none d-md-table-cell">
 								<c:choose>
