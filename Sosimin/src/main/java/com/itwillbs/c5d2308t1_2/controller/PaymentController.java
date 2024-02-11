@@ -1533,6 +1533,24 @@ public class PaymentController {
 		
 		return "admin/orderList";
 	}
+	
+	@GetMapping("DeleteOrderList")
+	public String deleteOrderList(@RequestParam Map<String, Object> map, HttpSession session) {
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null || !sId.equals("admin")) {
+			return "error/404";
+		}
+		
+		int deleteCount = service.deleteOrderList(map);
+		
+		if(deleteCount > 0) {
+			return "true";
+		} else {
+			return "false";
+		}
+		
+		
+	}
 
 	
 }

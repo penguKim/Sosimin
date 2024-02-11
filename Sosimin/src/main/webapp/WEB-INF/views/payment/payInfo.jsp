@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- ========================= CSS here ========================= -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
@@ -24,7 +25,6 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 
 <!-- ========================== 달력 ===================================== -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
@@ -457,8 +457,8 @@ function acceptPayment() {
 				type: "GET",
 				url: "AcceptPayment",
 				data: {
-					"product_id": 77,
-					"product_buyer": "leess"
+					"product_id": 80,
+					"product_buyer": "jisung1010"
 				},
 				success:  function(data) {
 					if(data == "not-login") {
@@ -535,7 +535,7 @@ function payment() {
         reverseButtons: true,
     }).then((result) => {
     	if (result.isConfirmed) {
-			location.href="Payment?product_id=77";
+			location.href="Payment?product_id=80";
     	} else {
 			event.preventDefault();
 		}
@@ -564,7 +564,7 @@ function confirmPayment() {
 				type: "GET",
 				url: "ConfirmPayment",
 				data: {
-					"product_id": 77
+					"product_id": 80
 				},
 				success:  function(data) {
 					if(data == "not-login") {
@@ -675,7 +675,7 @@ function stopPayment() {
 				type: "GET",
 				url: "StopPayment",
 				data: {
-					"product_id": 77
+					"product_id": 80
 				},
 				success:  function(data) {
 					if(data == "not-login") {

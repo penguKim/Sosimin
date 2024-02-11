@@ -16,6 +16,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <!-- ========================= CSS here ========================= -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
@@ -25,7 +26,6 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.lineicons.com/3.0/LineIcons.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 
 <!-- ========================= 자바스크립트 시작 ========================= -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
@@ -180,10 +180,10 @@ $(function() {
 	                            <div class="button col-lg-6 col-md-6 col-12">
 	                            	<c:choose>
 										<c:when test="${payInfo.result eq 'use_success'}">
-			                                <button class="btn" onclick="location.href='MyPage'">구매 내역보기</button>
+			                                <button class="btn" onclick="location.href='MyPage?member_id=leess&category=2'">구매 내역보기</button>
 	                            		</c:when>
 										<c:when test="${payInfo.result eq 'use_refuse'}">
-			                                <button class="btn" onclick="location.href='ProductDetail'">상품 다시 보기</button>
+			                                <button class="btn" onclick="location.href='PayInfo'">페이 내역 보기</button>
 	                            		</c:when>
 	                            	</c:choose>
 	                            </div>

@@ -128,6 +128,9 @@ public interface PaymentMapper {
 	// 약정계좌 내역 불러오기
 	List<Map<String, Object>> selectSosiminAccount();
 
+	// 구매 내역 삭제
+	int deleteOrderList(Map<String, Object> map);
+
 
 
 

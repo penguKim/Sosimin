@@ -15,6 +15,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 
 <!-- ========================= CSS here ========================= -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
@@ -30,6 +31,28 @@
 	    place-items: center;
 	    height: auto; /* 화면의 세로 길이에 따라 조정 */
 	    text-align: center;
+	}
+	
+	.rowCenter span {
+		margin-top: 5px;
+		font-size: 18px;
+	}
+	
+	.rowCenter img {
+		box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.3);
+	}
+	
+	.rowCenter span:hover {
+		color: black;
+	}
+	
+	.rowCenter {
+		margin-top: 20px;
+		margin-bottom: 50px;
+	}
+	
+	.section-title {
+		margin-top: 20px;	
 	}
 </style>
 <script src="${pageContext.request.contextPath}/resources/js/jquery-3.7.1.js"></script>
@@ -83,40 +106,51 @@
     </div>
     <!-- End Breadcrumbs -->
 
-
-    <!-- Start Faq Area -->
-    <section class="faq section">
+    <!-- Start Blog Singel Area -->
+    <section class="section blog-single">
         <div class="container">
             <div class="row">
-                <div class="col-12">
-                    <div class="section-title">
-                        <h2>무엇을 도와드릴까요?</h2>
+                <div class="col-lg-10 offset-lg-1 col-md-12 col-12">
+                    <div class="single-inner">
+                        <div class="post-details">
+                            <!-- Comments -->
+                            <div class="post-comments">
+                            	 <div class="row">
+					                <div class="col-12">
+					                    <div class="section-title">
+					                        <h2>무엇을 도와드릴까요?</h2>
+					                    </div>
+					                </div>
+					            </div>
+					            <div class="row rowCenter">
+					            	<div class="col-sm grid" id="CsNoticeDiv">
+					            		<a href="CsNotice">
+					            		 	<img src="${pageContext.request.contextPath}/resources/images/Cs/공지사항.png" width="100px" height="100px">
+									        <br><span>공지사항</span>
+								        </a>
+					            	</div>
+						           	<div class="col-sm grid" id="csFaqDiv">
+										    <a href="CsFaq">
+										        <img src="${pageContext.request.contextPath}/resources/images/Cs/자주묻는질문.png" width="100px" height="100px">
+										        <br><span>자주묻는질문</span>
+										    </a>
+						        	</div>
+						        	<div class="col-sm grid" id="CsOnoOnOneDiv">
+										    <a href="javascript:chat()">
+										        <img src="${pageContext.request.contextPath}/resources/images/Cs/1대1문의.png" width="100px" height="100px">
+										         <br><span>1:1채팅문의</span>
+										    </a>
+						        	</div>
+					        	</div>
+                            
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row rowCenter">
-            	<div class="col-sm grid" id="CsNoticeDiv">
-            		<a href="CsNotice">
-            		 	<img src="${pageContext.request.contextPath}/resources/images/Cs/공지사항.png" width="100px" height="100px">
-				        <br><span id="">공지사항</span>
-			        </a>
-            	</div>
-	           	<div class="col-sm grid" id="csFaqDiv">
-					    <a href="CsFaq">
-					        <img src="${pageContext.request.contextPath}/resources/images/Cs/자주묻는질문.png" width="100px" height="100px">
-					        <br><span>자주묻는질문</span>
-					    </a>
-	        	</div>
-	        	<div class="col-sm grid" id="CsOnoOnOneDiv">
-					    <a href="javascript:chat()">
-					        <img src="${pageContext.request.contextPath}/resources/images/Cs/1대1문의.png" width="100px" height="100px">
-					         <br><span>1:1채팅문의</span>
-					    </a>
-	        	</div>
-        	</div>
         </div>
     </section>
-    <!--/ End Faq Area -->
+    <!-- End Blog Singel Area -->
 <!-- ========================================================================== -->
 	<!-- Start Footer Bottom -->
 	<footer class="footer">
@@ -132,6 +166,7 @@
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </body>
 
 </html>

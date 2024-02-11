@@ -263,4 +263,9 @@ public class PaymentService {
 		return mapper.selectSosiminAccount();
 	}
 
+	// 구매 내역 삭제
+	public int deleteOrderList(Map<String, Object> map) {
+		return mapper.deleteOrderList(map);
+	}
+
 }

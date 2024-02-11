@@ -179,7 +179,16 @@
 				pay_balance = pay_balance
 			</otherwise>
 		</choose>
-		WHERE fintech_use_num = #{fintech_use_num}	
+		WHERE fintech_use_num = #{fintech_use_num}
+		<if test="pay_history_type == 1 or pay_history_type == 2">
+			AND member_id = #{member_id}
+		</if>
+		<if test="pay_history_type == 3">
+			AND member_id = #{product_buyer}
+		</if>
+		<if test="pay_history_type == 4">
+			AND member_id = #{product_seller}
+		</if>
 	</update>
 	
 	<!-- 페이 충전/환급 내역 -->
@@ -456,4 +465,8 @@
 		ORDER BY account_history_id DESC
 	</select>
 	
+	<delete id="deleteOrderList">
+		DELETE FROM Orders
+		WHERE order_id = ${order_id}
+	</delete>
 </mapper>

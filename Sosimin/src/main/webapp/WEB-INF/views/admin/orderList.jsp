@@ -48,9 +48,11 @@
 <script>
 $(function() {
 	// 파라미터에 order_id 값이 있을 경우 값을 저장
-	let order_id = ${param.order_id};
+	let order_id = '${param.order_id}';
+	if(order_id != null || order_id != '') {
+		console.log(order_id);		
+	}
 	
-	console.log(order_id);
 	
 	if (order_id) {
 	    openModal(order_id);
@@ -59,6 +61,57 @@ $(function() {
 
 function openModal(order_id) {
 	$("#modal-" + order_id).modal('show');
+}
+
+function deleteList(order_id) {
+	Swal.fire({
+		   title: '정말 삭제하시겠습니까?',
+		   text: '삭제된 거래내역은 되돌릴수 없습니다',
+		   icon: 'warning',
+		   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+		   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+		   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+		   confirmButtonText: '삭제하기', // confirm 버튼 텍스트 지정
+		   cancelButtonText: '취소하기', // cancel 버튼 텍스트 지정
+		   reverseButtons: true, // 버튼 순서 거꾸로
+	}).then(result => {
+	    if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+	    	$.ajax({
+				url: "DeleteOrderList",
+				data: {
+					"order_id": order_id
+				},
+				success: function(data) {
+					if(data == "true") {
+						Swal.fire({
+							position: 'center',
+							icon: 'success',
+							title: '거래 내역을 삭제했습니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});
+						location.reload();
+					} else {
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '거래 내역 삭제에 실패했습니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});			
+					}
+				},
+				error: function(request, status, error) {
+					// 요청이 실패한 경우 처리할 로직
+					console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+				}
+			}); 
+		} else {
+    		 event.preventDefault();
+		}
+	});
 }
 </script>
 </head>
@@ -221,7 +274,7 @@ function openModal(order_id) {
 															</div>
 															<div class="modal-footer">
 																<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-<!-- 																<button type="button" class="btn btn-primary">취소하기</button> -->
+																<button type="button" class="btn btn-primary" onclick="deleteList('${order_list.order_id}')">삭제하기</button>
 															</div>
 														</div>
 													</div>

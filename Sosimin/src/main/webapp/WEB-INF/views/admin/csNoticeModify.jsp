@@ -104,7 +104,7 @@ $(function() {
 					return false;
 				} else if($("#select").val() == "${detail.cs_type_detail}"
 						&& $("#subject").val() == "${detail.cs_subject}"
-						&& $("#content").val() == "${detail.cs_content}") { 
+						&& $("#content").val().trim() == `${detail.cs_content}`.trim()) { 
 					Swal.fire({
 						position: 'center',
 						icon: 'warning',

@@ -15,6 +15,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 	
 	<!-- ========================= CSS here ========================= -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
@@ -205,5 +206,6 @@
 	<script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </body>
 </html>
