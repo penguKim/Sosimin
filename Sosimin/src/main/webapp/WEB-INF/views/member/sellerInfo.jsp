@@ -923,11 +923,11 @@
 								</div>
 								<div id="communityMiddleArea">
 									<div id="communityMiddleLeft">${mypage.community_datetime }</div>
-									<div id="communityMiddleRight">
+									<div id="communityMiddleRight" <c:if test="${empty mypage.community_image1 }">class="noCommunityImage"</c:if>>
 										조회수 ${mypage.community_readcount }&nbsp;&nbsp;&nbsp;&nbsp;댓글 ${mypage.reply_count }&nbsp;&nbsp;&nbsp;&nbsp;좋아요 ${mypage.like_count }
 									</div>
 								</div>
-								<div id="communityLeftBottom">
+								<div id="communityLeftBottom" <c:if test="${empty mypage.community_image1 }">class="communityLeftBottomNoImage"</c:if>>
 									<p>
 									<c:choose>
 								        <c:when test="${fn:length(mypage.community_content) gt 30}">
@@ -941,7 +941,9 @@
 								</div>
 							</div>
 							<div id="communityRight">
-								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.community_image1}">
+								<c:if test="${not empty mypage.community_image1 }">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.community_image1}">
+								</c:if>
 							</div>
 				        </div> <%--singleCommunityArea 끝 --%>
 					</c:when> <%-- 커뮤니티 작성글 탭 끝 --%>
