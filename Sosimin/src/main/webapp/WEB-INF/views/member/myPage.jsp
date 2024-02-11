@@ -1362,7 +1362,7 @@ $(".heart").on("click", function () {
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
 								</c:otherwise>
 							</c:choose>
-							&nbsp;&nbsp;&nbsp;&nbsp;문자인증
+							&nbsp;&nbsp;&nbsp;&nbsp;휴대폰인증
 							<c:choose>
 								<c:when test="${MyProfileMember.member_phone_auth eq 0 }"> <%-- 미인증 --%>
 									<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 
@@ -1885,8 +1885,8 @@ $(".heart").on("click", function () {
 							<div id="communityReplyLeftBottom">
 								<p>
 								<c:choose>
-							        <c:when test="${fn:length(mypage.reply_content) gt 4}">
-							        	${fn:substring(mypage.reply_content, 0, 3)} ...
+							        <c:when test="${fn:length(mypage.reply_content) gt 7}">
+							        	${fn:substring(mypage.reply_content, 0, 6)} ...
 							        </c:when>
 							        <c:otherwise>
 							        	${mypage.reply_content }

@@ -414,7 +414,8 @@ input[readonly] {
 	margin: 0 auto;
 }
 #profileRightBottom p {
-	margin-top: 18px;
+	margin-top: 5%;
+    margin-left: 27%;
 }
 /* ============== */
 /* 받은 후기 모달 */
