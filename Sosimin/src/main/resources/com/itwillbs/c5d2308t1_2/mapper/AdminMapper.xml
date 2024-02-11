@@ -10,4 +10,12 @@
 		FROM Product p 
 		GROUP BY product_category
 	</select>
+	
+	<!-- 커뮤니티 구 카운트 -->
+	<select id="communityGuCount">
+		SELECT gu, count(*) AS count
+		FROM CommunityAllView c
+		WHERE MONTH(c.community_datetime) = MONTH(CURDATE())
+		GROUP BY gu
+	</select>
 </mapper>

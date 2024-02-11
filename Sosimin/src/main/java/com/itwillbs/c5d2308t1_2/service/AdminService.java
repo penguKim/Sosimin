@@ -19,4 +19,9 @@ public class AdminService {
 		return mapper.categoryShare();
 	}
 
+	// 커뮤니티 구 카운트
+	public List<Map<String, Object>> communityGuCount() {
+		return mapper.communityGuCount();
+	}
+
 }

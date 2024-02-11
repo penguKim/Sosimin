@@ -11,4 +11,7 @@ public interface AdminMapper {
 	// 카테고리 점유율 차트
 	List<Map<String, Object>> categoryShare();
 
+	// 커뮤니티 구 카운트
+	List<Map<String, Object>> communityGuCount();
+
 }

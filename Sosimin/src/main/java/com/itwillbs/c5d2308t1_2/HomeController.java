@@ -116,5 +116,19 @@ public class HomeController {
 		log.info("실시간 인기검색어 TOP20 : " + searchList);
 		return "admin/nowSearchList";
 	}
+	
+	@ResponseBody
+	@GetMapping("CommunityChart")
+	public String comChart() {
+		System.out.println("111111111111111111111111111111111111111111");
+		// 점유율 차트
+		List<Map<String, Object>> communityGuCount = adminService.communityGuCount();
+		
+		JSONArray array = new JSONArray();
+		array.put(communityGuCount);
+		log.info(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> :  커뮤니티 목록 : " + array);
+		
+		return array.toString();
+	}
 
 }

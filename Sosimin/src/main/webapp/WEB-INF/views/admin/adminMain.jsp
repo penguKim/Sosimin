@@ -506,64 +506,66 @@
 		            </div>
 		
 		            <div class="card-body pb-0">
-		              <h5 class="card-title">Budget Report <span>| This Month</span></h5>
+		              <h5 class="card-title">커뮤니티 활동지역 <span>| 이번 달</span></h5>
 		
-		              <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
+		              <div id="CommunityGu" style="min-height: 400px;" class="echart"></div>
 		
 		              <script>
-		                document.addEventListener("DOMContentLoaded", () => {
-		                  var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
-		                    legend: {
-		                      data: ['Allocated Budget', 'Actual Spending']
-		                    },
-		                    radar: {
-		                      // shape: 'circle',
-		                      indicator: [{
-		                          name: 'Sales',
-		                          max: 6500
-		                        },
-		                        {
-		                          name: 'Administration',
-		                          max: 16000
-		                        },
-		                        {
-		                          name: 'Information Technology',
-		                          max: 30000
-		                        },
-		                        {
-		                          name: 'Customer Support',
-		                          max: 38000
-		                        },
-		                        {
-		                          name: 'Development',
-		                          max: 52000
-		                        },
-		                        {
-		                          name: 'Marketing',
-		                          max: 25000
-		                        }
-		                      ]
-		                    },
-		                    series: [{
-		                      name: 'Budget vs spending',
-		                      type: 'radar',
-		                      data: [{
-		                          value: [4200, 3000, 20000, 35000, 50000, 18000],
-		                          name: 'Allocated Budget'
-		                        },
-		                        {
-		                          value: [5000, 14000, 28000, 26000, 42000, 21000],
-		                          name: 'Actual Spending'
-		                        }
-		                      ]
-		                    }]
-		                  });
-		                });
+		              document.addEventListener("DOMContentLoaded", () => {
+		            	  	$.ajax({
+								url: "CommunityChart",
+								dataType: "json",
+								success: function(data) {
+									let chart = data[0];
+
+									var chartData = [];
+						            for (var i = 0; i < chart.length; i++) {
+						                chartData.push({
+						                    value: chart[i].count,
+						                    name: chart[i].gu
+						                });
+						            }
+						            
+					                  echarts.init(document.querySelector("#CommunityGu")).setOption({
+					                    tooltip: {
+					                      trigger: 'item'
+					                    },
+					                    legend: {
+					                      top: '5%',
+					                      left: 'center'
+					                    },
+					                    series: [{
+					                      name: '구',
+					                      type: 'pie',
+					                      radius: ['00%', '70%'],
+					                      avoidLabelOverlap: false,
+					                      label: {
+					                        show: false,
+					                        position: 'bottom'
+					                      },
+					                      emphasis: {
+					                        label: {
+					                          show: true,
+					                          fontSize: '18',
+					                          fontWeight: 'bold'
+					                        }
+					                      },
+					                      labelLine: {
+					                        show: false
+					                      },
+					                      data: chartData
+					                    }]
+					                  });
+								},
+								error: function() {
+									alert("오류");
+								}
+							});
+						});
 		              </script>
 		
 		            </div>
 		          </div><!-- End Budget Report -->
-		
 		          <!-- Website Traffic -->
 		          <div class="card">
 		            <div class="filter">
