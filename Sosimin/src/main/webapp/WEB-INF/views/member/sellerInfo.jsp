@@ -114,6 +114,7 @@
 	    			},
 	//     			dataType: "json",
 	    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+// 	    				alert(result);
 	    				if(result == 'false') { // 좋아요을 등록하는 경우
 							$(heart).addClass("is-active");
 	        				Swal.fire({
@@ -135,8 +136,27 @@
 	        					timer: 2000,
 	        					toast: true
 	        				});
+	    				} else if(result == 'login') { // 세션 아이디가 없는 경우
+	        				Swal.fire({
+	        	    	        title: '회원만 사용가능합니다.',
+	        	    	        text: '로그인 페이지로 이동하시겠습니까?',
+	        	    	        icon: 'error',
+	        	    	        showCancelButton: true,
+	        	    	        confirmButtonColor: '#39d274',
+	        	    	        cancelButtonColor: '#d33',
+	        	    	        confirmButtonText: '이동',
+	        	    	        cancelButtonText: '취소',
+	        	    	        reverseButtons: true,
+	        	    	        allowOutsideClick: false
+	        	    	    }).then((result) => {
+	        	    	        if (result.isConfirmed) {
+	        	    	        	location.href="MemberLogin";
+	        	    	        }
+	        	    	    });
+	    					
 	    				}
-	    			}
+	    			}	
+	    			
 	    		});
         		
         		
