@@ -649,7 +649,7 @@
 										<div class="col-auto align-self-top pe-0">
 											<a href="SellerInfo?member_id=${reply.reply_writer }">
 												<c:choose>
-													<c:when test="${empty com.member_profile }">
+													<c:when test="${empty reply.member_profile }">
 														<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg">
 													</c:when>
 													<c:otherwise>
