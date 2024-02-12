@@ -194,91 +194,8 @@
 			},
 			dataType: "json",
 			success: function(data) {
-				if(data.CountReviews.length == 0) {
-					$("#reviewCheck").html(
-							// 별로에요 옵션 표시(디폴트)
-				 			'<ul class="list-group">'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '약속 장소에 나타나지 않아요'
-				 				+ '</li>'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '상품 상태가 설명과 달라요'
-				 				+ '</li>'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '시간 약속을 안 지켜요'
-				 				+ '</li>'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '응답이 없어요'
-				 				+ '</li>'
-				 			+ '</ul>'
-				 		);
-						// 별로에요 버튼 클릭 이벤트
-				 		$("#option1").on("click", function() {
-				 			$("#reviewCheck").empty();
-				 			$("#reviewCheck").html(
-				 					'<ul class="list-group">'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '약속 장소에 나타나지 않아요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '상품 상태가 설명과 달라요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '시간 약속을 안 지켜요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '응답이 없어요'
-				 					+ '</li>'
-				 				+ '</ul>'
-				 			);
-				 		});
-						
-						// 최고에요 버튼 클릭 이벤트
-				 		$("#option2").on("click", function() {
-				 			$("#reviewCheck").empty();
-				 			$("#reviewCheck").html(
-				 				'<ul class="list-group">'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '제가 있는곳까지 와서 거래했어요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '친절하고 매너가 좋아요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '시간 약속을 잘 지켜요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '응답이 빨라요'
-				 					+ '</li>'
-				 				+ '</ul>'
-				 			);
-							
-				 		});
-				} else {
+				
+				if(data.CountReviews.length > 0) {
 					for(let review of data.CountReviews) {
 						console.log(review);
 						console.log(review.review_status);
@@ -372,7 +289,91 @@
 						}
 	
 					} // for문 끝
-					
+
+				} else {
+					$("#reviewCheck").html(
+							// 별로에요 옵션 표시(디폴트)
+				 			'<ul class="list-group">'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '약속 장소에 나타나지 않아요'
+				 				+ '</li>'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '상품 상태가 설명과 달라요'
+				 				+ '</li>'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '시간 약속을 안 지켜요'
+				 				+ '</li>'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '응답이 없어요'
+				 				+ '</li>'
+				 			+ '</ul>'
+				 		);
+						// 별로에요 버튼 클릭 이벤트
+				 		$("#option1").on("click", function() {
+				 			$("#reviewCheck").empty();
+				 			$("#reviewCheck").html(
+				 					'<ul class="list-group">'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '약속 장소에 나타나지 않아요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '상품 상태가 설명과 달라요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '시간 약속을 안 지켜요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '응답이 없어요'
+				 					+ '</li>'
+				 				+ '</ul>'
+				 			);
+				 		});
+						
+						// 최고에요 버튼 클릭 이벤트
+				 		$("#option2").on("click", function() {
+				 			$("#reviewCheck").empty();
+				 			$("#reviewCheck").html(
+				 				'<ul class="list-group">'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '제가 있는곳까지 와서 거래했어요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '친절하고 매너가 좋아요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '시간 약속을 잘 지켜요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '응답이 빨라요'
+				 					+ '</li>'
+				 				+ '</ul>'
+				 			);
+							
+				 		});
 				}
 				
 				
