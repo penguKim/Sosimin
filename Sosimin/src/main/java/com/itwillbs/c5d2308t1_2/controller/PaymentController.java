@@ -1253,7 +1253,9 @@ public class PaymentController {
 			return "none"; // 구매 중단 가능한 상품이 없습니다!
 		} else if(!orderInfo.get("product_seller").toString().equals(product_seller)) {
 			return "inconsistency"; // 판매자 정보가 일치하지 않습니다!
-		} 
+		} else if(orderInfo.get("order_status").toString().equals("1")) {
+			return "finish"; // 거래 완료된 상품입니다.
+		}
 		
 		log.info("orderInfo : " + orderInfo);
 		map.put("product_buyer", orderInfo.get("product_buyer"));

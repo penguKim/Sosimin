@@ -705,7 +705,16 @@ function stopPayment() {
 								timer: 2000,
 								toast: true
 						});			
-					} else if(data == "true") {
+					} else if(data == "finish") {
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '이미 완료된 거래입니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});			
+					}  else if(data == "true") {
 						Swal.fire({
 							position: 'center',
 							icon: 'success',
