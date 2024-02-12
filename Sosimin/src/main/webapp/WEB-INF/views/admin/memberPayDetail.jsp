@@ -446,7 +446,8 @@ $(function() {
 										</c:choose>
 									</td>
 									<td class="green">
-										<button type="button" id="modify" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${pay_list.pay_history_id}">
+										<button type="button" id="modify"class="btn btn-primary" data-bs-toggle="modal" 
+											data-bs-target="#modal-${pay_list.pay_history_id}" <c:if test="${payList.pay_status eq '1'}">disabled</c:if>>
 											정보수정
 										</button>
 									
@@ -488,7 +489,8 @@ $(function() {
 										<!-- End Basic Modal-->
 									</td>
 									<td class="green">
-										<button type="button" id="refund" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal2-${pay_list.pay_history_id}">
+										<button type="button" id="refund" class="btn btn-primary" data-bs-toggle="modal" 
+											data-bs-target="#modal2-${pay_list.pay_history_id}" <c:if test="${payList.pay_status eq '1'}">disabled</c:if>>
 											페이환급
 										</button>
 									

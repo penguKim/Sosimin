@@ -118,11 +118,6 @@
 					<i class="bi bi-circle"></i><span>자주묻는질문관리</span>
 				</a>
 			</li>
-			<li>
-				<a href="CsOneOnOneList">
-					<i class="bi bi-circle"></i><span>1대1채팅관리</span>
-				</a>
-			</li>
 		</ul>
 	</li><!-- End Icons Nav -->
 

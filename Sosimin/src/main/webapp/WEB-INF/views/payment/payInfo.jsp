@@ -457,7 +457,7 @@ function acceptPayment() {
 				type: "GET",
 				url: "AcceptPayment",
 				data: {
-					"product_id": 156,
+					"product_id": 78,
 					"product_buyer": "leess"
 				},
 				success:  function(data) {
@@ -535,7 +535,7 @@ function payment() {
         reverseButtons: true,
     }).then((result) => {
     	if (result.isConfirmed) {
-			location.href="Payment?product_id=156";
+			location.href="Payment?product_id=78";
     	} else {
 			event.preventDefault();
 		}
@@ -564,7 +564,7 @@ function confirmPayment() {
 				type: "GET",
 				url: "ConfirmPayment",
 				data: {
-					"product_id": 156
+					"product_id": 78
 				},
 				success:  function(data) {
 					if(data == "not-login") {
@@ -660,7 +660,7 @@ function stopPayment() {
 	event.preventDefault();
 	Swal.fire({
         title: "거래를 중단하시겠습니까?",
-        text: "확인을 누르시면 거래가 중단됩니다.",
+        text: "중단을 누르시면 거래가 중단됩니다.",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#39d274',
@@ -675,7 +675,7 @@ function stopPayment() {
 				type: "GET",
 				url: "StopPayment",
 				data: {
-					"product_id": 80
+					"product_id": 78
 				},
 				success:  function(data) {
 					if(data == "not-login") {

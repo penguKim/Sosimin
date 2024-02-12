@@ -1266,11 +1266,14 @@ public class PaymentController {
 			// 구매자 페이 정보 가져오기
 			Map<String, Object> payInfo = service.getPayInfo(orderInfo.get("product_buyer").toString());
 			
+			map.put("pay_balance", payInfo.get("pay_balance"));
 			map.put("tran_amt", orderInfo.get("payment_amount"));
 			map.put("pay_history_type", 1);
 			map.put("pay_history_message", "구매취소");
 			map.put("fintech_use_num", payInfo.get("fintech_use_num"));
 			map.put("pay_id", payInfo.get("pay_id"));
+			
+			log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 이거확인 : " + map.toString());
 			
 			int deletCount = service.getdeleteAllCount(map);
 			
