@@ -145,55 +145,55 @@
 			}
 		});
 		
-// 좋아요 버튼 클릭 이벤트
-$(".heart").on("click", function () {
-	if($(this).hasClass("isSameUser")) {
-			Swal.fire({
-				position: 'center',
-				icon: 'warning',
-				title: '내 상품은 좋아요를 누를 수 없어요!',
-				showConfirmButton: false,
-				timer: 2000,
-				toast: true
-			});
-	} else {
-    	let heart = $(this);
-		$.ajax({
-			type: "POST",
-			url: "CheckLike",
-			data: {
-				product_id: $(this).parent().data("id")
-			},
-//     			dataType: "json",
-			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-				if(result == 'false') { // 좋아요을 등록하는 경우
-					$(heart).addClass("is-active");
-    				Swal.fire({
-    					position: 'center',
-    					icon: 'success',
-    					title: '좋아요 추가했습니다.',
-    					showConfirmButton: false,
-    					timer: 2000,
-    					toast: true
-    				});
-				} else if(result == 'true') { // 좋아요을 삭제하는 경우
-					$(heart).removeClass("is-active");
-					$(heart).parent().remove();
-    				Swal.fire({
-    					position: 'center',
-    					icon: 'success',
-    					title: '좋아요 삭제했습니다.',
-    					showConfirmButton: false,
-    					timer: 2000,
-    					toast: true
-    				});
-				}
+		// 좋아요 버튼 클릭 이벤트
+		$(".heart").on("click", function () {
+			if($(this).hasClass("isSameUser")) {
+					Swal.fire({
+						position: 'center',
+						icon: 'warning',
+						title: '내 상품은 좋아요를 누를 수 없어요!',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+			} else {
+		    	let heart = $(this);
+				$.ajax({
+					type: "POST",
+					url: "CheckLike",
+					data: {
+						product_id: $(this).parent().data("id")
+					},
+		//     			dataType: "json",
+					success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+						if(result == 'false') { // 좋아요을 등록하는 경우
+							$(heart).addClass("is-active");
+		    				Swal.fire({
+		    					position: 'center',
+		    					icon: 'success',
+		    					title: '좋아요 추가했습니다.',
+		    					showConfirmButton: false,
+		    					timer: 2000,
+		    					toast: true
+		    				});
+						} else if(result == 'true') { // 좋아요을 삭제하는 경우
+							$(heart).removeClass("is-active");
+							$(heart).parent().remove();
+		    				Swal.fire({
+		    					position: 'center',
+		    					icon: 'success',
+		    					title: '좋아요 삭제했습니다.',
+		    					showConfirmButton: false,
+		    					timer: 2000,
+		    					toast: true
+		    				});
+						}
+					}
+				});
+				
+				
 			}
 		});
-		
-		
-	}
-});
 		
 		// 파일 change 이벤트 처리
 	    $("#profilePicFile").on("change", showPreviewImage);
@@ -707,98 +707,116 @@ $(".heart").on("click", function () {
 			let btn = $(this);
 			let parent = $(btn).parent();
 // 			alert(product_id);
-			<%-- 서블릿 요청 --%>
-			$.ajax({
-				type: "GET",
-				url: "ConfirmPayment",
-				data: {
-					"product_id": product_id
-				},
-				success:  function(data) {
-					if(data == "not-login") {
-						Swal.fire({
-							icon: 'warning',
-							title: '로그인을 해주세요!',
-							text: '로그인 페이지로 이동합니다!',
-							allowOutsideClick: false
-						}).then((result) => {
-								location.href="MemberLogin";
-						});	
-					} else if(data == "true") {
-						Swal.fire({
-							position: 'center',
-							icon: 'success',
-							title: '구매를 확정했습니다.',
-							showConfirmButton: false,
-							timer: 2000,
-							toast: true
-						});
-// 						$(btn).val("거래후기작성");
-						$(btn).remove();
-						
-						$(parent).append('<input type="button" class="reviewBtn_' + order_id + '" data-id="' + order_id + '" value="거래후기작성" data-bs-toggle="modal" data-bs-target="#reviewModal_' + order_id + '" onclick="writeReview(this)">');
-					} else if(data == "none") {
-						Swal.fire({
-							position: 'center',
-							icon: 'error',
-							title: '구매 확정 가능한 상품이 없습니다.',
-							showConfirmButton: false,
-							timer: 2000,
-							toast: true
-						});				
-					} else if(data == "inconsistency") {
-							Swal.fire({
-								position: 'center',
-								icon: 'error',
-								title: '구매자 정보가 일치하지 않습니다.',
-								showConfirmButton: false,
-								timer: 2000,
-								toast: true
-						});			
-					} else if(data == "unpaid") {
-						Swal.fire({
-							position: 'center',
-							icon: 'error',
-							title: '결제를 먼저 진행해주세요.',
-							showConfirmButton: false,
-							timer: 2000,
-							toast: true
-						});			
-					} else if(data == "not-access_token") {
-						Swal.fire({
-							icon: 'warning',
-							title: '계좌 인증이 필요합니다',
-							text: '계좌 인증 페이지로 이동합니다.',
-							allowOutsideClick: false
-						}).then((result) => {
-								location.href="AccountVerification";
-						});	
-					} else if(data == "not-payInfo") {
-						Swal.fire({
-							icon: 'warning',
-							title: '계좌 등록이 필요합니다',
-							text: '계좌 등록 페이지로 이동합니다.',
-							allowOutsideClick: false
-						}).then((result) => {
-								location.href="AccountRegist";
-						});	
-					} else {
-						Swal.fire({
-							position: 'center',
-							icon: 'error',
-							title: '구매 확정을 실패했습니다.',
-							showConfirmButton: false,
-							timer: 2000,
-							toast: true
-						});			
-					}
-			
-				},
-				error: function(request, status, error) {
-			      // 요청이 실패한 경우 처리할 로직
-			      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+
+			event.preventDefault();
+			Swal.fire({
+		        title: "구매를 확정하시겠습니까?",
+		        text: "확인을 누르시면 거래가 완료됩니다.",
+		        icon: 'question',
+		        showCancelButton: true,
+		        confirmButtonColor: '#39d274',
+		        cancelButtonColor: '#d33',
+		        confirmButtonText: "확인",
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		    }).then((result) => {
+		    	if (result.isConfirmed) {
+					<%-- 서블릿 요청 --%>
+					$.ajax({
+						type: "GET",
+						url: "ConfirmPayment",
+						data: {
+							"product_id": product_id
+						},
+						success:  function(data) {
+							if(data == "not-login") {
+								Swal.fire({
+									icon: 'warning',
+									title: '로그인을 해주세요!',
+									text: '로그인 페이지로 이동합니다!',
+									allowOutsideClick: false
+								}).then((result) => {
+										location.href="MemberLogin";
+								});	
+							} else if(data == "true") {
+								Swal.fire({
+									position: 'center',
+									icon: 'success',
+									title: '구매를 확정했습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});
+								$(btn).remove();
+								$(parent).append('<input type="button" class="reviewBtn_' + order_id + '" data-id="' + order_id + '" value="거래후기작성" data-bs-toggle="modal" data-bs-target="#reviewModal_' + order_id + '" onclick="writeReview(this)">');
+							} else if(data == "none") {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '구매 확정 가능한 상품이 없습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});				
+							} else if(data == "inconsistency") {
+									Swal.fire({
+										position: 'center',
+										icon: 'error',
+										title: '구매자 정보가 일치하지 않습니다.',
+										showConfirmButton: false,
+										timer: 2000,
+										toast: true
+								});			
+							} else if(data == "unpaid") {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '소심거래는 페이결제가 필수입니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});			
+							} else if(data == "not-access_token") {
+								Swal.fire({
+									icon: 'warning',
+									title: '계좌 인증이 필요합니다',
+									text: '계좌 인증 페이지로 이동합니다.',
+									allowOutsideClick: false
+								}).then((result) => {
+										location.href="AccountVerification";
+								});	
+							} else if(data == "not-payInfo") {
+								Swal.fire({
+									icon: 'warning',
+									title: '계좌 등록이 필요합니다',
+									text: '계좌 등록 페이지로 이동합니다.',
+									allowOutsideClick: false
+								}).then((result) => {
+										location.href="AccountRegist";
+								});	
+							} else {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '구매 확정을 실패했습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});			
+							}
+					
+						},
+						error: function(request, status, error) {
+					      // 요청이 실패한 경우 처리할 로직
+					      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+						}
+					});
+		    	} else {
+					event.preventDefault();
 				}
-			});	
+		   });
+			
+
 			
 		});
 		
@@ -833,7 +851,7 @@ $(".heart").on("click", function () {
 		$(".btnQuitDeal").on("click", function() {
 			let product_id = $(this).data("id");
 // 			let order_id = $(this).data("order");
-// 			let btn = $(this);
+			let btn = $(this);
 // 			let parent = $(btn).parent();
 // 			alert(product_id);
 			// 채팅방에서 produtct_id 들고오기
@@ -903,6 +921,7 @@ $(".heart").on("click", function () {
 									timer: 2000,
 									toast: true
 								});
+								$(btn).remove();
 							} else {
 								Swal.fire({
 									position: 'center',
