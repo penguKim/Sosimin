@@ -78,34 +78,55 @@
 		            <div class="col-xxl-4 col-md-6">
 		              <div class="card info-card sales-card">
 		
-		                <div class="filter">
-		                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-		                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-		                    <li class="dropdown-header text-start">
-		                      <h6>Filter</h6>
-		                    </li>
+<!-- 		                <div class="filter"> -->
+<!-- 		                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> -->
+<!-- 		                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> -->
+<!-- 		                    <li class="dropdown-header text-start"> -->
+<!-- 		                      <h6>Filter</h6> -->
+<!-- 		                    </li> -->
 		
-		                    <li><a class="dropdown-item" href="#">Today</a></li>
-		                    <li><a class="dropdown-item" href="#">This Month</a></li>
-		                    <li><a class="dropdown-item" href="#">This Year</a></li>
-		                  </ul>
-		                </div>
+<!-- 		                    <li><a class="dropdown-item" href="#">Today</a></li> -->
+<!-- 		                    <li><a class="dropdown-item" href="#">This Month</a></li> -->
+<!-- 		                    <li><a class="dropdown-item" href="#">This Year</a></li> -->
+<!-- 		                  </ul> -->
+<!-- 		                </div> -->
 		
 		                <div class="card-body">
-		                  <h5 class="card-title">Sales <span>| Today</span></h5>
+		                  <h5 class="card-title">상품등록 <span>| 오늘</span></h5>
 		
 		                  <div class="d-flex align-items-center">
 		                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
 		                      <i class="bi bi-cart"></i>
 		                    </div>
-		                    <div class="ps-3">
-		                      <h6>145</h6>
-		                      <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-		
+		                    <div class="ps-3 productCount">
+		                      <h6></h6>
+		                      <span class="small pt-1 fw-bold productIncreaseCount"></span> <span class="text-muted small pt-2 ps-1 productIncreaseText"></span>
 		                    </div>
 		                  </div>
 		                </div>
-		
+						<script type="text/javascript">
+							$(function() {
+								$.ajax({
+									url: "ProductCount",
+									dataType: "json",
+									success: function(data) {
+										$(".productCount h6").text(data.product_count + "개");
+										$(".productIncreaseCount").text(data.increase);
+										if(data.increase > 0) {
+											$(".productIncreaseText").text("개 증가");
+											$(".productIncreaseCount").addClass("text-success");
+										} else if(data.increase < 0) {
+											$(".productIncreaseText").text("개 감소");
+											$(".productIncreaseCount").addClass("text-danger");
+										} else {
+											$(".productIncreaseText").text("개 변동없음");
+
+										}
+									}
+									
+								});
+							});
+						</script>
 		              </div>
 		            </div><!-- End Sales Card -->
 		
@@ -113,69 +134,147 @@
 		            <div class="col-xxl-4 col-md-6">
 		              <div class="card info-card revenue-card">
 		
-		                <div class="filter">
-		                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-		                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-		                    <li class="dropdown-header text-start">
-		                      <h6>Filter</h6>
-		                    </li>
+<!-- 		                <div class="filter"> -->
+<!-- 		                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> -->
+<!-- 		                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> -->
+<!-- 		                    <li class="dropdown-header text-start"> -->
+<!-- 		                      <h6>Filter</h6> -->
+<!-- 		                    </li> -->
 		
-		                    <li><a class="dropdown-item" href="#">Today</a></li>
-		                    <li><a class="dropdown-item" href="#">This Month</a></li>
-		                    <li><a class="dropdown-item" href="#">This Year</a></li>
-		                  </ul>
-		                </div>
+<!-- 		                    <li><a class="dropdown-item" href="#">Today</a></li> -->
+<!-- 		                    <li><a class="dropdown-item" href="#">This Month</a></li> -->
+<!-- 		                    <li><a class="dropdown-item" href="#">This Year</a></li> -->
+<!-- 		                  </ul> -->
+<!-- 		                </div> -->
 		
 		                <div class="card-body">
-		                  <h5 class="card-title">Revenue <span>| This Month</span></h5>
+		                  <h5 class="card-title">결제금액 <span>| 오늘</span></h5>
 		
 		                  <div class="d-flex align-items-center">
 		                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
 		                      <i class="bi bi-currency-dollar"></i>
 		                    </div>
-		                    <div class="ps-3">
-		                      <h6>$3,264</h6>
-		                      <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
-		
+		                    <div class="ps-3 priceCount">
+		                      <h6></h6>
+		                      <span class="text-success small pt-1 fw-bold priceIncreaseCount"></span> <span class="text-muted small pt-2 ps-1 priceIncreaseText"></span>
 		                    </div>
 		                  </div>
 		                </div>
-		
+						<script type="text/javascript">
+ 							$(function() {
+ 								$.ajax({
+ 									url: "PriceCount",
+ 									dataType: "json",
+ 									success: function(data) {
+ 										$(".priceCount h6").text(data.price_count + "원");
+ 										$(".priceIncreaseCount").text(data.increase);
+ 										if(data.increase > 0) {
+ 											$(".priceIncreaseText").text("원 증가");
+ 											$(".priceIncreaseText").addClass("text-success");
+ 										} else if(data.increase < 0) {
+ 											$(".priceIncreaseText").text("원 감소");
+ 											$(".priceIncreaseText").addClass("text-danger");
+ 										} else {
+ 											$(".priceIncreaseText").text("원 변동없음");
+										}
+ 									}
+									
+								});
+							});
+						</script>
 		              </div>
-		            </div><!-- End Revenue Card -->
+		            </div>
+		            
+<!-- 		                <div class="card-body"> -->
+<!-- 		                  <h5 class="card-title">결제횟수 <span>| 오늘</span></h5> -->
+		
+<!-- 		                  <div class="d-flex align-items-center"> -->
+<!-- 		                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center"> -->
+<!-- 		                      <i class="bi bi-currency-dollar"></i> -->
+<!-- 		                    </div> -->
+<!-- 		                    <div class="ps-3 orderCount"> -->
+<!-- 		                      <h6></h6> -->
+<!-- 		                      <span class="text-success small pt-1 fw-bold orderIncreaseCount"></span> <span class="text-muted small pt-2 ps-1 orderIncreaseText"></span> -->
+<!-- 		                    </div> -->
+<!-- 		                  </div> -->
+<!-- 		                </div> -->
+<!-- 						<script type="text/javascript"> -->
+<!-- // 							$(function() {  -->
+<!-- // 								$.ajax({ -->
+<!-- // 									url: "OrderCount", -->
+<!-- // 									dataType: "json",  -->
+<!-- // 									success: function(data) {  -->
+<!-- // 										$(".orderCount h6").text(data.order_count + "회");  -->
+<!-- // 										$(".orderIncreaseCount").text(data.increase);  -->
+<!-- // 										if(data.increase > 0) {  -->
+<!-- // 											$(".orderIncreaseText").text("회 증가"); -->
+<!-- // 											$(".orderIncreaseCount").addClass("text-success"); -->
+<!-- // 										} else if(data.increase < 0) {  -->
+<!-- //  											$(".orderIncreaseText").text("회 감소"); -->
+<!-- // 											$(".orderIncreaseCount").addClass("text-danger");  -->
+<!-- // 										} else {  -->
+<!-- //  											$(".orderIncreaseText").text("회 변동없음"); -->
+<!-- // 										} -->
+<!-- //  									} -->
+									
+<!-- // 								}); -->
+<!-- //  							}); -->
+<!--  						</script> -->
+<!-- 		              </div> -->
+<!-- 		            </div> -->
 		
 		            <!-- Customers Card -->
 		            <div class="col-xxl-4 col-xl-12">
 		
 		              <div class="card info-card customers-card">
 		
-		                <div class="filter">
-		                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-		                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-		                    <li class="dropdown-header text-start">
-		                      <h6>Filter</h6>
-		                    </li>
+<!-- 		                <div class="filter"> -->
+<!-- 		                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> -->
+<!-- 		                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> -->
+<!-- 		                    <li class="dropdown-header text-start"> -->
+<!-- 		                      <h6>Filter</h6> -->
+<!-- 		                    </li> -->
 		
-		                    <li><a class="dropdown-item" href="#">Today</a></li>
-		                    <li><a class="dropdown-item" href="#">This Month</a></li>
-		                    <li><a class="dropdown-item" href="#">This Year</a></li>
-		                  </ul>
-		                </div>
+<!-- 		                    <li><a class="dropdown-item" href="#">Today</a></li> -->
+<!-- 		                    <li><a class="dropdown-item" href="#">This Month</a></li> -->
+<!-- 		                    <li><a class="dropdown-item" href="#">This Year</a></li> -->
+<!-- 		                  </ul> -->
+<!-- 		                </div> -->
 		
 		                <div class="card-body">
-		                  <h5 class="card-title">Customers <span>| This Year</span></h5>
+		                  <h5 class="card-title">신고횟수 <span>| 오늘</span></h5>
 		
 		                  <div class="d-flex align-items-center">
 		                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
 		                      <i class="bi bi-people"></i>
 		                    </div>
-		                    <div class="ps-3">
-		                      <h6>1244</h6>
-		                      <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
-		
+		                    <div class="ps-3 reportCount">
+		                      <h6></h6>
+		                      <span class="text-danger small pt-1 fw-bold reportIncreaseCount"></span> <span class="text-muted small pt-2 ps-1 reportIncreaseText"></span>
 		                    </div>
 		                  </div>
-		
+							<script type="text/javascript">
+								$(function() {
+									$.ajax({
+										url: "ReportCount",
+										dataType: "json",
+										success: function(data) {
+											$(".reportCount h6").text(data.report_count + "회");
+											$(".reportIncreaseCount").text(data.increase);
+											if(data.increase > 0) {
+												$(".reportIncreaseText").text("회 증가");
+												$(".reportIncreaseCount").addClass("text-success");
+											} else if(data.increase < 0) {
+												$(".reportIncreaseText").text("회 감소");
+												$(".reportIncreaseCount").addClass("text-danger");
+											} else {
+												$(".reportIncreaseText").text("회 변동없음");
+											}
+										}
+										
+									});
+								});
+							</script>
 		                </div>
 		              </div>
 		
@@ -185,76 +284,97 @@
 		            <div class="col-12">
 		              <div class="card">
 		
-		                <div class="filter">
-		                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-		                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-		                    <li class="dropdown-header text-start">
-		                      <h6>Filter</h6>
-		                    </li>
+<!-- 		                <div class="filter"> -->
+<!-- 		                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> -->
+<!-- 		                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> -->
+<!-- 		                    <li class="dropdown-header text-start"> -->
+<!-- 		                      <h6>Filter</h6> -->
+<!-- 		                    </li> -->
 		
-		                    <li><a class="dropdown-item" href="#">Today</a></li>
-		                    <li><a class="dropdown-item" href="#">This Month</a></li>
-		                    <li><a class="dropdown-item" href="#">This Year</a></li>
-		                  </ul>
-		                </div>
+<!-- 		                    <li><a class="dropdown-item" href="#">Today</a></li> -->
+<!-- 		                    <li><a class="dropdown-item" href="#">This Month</a></li> -->
+<!-- 		                    <li><a class="dropdown-item" href="#">This Year</a></li> -->
+<!-- 		                  </ul> -->
+<!-- 		                </div> -->
 		
 		                <div class="card-body">
-		                  <h5 class="card-title">Reports <span>/Today</span></h5>
+		                  <h5 class="card-title">7일 통계</h5>
+<!-- 		                  <h5 class="card-title">Reports <span>/Today</span></h5> -->
 		
 		                  <!-- Line Chart -->
 		                  <div id="reportsChart"></div>
 		
 		                  <script>
-		                    document.addEventListener("DOMContentLoaded", () => {
-		                      new ApexCharts(document.querySelector("#reportsChart"), {
-		                        series: [{
-		                          name: 'Sales',
-		                          data: [31, 40, 28, 51, 42, 82, 56],
-		                        }, {
-		                          name: 'Revenue',
-		                          data: [11, 32, 45, 32, 34, 52, 41]
-		                        }, {
-		                          name: 'Customers',
-		                          data: [15, 11, 32, 18, 9, 24, 11]
-		                        }],
-		                        chart: {
-		                          height: 350,
-		                          type: 'area',
-		                          toolbar: {
-		                            show: false
-		                          },
-		                        },
-		                        markers: {
-		                          size: 4
-		                        },
-		                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-		                        fill: {
-		                          type: "gradient",
-		                          gradient: {
-		                            shadeIntensity: 1,
-		                            opacityFrom: 0.3,
-		                            opacityTo: 0.4,
-		                            stops: [0, 90, 100]
-		                          }
-		                        },
-		                        dataLabels: {
-		                          enabled: false
-		                        },
-		                        stroke: {
-		                          curve: 'smooth',
-		                          width: 2
-		                        },
-		                        xaxis: {
-		                          type: 'datetime',
-		                          categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
-		                        },
-		                        tooltip: {
-		                          x: {
-		                            format: 'dd/MM/yy HH:mm'
-		                          },
-		                        }
-		                      }).render();
-		                    });
+							$(function() {
+								$.ajax({
+								    url: "MainReports",
+								    dataType: "json",
+								    success: function(data) {
+								        let dates = data.dates;  // 날짜 데이터
+								        let productCounts = data.productCounts;  // 상품등록 데이터
+								        let orderCounts = data.orderCounts;  // 상품결제 데이터
+								        let reportCounts = data.reportCounts;  // 회원신고 데이터
+
+								        new ApexCharts(document.querySelector("#reportsChart"), {
+								            series: [{
+								                name: '상품등록',
+								                data: productCounts,
+								            }, {
+								                name: '상품결제',
+								                data: orderCounts,
+								            }, {
+								                name: '회원신고',
+								                data: reportCounts,
+								            }],
+								            chart: {
+								                height: 350,
+								                type: 'area',
+								                toolbar: {
+								                    show: false
+								                },
+								            },
+								            markers: {
+								                size: 4
+								            },
+								            colors: ['#4154f1', '#2eca6a', '#ff771d'],
+								            fill: {
+								                type: "gradient",
+								                gradient: {
+								                    shadeIntensity: 1,
+								                    opacityFrom: 0.3,
+								                    opacityTo: 0.4,
+								                    stops: [0, 90, 100]
+								                }
+								            },
+								            dataLabels: {
+								                enabled: false
+								            },
+								            stroke: {
+								                curve: 'smooth',
+								                width: 2
+								            },
+								            xaxis: {
+								                type: 'datetime',
+								                labels: { // 차트 날짜 형식을 바꾸기 위한 moment.js 라이브러리 추가
+								                	formatter: function(value, timestamp) {
+														return moment(timestamp).format('MM/DD');
+													}
+								                },
+								                categories: dates
+								            },
+								            tooltip: {
+								                x: {
+								                    format: 'yy/MM/dd'
+// 								                    format: 'dd/MM/yy'
+								                },
+								            }
+								        }).render();
+								    }
+								});
+
+							});
+		                  
+
 		                  </script>
 		                  <!-- End Line Chart -->
 		
@@ -492,18 +612,18 @@
 		
 		          <!-- Budget Report -->
 		          <div class="card">
-		            <div class="filter">
-		              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-		              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-		                <li class="dropdown-header text-start">
-		                  <h6>Filter</h6>
-		                </li>
+<!-- 		            <div class="filter"> -->
+<!-- 		              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> -->
+<!-- 		              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"> -->
+<!-- 		                <li class="dropdown-header text-start"> -->
+<!-- 		                  <h6>Filter</h6> -->
+<!-- 		                </li> -->
 		
-		                <li><a class="dropdown-item" href="#">Today</a></li>
-		                <li><a class="dropdown-item" href="#">This Month</a></li>
-		                <li><a class="dropdown-item" href="#">This Year</a></li>
-		              </ul>
-		            </div>
+<!-- 		                <li><a class="dropdown-item" href="#">Today</a></li> -->
+<!-- 		                <li><a class="dropdown-item" href="#">This Month</a></li> -->
+<!-- 		                <li><a class="dropdown-item" href="#">This Year</a></li> -->
+<!-- 		              </ul> -->
+<!-- 		            </div> -->
 		
 		            <div class="card-body pb-0">
 		              <h5 class="card-title">커뮤니티 활동지역 <span>| 이번 달</span></h5>
@@ -511,57 +631,59 @@
 		              <div id="CommunityGu" style="min-height: 400px;" class="echart"></div>
 		
 		              <script>
-		              document.addEventListener("DOMContentLoaded", () => {
-		            	  	$.ajax({
+						$(function() {
+							$.ajax({
 								url: "CommunityChart",
 								dataType: "json",
 								success: function(data) {
+									console.log("커뮤니티 통계");
+									console.log(data[0]);
 									let chart = data[0];
-
+															
 									var chartData = [];
-						            for (var i = 0; i < chart.length; i++) {
-						                chartData.push({
-						                    value: chart[i].count,
-						                    name: chart[i].gu
-						                });
-						            }
-						            
-					                  echarts.init(document.querySelector("#CommunityGu")).setOption({
-					                    tooltip: {
-					                      trigger: 'item'
+									for (var i = 0; i < chart.length; i++) {
+										chartData.push({
+											value: chart[i].count,
+											name: chart[i].gu
+										});
+									}
+						           
+					                echarts.init($("#CommunityGu")[0]).setOption({
+					                  tooltip: {
+					                    trigger: 'item'
+					                  },
+					                  legend: {
+					                    top: '5%',
+					                    left: 'center'
+					                  },
+					                  series: [{
+					                    name: '구',
+					                    type: 'pie',
+					                    radius: ['30%', '70%'],
+					                    avoidLabelOverlap: false,
+					                    label: {
+					                      show: false,
+					                      position: 'center'
 					                    },
-					                    legend: {
-					                      top: '5%',
-					                      left: 'center'
-					                    },
-					                    series: [{
-					                      name: '구',
-					                      type: 'pie',
-					                      radius: ['00%', '70%'],
-					                      avoidLabelOverlap: false,
+					                    emphasis: {
 					                      label: {
-					                        show: false,
-					                        position: 'bottom'
-					                      },
-					                      emphasis: {
-					                        label: {
-					                          show: true,
-					                          fontSize: '18',
-					                          fontWeight: 'bold'
-					                        }
-					                      },
-					                      labelLine: {
-					                        show: false
-					                      },
-					                      data: chartData
-					                    }]
-					                  });
+					                        show: true,
+					                        fontSize: '18',
+					                        fontWeight: 'bold'
+					                      }
+					                    },
+					                    labelLine: {
+					                      show: false
+					                    },
+					                    data: chartData
+					                  }]
+					                });
 								},
 								error: function() {
 									alert("오류");
 								}
 							});
-						});
+						});	
 		              </script>
 		
 		            </div>
@@ -713,6 +835,7 @@
 
 	<!-- Vendor JS Files -->
 	<script src="${pageContext.request.contextPath}/resources/js/admin/apexcharts.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/admin/bootstrap.bundle.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/admin/chart.umd.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/admin/echarts.min.js"></script>

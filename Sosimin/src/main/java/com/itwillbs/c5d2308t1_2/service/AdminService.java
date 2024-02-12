@@ -24,4 +24,30 @@ public class AdminService {
 		return mapper.communityGuCount();
 	}
 
+	// 일일 상품 카운트 차트
+	public Map<String, String> getDailyProductCount() {
+		return mapper.selectDailyProductCount();
+	}
+
+	// 일일 결제 카운트 차트
+	public Map<String, String> getDailyOrderCount() {
+		return mapper.selectDailyOrderCount();
+	}
+
+	// 일일 결제 금액 차트
+	public Map<String, String> getDailyPriceCount() {
+		return mapper.selectDailyPriceCount();
+	}
+	
+	// 일일 신고 카운트 차트
+	public Map<String, String> getDailyReportCount() {
+		return mapper.selectDailyReportCount();
+	}
+
+	// 메인 7일 통계 차트
+	public List<Map<String, Object>> getReports() {
+		return mapper.selectReports();
+	}
+
+
 }

@@ -1,6 +1,7 @@
 package com.itwillbs.c5d2308t1_2;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -77,15 +78,94 @@ public class HomeController {
 	@ResponseBody
 	@GetMapping("CommunityChart")
 	public String comChart() {
-		System.out.println("111111111111111111111111111111111111111111");
 		// 점유율 차트
 		List<Map<String, Object>> communityGuCount = adminService.communityGuCount();
-		
+
 		JSONArray array = new JSONArray();
 		array.put(communityGuCount);
-		log.info(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> :  커뮤니티 목록 : " + array);
 		
 		return array.toString();
+	}
+	
+	// 일일 상품 카운트 차트
+	@ResponseBody
+	@GetMapping("ProductCount")
+	public String productCount() {
+		Map<String, String> map = adminService.getDailyProductCount();
+		
+		JSONObject object = new JSONObject(map);
+		
+		return object.toString();
+	}
+	
+	// 일일 결제 카운트 차트
+	@ResponseBody
+	@GetMapping("OrderCount")
+	public String orderCount() {
+		Map<String, String> map = adminService.getDailyOrderCount();
+		
+		JSONObject object = new JSONObject(map);
+		
+		return object.toString();
+	}
+	
+	// 일일 결제 금액 차트
+	@ResponseBody
+	@GetMapping("PriceCount")
+	public String priceCount() {
+		Map<String, String> map = adminService.getDailyPriceCount();
+		
+		JSONObject object = new JSONObject(map);
+		
+		return object.toString();
+	}
+	
+	// 일일 신고 카운트 차트
+	@ResponseBody
+	@GetMapping("ReportCount")
+	public String reportCount() {
+		Map<String, String> map = adminService.getDailyReportCount();
+		
+		JSONObject object = new JSONObject(map);
+		
+		return object.toString();
+	}
+	
+	// 메인 7일 통계 차트
+	@ResponseBody
+	@GetMapping("MainReports")
+	public String mainReports() {
+		
+		List<Map<String, Object>> reportList = adminService.getReports();
+		
+		List<String> dates = new ArrayList<String>(); // 날짜 리스트
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<String> productCounts = new ArrayList<String>(); // 상품등록 리스트
+		List<String> orderCounts = new ArrayList<String>(); // 결제횟수 리스트
+		List<String> reportCounts = new ArrayList<String>(); // 신고횟수 리스트
+		
+		for(Map<String, Object> list : reportList) {
+			Date date = (Date)list.get("date");
+			dates.add(sdf.format(date));
+			productCounts.add(String.valueOf(list.get("product_count")));
+			orderCounts.add(String.valueOf(list.get("order_count")));
+			reportCounts.add(String.valueOf(list.get("report_count")));
+		}
+		
+//		JSONArray array = new JSONArray();
+//		array.put(dates);
+//		array.put(productCounts);
+//		array.put(orderCounts);
+//		array.put(reportCounts);
+		JSONObject object = new JSONObject();
+		object.put("dates", dates);
+		object.put("productCounts", productCounts);
+		object.put("orderCounts", orderCounts);
+		object.put("reportCounts", reportCounts);
+		
+		
+		return object.toString();
+		
 	}
 
 }
