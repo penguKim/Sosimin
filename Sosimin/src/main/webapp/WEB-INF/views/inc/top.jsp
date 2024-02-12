@@ -160,11 +160,11 @@ $(function(){
 					'<table id="RelationTableBoarder">'
 		    		+'<tr id= "Relationdata">'
 		    		+	'<td colspan="2">'
-		    		+       '<img src="${pageContext.request.contextPath}/resources/images/MainPhoto/상점검색.png" width="18" height="14" alt="추천 상점 아이콘"> 상점검색 &gt;'
+		    		+       '<img src="${pageContext.request.contextPath}/resources/images/MainPhoto/상점검색.png" width="18" height="14" alt="추천 상점 아이콘"> 판매자 페이지 검색 &gt;'
 		    		+ 			'<a href="FindMyPage?q=' + $("#searchKeyword").val() + '">'
 		    		+     			$("#searchKeyword").val()
 		    		+ 			'</a>'
-		    		+ 		"  상점명으로 검색" 
+		    		+ 		"  닉네임으로 검색" 
 		    		+	'</td>'
 		    		+'</tr>'
 		    		+'<tr>'
