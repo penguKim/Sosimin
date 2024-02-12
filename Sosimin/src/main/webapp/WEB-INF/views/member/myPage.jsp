@@ -802,6 +802,131 @@ $(".heart").on("click", function () {
 			
 		});
 		
+		// 결제하기 버튼 클릭이벤트 처리
+		$(".btnPay").on("click", function() {
+			let product_id = $(this).data("id");
+// 			let order_id = $(this).data("order");
+// 			let btn = $(this);
+// 			let parent = $(btn).parent();
+// 			alert(product_id);
+			event.preventDefault();
+			Swal.fire({
+		        title: "결제하시겠습니까?",
+		        text: "확인을 누르시면 결제가 완료됩니다.",
+		        icon: 'question',
+		        showCancelButton: true,
+		        confirmButtonColor: '#39d274',
+		        cancelButtonColor: '#d33',
+		        confirmButtonText: "결제",
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		    }).then((result) => {
+		    	if (result.isConfirmed) {
+					location.href="Payment?product_id=" + product_id;
+		    	} else {
+					event.preventDefault();
+				}
+		   });			
+		});
+		
+		// 거래중단하기 버튼 클릭 이벤트 처리
+		$(".btnQuitDeal").on("click", function() {
+			let product_id = $(this).data("id");
+// 			let order_id = $(this).data("order");
+// 			let btn = $(this);
+// 			let parent = $(btn).parent();
+// 			alert(product_id);
+			// 채팅방에서 produtct_id 들고오기
+			event.preventDefault();
+			Swal.fire({
+		        title: "거래를 중단하시겠습니까?",
+		        text: "중단을 누르시면 거래가 중단됩니다.",
+		        icon: 'question',
+		        showCancelButton: true,
+		        confirmButtonColor: '#39d274',
+		        cancelButtonColor: '#d33',
+		        confirmButtonText: "중단",
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		    }).then((result) => {
+		    	if (result.isConfirmed) {
+					<%-- 서블릿 요청 --%>
+					$.ajax({
+						type: "GET",
+						url: "StopPayment",
+						data: {
+							"product_id": product_id
+						},
+						success:  function(data) {
+							if(data == "not-login") {
+								Swal.fire({
+									icon: 'warning',
+									title: '로그인을 해주세요!',
+									text: '로그인 페이지로 이동합니다!',
+									allowOutsideClick: false
+								}).then((result) => {
+										location.href="MemberLogin";
+								});	
+							} else if(data == "none") {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '거래 중단 가능한 상품이 없습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});				
+							} else if(data == "inconsistency") {
+									Swal.fire({
+										position: 'center',
+										icon: 'error',
+										title: '판매자 정보가 일치하지 않습니다.',
+										showConfirmButton: false,
+										timer: 2000,
+										toast: true
+								});			
+							} else if(data == "finish") {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '이미 완료된 거래입니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});			
+							}  else if(data == "true") {
+								Swal.fire({
+									position: 'center',
+									icon: 'success',
+									title: '거래를 중단했습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});
+							} else {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '거래 중단을 실패했습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});			
+							}
+					
+						},
+						error: function(request, status, error) {
+					      // 요청이 실패한 경우 처리할 로직
+					      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+						}
+					});
+		    	} else {
+					event.preventDefault();
+				}
+		   });
+			
+		});
+		
 		
 	}); // document.ready 끝
 
@@ -1521,6 +1646,8 @@ $(".heart").on("click", function () {
 										</c:when>
 										<c:when test="${mypage.trade_status eq '1' }"> <%-- 거래 중 --%>
 											<input type="button" value="구매확정요청">
+											<input type="button" class="btnQuitDeal num${mypage.product_id }" data-id="${mypage.product_id}" data-order="${mypage.order_id }" value="거래중단하기">
+											
 										</c:when>
 									</c:choose>
 								</div>
@@ -1627,6 +1754,7 @@ $(".heart").on("click", function () {
 							</div>
 							<div id="singleProductButtonArea">
 								<input type="button" class="btnConfirmDeal num${mypage.product_id }" data-id="${mypage.product_id}" data-order="${mypage.order_id }" value="구매확정하기">
+								<input type="button" class="btnPay num${mypage.product_id }" data-id="${mypage.product_id}" data-order="${mypage.order_id }" value="결제하기">
 							</div>
 							<%-- 후기 작성 모달 --%>
 							<jsp:include page="review.jsp">
