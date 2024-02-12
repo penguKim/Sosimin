@@ -42,5 +42,10 @@ public class SosimhamService {
 		return SosimMapper.selectSearchList();
 	}
 	
+	// 메인페이지 인기상품 TOP8 조회
+	public List<Map<String, Object>> getPopularList() {
+		return SosimMapper.selectPopularList();
+	}
+	
 
 }

@@ -33,4 +33,14 @@
 		ORDER BY search_count DESC 
 		LIMIT 20;
 	</select>
+	
+	<select id="selectPopularList" resultType="map">
+		select p.product_image1, t.dong , p.product_datetime , p.product_price , pl.product_like , p.product_category, p.product_id, p.product_name
+		from Product p join ProductLike pl
+		on p.product_id = pl.product_id 
+		join Town t  
+		on p.town_id = t.town_id 
+		order by pl.product_like desc
+		limit 8; 
+	</select>
 </mapper>

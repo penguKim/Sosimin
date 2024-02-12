@@ -2,6 +2,10 @@ package com.itwillbs.c5d2308t1_2;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +40,9 @@ public class HomeController {
 	@Autowired
 	AdminService adminService;
 	
+	@Autowired
+	SosimhamService sosimService;
+	
 	@GetMapping("/")
 	public String home(Locale locale, Model model) {
 		log.info("Welcome home! The client locale is {}.", locale);
@@ -45,6 +52,67 @@ public class HomeController {
 		
 		String formattedDate = dateFormat.format(date);
 		model.addAttribute("serverTime", formattedDate );
+		
+		
+		// 인기상품 목록 조회
+		List<Map<String, Object>> productList = sosimService.getPopularList();
+		System.out.println("productList test : " + productList);
+		
+		// 상품 등록 시간 계산 처리 
+				// ===============================================================================================
+				LocalDateTime now = LocalDateTime.now();
+				
+				DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+		        
+		        
+				for(Map<String, Object> datetime : productList) {
+					LocalDateTime comDateTime;
+//					System.out.println(datetime);
+					// datetime 초가 00초인 경우 오류 판별을 위한 if문
+					if(datetime.get("product_datetime").toString().split(":").length > 2) {
+						comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter1);
+					} else {
+						comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter2);
+					}
+					Duration duration = Duration.between(comDateTime, now);
+					
+					Period period = Period.between(comDateTime.toLocalDate(), now.toLocalDate());
+
+					
+		            long minutes = duration.toMinutes() % 60;
+		            long hours = duration.toHours() % 24;
+		            long days = duration.toDays() % 7;
+		            long weeks = duration.toDays() / 7;
+		            long months = period.getMonths();
+		            long years = period.getYears();
+		            
+		            String timeAgo = "";
+		            if(years > 0) {
+		            	timeAgo = years + "년 전";
+		            } else if(months > 0) {
+		            	timeAgo = months + "개월 전";
+		            } else if(weeks > 0 && weeks <= 4) {
+		            	timeAgo = weeks + "주전";
+					} else if (days > 0 && days < 7) { // 1 ~ 7 차이날 때
+		                timeAgo = days + "일전";
+		            } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+		                timeAgo = hours + "시간 전";
+		            } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+		                timeAgo = minutes + "분 전";
+		            } else {
+		                timeAgo = "방금 전";
+		            }
+		            // 계산한 시간 목록
+		            datetime.put("product_datetime", timeAgo);
+				}
+				
+				System.out.println("날짜 형식 변경 테스트 : " + productList);
+				
+				model.addAttribute("data",productList);
+		
 		return "main";
 	}
 	

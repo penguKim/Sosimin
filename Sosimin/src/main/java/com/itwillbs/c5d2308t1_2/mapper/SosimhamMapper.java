@@ -17,6 +17,8 @@ public interface SosimhamMapper {
 	String selectMemberId(String q);
 	// 인기검색어 TOP10 조회
 	List<Map<String, String>> selectSearchList();
+	// 메인 인기상품 TOP8 조회
+	List<Map<String, Object>> selectPopularList();
 	
 
 }

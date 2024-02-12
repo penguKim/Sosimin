@@ -106,7 +106,8 @@ public class ProductController {
 		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
-		
+        
+        
 		for(Map<String, Object> datetime : productList) {
 			LocalDateTime comDateTime;
 //			System.out.println(datetime);
