@@ -266,6 +266,74 @@ $(function(){
 		$(".popularWordColor").css("color","#39d274");
 		popularClick = true;
 		recentClick = false;
+		
+		$.ajax({
+			type:"GET",
+			url:"popularSearchKeywordList",
+			success:function(res){
+				let stringList = res.myArrayList;
+				let withoutQuotesList = stringList.map((str) => str.replace(/'/g, ''));
+				console.log(withoutQuotesList); // ['문자열1', '문자열2', '문자열3']
+				console.log(withoutQuotesList[0]);
+				
+				
+				let tableHTML = '<table id="PopularTableBoarder">';
+				tableHTML +=
+					'<tr class="PopularCenter">'
+					+ '  <td class="SelRecentborderBottom">'
+				    + '    <a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
+				    + '  </td>'
+				    + '  <td class="PopularborderBottom">'
+				    + '    <a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
+				    + '  </td>'
+				    + '</tr>';
+				    
+				for(let i=0; i<10; i++){
+					let rank1 = i + 1;
+					let rank2 = i + 11;
+					tableHTML +=
+						'<tr>'
+						+'	<td>'
+						+'		<a class="popularWordColorTd marginLeftRank">'
+						+   		rank1
+						+'		</a>'
+						+'		<a onclick="sendKeyword(this)">'
+						+			withoutQuotesList[i]
+						+'		</a>'
+						+'	</td>'
+						+'	<td>'
+						+'		<a class="popularWordColorTd marginLeftRank">'
+						+   		rank2
+						+'		</a>'
+						+'		<a onclick="sendKeyword(this)">'
+						+			withoutQuotesList[i+10]
+						+'		</a>'
+						+'	</td>'
+						+'</td>'
+				};
+				    
+				tableHTML += 
+					'<tr>'
+					+	'<td>'
+					+	'	<a id="closeSearchBox">'
+					+	'	</a>'
+					+	'</td>'
+					+	'<td>'
+					+	'	<a id="closeSearchBox">'
+					+	'		닫기'
+					+	'	</a>'
+					+	'</td>'
+					+'</tr>' 
+					+'</table>'
+					
+				$("#Popular").html(tableHTML);	    
+			}
+		
+		
+		
+			
+		});
+		
 	}
 	
 	function localStorageClean(){
@@ -507,57 +575,6 @@ $(function(){
                 </div>
                 <div id="Popular">
                 	<!-- 인기검색어 테이블이 표시될 영역 -->
-                	<table id="PopularTableBoarder">
-                		<tr class="PopularCenter">
-                			<td class="RecentborderBottom"><a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a></td>
-                			<td class="SelPopularborderBottom"><a onclick="PopularSearches()" class="popularWordColor">인기검색어</a></td>
-                		</tr>
-						<tr>
-						    <td><a class="popularWordColorTd marginLeftRank">1</a> <a onclick="sendKeyword(this)">Zara</a></td>
-						    <td><a class="popularWordColorTd marginLeftRank">11</a> <a onclick="sendKeyword(this)">H&M</a></td>
-						</tr>
-						<tr>
-						    <td><a class="popularWordColorTd marginLeftRank">2</a> <a onclick="sendKeyword(this)">Gucci</a></td>
-						    <td><a class="popularWordColorTd marginLeftRank">12</a> <a onclick="sendKeyword(this)">Nike</a></td>
-						</tr>
-						<tr>
-						    <td><a class="popularWordColorTd marginLeftRank">3</a> <a onclick="sendKeyword(this)">Adidas</a></td>
-						    <td><a class="popularWordColorTd marginLeftRank">13</a> <a onclick="sendKeyword(this)">Louis Vuitton</a></td>
-						</tr>
-						<tr>
-						    <td><a class="popularWordColorTd marginLeftRank">4</a> <a onclick="sendKeyword(this)">Chanel</a></td>
-						    <td><a class="popularWordColorTd marginLeftRank">14</a> <a onclick="sendKeyword(this)">Burberry</a></td>
-						</tr>
-						<tr>
-						    <td><a class="popularWordColorTd marginLeftRank">5</a> <a onclick="sendKeyword(this)">Prada</a></td>
-						    <td><a class="popularWordColorTd marginLeftRank">15</a> <a onclick="sendKeyword(this)">Versace</a></td>
-						</tr>
-						<tr>
-						    <td><a class="popularWordColorTd marginLeftRank">6</a> <a onclick="sendKeyword(this)">Tommy Hilfiger</a></td>
-						    <td><a class="popularWordColorTd marginLeftRank">16</a> <a onclick="sendKeyword(this)">Calvin Klein</a></td>
-						</tr>
-						<tr>
-						    <td><a class="popularWordColorTd marginLeftRank">7</a> <a onclick="sendKeyword(this)">Ralph Lauren</a></td>
-						    <td><a class="popularWordColorTd marginLeftRank">17</a> <a onclick="sendKeyword(this)">Armani</a></td>
-						</tr>
-						<tr>
-						    <td><a class="popularWordColorTd marginLeftRank">8</a> <a onclick="sendKeyword(this)">Givenchy</a></td>
-						    <td><a class="popularWordColorTd marginLeftRank">18</a> <a onclick="sendKeyword(this)">Fendi</a></td>
-						</tr>
-						<tr>
-						    <td><a class="popularWordColorTd marginLeftRank">9</a> <a onclick="sendKeyword(this)">Balenciaga</a></td>
-						    <td><a class="popularWordColorTd marginLeftRank">19</a> <a onclick="sendKeyword(this)">Alexander McQueen</a></td>
-						</tr>
-						<tr>
-						    <td><a class="popularWordColorTd marginLeftRank">10</a> <a onclick="sendKeyword(this)">Dior</a></td>
-						    <td><a class="popularWordColorTd marginLeftRank">20</a> <a onclick="sendKeyword(this)">Prabal Gurung</a></td>
-						</tr>
-
-                		<tr class="PopularCenter">
-                			<td><a id="closeSearchBox"></a></td>
-                			<td><a id="closeSearchBox">닫기</a></td>
-                		</tr>
-                	</table>
                 </div>
                 </div>
             </div>
@@ -568,10 +585,10 @@ $(function(){
 	                	<span class="rightMenu">판매하기</span>  
                 	</a>
 
-
-                	<a href="MyPage">
+					<c:set var="likeUrl" value="MyPage?member_id=${sessionScope.sId}&category=3" />
+                	<a href="${likeUrl}">
 	                	<img src="https://m.bunjang.co.kr/pc-static/resource/31370b164bc5b7cc4fef.png" width="23" height="24" alt="내상점버튼 이미지">
-	                	<span class="rightMenu">관심</span>   
+	                	<span class="rightMenu">좋아요</span>   
                 	</a>
 <%--                 	<a href="chat/main2?member_id=${sId }"> --%>
                 	<a href="ChatMain2">

@@ -146,7 +146,7 @@ html {
 		<div class="row">
 		  <div class="column">
 		    <div class="card">
-		      <img src="/w3images/team1.jpg" alt="Jane" style="width:100%">
+		      <img src="${pageContext.request.contextPath}/resources/images/aboutUs/박가영.png" alt="Jane" style="width:100%">
 		      <div class="container">
 		        <h2>박가영</h2>
 		        <p class="title">CEO & Founder</p>
@@ -159,7 +159,7 @@ html {
 		
 		  <div class="column">
 		    <div class="card">
-		      <img src="/w3images/team2.jpg" alt="Mike" style="width:100%">
+		      <img src="${pageContext.request.contextPath}/resources/images/aboutUs/이민석.png" alt="Mike" style="width:100%">
 		      <div class="container">
 		        <h2>이민석</h2>
 		        <p class="title">Art Director</p>
@@ -172,7 +172,7 @@ html {
 		  
 		  <div class="column">
 		    <div class="card">
-		      <img src="/w3images/team3.jpg" alt="John" style="width:100%">
+		      <img src="${pageContext.request.contextPath}/resources/images/aboutUs/김희수.png" alt="John" style="width:100%">
 		      <div class="container">
 		        <h2>김희수</h2>
 		        <p class="title">Designer</p>
@@ -186,7 +186,7 @@ html {
 		<div class="row">
 		  <div class="column">
 		    <div class="card">
-		      <img src="/w3images/team1.jpg" alt="Jane" style="width:100%">
+		      <img src="${pageContext.request.contextPath}/resources/images/aboutUs/임은령.png" alt="Jane" style="width:100%">
 		      <div class="container">
 		        <h2>임은령</h2>
 		        <p class="title">CEO & Founder</p>
@@ -199,7 +199,7 @@ html {
 		
 		  <div class="column">
 		    <div class="card">
-		      <img src="/w3images/team2.jpg" alt="Mike" style="width:100%">
+		      <img src="${pageContext.request.contextPath}/resources/images/aboutUs/우하민.png" alt="Mike" style="width:100%">
 		      <div class="container">
 		        <h2>우하민</h2>
 		        <p class="title">Art Director</p>
@@ -212,7 +212,7 @@ html {
 		  
 		  <div class="column">
 		    <div class="card">
-		      <img src="/w3images/team3.jpg" alt="John" style="width:100%">
+		      <img src="${pageContext.request.contextPath}/resources/images/aboutUs/강주형.png" alt="John" style="width:100%">
 		      <div class="container">
 		        <h2>강주형</h2>
 		        <p class="title">Designer</p>
@@ -226,7 +226,7 @@ html {
 		<div class="row">
 		  <div class="column">
 		    <div class="card">
-		      <img src="/w3images/team1.jpg" alt="Jane" style="width:100%">
+		      <img src="${pageContext.request.contextPath}/resources/images/aboutUs/박재원.png" alt="Jane" style="width:100%">
 		      <div class="container">
 		        <h2>박재원</h2>
 		        <p class="title">CEO & Founder</p>
