@@ -32,7 +32,16 @@
 $(function() {
 	<%-- 뒤로가기 방지 --%>
 	if (performance.navigation.type === 2) { <%-- 0 : 처음 로딩/새로고침, 1 : 페이지가 앞/뒤로 이동, 2 : 페이지가 뒤로 이동  --%>
-		location.reload(); // 새로고침
+		Swal.fire({
+	        title: '잘못된 접근입니다.',
+	        text: '메인페이지로 이동합니다.',
+	        icon: 'error',
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	        	location.href="./";
+	        }
+	    });
 	}	
 	
 	let input_amount = 0; // 인풋텍스트에 입력한 값을 담을 변수

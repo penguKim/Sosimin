@@ -881,7 +881,7 @@ public class PaymentController {
 			model.addAttribute("msg", "결제 가능한 상품이 없습니다!");
 			model.addAttribute("msg3", "error");
 			return "fail_back";
-		}else if(orderInfo.get("seller_pay_id") == null || orderInfo.get("seller_pay_id").toString().equals("")) {
+		} else if(orderInfo.get("seller_pay_id") == null || orderInfo.get("seller_pay_id").toString().equals("")) {
 			model.addAttribute("msg", "판매자가 페이 가입자가 아닙니다!");
 			model.addAttribute("msg3", "error");
 			return "fail_back";
@@ -938,20 +938,33 @@ public class PaymentController {
 		model.addAttribute("productInfo", productInfo);
 		model.addAttribute("payInfo", payInfo);
 		
-		// Orders에 테이블 생성
-		// 상품 상태 거래중으로 변경
-		int modifyCount = service.orderProductDirect(map); 
+		// Orders 테이블의 product_buyer를 조회하여 세션아이디와 비교
+		// 일치하지 않으면 돌려보내기
+		Map<String, Object> orderInfo = service.getOrderInfo(map);
 		
-		if(modifyCount > 0) {
-			return "payment/use";
-		} else {
-			String url = "ProductDetail?product_id="+ map.get("product_id");
-			model.addAttribute("msg", "잘못된 접근입니다");
+		String url = "MyPage?member_id=" + product_buyer + "&category=2";
+		
+		if(orderInfo.get("product_buyer").toString().equals(product_buyer)) {
+			model.addAttribute("msg", "이미 구매중인 상품입니다!");
+			model.addAttribute("msg2", "마이페이지 구매내역으로 이동합니다!");
 			model.addAttribute("msg3", "warning");
-			model.addAttribute("targetURL", url); // 계좌 등록 페이지로 이동
+			model.addAttribute("targetURL", url);	 // 마이페이지로 이동
 			return "forward";
+		} else {
+			// Orders에 테이블 생성
+			// 상품 상태 거래중으로 변경
+			int modifyCount = service.orderProductDirect(map); 			
+			if(modifyCount > 0) {
+				return "payment/use";
+			} else {
+				String url2 = "ProductDetail?product_id="+ map.get("product_id");
+				model.addAttribute("msg", "잘못된 접근입니다");
+				model.addAttribute("msg3", "warning");
+				model.addAttribute("targetURL", url2); // 상품상세 페이지로 이동
+				return "forward";
+			}
 		}
-		
+	
 	}
 	
 	

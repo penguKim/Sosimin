@@ -746,7 +746,19 @@ function buy() {
 	
 // 	console.log(product_id);
 	
-	location.href="DirectPayment?product_id=" + product_id;
+	
+	if(${payStatus.member_id ne Product.member_id}) {
+		Swal.fire({
+			position: 'center',
+			icon: 'error',
+			title: '판매자가 페이 가입자가 아닙니다!',
+			showConfirmButton: false,
+			timer: 2000,
+			toast: true
+		});	
+	} else {
+		location.href="DirectPayment?product_id=" + product_id;		
+	}	
 
 }
 	
@@ -958,8 +970,9 @@ function buy() {
 		     						 <div class="col-lg-4 col-md-4 col-12">
 			                         <div class="wish-button" id="priceProposal">
 <!-- 			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="Proposal()">가격제안</button> -->
+<%-- 			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="buy()" <c:if test="${payStatus.member_id ne Product.member_id}">disabled</c:if>>구매하기</button> --%>
+			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="buy()">구매하기</button>
 									
-			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="buy()" <c:if test="${payStatus.member_id ne Product.member_id}">disabled</c:if>>구매하기</button>
 		                            </div>
 	                              </div>
                                   </c:when>
