@@ -146,7 +146,7 @@
                     <div class="single-product">
                         <div class="product-image">
                             <a href="ProductDetail?product_id=${result.product_id}" >
-                            	<img src="${pageContext.request.contextPath}/resources/upload/"+${result.product_image1} alt="#">
+                            	<img src="${pageContext.request.contextPath}/resources/upload/${result.product_image1}" alt="#" width="280px" height="380px">
                             </a>
                         </div>
                         <div class="product-info">

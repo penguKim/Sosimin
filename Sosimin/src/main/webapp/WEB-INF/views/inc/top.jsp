@@ -200,9 +200,11 @@ $(function(){
 		let keyword = "";
 		if(pkeyword == null){
 			keyword = $("#searchKeyword").val();
+			
 		}else{
 			keyword = pkeyword;
 		}
+
 		if(keyword != "" && keyword != null){
 			//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
 			// 로컬스토리지에 저장할 키의 이름
@@ -210,7 +212,9 @@ $(function(){
 			// 기존의 키워드 배열 가져오기
 			let keywords = JSON.parse(localStorage.getItem(localStorageKey)) || [];
 			// 새로운 키워드 추가하기
-			keywords.push(keyword);
+			if (!keywords.includes(keyword)) {
+			  keywords.push(keyword);
+			}
 			// 최대 갯수를 초과하는 경우 가장 오래된 데이터부터 제거
 			if (keywords.length > 10) {
 			  keywords = keywords.slice(keywords.length - 10);
@@ -221,16 +225,9 @@ $(function(){
 		
 			var searchKeywordUrl = "SearchProduct?keyword=" + encodeURIComponent(keyword);
 			window.location.href = searchKeywordUrl;
-		}else{
-			Swal.fire({
-				position: 'center',
-				icon: 'error',
-				title: '항목을 입력해주세요.',
-				showConfirmButton: false,
-				timer: 2000,
-				toast: true
-			})
 		}
+		
+		SaveWord(keyword);
 	}
 	
 	
@@ -239,6 +236,7 @@ $(function(){
 		var searchKeywordUrl = "SearchProduct?keyword=" + encodeURIComponent(keyword);
 		window.location.href = searchKeywordUrl;
 		searchKeyword(keyword);
+		SaveWord(keyword);
 	}
 	
 	function showHandler(){
@@ -257,6 +255,17 @@ $(function(){
 		recentClick = true;
 		popularClick = false;
 		
+	}
+	
+	function SaveWord(keyword){
+		$.ajax({
+			type:"GET",
+			url:"SaveSearchKeyword",
+			data: {keyword : keyword},
+			success:function(res){
+				alert(res);
+			}
+		});
 	}
 	
 	function PopularSearches(){
@@ -464,11 +473,6 @@ $(function(){
 
 
 </script>
-<style>
-.hidden{
-	display: none;
-}
-</style>
 
 
 
@@ -518,17 +522,6 @@ $(function(){
 		                        </li>
                     		</c:otherwise>
                     	</c:choose>
-                    	<li>
-                        	<!-- 나라별 언어 선택 -->
-                            <div class="select-position">
-                                <select id="select5">
-                                    <option value="ko" selected>한국어</option>
-                                    <option value="en" >영어</option>
-                                    <option value="ja">일본어</option>
-                                    <option value="ch">중국어</option>
-                                </select>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -554,7 +547,7 @@ $(function(){
                     <!-- navbar search start -->
                     <div class="navbar-search search-style-5">
                         <div class="search-input">
-                            <input type="text" id="searchKeyword" placeholder="상품명, 지역명, @상점명 입력" value="${param.keyword}">
+                            <input type="text" id="searchKeyword" placeholder="상품명 입력" value="${param.keyword}" maxlength="100">
                         </div>
                         <div class="search-btn">
                             <button onclick="searchKeyword()">

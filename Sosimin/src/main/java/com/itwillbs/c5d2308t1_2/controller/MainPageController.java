@@ -45,16 +45,43 @@ public class MainPageController {
 		return "redirect:/SellerInfo?member_id="+member_id;
 	}
 	
-	@GetMapping("NowSearchList")
+	@GetMapping("TotalSearchList")
 	public String nowSearchList(HttpSession session, Model model) {
 		String sId = (String)session.getAttribute("sId");
 		if(sId == null || !sId.equals("admin")) {
 			return "error/404";
 		}
 		List<Map<String,String>> searchList = service.getSearchList();
+		
 		model.addAttribute("searchList",searchList);
 		log.info("실시간 인기검색어 TOP20 : " + searchList);
-		return "admin/nowSearchList";
+		return "admin/totalSearchList";
+	}
+	
+	@GetMapping("DaySearchList")
+	public String daySearchList() {
+		return "admin/daySearchList";
+	}
+
+	@GetMapping("TimeSearchList")
+	public String timeSearchList() {
+		return "admin/timeSearchList";
+	}
+	
+	@ResponseBody
+	@GetMapping("SaveSearchKeyword")
+	public String saveSearchKeyword(@RequestParam String keyword) {
+		int insertCount = service.saveKeyword(keyword);
+		
+		return"";
+		
+	}
+	
+	@ResponseBody
+	@GetMapping("deleteKeyword")
+	public String deleteKeyword(@RequestParam String content) {
+		int updateCount = service.updateKeyword(content);
+		return "";
 	}
 	
 	@ResponseBody
@@ -73,4 +100,6 @@ public class MainPageController {
 		
 		return psl;
 	}
+	
+	
 }

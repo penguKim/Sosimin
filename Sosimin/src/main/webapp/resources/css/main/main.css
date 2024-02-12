@@ -2331,6 +2331,7 @@ ol {
     overflow-y: scroll;
     border-top: 1px solid #eee;
     border-radius: 6px;
+    display: contents;
   }
   .header .navbar .navbar-nav .nav-item a:hover {
     color: #39d274 !important;
