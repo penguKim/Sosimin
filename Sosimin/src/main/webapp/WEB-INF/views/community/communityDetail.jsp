@@ -671,7 +671,7 @@
 													<c:when test="${reply.reply_writer eq 'admin' }">
 														<span class="badge rounded-pill text-bg-secondary" style="background-color: #000;">관리자</span>
 													</c:when>
-													<c:when test="${reply.reply_writer eq sessionScope.sId }">
+													<c:when test="${reply.reply_writer eq com.community_writer }">
 														<span class="badge rounded-pill text-bg-secondary">작성자</span>
 													</c:when>
 												</c:choose>
