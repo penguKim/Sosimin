@@ -607,7 +607,7 @@ function confirmPayment() {
 						Swal.fire({
 							position: 'center',
 							icon: 'error',
-							title: '결제를 먼저 진행해주세요.',
+							title: '소심거래는 페이결제가 필수입니다.',
 							showConfirmButton: false,
 							timer: 2000,
 							toast: true
