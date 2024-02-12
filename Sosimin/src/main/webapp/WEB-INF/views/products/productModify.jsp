@@ -14,7 +14,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" />
 
 <meta charset="UTF-8">
-<title>소시민 상품등록</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
@@ -31,7 +32,6 @@
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <style type="text/css">
 	article {
 		text-align: center;
@@ -770,6 +770,55 @@ window.onload = function() {
   });
   document.getElementById("imageLength").textContent = imageLength;  
 }
+
+// ------------------------------------
+
+
+
+// window.onload = function() {
+//   var imageData = document.getElementById("image_data");
+//   var imageUrls = [
+//     imageData.getAttribute("data-image1"),
+//     imageData.getAttribute("data-image2"),
+//     imageData.getAttribute("data-image3"),
+//     imageData.getAttribute("data-image4"),
+//     imageData.getAttribute("data-image5")
+//   ].filter(function(url) {
+//     return url && url.trim() !== '';
+//   });
+
+//   var imageLength = 0;
+//   var mainImageSpan = document.querySelector(".mainImage");
+
+//   imageUrls.forEach(function(url, index) {
+//     if (url && url.trim() !== '') {
+//       var img = document.createElement("img");
+//       img.setAttribute("src", url);
+//       img.setAttribute("class", "imageSize");
+
+//       var closeButton = document.createElement("button");
+//       closeButton.setAttribute("type", "button");
+//       closeButton.setAttribute("class", "imageClose");
+//       closeButton.setAttribute("onclick", "removeImage(this)");
+
+//       var imageItem = document.createElement("span");
+//       imageItem.classList.add("imageItem");
+
+//       imageItem.appendChild(img);
+//       imageItem.appendChild(closeButton);
+//       document.getElementById("image_container").appendChild(imageItem);
+//       imageLength++;
+//     }
+//   });
+
+//   if (imageLength > 0) {
+//     mainImageSpan.style.display = "block";
+//   }
+
+//   document.getElementById("imageLength").textContent = imageLength;
+// }
+
+
 
 
 // ------------------------------------
@@ -1560,7 +1609,6 @@ document.addEventListener("DOMContentLoaded", function() {
     	<!-- Select2 -->
     	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 	</th:block>
 </body>
 </html>

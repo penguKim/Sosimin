@@ -114,6 +114,7 @@
 	    			},
 	//     			dataType: "json",
 	    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+// 	    				alert(result);
 	    				if(result == 'false') { // 좋아요을 등록하는 경우
 							$(heart).addClass("is-active");
 	        				Swal.fire({
@@ -135,8 +136,27 @@
 	        					timer: 2000,
 	        					toast: true
 	        				});
+	    				} else if(result == 'login') { // 세션 아이디가 없는 경우
+	        				Swal.fire({
+	        	    	        title: '회원만 사용가능합니다.',
+	        	    	        text: '로그인 페이지로 이동하시겠습니까?',
+	        	    	        icon: 'error',
+	        	    	        showCancelButton: true,
+	        	    	        confirmButtonColor: '#39d274',
+	        	    	        cancelButtonColor: '#d33',
+	        	    	        confirmButtonText: '이동',
+	        	    	        cancelButtonText: '취소',
+	        	    	        reverseButtons: true,
+	        	    	        allowOutsideClick: false
+	        	    	    }).then((result) => {
+	        	    	        if (result.isConfirmed) {
+	        	    	        	location.href="MemberLogin";
+	        	    	        }
+	        	    	    });
+	    					
 	    				}
-	    			}
+	    			}	
+	    			
 	    		});
         		
         		
@@ -174,91 +194,8 @@
 			},
 			dataType: "json",
 			success: function(data) {
-				if(data.CountReviews.length == 0) {
-					$("#reviewCheck").html(
-							// 별로에요 옵션 표시(디폴트)
-				 			'<ul class="list-group">'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '약속 장소에 나타나지 않아요'
-				 				+ '</li>'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '상품 상태가 설명과 달라요'
-				 				+ '</li>'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '시간 약속을 안 지켜요'
-				 				+ '</li>'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '응답이 없어요'
-				 				+ '</li>'
-				 			+ '</ul>'
-				 		);
-						// 별로에요 버튼 클릭 이벤트
-				 		$("#option1").on("click", function() {
-				 			$("#reviewCheck").empty();
-				 			$("#reviewCheck").html(
-				 					'<ul class="list-group">'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '약속 장소에 나타나지 않아요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '상품 상태가 설명과 달라요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '시간 약속을 안 지켜요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '응답이 없어요'
-				 					+ '</li>'
-				 				+ '</ul>'
-				 			);
-				 		});
-						
-						// 최고에요 버튼 클릭 이벤트
-				 		$("#option2").on("click", function() {
-				 			$("#reviewCheck").empty();
-				 			$("#reviewCheck").html(
-				 				'<ul class="list-group">'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '제가 있는곳까지 와서 거래했어요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '친절하고 매너가 좋아요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '시간 약속을 잘 지켜요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '응답이 빨라요'
-				 					+ '</li>'
-				 				+ '</ul>'
-				 			);
-							
-				 		});
-				} else {
+				
+				if(data.CountReviews.length > 0) {
 					for(let review of data.CountReviews) {
 						console.log(review);
 						console.log(review.review_status);
@@ -352,7 +289,91 @@
 						}
 	
 					} // for문 끝
-					
+
+				} else {
+					$("#reviewCheck").html(
+							// 별로에요 옵션 표시(디폴트)
+				 			'<ul class="list-group">'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '약속 장소에 나타나지 않아요'
+				 				+ '</li>'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '상품 상태가 설명과 달라요'
+				 				+ '</li>'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '시간 약속을 안 지켜요'
+				 				+ '</li>'
+				 				+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 					+ '응답이 없어요'
+				 				+ '</li>'
+				 			+ '</ul>'
+				 		);
+						// 별로에요 버튼 클릭 이벤트
+				 		$("#option1").on("click", function() {
+				 			$("#reviewCheck").empty();
+				 			$("#reviewCheck").html(
+				 					'<ul class="list-group">'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '약속 장소에 나타나지 않아요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '상품 상태가 설명과 달라요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '시간 약속을 안 지켜요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '응답이 없어요'
+				 					+ '</li>'
+				 				+ '</ul>'
+				 			);
+				 		});
+						
+						// 최고에요 버튼 클릭 이벤트
+				 		$("#option2").on("click", function() {
+				 			$("#reviewCheck").empty();
+				 			$("#reviewCheck").html(
+				 				'<ul class="list-group">'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '제가 있는곳까지 와서 거래했어요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '친절하고 매너가 좋아요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '시간 약속을 잘 지켜요'
+				 					+ '</li>'
+				 					+ '<li class="list-group-item">'
+				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+				 					+ '<h6>' + '0개' + '</h6>'
+				 						+ '응답이 빨라요'
+				 					+ '</li>'
+				 				+ '</ul>'
+				 			);
+							
+				 		});
 				}
 				
 				
@@ -479,7 +500,7 @@
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
 								</c:otherwise>
 							</c:choose>
-							&nbsp;&nbsp;&nbsp;&nbsp;문자인증
+							&nbsp;&nbsp;&nbsp;&nbsp;휴대폰인증
 							<c:choose>
 								<c:when test="${MyProfileMember.member_phone_auth eq 0 }"> <%-- 미인증 --%>
 									<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 
@@ -613,7 +634,7 @@
 									</b>
 								</div>
 								<div id="singleProductInfoArea">
-									${mypage.product_price }원
+									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
@@ -657,7 +678,7 @@
 									</b>
 									</div>
 									<div id="singleProductInfoArea">
-										${mypage.product_price }원
+										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										${mypage.product_datetime }
@@ -706,7 +727,7 @@
 								</b>
 							</div>
 							<div id="singleProductInfoArea">
-								${mypage.product_price }원
+								<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								${mypage.product_datetime }
@@ -749,7 +770,7 @@
 								</b>
 								</div>
 								<div id="singleProductInfoArea">
-									${mypage.product_price }원
+									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
@@ -798,7 +819,7 @@
 									</b>
 								</div>
 								<div id="singleProductInfoArea">
-									${mypage.product_price }원
+									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
@@ -842,7 +863,7 @@
 									</b>
 									</div>
 									<div id="singleProductInfoArea">
-										${mypage.product_price }원
+										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										${mypage.product_datetime }
@@ -903,11 +924,11 @@
 								</div>
 								<div id="communityMiddleArea">
 									<div id="communityMiddleLeft">${mypage.community_datetime }</div>
-									<div id="communityMiddleRight">
+									<div id="communityMiddleRight" <c:if test="${empty mypage.community_image1 }">class="noCommunityImage"</c:if>>
 										조회수 ${mypage.community_readcount }&nbsp;&nbsp;&nbsp;&nbsp;댓글 ${mypage.reply_count }&nbsp;&nbsp;&nbsp;&nbsp;좋아요 ${mypage.like_count }
 									</div>
 								</div>
-								<div id="communityLeftBottom">
+								<div id="communityLeftBottom" <c:if test="${empty mypage.community_image1 }">class="communityLeftBottomNoImage"</c:if>>
 									<p>
 									<c:choose>
 								        <c:when test="${fn:length(mypage.community_content) gt 30}">
@@ -921,7 +942,9 @@
 								</div>
 							</div>
 							<div id="communityRight">
-								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.community_image1}">
+								<c:if test="${not empty mypage.community_image1 }">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.community_image1}">
+								</c:if>
 							</div>
 				        </div> <%--singleCommunityArea 끝 --%>
 					</c:when> <%-- 커뮤니티 작성글 탭 끝 --%>
@@ -966,8 +989,8 @@
 							<div id="communityReplyLeftBottom">
 								<p>
 								<c:choose>
-							        <c:when test="${fn:length(mypage.reply_content) gt 4}">
-							        	${fn:substring(mypage.reply_content, 0, 3)} ...
+							        <c:when test="${fn:length(mypage.reply_content) gt 7}">
+							        	${fn:substring(mypage.reply_content, 0, 6)} ...
 							        </c:when>
 							        <c:otherwise>
 							        	${mypage.reply_content }

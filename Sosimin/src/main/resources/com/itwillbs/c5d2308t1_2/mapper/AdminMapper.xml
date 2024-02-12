@@ -10,4 +10,54 @@
 		FROM Product p 
 		GROUP BY product_category
 	</select>
+	
+	<!-- 커뮤니티 구 카운트 -->
+	<select id="communityGuCount">
+		SELECT gu, count(*) AS count
+		FROM CommunityAllView c
+		WHERE MONTH(c.community_datetime) = MONTH(CURDATE())
+		GROUP BY gu
+	</select>
+	
+	<!-- 일일 상품 등록 카운트 -->
+	<select id="selectDailyProductCount">
+		SELECT *
+		FROM ProductChartCount
+		WHERE date = CURDATE()
+	</select>
+	
+	<!-- 일일 결제 카운트 -->
+	<select id="selectDailyOrderCount">
+		SELECT *
+		FROM OrdertChartCount
+		WHERE date = CURDATE()
+	</select>
+	
+	<!-- 일일 결제 금액 -->
+	<select id="selectDailyPriceCount">
+		SELECT *
+		FROM OrderChartPrice
+		WHERE date = CURDATE()
+	</select>
+	
+	<!-- 일일 신고 카운트 -->
+	<select id="selectDailyReportCount">
+		SELECT *
+		FROM ReportChartCount
+		WHERE date = CURDATE()
+	</select>
+	
+	<!-- 메인 7일 통계 차트 -->
+	<select id="selectReports">
+		SELECT *
+		FROM MainReports
+	</select>
+	
+	<!-- 최근 거래 상품 5개 조회 -->
+	<select id="selectRecentProduct" resultType="map">
+		SELECT * 
+		FROM  OrderList
+		ORDER BY order_id DESC
+		limit 0, 5
+	</select>
 </mapper>

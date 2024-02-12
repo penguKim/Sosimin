@@ -145,55 +145,55 @@
 			}
 		});
 		
-// 좋아요 버튼 클릭 이벤트
-$(".heart").on("click", function () {
-	if($(this).hasClass("isSameUser")) {
-			Swal.fire({
-				position: 'center',
-				icon: 'warning',
-				title: '내 상품은 좋아요를 누를 수 없어요!',
-				showConfirmButton: false,
-				timer: 2000,
-				toast: true
-			});
-	} else {
-    	let heart = $(this);
-		$.ajax({
-			type: "POST",
-			url: "CheckLike",
-			data: {
-				product_id: $(this).parent().data("id")
-			},
-//     			dataType: "json",
-			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-				if(result == 'false') { // 좋아요을 등록하는 경우
-					$(heart).addClass("is-active");
-    				Swal.fire({
-    					position: 'center',
-    					icon: 'success',
-    					title: '좋아요 추가했습니다.',
-    					showConfirmButton: false,
-    					timer: 2000,
-    					toast: true
-    				});
-				} else if(result == 'true') { // 좋아요을 삭제하는 경우
-					$(heart).removeClass("is-active");
-					$(heart).parent().remove();
-    				Swal.fire({
-    					position: 'center',
-    					icon: 'success',
-    					title: '좋아요 삭제했습니다.',
-    					showConfirmButton: false,
-    					timer: 2000,
-    					toast: true
-    				});
-				}
+		// 좋아요 버튼 클릭 이벤트
+		$(".heart").on("click", function () {
+			if($(this).hasClass("isSameUser")) {
+					Swal.fire({
+						position: 'center',
+						icon: 'warning',
+						title: '내 상품은 좋아요를 누를 수 없어요!',
+						showConfirmButton: false,
+						timer: 2000,
+						toast: true
+					});
+			} else {
+		    	let heart = $(this);
+				$.ajax({
+					type: "POST",
+					url: "CheckLike",
+					data: {
+						product_id: $(this).parent().data("id")
+					},
+		//     			dataType: "json",
+					success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
+						if(result == 'false') { // 좋아요을 등록하는 경우
+							$(heart).addClass("is-active");
+		    				Swal.fire({
+		    					position: 'center',
+		    					icon: 'success',
+		    					title: '좋아요 추가했습니다.',
+		    					showConfirmButton: false,
+		    					timer: 2000,
+		    					toast: true
+		    				});
+						} else if(result == 'true') { // 좋아요을 삭제하는 경우
+							$(heart).removeClass("is-active");
+							$(heart).parent().remove();
+		    				Swal.fire({
+		    					position: 'center',
+		    					icon: 'success',
+		    					title: '좋아요 삭제했습니다.',
+		    					showConfirmButton: false,
+		    					timer: 2000,
+		    					toast: true
+		    				});
+						}
+					}
+				});
+				
+				
 			}
 		});
-		
-		
-	}
-});
 		
 		// 파일 change 이벤트 처리
 	    $("#profilePicFile").on("change", showPreviewImage);
@@ -707,98 +707,242 @@ $(".heart").on("click", function () {
 			let btn = $(this);
 			let parent = $(btn).parent();
 // 			alert(product_id);
-			<%-- 서블릿 요청 --%>
-			$.ajax({
-				type: "GET",
-				url: "ConfirmPayment",
-				data: {
-					"product_id": product_id
-				},
-				success:  function(data) {
-					if(data == "not-login") {
-						Swal.fire({
-							icon: 'warning',
-							title: '로그인을 해주세요!',
-							text: '로그인 페이지로 이동합니다!',
-							allowOutsideClick: false
-						}).then((result) => {
-								location.href="MemberLogin";
-						});	
-					} else if(data == "true") {
-						Swal.fire({
-							position: 'center',
-							icon: 'success',
-							title: '구매를 확정했습니다.',
-							showConfirmButton: false,
-							timer: 2000,
-							toast: true
-						});
-// 						$(btn).val("거래후기작성");
-						$(btn).remove();
-						
-						$(parent).append('<input type="button" class="reviewBtn_' + order_id + '" data-id="' + order_id + '" value="거래후기작성" data-bs-toggle="modal" data-bs-target="#reviewModal_' + order_id + '" onclick="writeReview(this)">');
-					} else if(data == "none") {
-						Swal.fire({
-							position: 'center',
-							icon: 'error',
-							title: '구매 확정 가능한 상품이 없습니다.',
-							showConfirmButton: false,
-							timer: 2000,
-							toast: true
-						});				
-					} else if(data == "inconsistency") {
-							Swal.fire({
-								position: 'center',
-								icon: 'error',
-								title: '구매자 정보가 일치하지 않습니다.',
-								showConfirmButton: false,
-								timer: 2000,
-								toast: true
-						});			
-					} else if(data == "unpaid") {
-						Swal.fire({
-							position: 'center',
-							icon: 'error',
-							title: '결제를 먼저 진행해주세요.',
-							showConfirmButton: false,
-							timer: 2000,
-							toast: true
-						});			
-					} else if(data == "not-access_token") {
-						Swal.fire({
-							icon: 'warning',
-							title: '계좌 인증이 필요합니다',
-							text: '계좌 인증 페이지로 이동합니다.',
-							allowOutsideClick: false
-						}).then((result) => {
-								location.href="AccountVerification";
-						});	
-					} else if(data == "not-payInfo") {
-						Swal.fire({
-							icon: 'warning',
-							title: '계좌 등록이 필요합니다',
-							text: '계좌 등록 페이지로 이동합니다.',
-							allowOutsideClick: false
-						}).then((result) => {
-								location.href="AccountRegist";
-						});	
-					} else {
-						Swal.fire({
-							position: 'center',
-							icon: 'error',
-							title: '구매 확정을 실패했습니다.',
-							showConfirmButton: false,
-							timer: 2000,
-							toast: true
-						});			
-					}
-			
-				},
-				error: function(request, status, error) {
-			      // 요청이 실패한 경우 처리할 로직
-			      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+
+			event.preventDefault();
+			Swal.fire({
+		        title: "구매를 확정하시겠습니까?",
+		        text: "확인을 누르시면 거래가 완료됩니다.",
+		        icon: 'question',
+		        showCancelButton: true,
+		        confirmButtonColor: '#39d274',
+		        cancelButtonColor: '#d33',
+		        confirmButtonText: "확인",
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		    }).then((result) => {
+		    	if (result.isConfirmed) {
+					<%-- 서블릿 요청 --%>
+					$.ajax({
+						type: "GET",
+						url: "ConfirmPayment",
+						data: {
+							"product_id": product_id
+						},
+						success:  function(data) {
+							if(data == "not-login") {
+								Swal.fire({
+									icon: 'warning',
+									title: '로그인을 해주세요!',
+									text: '로그인 페이지로 이동합니다!',
+									allowOutsideClick: false
+								}).then((result) => {
+										location.href="MemberLogin";
+								});	
+							} else if(data == "true") {
+								Swal.fire({
+									position: 'center',
+									icon: 'success',
+									title: '구매를 확정했습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});
+								$(btn).remove();
+								$(parent).append('<input type="button" class="reviewBtn_' + order_id + '" data-id="' + order_id + '" value="거래후기작성" data-bs-toggle="modal" data-bs-target="#reviewModal_' + order_id + '" onclick="writeReview(this)">');
+							} else if(data == "none") {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '구매 확정 가능한 상품이 없습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});				
+							} else if(data == "inconsistency") {
+									Swal.fire({
+										position: 'center',
+										icon: 'error',
+										title: '구매자 정보가 일치하지 않습니다.',
+										showConfirmButton: false,
+										timer: 2000,
+										toast: true
+								});			
+							} else if(data == "unpaid") {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '소심거래는 페이결제가 필수입니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});			
+							} else if(data == "not-access_token") {
+								Swal.fire({
+									icon: 'warning',
+									title: '계좌 인증이 필요합니다',
+									text: '계좌 인증 페이지로 이동합니다.',
+									allowOutsideClick: false
+								}).then((result) => {
+										location.href="AccountVerification";
+								});	
+							} else if(data == "not-payInfo") {
+								Swal.fire({
+									icon: 'warning',
+									title: '계좌 등록이 필요합니다',
+									text: '계좌 등록 페이지로 이동합니다.',
+									allowOutsideClick: false
+								}).then((result) => {
+										location.href="AccountRegist";
+								});	
+							} else {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '구매 확정을 실패했습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});			
+							}
+					
+						},
+						error: function(request, status, error) {
+					      // 요청이 실패한 경우 처리할 로직
+					      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+						}
+					});
+		    	} else {
+					event.preventDefault();
 				}
-			});	
+		   });
+			
+
+			
+		});
+		
+		// 결제하기 버튼 클릭이벤트 처리
+		$(".btnPay").on("click", function() {
+			let product_id = $(this).data("id");
+// 			let order_id = $(this).data("order");
+// 			let btn = $(this);
+// 			let parent = $(btn).parent();
+// 			alert(product_id);
+			event.preventDefault();
+			Swal.fire({
+		        title: "결제하시겠습니까?",
+		        text: "확인을 누르시면 결제가 완료됩니다.",
+		        icon: 'question',
+		        showCancelButton: true,
+		        confirmButtonColor: '#39d274',
+		        cancelButtonColor: '#d33',
+		        confirmButtonText: "결제",
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		    }).then((result) => {
+		    	if (result.isConfirmed) {
+					location.href="Payment?product_id=" + product_id;
+		    	} else {
+					event.preventDefault();
+				}
+		   });			
+		});
+		
+		// 거래중단하기 버튼 클릭 이벤트 처리
+		$(".btnQuitDeal").on("click", function() {
+			let product_id = $(this).data("id");
+// 			let order_id = $(this).data("order");
+			let btn = $(this);
+// 			let parent = $(btn).parent();
+// 			alert(product_id);
+			// 채팅방에서 produtct_id 들고오기
+			event.preventDefault();
+			Swal.fire({
+		        title: "거래를 중단하시겠습니까?",
+		        text: "중단을 누르시면 거래가 중단됩니다.",
+		        icon: 'question',
+		        showCancelButton: true,
+		        confirmButtonColor: '#39d274',
+		        cancelButtonColor: '#d33',
+		        confirmButtonText: "중단",
+		        cancelButtonText: '취소',
+		        reverseButtons: true,
+		    }).then((result) => {
+		    	if (result.isConfirmed) {
+					<%-- 서블릿 요청 --%>
+					$.ajax({
+						type: "GET",
+						url: "StopPayment",
+						data: {
+							"product_id": product_id
+						},
+						success:  function(data) {
+							if(data == "not-login") {
+								Swal.fire({
+									icon: 'warning',
+									title: '로그인을 해주세요!',
+									text: '로그인 페이지로 이동합니다!',
+									allowOutsideClick: false
+								}).then((result) => {
+										location.href="MemberLogin";
+								});	
+							} else if(data == "none") {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '거래 중단 가능한 상품이 없습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});				
+							} else if(data == "inconsistency") {
+									Swal.fire({
+										position: 'center',
+										icon: 'error',
+										title: '판매자 정보가 일치하지 않습니다.',
+										showConfirmButton: false,
+										timer: 2000,
+										toast: true
+								});			
+							} else if(data == "finish") {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '이미 완료된 거래입니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});			
+							}  else if(data == "true") {
+								Swal.fire({
+									position: 'center',
+									icon: 'success',
+									title: '거래를 중단했습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});
+								$(btn).remove();
+							} else {
+								Swal.fire({
+									position: 'center',
+									icon: 'error',
+									title: '거래 중단을 실패했습니다.',
+									showConfirmButton: false,
+									timer: 2000,
+									toast: true
+								});			
+							}
+					
+						},
+						error: function(request, status, error) {
+					      // 요청이 실패한 경우 처리할 로직
+					      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+						}
+					});
+		    	} else {
+					event.preventDefault();
+				}
+		   });
 			
 		});
 		
@@ -825,227 +969,374 @@ $(".heart").on("click", function () {
 	}
 
 
-	// 받은 후기 클릭 시 모달 띄우는 함수 정의
-// 	function openReceivedReviewModal(sId) {
+	// 받은 후기 클릭 및 별로예요 클릭 시 함수 정의
 	function openReceivedReviewModal(sId) {
 		$("#staticBackdropLabel").text("받은 후기");
- 		$(".modal-body input[type='radio']").attr("disabled", false);
- 		$(".modal-body input[type='radio']").eq(0).prop("checked", true); // 기본옵션 별로에요 선택
-		
+ 		$("#option1").prop("checked", true); // 기본옵션 별로에요 선택
  		$("#reviewCheck").empty();
- 		$(".modal-footer").html(
-	 			'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
-	 		);
-
  		$.ajax({
-			url: "ShowReviews",
+			url: "BadReviews",
 			data: {
 				sId: sId
 			},
 			dataType: "json",
 			success: function(data) {
-				if(data.CountReviews.length == 0) {
-					$("#reviewCheck").html(
-							// 별로에요 옵션 표시(디폴트)
-				 			'<ul class="list-group">'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '약속 장소에 나타나지 않아요'
-				 				+ '</li>'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '상품 상태가 설명과 달라요'
-				 				+ '</li>'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '시간 약속을 안 지켜요'
-				 				+ '</li>'
-				 				+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 					+ '응답이 없어요'
-				 				+ '</li>'
-				 			+ '</ul>'
-				 		);
-						// 별로에요 버튼 클릭 이벤트
-				 		$("#option1").on("click", function() {
-				 			$("#reviewCheck").empty();
-				 			$("#reviewCheck").html(
-				 					'<ul class="list-group">'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '약속 장소에 나타나지 않아요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '상품 상태가 설명과 달라요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '시간 약속을 안 지켜요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '응답이 없어요'
-				 					+ '</li>'
-				 				+ '</ul>'
-				 			);
-				 		});
-						
-						// 최고에요 버튼 클릭 이벤트
-				 		$("#option2").on("click", function() {
-				 			$("#reviewCheck").empty();
-				 			$("#reviewCheck").html(
-				 				'<ul class="list-group">'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '제가 있는곳까지 와서 거래했어요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '친절하고 매너가 좋아요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '시간 약속을 잘 지켜요'
-				 					+ '</li>'
-				 					+ '<li class="list-group-item">'
-				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-				 					+ '<h6>' + '0개' + '</h6>'
-				 						+ '응답이 빨라요'
-				 					+ '</li>'
-				 				+ '</ul>'
-				 			);
-							
-				 		});
+				if(Object.keys(data).length == 0) {
+					console.log("비었음");
+		 			$("#reviewCheck").html(
+	 					'<ul class="list-group">'
+	 					+ '<li class="list-group-item">'
+	 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+	 					+ '<h6>' + '0개' + '</h6>'
+	 						+ '약속 장소에 나타나지 않아요'
+	 					+ '</li>'
+	 					+ '<li class="list-group-item">'
+	 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+	 					+ '<h6>' + '0개' + '</h6>'
+	 						+ '상품 상태가 설명과 달라요'
+	 					+ '</li>'
+	 					+ '<li class="list-group-item">'
+	 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+	 					+ '<h6>' + '0개' + '</h6>'
+	 						+ '시간 약속을 안 지켜요'
+	 					+ '</li>'
+	 					+ '<li class="list-group-item">'
+	 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+	 					+ '<h6>' + '0개' + '</h6>'
+	 						+ '응답이 없어요'
+	 					+ '</li>'
+	 					+ '</ul>'
+	 				);
 				} else {
-					for(let review of data.CountReviews) {
-						console.log(review);
-						console.log(review.review_status);
-						if(review.review_status == "bad") {
-					 		$("#reviewCheck").html(
-								// 별로에요 옵션 표시(디폴트)
-					 			'<ul class="list-group">'
-					 				+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-					 					+ '<h6>' +  review.review_check1 + '개' + '</h6>'
-					 					+ '약속 장소에 나타나지 않아요'
-					 				+ '</li>'
-					 				+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-					 					+ '<h6>' +  review.review_check2 + '개' + '</h6>'
-					 					+ '상품 상태가 설명과 달라요'
-					 				+ '</li>'
-					 				+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-					 					+ '<h6>' +  review.review_check3 + '개' + '</h6>'
-					 					+ '시간 약속을 안 지켜요'
-					 				+ '</li>'
-					 				+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-					 					+ '<h6>' +  review.review_check4 + '개' + '</h6>'
-					 					+ '응답이 없어요'
-					 				+ '</li>'
-					 			+ '</ul>'
-					 		);
-							// 별로에요 버튼 클릭 이벤트
-					 		$("#option1").on("click", function() {
-					 			$("#reviewCheck").empty();
-					 			$("#reviewCheck").html(
-					 					'<ul class="list-group">'
-					 					+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-					 					+ '<h6>' +  review.review_check1 + '개' + '</h6>'
-					 						+ '약속 장소에 나타나지 않아요'
-					 					+ '</li>'
-					 					+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-					 					+ '<h6>' +  review.review_check2 + '개' + '</h6>'
-					 						+ '상품 상태가 설명과 달라요'
-					 					+ '</li>'
-					 					+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-					 					+ '<h6>' +  review.review_check3 + '개' + '</h6>'
-					 						+ '시간 약속을 안 지켜요'
-					 					+ '</li>'
-					 					+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
-					 					+ '<h6>' +  review.review_check4 + '개' + '</h6>'
-					 						+ '응답이 없어요'
-					 					+ '</li>'
-					 				+ '</ul>'
-					 			);
-					 		});
-						
-						
-						} else if(review.review_status == "good") {
-							// 최고에요 버튼 클릭 이벤트
-					 		$("#option2").on("click", function() {
-					 			$("#reviewCheck").empty();
-					 			$("#reviewCheck").html(
-					 				'<ul class="list-group">'
-					 					+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-					 					+ '<h6>' +  review.review_check1 + '개' + '</h6>'
-					 						+ '제가 있는곳까지 와서 거래했어요'
-					 					+ '</li>'
-					 					+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-					 					+ '<h6>' +  review.review_check2 + '개' + '</h6>'
-					 						+ '친절하고 매너가 좋아요'
-					 					+ '</li>'
-					 					+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-					 					+ '<h6>' +  review.review_check3 + '개' + '</h6>'
-					 						+ '시간 약속을 잘 지켜요'
-					 					+ '</li>'
-					 					+ '<li class="list-group-item">'
-					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
-					 					+ '<h6>' +  review.review_check4 + '개' + '</h6>'
-					 						+ '응답이 빨라요'
-					 					+ '</li>'
-					 				+ '</ul>'
-					 			);
-								
-					 		});
-							
-						}
-	
-					} // for문 끝
-					
+					console.log("안비었음");
+			 		$("#reviewCheck").html(
+			 			'<ul class="list-group">'
+			 				+ '<li class="list-group-item">'
+			 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+			 					+ '<h6>' +  data.review_check1 + '개' + '</h6>'
+			 					+ '약속 장소에 나타나지 않아요'
+			 				+ '</li>'
+			 				+ '<li class="list-group-item">'
+			 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+			 					+ '<h6>' +  data.review_check2 + '개' + '</h6>'
+			 					+ '상품 상태가 설명과 달라요'
+			 				+ '</li>'
+			 				+ '<li class="list-group-item">'
+			 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+			 					+ '<h6>' +  data.review_check3 + '개' + '</h6>'
+			 					+ '시간 약속을 안 지켜요'
+			 				+ '</li>'
+			 				+ '<li class="list-group-item">'
+			 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+			 					+ '<h6>' +  data.review_check4 + '개' + '</h6>'
+			 					+ '응답이 없어요'
+			 				+ '</li>'
+			 			+ '</ul>'
+			 		);
 				}
-				
-				
 			},
 			error: function(xhr,textStatus,errorThrown) {
-			    // 요청이 실패한 경우 처리할 로직
-//				    alert("닉네임 중복 판별 AJAX 요청 실패!");
-// 			    Swal.fire({
-// 					title: 'AJAX 요청 실패!',         // Alert 제목
-// 					text: "후기 불러오기에 실패했습니다!",  // Alert 내용
-// 					icon: 'error',
-// 				});
 				console.log(xhr + ", " + textStatus + ", " + errorThrown);
-
-
-
 			}
-			
 		});
+	}
+	
+	// 후기 최고예요 클릭 시 함수 정의
+	function goodReviews(sId) {
+		$("#staticBackdropLabel").text("받은 후기");
+ 		$("#option2").prop("checked", true); // 기본옵션 별로에요 선택
+ 		$("#reviewCheck").empty();
+ 		$.ajax({
+			url: "GoodReviews",
+			data: {
+				sId: sId
+			},
+			dataType: "json",
+			success: function(data) {
+				if(Object.keys(data).length == 0) {
+					console.log("비었음");
+		 			$("#reviewCheck").html(
+		 				'<ul class="list-group">'
+		 					+ '<li class="list-group-item">'
+		 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+		 					+ '<h6>' + '0개' + '</h6>'
+		 						+ '제가 있는곳까지 와서 거래했어요'
+		 					+ '</li>'
+		 					+ '<li class="list-group-item">'
+		 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+		 					+ '<h6>' + '0개' + '</h6>'
+		 						+ '친절하고 매너가 좋아요'
+		 					+ '</li>'
+		 					+ '<li class="list-group-item">'
+		 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+		 					+ '<h6>' + '0개' + '</h6>'
+		 						+ '시간 약속을 잘 지켜요'
+		 					+ '</li>'
+		 					+ '<li class="list-group-item">'
+		 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+		 					+ '<h6>' + '0개' + '</h6>'
+		 						+ '응답이 빨라요'
+		 					+ '</li>'
+		 				+ '</ul>'
+		 			);
+				} else {
+					console.log("안비었음");
+			 			$("#reviewCheck").html(
+		 				'<ul class="list-group">'
+		 					+ '<li class="list-group-item">'
+		 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+		 					+ '<h6>' +  data.review_check1 + '개' + '</h6>'
+		 						+ '제가 있는곳까지 와서 거래했어요'
+		 					+ '</li>'
+		 					+ '<li class="list-group-item">'
+		 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+		 					+ '<h6>' +  data.review_check2 + '개' + '</h6>'
+		 						+ '친절하고 매너가 좋아요'
+		 					+ '</li>'
+		 					+ '<li class="list-group-item">'
+		 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+		 					+ '<h6>' +  data.review_check3 + '개' + '</h6>'
+		 						+ '시간 약속을 잘 지켜요'
+		 					+ '</li>'
+		 					+ '<li class="list-group-item">'
+		 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+		 					+ '<h6>' +  data.review_check4 + '개' + '</h6>'
+		 						+ '응답이 빨라요'
+		 					+ '</li>'
+		 				+ '</ul>'
+		 			);
+				}
+			},
+			error: function(xhr,textStatus,errorThrown) {
+				console.log(xhr + ", " + textStatus + ", " + errorThrown);
+			}
+		});
+	}
+	
+	
+	
+// 	function openReceivedReviewModal(sId) {
+// 		$("#staticBackdropLabel").text("받은 후기");
+//  		$(".modal-body input[type='radio']").attr("disabled", false);
+//  		$(".modal-body input[type='radio']").eq(0).prop("checked", true); // 기본옵션 별로에요 선택
+		
+//  		$("#reviewCheck").empty();
+//  		$(".modal-footer").html(
+// 	 			'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>'
+// 	 		);
+
+//  		$.ajax({
+// 			url: "ShowReviews",
+// 			data: {
+// 				sId: sId
+// 			},
+// 			dataType: "json",
+// 			success: function(data) {
+// 				console.log("리뷰");
+// 				if(data.CountReviews.length > 0) {
+// 					for(let review of data.CountReviews) {
+// 						console.log(review);
+// 						console.log(review.review_status);
+// 						if(review.review_status == "bad") {
+// 					 		$("#reviewCheck").html(
+// 								// 별로에요 옵션 표시(디폴트)
+// 					 			'<ul class="list-group">'
+// 					 				+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 					 					+ '<h6>' +  review.review_check1 + '개' + '</h6>'
+// 					 					+ '약속 장소에 나타나지 않아요'
+// 					 				+ '</li>'
+// 					 				+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 					 					+ '<h6>' +  review.review_check2 + '개' + '</h6>'
+// 					 					+ '상품 상태가 설명과 달라요'
+// 					 				+ '</li>'
+// 					 				+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 					 					+ '<h6>' +  review.review_check3 + '개' + '</h6>'
+// 					 					+ '시간 약속을 안 지켜요'
+// 					 				+ '</li>'
+// 					 				+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 					 					+ '<h6>' +  review.review_check4 + '개' + '</h6>'
+// 					 					+ '응답이 없어요'
+// 					 				+ '</li>'
+// 					 			+ '</ul>'
+// 					 		);
+// 							// 별로에요 버튼 클릭 이벤트
+// 					 		$("#option1").on("click", function() {
+// 					 			$("#reviewCheck").empty();
+// 					 			$("#reviewCheck").html(
+// 					 					'<ul class="list-group">'
+// 					 					+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 					 					+ '<h6>' +  review.review_check1 + '개' + '</h6>'
+// 					 						+ '약속 장소에 나타나지 않아요'
+// 					 					+ '</li>'
+// 					 					+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 					 					+ '<h6>' +  review.review_check2 + '개' + '</h6>'
+// 					 						+ '상품 상태가 설명과 달라요'
+// 					 					+ '</li>'
+// 					 					+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 					 					+ '<h6>' +  review.review_check3 + '개' + '</h6>'
+// 					 						+ '시간 약속을 안 지켜요'
+// 					 					+ '</li>'
+// 					 					+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 					 					+ '<h6>' +  review.review_check4 + '개' + '</h6>'
+// 					 						+ '응답이 없어요'
+// 					 					+ '</li>'
+// 					 				+ '</ul>'
+// 					 			);
+// 					 		});
+						
+						
+// 						}
+						
+// 						if(review.review_status == "good") {
+// 							// 최고에요 버튼 클릭 이벤트
+// 					 		$("#option2").on("click", function() {
+// 					 			$("#reviewCheck").empty();
+// 					 			$("#reviewCheck").html(
+// 					 				'<ul class="list-group">'
+// 					 					+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+// 					 					+ '<h6>' +  review.review_check1 + '개' + '</h6>'
+// 					 						+ '제가 있는곳까지 와서 거래했어요'
+// 					 					+ '</li>'
+// 					 					+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+// 					 					+ '<h6>' +  review.review_check2 + '개' + '</h6>'
+// 					 						+ '친절하고 매너가 좋아요'
+// 					 					+ '</li>'
+// 					 					+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+// 					 					+ '<h6>' +  review.review_check3 + '개' + '</h6>'
+// 					 						+ '시간 약속을 잘 지켜요'
+// 					 					+ '</li>'
+// 					 					+ '<li class="list-group-item">'
+// 					 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+// 					 					+ '<h6>' +  review.review_check4 + '개' + '</h6>'
+// 					 						+ '응답이 빨라요'
+// 					 					+ '</li>'
+// 					 				+ '</ul>'
+// 					 			);
+								
+// 					 		});
+							
+// 						}
+	
+// 					} // for문 끝
+
+// 				} else {
+// 					$("#reviewCheck").html(
+// 							// 별로에요 옵션 표시(디폴트)
+// 				 			'<ul class="list-group">'
+// 				 				+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 					+ '약속 장소에 나타나지 않아요'
+// 				 				+ '</li>'
+// 				 				+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 					+ '상품 상태가 설명과 달라요'
+// 				 				+ '</li>'
+// 				 				+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 					+ '시간 약속을 안 지켜요'
+// 				 				+ '</li>'
+// 				 				+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 					+ '응답이 없어요'
+// 				 				+ '</li>'
+// 				 			+ '</ul>'
+// 				 		);
+// 						// 별로에요 버튼 클릭 이벤트
+// 				 		$("#option1").on("click", function() {
+// 				 			$("#reviewCheck").empty();
+// 				 			$("#reviewCheck").html(
+// 				 					'<ul class="list-group">'
+// 				 					+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 						+ '약속 장소에 나타나지 않아요'
+// 				 					+ '</li>'
+// 				 					+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 						+ '상품 상태가 설명과 달라요'
+// 				 					+ '</li>'
+// 				 					+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 						+ '시간 약속을 안 지켜요'
+// 				 					+ '</li>'
+// 				 					+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/frowny.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 						+ '응답이 없어요'
+// 				 					+ '</li>'
+// 				 				+ '</ul>'
+// 				 			);
+// 				 		});
+						
+// 						// 최고에요 버튼 클릭 이벤트
+// 				 		$("#option2").on("click", function() {
+// 				 			$("#reviewCheck").empty();
+// 				 			$("#reviewCheck").html(
+// 				 				'<ul class="list-group">'
+// 				 					+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 						+ '제가 있는곳까지 와서 거래했어요'
+// 				 					+ '</li>'
+// 				 					+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 						+ '친절하고 매너가 좋아요'
+// 				 					+ '</li>'
+// 				 					+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 						+ '시간 약속을 잘 지켜요'
+// 				 					+ '</li>'
+// 				 					+ '<li class="list-group-item">'
+// 				 					+ '<img src="${pageContext.request.contextPath}/resources/images/member/smiley.png">'
+// 				 					+ '<h6>' + '0개' + '</h6>'
+// 				 						+ '응답이 빨라요'
+// 				 					+ '</li>'
+// 				 				+ '</ul>'
+// 				 			);
+							
+// 				 		});
+// 				}
+				
+				
+// 			},
+// 			error: function(xhr,textStatus,errorThrown) {
+// 			    // 요청이 실패한 경우 처리할 로직
+// //				    alert("닉네임 중복 판별 AJAX 요청 실패!");
+// // 			    Swal.fire({
+// // 					title: 'AJAX 요청 실패!',         // Alert 제목
+// // 					text: "후기 불러오기에 실패했습니다!",  // Alert 내용
+// // 					icon: 'error',
+// // 				});
+// 				console.log(xhr + ", " + textStatus + ", " + errorThrown);
+
+
+
+// 			}
+			
+// 		});
 		
 		
 
-	}
+// 	}
 	
 	// 내 정보 수정 클릭 시 모달 띄우는 함수 정의
 	function openModifyMyInfoModal() {
@@ -1362,7 +1653,7 @@ $(".heart").on("click", function () {
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png">
 								</c:otherwise>
 							</c:choose>
-							&nbsp;&nbsp;&nbsp;&nbsp;문자인증
+							&nbsp;&nbsp;&nbsp;&nbsp;휴대폰인증
 							<c:choose>
 								<c:when test="${MyProfileMember.member_phone_auth eq 0 }"> <%-- 미인증 --%>
 									<img src="${pageContext.request.contextPath}/resources/images/member/redXmark.png"> 
@@ -1377,6 +1668,7 @@ $(".heart").on("click", function () {
 					<div id="profileRightUpperRight">
 <!-- 						<a href="javascript:reviewViewFrom()" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> -->
 						<a href="#staticBackdrop" data-bs-toggle="modal" id="reviewViewFrom" onclick="openReceivedReviewModal('${sessionScope.sId}')">
+<%-- 						<a href="#staticBackdrop" data-bs-toggle="modal" id="reviewViewFrom" onclick="openReceivedReviewModal('${sessionScope.sId}')"> --%>
 <!-- 						<a href="javascript:reviewViewFrom()"> -->
 							<img src="${pageContext.request.contextPath}/resources/images/member/reviewicon.png">
 							받은 후기
@@ -1497,7 +1789,7 @@ $(".heart").on("click", function () {
 								</b>
 								</div>
 								<div id="singleProductInfoArea">
-									${mypage.product_price }원
+									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
@@ -1520,6 +1812,8 @@ $(".heart").on("click", function () {
 										</c:when>
 										<c:when test="${mypage.trade_status eq '1' }"> <%-- 거래 중 --%>
 											<input type="button" value="구매확정요청">
+											<input type="button" class="btnQuitDeal num${mypage.product_id }" data-id="${mypage.product_id}" data-order="${mypage.order_id }" value="거래중단하기">
+											
 										</c:when>
 									</c:choose>
 								</div>
@@ -1548,7 +1842,7 @@ $(".heart").on("click", function () {
 									</b>
 									</div>
 									<div id="singleProductInfoArea">
-										${mypage.product_price }원
+										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										${mypage.product_datetime }
@@ -1608,7 +1902,7 @@ $(".heart").on("click", function () {
 								</b>
 							</div>
 							<div id="singleProductInfoArea">
-								${mypage.product_price }원
+								<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								${mypage.product_datetime }
@@ -1626,6 +1920,7 @@ $(".heart").on("click", function () {
 							</div>
 							<div id="singleProductButtonArea">
 								<input type="button" class="btnConfirmDeal num${mypage.product_id }" data-id="${mypage.product_id}" data-order="${mypage.order_id }" value="구매확정하기">
+								<input type="button" class="btnPay num${mypage.product_id }" data-id="${mypage.product_id}" data-order="${mypage.order_id }" value="결제하기">
 							</div>
 							<%-- 후기 작성 모달 --%>
 							<jsp:include page="review.jsp">
@@ -1655,7 +1950,7 @@ $(".heart").on("click", function () {
 								</b>
 								</div>
 								<div id="singleProductInfoArea">
-									${mypage.product_price }원
+									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
@@ -1708,7 +2003,7 @@ $(".heart").on("click", function () {
 									</b>
 								</div>
 								<div id="singleProductInfoArea">
-									${mypage.product_price }원
+									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
@@ -1752,7 +2047,7 @@ $(".heart").on("click", function () {
 									</b>
 									</div>
 									<div id="singleProductInfoArea">
-										${mypage.product_price }원
+										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										${mypage.product_datetime }
@@ -1815,30 +2110,32 @@ $(".heart").on("click", function () {
 										</a></b><br>
 									</div>
 									<div class="col d-flex justify-content-end">
-										<input type="button" class="btn btn-primary btnCommunityDelete" value="삭제" onclick="deleteCommunity('${mypage.community_id }', this)">
+										<input type="button" class="btn btn-primary btnCommunityDelete <c:if test="${empty mypage.community_image1 }">btnCommunityDeleteNoImage</c:if>" value="삭제" onclick="deleteCommunity('${mypage.community_id }', this)">
 									</div>
 								</div>
 								<div id="communityMiddleArea">
 									<div id="communityMiddleLeft">${mypage.community_datetime }</div>
-									<div id="communityMiddleRight">
+									<div id="communityMiddleRight" <c:if test="${empty mypage.community_image1 }">class="noCommunityImage"</c:if>>
 										조회수 ${mypage.community_readcount }&nbsp;&nbsp;&nbsp;&nbsp;댓글 ${mypage.reply_count }&nbsp;&nbsp;&nbsp;&nbsp;좋아요 ${mypage.like_count }
 									</div>
 								</div>
-								<div id="communityLeftBottom">
+								<div id="communityLeftBottom" <c:if test="${empty mypage.community_image1 }">class="communityLeftBottomNoImage"</c:if>>
 									<p>
-										<c:choose>
-									        <c:when test="${fn:length(mypage.community_content) gt 30}">
-									        	${fn:substring(mypage.community_content, 0, 29)} ...
-									        </c:when>
-									        <c:otherwise>
-									        	${mypage.community_content }
-									        </c:otherwise>
-										</c:choose>
+									<c:choose>
+								        <c:when test="${fn:length(mypage.community_content) gt 30}">
+								        	${fn:substring(mypage.community_content, 0, 29)} ...
+								        </c:when>
+								        <c:otherwise>
+								        	${mypage.community_content }
+								        </c:otherwise>
+									</c:choose>
 									</p>
 								</div>
 							</div>
 							<div id="communityRight">
-								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.community_image1}">
+								<c:if test="${not empty mypage.community_image1 }">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.community_image1}">
+								</c:if>
 							</div>
 				        </div> <%--singleCommunityArea 끝 --%>
 					</c:when> <%-- 커뮤니티 작성글 탭 끝 --%>
@@ -1883,8 +2180,8 @@ $(".heart").on("click", function () {
 							<div id="communityReplyLeftBottom">
 								<p>
 								<c:choose>
-							        <c:when test="${fn:length(mypage.reply_content) gt 4}">
-							        	${fn:substring(mypage.reply_content, 0, 3)} ...
+							        <c:when test="${fn:length(mypage.reply_content) gt 7}">
+							        	${fn:substring(mypage.reply_content, 0, 6)} ...
 							        </c:when>
 							        <c:otherwise>
 							        	${mypage.reply_content }
@@ -1930,15 +2227,17 @@ $(".heart").on("click", function () {
 				</div>
 				<div class="modal-body">
 					<div class="d-flex justify-content-center" id="reviewModalButtonArea">
-						<input type="radio" class="btn-check" name="options" id="option1" value="bad" autocomplete="off">
+						<input type="radio" class="btn-check" name="options" id="option1" value="bad" autocomplete="off" onclick="openReceivedReviewModal('${sessionScope.sId}')">
 						<label class="btn btn-outline-primary mx-4" for="option1">별로예요</label>
-						<input type="radio" class="btn-check" name="options" id="option2" value="good" autocomplete="off" checked>
+						<input type="radio" class="btn-check" name="options" id="option2" value="good" autocomplete="off" onclick="goodReviews('${sessionScope.sId}')">
+<!-- 						<input type="radio" class="btn-check" name="options" id="option2" value="good" autocomplete="off" checked> -->
 						<label class="btn btn-outline-primary mx-4" for="option2">최고예요</label>
 					</div>
 					<div id="reviewCheck" class="mx-auto my-5 w-75">
 					</div>
 				</div>
 				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose">창닫기</button>
 				</div>
 			</div>
 		</div>

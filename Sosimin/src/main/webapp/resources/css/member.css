@@ -414,7 +414,8 @@ input[readonly] {
 	margin: 0 auto;
 }
 #profileRightBottom p {
-	margin-top: 18px;
+	margin-top: 5%;
+    margin-left: 27%;
 }
 /* ============== */
 /* 받은 후기 모달 */
@@ -871,6 +872,13 @@ input[readonly] {
 	width: 32% !important;
     height: 50% !important;
     font-size: x-small !important;
+    margin-top: 11% !important;
+    margin-right: 8% !important;
+}
+
+.btnCommunityDeleteNoImage {
+    margin-right: -103% !important;
+    margin-top: 9% !important;
 }
 
 #singleCommunityArea {
@@ -944,11 +952,21 @@ input[readonly] {
     margin-top: 5px;
 }
 
+.noCommunityImage {
+	margin-right: -16% !important;
+}
+
 #communityLeftBottom {
 	width: 780px;
 	height: 110px;
 	margin: 0 auto;
-	margin-top: 70px;
+	margin-top: 11%;
+    margin-left: 14%;
+}
+
+.communityLeftBottomNoImage {
+	margin-top: 10% !important;
+    margin-left: 22% !important;
 }
 
 #communityLeftBottom p {

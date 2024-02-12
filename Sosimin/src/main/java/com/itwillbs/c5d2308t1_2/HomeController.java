@@ -1,6 +1,11 @@
 package com.itwillbs.c5d2308t1_2;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +40,9 @@ public class HomeController {
 	@Autowired
 	AdminService adminService;
 	
+	@Autowired
+	SosimhamService sosimService;
+	
 	@GetMapping("/")
 	public String home(Locale locale, Model model) {
 		log.info("Welcome home! The client locale is {}.", locale);
@@ -45,17 +53,66 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		model.addAttribute("serverTime", formattedDate );
 		
-		List<Map<String,String>> searchList = service.getSearchList();
-		System.out.println("조회한 인기검색어 20개 : " + searchList);
-		//조회한 인기검색어 20개 :
-		//[{search_content=고야드, search_count=179}, {search_content=스투시, search_count=123}, {search_content=질스튜어트, search_count=120}, {search_content=뉴발란스, search_count=110}, {search_content=닥터마틴, search_count=103}, {search_content=꼼데가르송, search_count=101}, {search_content=나이키, search_count=100}, {search_content=아식스, search_count=30}, {search_content=아이앱, search_count=30}, {search_content=아디다스, search_count=20}, {search_content=아식스 젤 카야노, search_count=10}, {search_content=아디다스 슈퍼스타, search_count=3}, {search_content=아디다스 웨일즈보너, search_count=2}, {search_content=아디다스 트랙탑, search_count=1}, {search_content=아디다스 스페지알, search_count=0}, {search_content=아크테릭스, search_count=0}, {search_content=아디다스 져지, search_count=0}, {search_content=아디다스 가젤, search_count=0}, {search_content=아디다스 삼바, search_count=0}]
-		List<String> contentArr = new ArrayList<>();
-		for(Map<String, String> i:searchList) {
-			System.out.println(i.get("search_content"));
-			contentArr.add("'"+i.get("search_content")+"'");
-		}
-		System.out.println("새로만든 리스트 : " + contentArr);
-		model.addAttribute("contentArr",contentArr);
+		
+		// 인기상품 목록 조회
+		List<Map<String, Object>> productList = sosimService.getPopularList();
+		System.out.println("productList test : " + productList);
+		
+		// 상품 등록 시간 계산 처리 
+				// ===============================================================================================
+				LocalDateTime now = LocalDateTime.now();
+				
+				DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+				DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        DateTimeFormatter formatterMonthDay = DateTimeFormatter.ofPattern("MM-dd");
+		        
+		        
+				for(Map<String, Object> datetime : productList) {
+					LocalDateTime comDateTime;
+//					System.out.println(datetime);
+					// datetime 초가 00초인 경우 오류 판별을 위한 if문
+					if(datetime.get("product_datetime").toString().split(":").length > 2) {
+						comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter1);
+					} else {
+						comDateTime = LocalDateTime.parse(datetime.get("product_datetime").toString().replace('T', ' '), formatter2);
+					}
+					Duration duration = Duration.between(comDateTime, now);
+					
+					Period period = Period.between(comDateTime.toLocalDate(), now.toLocalDate());
+
+					
+		            long minutes = duration.toMinutes() % 60;
+		            long hours = duration.toHours() % 24;
+		            long days = duration.toDays() % 7;
+		            long weeks = duration.toDays() / 7;
+		            long months = period.getMonths();
+		            long years = period.getYears();
+		            
+		            String timeAgo = "";
+		            if(years > 0) {
+		            	timeAgo = years + "년 전";
+		            } else if(months > 0) {
+		            	timeAgo = months + "개월 전";
+		            } else if(weeks > 0 && weeks <= 4) {
+		            	timeAgo = weeks + "주전";
+					} else if (days > 0 && days < 7) { // 1 ~ 7 차이날 때
+		                timeAgo = days + "일전";
+		            } else if (hours > 0 && hours < 24) { // 1 ~ 23시간이 차이날 때
+		                timeAgo = hours + "시간 전";
+		            } else if (minutes > 0) { // 1 ~ 59분이 차이날 때
+		                timeAgo = minutes + "분 전";
+		            } else {
+		                timeAgo = "방금 전";
+		            }
+		            // 계산한 시간 목록
+		            datetime.put("product_datetime", timeAgo);
+				}
+				
+				System.out.println("날짜 형식 변경 테스트 : " + productList);
+				
+				model.addAttribute("data",productList);
+		
 		return "main";
 	}
 	
@@ -67,9 +124,17 @@ public class HomeController {
 		}
 		
 		
+		// 최근 상품 목록
+		List<Map<String, Object>> recentProductList = adminService.getRecentProduct();
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>> recentProductList : " + recentProductList);
+		model.addAttribute("recentProductList", recentProductList);
+		
+		
 		return "admin/adminMain";
 	}
 	
+	
+	// 카테고리 점유율 차트
 	@ResponseBody
 	@GetMapping("Chart")
 	public String chartList() {
@@ -84,37 +149,103 @@ public class HomeController {
 		return ja.toString();
 	}
 	
-	@Autowired
-	private SosimhamService service; 
+
 	
 	@ResponseBody
-	@GetMapping("RelationSearchKeyWord")
-	public List<String> relationSearchKeyWord(@RequestParam String searchKeyWord) {
-		log.info("입력한 검색어 : " + searchKeyWord);
-		List<String> relationKeyWord = service.getRelationKeyWord(searchKeyWord);
-		log.info("조회한 연관검색어 : " + relationKeyWord);
-		
-		return relationKeyWord;
-	}
-	
-	@GetMapping("FindMyPage")
-	public String findStore(@RequestParam String q) {
-		log.info("조회할 닉네임 : " + q);
-		String member_id = service.getMemberid(q);
-		log.info("조회한 멤버아이디 : " + member_id);
-		return "redirect:/SellerInfo?member_id="+member_id;
-	}
-	
-	@GetMapping("NowSearchList")
-	public String nowSearchList(HttpSession session, Model model) {
-		String sId = (String)session.getAttribute("sId");
-		if(sId == null || !sId.equals("admin")) {
-			return "error/404";
-		}
-		List<Map<String,String>> searchList = service.getSearchList();
-		model.addAttribute("searchList",searchList);
-		log.info("실시간 인기검색어 TOP20 : " + searchList);
-		return "admin/nowSearchList";
-	}
+	@GetMapping("CommunityChart")
+	public String comChart() {
+		// 점유율 차트
+		List<Map<String, Object>> communityGuCount = adminService.communityGuCount();
 
+		JSONArray array = new JSONArray();
+		array.put(communityGuCount);
+		
+		return array.toString();
+	}
+	
+	// 일일 상품 카운트 차트
+	@ResponseBody
+	@GetMapping("ProductCount")
+	public String productCount() {
+		Map<String, String> map = adminService.getDailyProductCount();
+		
+		JSONObject object = new JSONObject(map);
+		
+		return object.toString();
+	}
+	
+	// 일일 결제 카운트 차트
+	@ResponseBody
+	@GetMapping("OrderCount")
+	public String orderCount() {
+		Map<String, String> map = adminService.getDailyOrderCount();
+		
+		JSONObject object = new JSONObject(map);
+		
+		return object.toString();
+	}
+	
+	// 일일 결제 금액 차트
+	@ResponseBody
+	@GetMapping("PriceCount")
+	public String priceCount() {
+		Map<String, String> map = adminService.getDailyPriceCount();
+		
+		JSONObject object = new JSONObject(map);
+		
+		return object.toString();
+	}
+	
+	// 일일 신고 카운트 차트
+	@ResponseBody
+	@GetMapping("ReportCount")
+	public String reportCount() {
+		Map<String, String> map = adminService.getDailyReportCount();
+		
+		JSONObject object = new JSONObject(map);
+		
+		return object.toString();
+	}
+	
+	// 메인 7일 통계 차트
+	@ResponseBody
+	@GetMapping("MainReports")
+	public String mainReports() {
+		
+		List<Map<String, Object>> reportList = adminService.getReports();
+		
+		List<String> dates = new ArrayList<String>(); // 날짜 리스트
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<String> productCounts = new ArrayList<String>(); // 상품등록 리스트
+		List<String> orderCounts = new ArrayList<String>(); // 결제횟수 리스트
+		List<String> reportCounts = new ArrayList<String>(); // 신고횟수 리스트
+		
+		for(Map<String, Object> list : reportList) {
+			Date date = (Date)list.get("date");
+			dates.add(sdf.format(date));
+			productCounts.add(String.valueOf(list.get("product_count")));
+			orderCounts.add(String.valueOf(list.get("order_count")));
+			reportCounts.add(String.valueOf(list.get("report_count")));
+		}
+		
+//		JSONArray array = new JSONArray();
+//		array.put(dates);
+//		array.put(productCounts);
+//		array.put(orderCounts);
+//		array.put(reportCounts);
+		JSONObject object = new JSONObject();
+		object.put("dates", dates);
+		object.put("productCounts", productCounts);
+		object.put("orderCounts", orderCounts);
+		object.put("reportCounts", reportCounts);
+		
+		
+		return object.toString();
+		
+	}
+	
+	
+	
+	
+	
 }

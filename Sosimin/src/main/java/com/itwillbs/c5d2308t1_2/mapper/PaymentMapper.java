@@ -74,6 +74,9 @@ public interface PaymentMapper {
 	
 	// 상품 거래 상태 1로 변경
 	void updateTradeStatus1(Map<String, Object> map);
+	
+	// 바로구매 시 생성
+	int insertOrderDirect(Map<String, Object> map);
 
 	// 페이 사용 내역
 	void insertbuyHistory(Map<String, Object> map);

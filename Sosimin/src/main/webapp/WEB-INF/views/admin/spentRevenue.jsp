@@ -109,6 +109,7 @@
 											</td>
 											<td>
 												<c:choose>
+													<c:when test="${pay_list.buy_id eq null and pay_list.sell_id eq null}">취소</c:when>
 													<c:when test="${pay_list.pay_history_type eq '3'}">${pay_list.buy_id}</c:when>
 													<c:when test="${pay_list.pay_history_type eq '4'}">${pay_list.sell_id}</c:when>
 												</c:choose>
@@ -125,12 +126,14 @@
 											<td class="green">
 												<c:choose>
 													<c:when test="${pay_list.pay_history_type eq '3'}">
-														<button type="button" class="btn btn-primary" onclick="orderDetail(${pay_list.buy_id})">
+														<button type="button" class="btn btn-primary" onclick="orderDetail(${pay_list.buy_id})"
+															<c:if test="${pay_list.buy_id eq null and pay_list.sell_id eq null}">disabled</c:if>>
 															거래보기
 														</button>
 													</c:when>
 													<c:when test="${pay_list.pay_history_type eq '4'}">
-														<button type="button" class="btn btn-primary" onclick="orderDetail(${pay_list.sell_id})">
+														<button type="button" class="btn btn-primary" onclick="orderDetail(${pay_list.sell_id})"
+															<c:if test="${pay_list.buy_id eq null and pay_list.sell_id eq null}">disabled</c:if>>
 															거래보기
 														</button>
 													</c:when>

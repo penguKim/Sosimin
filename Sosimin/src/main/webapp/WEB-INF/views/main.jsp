@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
 
@@ -56,10 +59,24 @@
                         <!-- Start Hero Slider -->
                         <div class="hero-slider">
                             <!-- Start Single Slider -->
+                            <div class="single-slider slider0"
+                                style="background-image: url(${pageContext.request.contextPath}/resources/images/MainPhoto/메인슬라이더.png);">
+                                <div class="content">
+                                     <h2><span>중고거래</span>
+                                        당신 근처의 지역 생활 커뮤니티
+                                    </h2>
+                                    <p>동네라서 가능한 모든 것 
+                                       <br> 소시민에서 가까운 이웃과 함께해요.</p>
+                                    <h3><span>SecondHands by</span>Sosimin</h3>
+                                    <div class="button">
+                                        <a href="SearchProduct" class="btn">중고거래 바로가기</a>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="single-slider slider1"
                                 style="background-image: url(${pageContext.request.contextPath}/resources/images/MainPhoto/중고거래4.jpg);">
                                 <div class="content">
-                                     <h2><span>중고거래</span>
+                                     <h2><span>커뮤니티</span>
                                         믿을만한 이웃 간 중고거래
                                     </h2>
                                     <p>동네 주민들과 가깝고 따뜻한 거래를 지금 경험해보세요. 
@@ -80,7 +97,7 @@
                                        <br> 제공하는 다양한 제품들과 함께 당신만의 느낌을 찾아보세요.</p>
                                     <h3><span>Pay by </span>Sosim Pay</h3>
                                     <div class="button">
-                                        <a href="product-grids.html" class="btn">구매하기</a>
+                                        <a href="SearchProduct?keyword=나이키아우터" class="btn">구매하기</a>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +113,7 @@
                                        <br>신발의 새로군 컬러웨이를 지금 바로 만나 보세요.</p>
                                     <h3><span>Pay by </span>Sosim Pay</h3>
                                     <div class="button">
-                                        <a href="product-grids.html" class="btn">구매하기</a>
+                                        <a href="SearchProduct?keyword=나이키신발" class="btn">구매하기</a>
                                     </div>
                                 </div>
                             </div>
@@ -123,209 +140,33 @@
                 </div>
             </div>
             <div class="row">
+            	<c:forEach var="result" items="${data}">
                 <div class="col-lg-3 col-md-6 col-12">
                     <!-- Start Single Product -->
                     <div class="single-product">
                         <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/검은색아디다스신발.jpg" alt="#">
-                            <div class="button">
-                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
-                            </div>
+                            <a href="ProductDetail?product_id=${result.product_id}" >
+                            	<img src="${pageContext.request.contextPath}/resources/upload/${result.product_image1}" alt="#" width="280px" height="380px">
+                            </a>
                         </div>
                         <div class="product-info">
-                            <span class="category">신발</span>
+                            <span class="category">${result.product_category}</span>
                             <h4 class="title">
-                                <a href="product-grids.html">아디다스 검정 신발</a>
+                                ${result.product_name}
                             </h4>
                             <ul class="review">
-                                <li><span>방정리중 LV.4</span></li>
+                                <li><span>${result.dong} | ${result.product_datetime}</span></li>
+                                <li><span>좋아요 수 ${result.product_like}</span></li>
                             </ul>
                             <div class="price">
-                                <span>20,000원</span>
+                            	<fmt:formatNumber value="${result.product_price}" pattern="###,###" var="formattedPrice" />
+                                <span>${formattedPrice}원</span>
                             </div>
                         </div>
                     </div>
                     <!-- End Single Product -->
                 </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/겨울패딩.jpg" alt="#">
-                            <span class="sale-tag">-50%</span>
-                            <div class="button">
-                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">아우터</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">겨울 패딩</a>
-                            </h4>
-                            <ul class="review">
-                                <li><span>방정리중 LV.4</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>25,000원</span>
-                                <span class="discount-price">50,000원</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/경량패딩.jpg" alt="#">
-                            <div class="button">
-                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">아우터</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">경량패딩</a>
-                            </h4>
-                            <ul class="review">
-                                <li><span>캐럿맨 LV.2</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>15,000원</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/나이키신발.jpeg" alt="#">
-                            <span class="new-tag">New</span>
-                            <div class="button">
-                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">신발</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">나이키 신발</a>
-                            </h4>
-                            <ul class="review">
-                                <li><span>번개맨 LV.1</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>80,000원</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/나이키후디.jpeg" alt="#">
-                            <div class="button">
-                                <a href="product-details.html" class="btn">
-                                	상세보기
-	                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16">
-										<path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/>
-									    <path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/>
-									</svg>
-								</a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">상의</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">나이키 후드티</a>
-                            </h4>
-                            <ul class="review">
-                                <li><span>럭키짱 LV.3</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>10,000원</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/반팔반바지셋업.jpeg" alt="#">
-                            <div class="button">
-                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">셋업/세트</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">반팔반바지 셋업</a>
-                            </h4>
-                            <ul class="review">
-                                <li><span>dkdlxldnlf LV.1</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>20,000원</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/여성용야상.JPG" alt="#">
-                            <span class="sale-tag">-50%</span>
-                            <div class="button">
-                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">아우터</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">여성 야상</a>
-                            </h4>
-                            <ul class="review">
-                                <li><span>초코팡 LV.1</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>10,000원</span>
-                                <span class="discount-price">20,000원</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
-                <div class="col-lg-3 col-md-6 col-12">
-                    <!-- Start Single Product -->
-                    <div class="single-product">
-                        <div class="product-image">
-                            <img src="${pageContext.request.contextPath}/resources/images/MainPhoto/후드.jpg" alt="#">
-                            <div class="button">
-                                <a href="product-details.html" class="btn">상세보기<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-up-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"/><path fill-rule="evenodd" d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"/></svg></a>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <span class="category">상의</span>
-                            <h4 class="title">
-                                <a href="product-grids.html">회색 후드</a>
-                            </h4>
-                            <ul class="review">
-                                <li><span>행복멸치 LV.2</span></li>
-                            </ul>
-                            <div class="price">
-                                <span>15,000원</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Product -->
-                </div>
+                </c:forEach>
             </div>
         </div>
     </section>
@@ -340,10 +181,10 @@
                 <div class="col-lg-8 offset-lg-2 col-12">
                     <div class="inner">
                         <div class="content">
-                            <h2 class="wow fadeInUp" data-wow-delay=".4s">당신 근처의<br>
-                                지역 생활 커뮤니티</h2>
-                            <p class="wow fadeInUp" data-wow-delay=".6s">동네라서 가능한 모든 것<br> 
-                            소시민에서 가까운 이웃과 함께해요</p>
+                            <h2 class="wow fadeInUp" data-wow-delay=".4s">이웃만 아는<br>
+                                동네 정보와 이야기</h2>
+                            <p class="wow fadeInUp" data-wow-delay=".6s">우리동네의 다양한 정보와 이야기를<br> 
+                            공감과 댓글로 나누어요.</p>
                             <div class="button wow fadeInUp" data-wow-delay=".8s">
                                 <a href="Community" class="btn">커뮤니티 바로가기</a>
                             </div>

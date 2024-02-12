@@ -38,14 +38,16 @@
 			<span>리뷰관리</span>
 		</a>
 	</li><!-- End Profile Page Nav -->
-  
-	<li class="nav-item">
-		<a class="nav-link collapsed" href="">
-		<i class="bi bi-credit-card-2-back"></i>
-		<span>소심함관리</span>
-		</a>
-	</li><!-- End Register Page Nav -->
 
+
+	<li class="nav-item">
+		<a class="nav-link collapsed" href="TotalSearchList">
+			<i class="bi bi-search"></i>
+			<span>인기 검색어 관리</span>
+		</a>
+	</li><!-- End Profile Page Nav -->
+
+	
 	<li class="nav-item">
 		<a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
 			<i class="bi bi-cash-coin"></i><span>페이관리</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -116,11 +118,6 @@
 			<li>
 				<a href="CsFaqList">
 					<i class="bi bi-circle"></i><span>자주묻는질문관리</span>
-				</a>
-			</li>
-			<li>
-				<a href="CsOneOnOneList">
-					<i class="bi bi-circle"></i><span>1대1채팅관리</span>
 				</a>
 			</li>
 		</ul>

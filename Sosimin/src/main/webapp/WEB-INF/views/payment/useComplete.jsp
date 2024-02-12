@@ -175,15 +175,15 @@ $(function() {
 							<div class="row">
 								<p class="info-msg">- 페이머니는 환급하기 페이지에서 무료로 즉시 인출 가능합니다</p>
 	                            <div class="button col-lg-6 col-md-6 col-12">
-	                                <button class="btn" onclick="location.href='SearchProduct'">상품 목록</button>
+	                                <button class="btn" onclick="location.href='MyPage?member_id=leess&category=2'">구매 내역보기</button>
 	                            </div>
 	                            <div class="button col-lg-6 col-md-6 col-12">
 	                            	<c:choose>
 										<c:when test="${payInfo.result eq 'use_success'}">
-			                                <button class="btn" onclick="location.href='MyPage?member_id=leess&category=2'">구매 내역보기</button>
+			                                <button class="btn" onclick="location.href='PayInfo'">페이 내역 보기</button>
 	                            		</c:when>
 										<c:when test="${payInfo.result eq 'use_refuse'}">
-			                                <button class="btn" onclick="location.href='PayInfo'">페이 내역 보기</button>
+			                                <button class="btn" onclick="location.href='SearchProduct'">상품 목록 보기</button>
 	                            		</c:when>
 	                            	</c:choose>
 	                            </div>

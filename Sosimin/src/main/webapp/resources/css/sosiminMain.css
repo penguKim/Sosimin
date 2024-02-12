@@ -29,7 +29,7 @@
     background-repeat: no-repeat;
 }
 
-.slider1{
+.slider0,.slider1{
 	background-size: 700px!important;
-    background-position: 350px 100px!important;
+    background-position: 500px 100px!important;
 }

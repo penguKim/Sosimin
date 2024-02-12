@@ -649,7 +649,7 @@
 										<div class="col-auto align-self-top pe-0">
 											<a href="SellerInfo?member_id=${reply.reply_writer }">
 												<c:choose>
-													<c:when test="${empty com.member_profile }">
+													<c:when test="${empty reply.member_profile }">
 														<img class="rounded-circle" src="${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg">
 													</c:when>
 													<c:otherwise>
@@ -699,17 +699,12 @@
 															
 										<div class="row">
 											<c:choose>
-												<c:when test="${reply.reply_writer eq 'admin' }"><span></span></c:when>
+<%-- 												<c:when test="${reply.reply_writer eq 'admin' }"><span></span></c:when> --%>
 												<c:when test="${empty sessionScope.sId or sessionScope.sId ne reply.reply_writer and sessionScope.sId ne 'admin' }">
-<!-- 													<span class="text-end"> -->
-													
 													<div class="col-1 offset-md-6" style="width: 80px;">
 														<input type="hidden" id="replyreportee_${index.index}" value="${reply.reply_writer }">
     													<i class="reportBtn fa fa-warning d-flex justify-content-end" data-bs-toggle="modal" data-bs-target="#replyModal" style="font-size:18px" data-id="${index.index}"></i>
 													</div>
-													
-<!-- 														<i class="reportBtn fa fa-warning" style="font-size:18px"></i> -->
-<!-- 													</span> -->
 												</c:when>
 												<c:when test="${sessionScope.sId eq reply.reply_writer or sessionScope.sId eq 'admin' }">
 													<span class="reDelBtn text-end">

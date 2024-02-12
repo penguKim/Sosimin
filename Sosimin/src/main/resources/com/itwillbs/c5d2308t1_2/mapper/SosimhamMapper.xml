@@ -30,7 +30,75 @@
 	<select id="selectSearchList" resultType="map">
 		SELECT search_content, search_count 
 		FROM Search 
+		WHERE delete_status = 0
 		ORDER BY search_count DESC 
 		LIMIT 20;
 	</select>
+	
+	<select id="selectPopularList" resultType="map">
+		select p.product_image1, t.dong , p.product_datetime , p.product_price , pl.product_like , p.product_category, p.product_id, p.product_name
+		from Product p join ProductLike pl
+		on p.product_id = pl.product_id 
+		join Town t  
+		on p.town_id = t.town_id 
+		order by pl.product_like desc
+		limit 8; 
+	</select>
+	
+	<select id="selectWord" resultType="int">
+		SELECT search_count
+		FROM Search
+		WHERE search_content = #{keyword}
+		UNION ALL
+		SELECT 0 AS search_count
+		WHERE NOT EXISTS (
+		    SELECT search_count
+		    FROM Search
+		    WHERE search_content = #{keyword}
+		)
+		
+	</select>
+	
+	<update id="updateSearchCount">
+		UPDATE Search
+		SET search_count = search_count + 1
+		WHERE search_content = #{keyword}
+	</update>
+	
+	<insert id="insertKeyword">
+		INSERT
+		INTO Search
+		VALUES(
+			null
+			,#{keyword}
+			,now()
+			,1
+			,0
+		)
+	</insert>
+	
+	<update id="updateContent">
+		UPDATE Search
+		SET delete_status = 1
+		WHERE search_content = #{content}
+	</update>
+	
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

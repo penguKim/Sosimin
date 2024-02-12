@@ -93,9 +93,9 @@
 	
 	<!-- 동네 인증 상태 초기화 UPDATE -->
 	<update id="updateMemberNeighborAuth">
-		update Member
-		set member_neighbor_auth = 0
-		where member_id = #{member_id}
+		UPDATE Member
+		SET member_neighbor_auth = 0
+		WHERE member_id = #{member_id}
 	</update>
 	
 	<!-- 탈퇴 회원 조회 SELECT -->
@@ -204,7 +204,23 @@
 	<select id="selectReviewCount" resultType="hashmap">
 		SELECT * 
 		FROM ReviewCount
-		WHERE target_member_id = #{sId};
+		WHERE target_member_id = #{sId}
+	</select>
+	
+	<!-- 후기 별로예요 불러오기 -->
+	<select id="selectBadReviews">
+		SELECT * 
+		FROM ReviewCount
+		WHERE target_member_id = #{sId}
+		AND review_status = 'bad'
+	</select>
+	
+	<!-- 후기 최고예요 불러오기 -->
+	<select id="selectGoodReviews">
+		SELECT * 
+		FROM ReviewCount
+		WHERE target_member_id = #{sId}
+		AND review_status = 'good'
 	</select>
 	
 	<!-- 관심가져오기 -->
@@ -299,6 +315,7 @@
 		FROM Member
 		LEFT OUTER JOIN Town
 		ON Town.town_id = Member.town_id
+		ORDER BY member_level DESC
 	</select>
 	
 	<!-- 관리자페이지 회원 정보 수정을 위한 회원조회 SELECT -->

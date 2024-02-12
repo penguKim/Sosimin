@@ -33,6 +33,22 @@ public class ChatController {
 		return "chat/main2";
 	}
 	
+	@GetMapping("ChatMain3")
+	public String main3(HttpSession session, Model model, @RequestParam Map<String, String> map) {
+		String sId = (String) session.getAttribute("sId");
+		if (sId == null) {
+			model.addAttribute("msg", "로그인 후 사용 가능합니다.");
+			model.addAttribute("targetURL", "MemberLoginForm");
+			return "forward";
+		}
+		System.out.println(">>>>>>> 뭐가 들긴 들었니? : " + map);
+		Map<String,String> productChat = service.selectSellInfo(map);
+		
+		System.out.println(">>>>>>> 뭐를 들고 돌아왔어? : " + productChat);
+		model.addAttribute("productChat", productChat);
+		return "chat/main3";
+	}
+	
 }
 
 

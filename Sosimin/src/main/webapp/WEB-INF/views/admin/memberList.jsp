@@ -679,12 +679,12 @@
 								<thead>
 									<tr>
 										<th>프로필사진</th>
-										<th>이름</th>
+										<th width="5.2%">이름</th>
 										<th>아이디</th>
-										<th>닉네임</th>
+										<th width="6.5%">닉네임</th>
 										<th width="7.5%">생년월일</th>
-										<th width="11%">동네</th>
-										<th>이메일</th>
+										<th width="12%">동네</th>
+										<th width="18%">이메일</th>
 										<th width="11%">휴대폰번호</th>
 										<th width="8%">회원레벨</th>
 										<th width="8%">회원상태</th>

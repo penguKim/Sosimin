@@ -411,13 +411,13 @@ $(function() {
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>${payList.member_id} 님의 페이 정보</h1>
+			<h1>${payList.member_id} 님의 페이정보</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
 					<li class="breadcrumb-item">페이관리</li>
 					<li class="breadcrumb-item">페이정보관리</li>
-					<li class="breadcrumb-item active">회원 페이 정보</li>
+					<li class="breadcrumb-item active">회원페이정보</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->
@@ -446,7 +446,8 @@ $(function() {
 										</c:choose>
 									</td>
 									<td class="green">
-										<button type="button" id="modify" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${pay_list.pay_history_id}">
+										<button type="button" id="modify"class="btn btn-primary" data-bs-toggle="modal" 
+											data-bs-target="#modal-${pay_list.pay_history_id}" <c:if test="${payList.pay_status eq '1'}">disabled</c:if>>
 											정보수정
 										</button>
 									
@@ -488,7 +489,8 @@ $(function() {
 										<!-- End Basic Modal-->
 									</td>
 									<td class="green">
-										<button type="button" id="refund" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal2-${pay_list.pay_history_id}">
+										<button type="button" id="refund" class="btn btn-primary" data-bs-toggle="modal" 
+											data-bs-target="#modal2-${pay_list.pay_history_id}" <c:if test="${payList.pay_status eq '1'}">disabled</c:if>>
 											페이환급
 										</button>
 									

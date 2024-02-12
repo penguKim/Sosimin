@@ -272,7 +272,7 @@ public class MemberController {
 		   
 		   
 		   // 이전 페이지 주소 판별 후 메인페이지로 리다이렉트
-		   if(prevPage == null || prevPage.equals("") || prevPage.equals("MemberFindId") || prevPage.equals("MemberResetPasswd") || prevPage.equals("MemberJoinPro") ) {
+		   if(prevPage == null || prevPage.equals("") || prevPage.equals("MemberFindId") || prevPage.equals("MemberResetPasswd") || prevPage.equals("MemberJoinPro") || prevPage.equals("MemberLoginPro") ) {
 			   return "redirect:/";
 		   } else {
 			   // 메인 페이지로 이동할 필요가 없는 이전페이지인 경우 즉시 리다이렉트
@@ -614,10 +614,31 @@ public class MemberController {
 		List<Map<String, Object>> CountReviews = service.getReviewCount(sId);
 		System.out.println("리뷰카운트 확인합시다 : " + CountReviews);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("CountReviews", CountReviews);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("CountReviews", CountReviews);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("CountReviews", CountReviews);
+		return jsonObject.toString();
+	}
+	
+	// 후기 별로예요 불러오기
+	@ResponseBody
+	@GetMapping("BadReviews")
+	public String badReviews(String sId) {
+		Map<String, String> map = service.getBadReviews(sId);
+		
 		JSONObject jsonObject = new JSONObject(map);
-
+		return jsonObject.toString();
+		
+	}
+	
+	// 후기 최고예요 불러오기
+	@ResponseBody
+	@GetMapping("GoodReviews")
+	public String goodReviews(String sId) {
+		Map<String, String> map = service.getGoodReviews(sId);
+		
+		JSONObject jsonObject = new JSONObject(map);
 		return jsonObject.toString();
 	}
 	

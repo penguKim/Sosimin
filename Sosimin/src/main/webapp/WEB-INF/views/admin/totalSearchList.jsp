@@ -60,6 +60,21 @@ function openModal(order_id) {
 	$("#modal-" + order_id).modal('show');
 }
 </script>
+<script type="text/javascript">
+function delKeyword(element) {
+	var content = $(element).data("content");
+	alert(content);
+	$.ajax({
+		type:"GET",
+		url:"deleteKeyword",
+		data: {content : content},
+		success:function(res){
+			location.reload();
+		}
+	});
+}
+
+</script>
 
 <style type="text/css">
 
@@ -81,12 +96,13 @@ function openModal(order_id) {
 
 	<main id="main" class="main">
 
+	 	<div id="date"></div>
 		<div class="pagetitle">
-			<h1>실시간 검색어 관리</h1>
+			<h1>인기 검색어 관리</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
-					<li class="breadcrumb-item active">실시간 검색어 관리</li>
+					<li class="breadcrumb-item active">인기 검색어 관리</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->
@@ -101,32 +117,19 @@ function openModal(order_id) {
 								<thead>
 									<tr>
 										<th>검색어 순위</th>
-										<th>변동 순위</th>
 										<th>검색어 내용</th>
 										<th>검색어 조회수</th>
-									</tr>
+										<th>비고</th>
 								</thead>
 								<tbody>
 									<c:forEach var="data" items="${searchList}" varStatus="loop">
 										<tr>
 											<td>${loop.index + 1}</td>
-											<td>
-											<i class="bi bi-caret-up-fill"></i>
-											 1
-											</td>
 											<td>${data.search_content}</td>
 											<td>${data.search_count}</td>
+											<td><input type="button" value="검색어 삭제" data-content="${data.search_content}" onclick="delKeyword(this)"></td>
 										</tr>
 									</c:forEach>
-									<tr>
-										<td>11</td>
-										<td>
-										<i class="bi bi-caret-down-fill"></i>
-										1
-										</td>
-										<td>나이키</td>
-										<td>109</td>
-									</tr>
 								</tbody>
 							</table>
 							<!-- End Table with stripped rows -->

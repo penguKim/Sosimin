@@ -23,6 +23,10 @@
 <%--     <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/images/favicon.svg" /> --%>
 
     <!-- ========================= CSS here ========================= -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/LineIcons.3.0.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main/tiny-slider.css" />
@@ -40,10 +44,6 @@
     
     
     <%--  --%>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 </head>
 <style>
 
@@ -594,39 +594,39 @@ newWindow.document.write('<html><head><title>Image</title></head><body style="ba
 }
 
 
-function Proposal() {
-var sId = "${sId}";
-var product_id = ${Product.product_id};
+// function Proposal() {
+// var sId = "${sId}";
+// var product_id = ${Product.product_id};
 
-if(sId) {
+// if(sId) {
 
-var width = 640; // 팝업 창의 가로 크기
-var height = 480; // 팝업 창의 세로 크기
-var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
-var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
+// var width = 640; // 팝업 창의 가로 크기
+// var height = 480; // 팝업 창의 세로 크기
+// var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
+// var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
 
-var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
+// var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
 
-window.open("Proposal?product_id=" + product_id, "상품이미지", options);
-} else{
-	Swal.fire({
-	        title: '회원만 사용가능합니다.',
-	        text: '로그인 페이지로 이동하시겠습니까?',
-	        icon: 'error',
-	        showCancelButton: true,
-	        confirmButtonColor: '#39d274',
-	        cancelButtonColor: '#d33',
-	        confirmButtonText: '이동',
-	        cancelButtonText: '취소',
-	        reverseButtons: true,
-	        allowOutsideClick: false
-	    }).then((result) => {
-	        if (result.isConfirmed) {
-	        	location.href="MemberLogin";
-	        }
-	    });
-	}
-}
+// window.open("Proposal?product_id=" + product_id, "상품이미지", options);
+// } else{
+// 	Swal.fire({
+// 	        title: '회원만 사용가능합니다.',
+// 	        text: '로그인 페이지로 이동하시겠습니까?',
+// 	        icon: 'error',
+// 	        showCancelButton: true,
+// 	        confirmButtonColor: '#39d274',
+// 	        cancelButtonColor: '#d33',
+// 	        confirmButtonText: '이동',
+// 	        cancelButtonText: '취소',
+// 	        reverseButtons: true,
+// 	        allowOutsideClick: false
+// 	    }).then((result) => {
+// 	        if (result.isConfirmed) {
+// 	        	location.href="MemberLogin";
+// 	        }
+// 	    });
+// 	}
+// }
 
 function chat() {
 	var sId = "${sId}";
@@ -645,7 +645,9 @@ function chat() {
 	        allowOutsideClick: false
 	    }).then((result) => {
 	        if (result.isConfirmed) {
-	        	location.href="ChatMain2?product_id=" + product_id;
+// 	        	location.href="ChatMain2?product_id=" + product_id;
+// 	        	window.open("ChatMain2?product_id=" + product_id, "", "width=800, height=700");
+	        	window.open("ChatMain3?product_id=" + product_id, "", "width=800, height=700");
 	        }
 	    });
 	} else{
@@ -736,6 +738,32 @@ function chat() {
 	// 프로그레스바 애니메이션을 시작합니다.
 	$('.progress-bar').css('width', percent + '%').attr('aria-valuenow', percent + '%').text(percent + '%');
 }
+	
+	
+// 바로 구매 시
+function buy() {
+	let product_id = ${param.product_id};
+	
+// 	console.log(product_id);
+	
+	
+	if(${payStatus.member_id ne Product.member_id}) {
+		Swal.fire({
+			position: 'center',
+			icon: 'error',
+			title: '판매자가 페이 가입자가 아닙니다!',
+			showConfirmButton: false,
+			timer: 2000,
+			toast: true
+		});	
+	} else {
+		location.href="DirectPayment?product_id=" + product_id;		
+	}	
+
+}
+	
+	
+	
 </script>
 <body>
 
@@ -941,7 +969,10 @@ function chat() {
 	                                 </div>
 		     						 <div class="col-lg-4 col-md-4 col-12">
 			                         <div class="wish-button" id="priceProposal">
-			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="Proposal()">가격제안</button>
+<!-- 			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="Proposal()">가격제안</button> -->
+<%-- 			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="buy()" <c:if test="${payStatus.member_id ne Product.member_id}">disabled</c:if>>구매하기</button> --%>
+			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="buy()">구매하기</button>
+									
 		                            </div>
 	                              </div>
                                   </c:when>
@@ -1123,7 +1154,6 @@ function chat() {
     <script src="${pageContext.request.contextPath}/resources/js/main/tiny-slider.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/glightbox.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/main/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
     <script type="text/javascript">
         const current = document.getElementById("current");
         const opacity = 0.6;

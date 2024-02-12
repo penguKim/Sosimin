@@ -204,7 +204,7 @@ function deleteList(order_id) {
 													<div class="modal-dialog">
 														<div class="modal-content">
 															<div class="modal-header">
-																<h5 class="modal-title">충전/환급 상세보기</h5><!-- 모달 제목 -->
+																<h5 class="modal-title">거래내역 상세보기</h5><!-- 모달 제목 -->
 																<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 															</div>
 															<div class="modal-body">

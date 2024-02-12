@@ -42,5 +42,54 @@ public class SosimhamService {
 		return SosimMapper.selectSearchList();
 	}
 	
+	// 메인페이지 인기상품 TOP8 조회
+	public List<Map<String, Object>> getPopularList() {
+		return SosimMapper.selectPopularList();
+	}
+	
+	// 검색내용 디비에 저장
+	public int saveKeyword(String keyword) {
+		// 검색한 내용의 존재여부 판별
+		int search_count = SosimMapper.selectWord(keyword);
+		
+		if(search_count>0) {
+			int updateCount = SosimMapper.updateSearchCount(keyword);
+		}else{
+			int insertCount = SosimMapper.insertKeyword(keyword);
+		}
+		
+		return 0;
+	}
+
+	// 인기검색어 삭제(delete_status 컬럼 1로 변경)
+	public int updateKeyword(String content) {
+		return SosimMapper.updateContent(content);
+	}
+	
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -881,7 +881,7 @@ public class PaymentController {
 			model.addAttribute("msg", "결제 가능한 상품이 없습니다!");
 			model.addAttribute("msg3", "error");
 			return "fail_back";
-		}else if(orderInfo.get("seller_pay_id") == null || orderInfo.get("seller_pay_id").toString().equals("")) {
+		} else if(orderInfo.get("seller_pay_id") == null || orderInfo.get("seller_pay_id").toString().equals("")) {
 			model.addAttribute("msg", "판매자가 페이 가입자가 아닙니다!");
 			model.addAttribute("msg3", "error");
 			return "fail_back";
@@ -898,6 +898,92 @@ public class PaymentController {
 		}
 		
 	}
+	
+	
+	// 바로 구매하기
+	// 페이 사용 페이지로 이동
+	@GetMapping("DirectPayment")
+	public String payUseDirect(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
+		String product_buyer = (String)session.getAttribute("sId"); // 구매자 정보
+		
+		// DB에서 페이 가입 여부 조회하고 정보 가져오기(페이 미가입자는 현금거래만 가능)
+		Map<String, Object> payInfo = service.getPayInfo(product_buyer);
+		if(product_buyer == null) {
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
+			return "forward";
+		} else if(session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "소심페이에 가입해주세요!");
+			model.addAttribute("msg2", "가입을 위해 계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "AccountVerification");	
+			return "forward";
+		} else if(payInfo == null) {
+			model.addAttribute("msg", "계좌 등록이 필요합니다");
+			model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
+			return "forward";
+		}
+		
+		map.put("product_buyer", product_buyer);
+		log.info(map.toString());
+		
+		// 해당 상품정보를 조회하여 현재 결제에 필요한 상품정보 가져오기
+		Map<String, Object> productInfo = service.getProductInfo(map);
+		
+		log.info(productInfo.toString());
+		model.addAttribute("productInfo", productInfo);
+		model.addAttribute("payInfo", payInfo);
+		
+		// Orders 테이블의 product_buyer를 조회하여 세션아이디와 비교
+		// 일치하지 않으면 돌려보내기
+		Map<String, Object> orderInfo = service.getOrderInfo(map);
+		
+		String url = "MyPage?member_id=" + product_buyer + "&category=2";
+		
+		if(orderInfo == null) {
+			// Orders에 테이블 생성
+			// 상품 상태 거래중으로 변경
+			int modifyCount = service.orderProductDirect(map); 			
+			if(modifyCount > 0) {
+				return "payment/use";
+			} else {
+				String url2 = "ProductDetail?product_id="+ map.get("product_id");
+				model.addAttribute("msg", "잘못된 접근입니다");
+				model.addAttribute("msg3", "warning");
+				model.addAttribute("targetURL", url2); // 상품상세 페이지로 이동
+				return "forward";
+			}
+		} else {
+			if(orderInfo.get("product_buyer").toString().equals(product_buyer)) {
+				model.addAttribute("msg", "이미 구매중인 상품입니다!");
+				model.addAttribute("msg2", "마이페이지 구매내역으로 이동합니다!");
+				model.addAttribute("msg3", "warning");
+				model.addAttribute("targetURL", url);	 // 마이페이지로 이동
+				return "forward";
+			} else {
+				// Orders에 테이블 생성
+				// 상품 상태 거래중으로 변경
+				int modifyCount = service.orderProductDirect(map); 			
+				if(modifyCount > 0) {
+					return "payment/use";
+				} else {
+					String url2 = "ProductDetail?product_id="+ map.get("product_id");
+					model.addAttribute("msg", "잘못된 접근입니다");
+					model.addAttribute("msg3", "warning");
+					model.addAttribute("targetURL", url2); // 상품상세 페이지로 이동
+					return "forward";
+				}
+			}
+			
+		}
+	
+	}
+	
+	
 	
 	// 페이 사용 처리
 	@PostMapping("PaymentPro")
@@ -1253,7 +1339,9 @@ public class PaymentController {
 			return "none"; // 구매 중단 가능한 상품이 없습니다!
 		} else if(!orderInfo.get("product_seller").toString().equals(product_seller)) {
 			return "inconsistency"; // 판매자 정보가 일치하지 않습니다!
-		} 
+		} else if(orderInfo.get("order_status").toString().equals("1")) {
+			return "finish"; // 거래 완료된 상품입니다.
+		}
 		
 		log.info("orderInfo : " + orderInfo);
 		map.put("product_buyer", orderInfo.get("product_buyer"));
@@ -1266,11 +1354,14 @@ public class PaymentController {
 			// 구매자 페이 정보 가져오기
 			Map<String, Object> payInfo = service.getPayInfo(orderInfo.get("product_buyer").toString());
 			
+			map.put("pay_balance", payInfo.get("pay_balance"));
 			map.put("tran_amt", orderInfo.get("payment_amount"));
 			map.put("pay_history_type", 1);
 			map.put("pay_history_message", "구매취소");
 			map.put("fintech_use_num", payInfo.get("fintech_use_num"));
 			map.put("pay_id", payInfo.get("pay_id"));
+			
+			log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 이거확인 : " + map.toString());
 			
 			int deletCount = service.getdeleteAllCount(map);
 			
