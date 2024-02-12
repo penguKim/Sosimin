@@ -152,14 +152,15 @@
                         <div class="product-info">
                             <span class="category">${result.product_category}</span>
                             <h4 class="title">
-                                <a href="product-grids.html">${result.product_name}</a>
+                                ${result.product_name}
                             </h4>
                             <ul class="review">
                                 <li><span>${result.dong} | ${result.product_datetime}</span></li>
                                 <li><span>좋아요 수 ${result.product_like}</span></li>
                             </ul>
                             <div class="price">
-                                <span>${result.product_price}원</span>
+                            	<fmt:formatNumber value="${result.product_price}" pattern="###,###" var="formattedPrice" />
+                                <span>${formattedPrice}원</span>
                             </div>
                         </div>
                     </div>

@@ -260,10 +260,8 @@ $(function(){
 	}
 	
 	function PopularSearches(){
-		$("#Recent").hide();
 		$("#Popular").show();
-		$(".recentWordColor").css("color","black");
-		$(".popularWordColor").css("color","#39d274");
+		
 		popularClick = true;
 		recentClick = false;
 		
@@ -325,8 +323,11 @@ $(function(){
 					+	'</td>'
 					+'</tr>' 
 					+'</table>'
-					
+				
 				$("#Popular").html(tableHTML);	    
+				$("#Recent").hide();
+				$(".popularWordColor").css("color","#39d274");
+				$(".recentWordColor").css("color","black");
 			}
 		
 		
