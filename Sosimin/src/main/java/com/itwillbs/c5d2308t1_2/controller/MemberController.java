@@ -272,7 +272,7 @@ public class MemberController {
 		   
 		   
 		   // 이전 페이지 주소 판별 후 메인페이지로 리다이렉트
-		   if(prevPage == null || prevPage.equals("") || prevPage.equals("MemberFindId") || prevPage.equals("MemberResetPasswd") || prevPage.equals("MemberJoinPro") ) {
+		   if(prevPage == null || prevPage.equals("") || prevPage.equals("MemberFindId") || prevPage.equals("MemberResetPasswd") || prevPage.equals("MemberJoinPro") || prevPage.equals("MemberLoginPro") ) {
 			   return "redirect:/";
 		   } else {
 			   // 메인 페이지로 이동할 필요가 없는 이전페이지인 경우 즉시 리다이렉트
