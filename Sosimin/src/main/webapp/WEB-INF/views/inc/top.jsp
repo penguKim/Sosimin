@@ -278,10 +278,10 @@ $(function(){
 				let tableHTML = '<table id="PopularTableBoarder">';
 				tableHTML +=
 					'<tr class="PopularCenter">'
-					+ '  <td class="SelRecentborderBottom">'
+					+ '  <td class="RecentborderBottom">'
 				    + '    <a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
 				    + '  </td>'
-				    + '  <td class="PopularborderBottom">'
+				    + '  <td class="SelPopularborderBottom">'
 				    + '    <a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
 				    + '  </td>'
 				    + '</tr>';
