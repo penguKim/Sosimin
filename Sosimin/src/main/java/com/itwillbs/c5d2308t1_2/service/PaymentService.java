@@ -168,6 +168,13 @@ public class PaymentService {
 		return mapper.insertOrder(map);
 	}
 	
+	// 바로구매
+	@Transactional
+	public int orderProductDirect(Map<String, Object> map) {
+		mapper.updateTradeStatus1(map);
+		return mapper.insertOrderDirect(map);
+	}
+	
 	// 구매하고 구매 기록 저장
 	@Transactional
 	public int paymentBuyer(Map<String, Object> map) {

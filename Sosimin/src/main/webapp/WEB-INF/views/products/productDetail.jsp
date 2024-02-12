@@ -594,39 +594,39 @@ newWindow.document.write('<html><head><title>Image</title></head><body style="ba
 }
 
 
-function Proposal() {
-var sId = "${sId}";
-var product_id = ${Product.product_id};
+// function Proposal() {
+// var sId = "${sId}";
+// var product_id = ${Product.product_id};
 
-if(sId) {
+// if(sId) {
 
-var width = 640; // 팝업 창의 가로 크기
-var height = 480; // 팝업 창의 세로 크기
-var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
-var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
+// var width = 640; // 팝업 창의 가로 크기
+// var height = 480; // 팝업 창의 세로 크기
+// var left = window.screenX + (window.outerWidth - width) / 2; // 화면 가로 중앙에 위치
+// var top = window.screenY + (window.outerHeight - height) / 2; // 화면 세로 중앙에 위치
 
-var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
+// var options = "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",resizable=no";
 
-window.open("Proposal?product_id=" + product_id, "상품이미지", options);
-} else{
-	Swal.fire({
-	        title: '회원만 사용가능합니다.',
-	        text: '로그인 페이지로 이동하시겠습니까?',
-	        icon: 'error',
-	        showCancelButton: true,
-	        confirmButtonColor: '#39d274',
-	        cancelButtonColor: '#d33',
-	        confirmButtonText: '이동',
-	        cancelButtonText: '취소',
-	        reverseButtons: true,
-	        allowOutsideClick: false
-	    }).then((result) => {
-	        if (result.isConfirmed) {
-	        	location.href="MemberLogin";
-	        }
-	    });
-	}
-}
+// window.open("Proposal?product_id=" + product_id, "상품이미지", options);
+// } else{
+// 	Swal.fire({
+// 	        title: '회원만 사용가능합니다.',
+// 	        text: '로그인 페이지로 이동하시겠습니까?',
+// 	        icon: 'error',
+// 	        showCancelButton: true,
+// 	        confirmButtonColor: '#39d274',
+// 	        cancelButtonColor: '#d33',
+// 	        confirmButtonText: '이동',
+// 	        cancelButtonText: '취소',
+// 	        reverseButtons: true,
+// 	        allowOutsideClick: false
+// 	    }).then((result) => {
+// 	        if (result.isConfirmed) {
+// 	        	location.href="MemberLogin";
+// 	        }
+// 	    });
+// 	}
+// }
 
 function chat() {
 	var sId = "${sId}";
@@ -738,6 +738,20 @@ function chat() {
 	// 프로그레스바 애니메이션을 시작합니다.
 	$('.progress-bar').css('width', percent + '%').attr('aria-valuenow', percent + '%').text(percent + '%');
 }
+	
+	
+// 바로 구매 시
+function buy() {
+	let product_id = ${param.product_id};
+	
+// 	console.log(product_id);
+	
+	location.href="DirectPayment?product_id=" + product_id;
+
+}
+	
+	
+	
 </script>
 <body>
 
@@ -943,7 +957,9 @@ function chat() {
 	                                 </div>
 		     						 <div class="col-lg-4 col-md-4 col-12">
 			                         <div class="wish-button" id="priceProposal">
-			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="Proposal()">가격제안</button>
+<!-- 			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="Proposal()">가격제안</button> -->
+									
+			                             <button class="btn" style="width:174px; height: 60px; font-size: 20px; color:white; background-color: #39d274"  onclick="buy()" <c:if test="${payStatus.member_id ne Product.member_id}">disabled</c:if>>구매하기</button>
 		                            </div>
 	                              </div>
                                   </c:when>

@@ -899,6 +899,63 @@ public class PaymentController {
 		
 	}
 	
+	
+	// 바로 구매하기
+	// 페이 사용 페이지로 이동
+	@GetMapping("DirectPayment")
+	public String payUseDirect(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
+		String product_buyer = (String)session.getAttribute("sId"); // 구매자 정보
+		
+		// DB에서 페이 가입 여부 조회하고 정보 가져오기(페이 미가입자는 현금거래만 가능)
+		Map<String, Object> payInfo = service.getPayInfo(product_buyer);
+		if(product_buyer == null) {
+			model.addAttribute("msg", "로그인을 해주세요!");
+			model.addAttribute("msg2", "로그인 페이지로 이동합니다!");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "MemberLogin");	 // 로그인 페이지로 이동
+			return "forward";
+		} else if(session.getAttribute("access_token") == null) {
+			model.addAttribute("msg", "소심페이에 가입해주세요!");
+			model.addAttribute("msg2", "가입을 위해 계좌 인증 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "AccountVerification");	
+			return "forward";
+		} else if(payInfo == null) {
+			model.addAttribute("msg", "계좌 등록이 필요합니다");
+			model.addAttribute("msg2", "계좌 등록 페이지로 이동합니다.");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", "AccountRegist"); // 계좌 등록 페이지로 이동
+			return "forward";
+		}
+		
+		map.put("product_buyer", product_buyer);
+		log.info(map.toString());
+		
+		// 해당 상품정보를 조회하여 현재 결제에 필요한 상품정보 가져오기
+		Map<String, Object> productInfo = service.getProductInfo(map);
+		
+		log.info(productInfo.toString());
+		model.addAttribute("productInfo", productInfo);
+		model.addAttribute("payInfo", payInfo);
+		
+		// Orders에 테이블 생성
+		// 상품 상태 거래중으로 변경
+		int modifyCount = service.orderProductDirect(map); 
+		
+		if(modifyCount > 0) {
+			return "payment/use";
+		} else {
+			String url = "ProductDetail?product_id="+ map.get("product_id");
+			model.addAttribute("msg", "잘못된 접근입니다");
+			model.addAttribute("msg3", "warning");
+			model.addAttribute("targetURL", url); // 계좌 등록 페이지로 이동
+			return "forward";
+		}
+		
+	}
+	
+	
+	
 	// 페이 사용 처리
 	@PostMapping("PaymentPro")
 	public String payUsePro(@RequestParam Map<String, Object> map, HttpSession session, Model model, RedirectAttributes rttr) {

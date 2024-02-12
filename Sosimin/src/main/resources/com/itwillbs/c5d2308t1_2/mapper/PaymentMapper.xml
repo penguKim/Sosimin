@@ -280,6 +280,21 @@
 			, 0
 		)
 	</insert>
+	
+	<!-- 구매 기록 생성(바로구매) -->
+	<insert id="insertOrderDirect">
+		INSERT INTO Orders
+		VALUE (
+			null
+			, #{product_id}
+			, 0
+			, #{product_buyer}
+			, null
+			, null
+			, null
+			, 0
+		)
+	</insert>
 
 	<!-- 상품 거래 상태를 거래중(1)으로 변경 -->
 	<update id="updateTradeStatus1">
