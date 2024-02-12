@@ -409,7 +409,7 @@
 <!-- 		                </div> -->
 		
 		                <div class="card-body">
-		                  <h5 class="card-title">최근 거래 <span>| 오늘</span></h5>
+		                  <h5 class="card-title">최근 거래 <span>| 현재</span></h5>
 		
 		                  <table class="table table-borderless">
 		                    <thead>
