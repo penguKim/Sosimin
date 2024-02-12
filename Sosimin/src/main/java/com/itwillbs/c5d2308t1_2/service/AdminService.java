@@ -48,6 +48,11 @@ public class AdminService {
 	public List<Map<String, Object>> getReports() {
 		return mapper.selectReports();
 	}
+	
+	// 최신 거래 상품 목록
+	public List<Map<String, Object>> getRecentProduct() {
+		return mapper.selectRecentProduct();
+	}
 
 
 }

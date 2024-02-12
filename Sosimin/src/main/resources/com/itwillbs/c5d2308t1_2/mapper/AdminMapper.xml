@@ -52,4 +52,12 @@
 		SELECT *
 		FROM MainReports
 	</select>
+	
+	<!-- 최근 거래 상품 5개 조회 -->
+	<select id="selectRecentProduct" resultType="map">
+		SELECT * 
+		FROM  OrderList
+		ORDER BY order_id DESC
+		limit 0, 5
+	</select>
 </mapper>

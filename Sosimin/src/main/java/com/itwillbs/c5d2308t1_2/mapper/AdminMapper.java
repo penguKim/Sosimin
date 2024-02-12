@@ -28,6 +28,9 @@ public interface AdminMapper {
 
 	// 메인 7일 통계 차트
 	List<Map<String, Object>> selectReports();
+	
+	// 최근 거래 상품 목록
+	List<Map<String, Object>> selectRecentProduct();
 
 
 }

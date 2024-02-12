@@ -56,9 +56,17 @@ public class HomeController {
 		}
 		
 		
+		// 최근 상품 목록
+		List<Map<String, Object>> recentProductList = adminService.getRecentProduct();
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>> recentProductList : " + recentProductList);
+		model.addAttribute("recentProductList", recentProductList);
+		
+		
 		return "admin/adminMain";
 	}
 	
+	
+	// 카테고리 점유율 차트
 	@ResponseBody
 	@GetMapping("Chart")
 	public String chartList() {
@@ -167,5 +175,9 @@ public class HomeController {
 		return object.toString();
 		
 	}
-
+	
+	
+	
+	
+	
 }
