@@ -411,13 +411,13 @@ $(function() {
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>${payList.member_id} 님의 페이 정보</h1>
+			<h1>${payList.member_id} 님의 페이정보</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="adminMain">Home</a></li>
 					<li class="breadcrumb-item">페이관리</li>
 					<li class="breadcrumb-item">페이정보관리</li>
-					<li class="breadcrumb-item active">회원 페이 정보</li>
+					<li class="breadcrumb-item active">회원페이정보</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->

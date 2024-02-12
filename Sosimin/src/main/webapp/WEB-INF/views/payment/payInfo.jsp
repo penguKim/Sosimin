@@ -457,8 +457,8 @@ function acceptPayment() {
 				type: "GET",
 				url: "AcceptPayment",
 				data: {
-					"product_id": 80,
-					"product_buyer": "jisung1010"
+					"product_id": 156,
+					"product_buyer": "leess"
 				},
 				success:  function(data) {
 					if(data == "not-login") {
@@ -535,7 +535,7 @@ function payment() {
         reverseButtons: true,
     }).then((result) => {
     	if (result.isConfirmed) {
-			location.href="Payment?product_id=80";
+			location.href="Payment?product_id=156";
     	} else {
 			event.preventDefault();
 		}
@@ -564,7 +564,7 @@ function confirmPayment() {
 				type: "GET",
 				url: "ConfirmPayment",
 				data: {
-					"product_id": 80
+					"product_id": 156
 				},
 				success:  function(data) {
 					if(data == "not-login") {
