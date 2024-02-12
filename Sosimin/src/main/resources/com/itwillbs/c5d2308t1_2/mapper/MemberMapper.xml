@@ -204,7 +204,23 @@
 	<select id="selectReviewCount" resultType="hashmap">
 		SELECT * 
 		FROM ReviewCount
-		WHERE target_member_id = #{sId};
+		WHERE target_member_id = #{sId}
+	</select>
+	
+	<!-- 후기 별로예요 불러오기 -->
+	<select id="selectBadReviews">
+		SELECT * 
+		FROM ReviewCount
+		WHERE target_member_id = #{sId}
+		AND review_status = 'bad'
+	</select>
+	
+	<!-- 후기 최고예요 불러오기 -->
+	<select id="selectGoodReviews">
+		SELECT * 
+		FROM ReviewCount
+		WHERE target_member_id = #{sId}
+		AND review_status = 'good'
 	</select>
 	
 	<!-- 관심가져오기 -->

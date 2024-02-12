@@ -81,6 +81,12 @@ public interface MemberMapper {
 
 	// 받은 후기 카운트
 	List<Map<String, Object>> selectReviewCount(String sId);
+	
+	// 후기 별로예요 불러오기
+	Map<String, String> selectBadReviews(String sId);
+
+	// 후기 최고예요 불러오기
+	Map<String, String> selectGoodReviews(String sId);
 
 	// 관심 가져오기
 	List<Map<String, Object>> selectMemberInterest(String sId);
@@ -99,6 +105,8 @@ public interface MemberMapper {
 	
 	// 소심페이 가입한 회원 조회
 	List<MemberVO> selectPayUsers();
+
+
 
 
 

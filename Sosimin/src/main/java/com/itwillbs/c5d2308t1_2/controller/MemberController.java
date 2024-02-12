@@ -614,10 +614,31 @@ public class MemberController {
 		List<Map<String, Object>> CountReviews = service.getReviewCount(sId);
 		System.out.println("리뷰카운트 확인합시다 : " + CountReviews);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("CountReviews", CountReviews);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("CountReviews", CountReviews);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("CountReviews", CountReviews);
+		return jsonObject.toString();
+	}
+	
+	// 후기 별로예요 불러오기
+	@ResponseBody
+	@GetMapping("BadReviews")
+	public String badReviews(String sId) {
+		Map<String, String> map = service.getBadReviews(sId);
+		
 		JSONObject jsonObject = new JSONObject(map);
-
+		return jsonObject.toString();
+		
+	}
+	
+	// 후기 최고예요 불러오기
+	@ResponseBody
+	@GetMapping("GoodReviews")
+	public String goodReviews(String sId) {
+		Map<String, String> map = service.getGoodReviews(sId);
+		
+		JSONObject jsonObject = new JSONObject(map);
 		return jsonObject.toString();
 	}
 	

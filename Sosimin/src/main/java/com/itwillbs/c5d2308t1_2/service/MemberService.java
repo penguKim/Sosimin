@@ -135,6 +135,16 @@ public class MemberService {
 	public List<Map<String, Object>> getReviewCount(String sId) {
 		return mapper.selectReviewCount(sId);
 	}
+	
+	// 후기 별로예요 불러오기
+	public Map<String, String> getBadReviews(String sId) {
+		return mapper.selectBadReviews(sId);
+	}
+	
+	// 후기 최고예요 불러오기
+	public Map<String, String> getGoodReviews(String sId) {
+		return mapper.selectGoodReviews(sId);
+	}
 
 	// 관심 가져오기
 	public List<Map<String, Object>> getMemberInterest(String sId) {
@@ -163,6 +173,9 @@ public class MemberService {
 		return mapper.selectPayUsers();
 	}
 
+
+
+	
 
 
 
