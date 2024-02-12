@@ -1497,7 +1497,7 @@ $(".heart").on("click", function () {
 								</b>
 								</div>
 								<div id="singleProductInfoArea">
-									${mypage.product_price }원
+									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
@@ -1548,7 +1548,7 @@ $(".heart").on("click", function () {
 									</b>
 									</div>
 									<div id="singleProductInfoArea">
-										${mypage.product_price }원
+										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										${mypage.product_datetime }
@@ -1608,7 +1608,7 @@ $(".heart").on("click", function () {
 								</b>
 							</div>
 							<div id="singleProductInfoArea">
-								${mypage.product_price }원
+								<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								${mypage.product_datetime }
@@ -1655,7 +1655,7 @@ $(".heart").on("click", function () {
 								</b>
 								</div>
 								<div id="singleProductInfoArea">
-									${mypage.product_price }원
+									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
@@ -1708,7 +1708,7 @@ $(".heart").on("click", function () {
 									</b>
 								</div>
 								<div id="singleProductInfoArea">
-									${mypage.product_price }원
+									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
@@ -1752,7 +1752,7 @@ $(".heart").on("click", function () {
 									</b>
 									</div>
 									<div id="singleProductInfoArea">
-										${mypage.product_price }원
+										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										${mypage.product_datetime }
