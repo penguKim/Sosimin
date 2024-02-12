@@ -191,16 +191,16 @@
             , 0
         )
     </insert>
-	<insert id="productBoardInsert">
-		INSERT INTO ProductBoard
-		values (
-			null
-			,(SELECT max(product_id)
-			 FROM Product)
-			,0
-			,0
-		);
-	</insert>
+<!-- 	<insert id="productBoardInsert"> -->
+<!-- 		INSERT INTO ProductBoard -->
+<!-- 		values ( -->
+<!-- 			null -->
+<!-- 			,(SELECT max(product_id) -->
+<!-- 			 FROM Product) -->
+<!-- 			,0 -->
+<!-- 			,0 -->
+<!-- 		); -->
+<!-- 	</insert> -->
 	<select id="selectProductId" resultType="int">
 		SELECT max(product_id)
 		 FROM Product

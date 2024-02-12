@@ -1031,6 +1031,7 @@ function submitFiles(event) {
 		 	    }).then((result) => {
 		 	        if (result.isConfirmed) {
 		 	        	location.href =  "ProductDetail?product_id=" + data;
+// 		 	        	location.href =  "ProductDetail?product_id=";
 		 	        }
 		 	    });
 		        // 서버로부터 응답을 받았을 때 실행되는 코드

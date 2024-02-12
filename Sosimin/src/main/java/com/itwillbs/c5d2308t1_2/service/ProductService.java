@@ -44,14 +44,15 @@ public class ProductService {
 	}
 
 	// 상품 등록
-	@Transactional
+//	@Transactional
 	public int productRegist(Map<String, String> map) {
 		// 상품등록 테이블
 		
-		int product_id = mapper.productInsert(map);
+//		int product_id = mapper.productInsert(map);
 		
-		mapper.productBoardInsert();
+//		mapper.productBoardInsert();
 		// 상품 게시물 테이블
+		mapper.productInsert(map);
 		return mapper.selectProductId();
 		
 	}

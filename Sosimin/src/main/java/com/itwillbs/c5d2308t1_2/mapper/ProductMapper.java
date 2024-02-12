@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
 import com.itwillbs.c5d2308t1_2.vo.ProductVO;
@@ -40,7 +39,7 @@ public interface ProductMapper {
 	// 상품 조회<List>
 	List<Map<String, Object>> selectProduct2(MemberVO member);
 	
-	int productBoardInsert();
+//	int productBoardInsert();
 
 	int productBoardInsert(Map<String, String> map);
 
