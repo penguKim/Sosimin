@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.itwillbs.c5d2308t1_2.service.CommunityService;
 import com.itwillbs.c5d2308t1_2.service.LevelService;
 import com.itwillbs.c5d2308t1_2.service.ProductService;
+import com.itwillbs.c5d2308t1_2.service.SosimhamService;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
 import com.itwillbs.c5d2308t1_2.vo.PageInfo;
@@ -42,10 +43,22 @@ public class ProductController {
 	ProductService service;
 	@Autowired
 	LevelService levelService;
+	@Autowired
+	SosimhamService sosimService;
 	
 	// 메인 상품 목록 페이지 이동
 	@GetMapping("SearchProduct")
-	public String searchProduct() {
+	public String searchProduct(@RequestParam String keyword) {
+		
+//		char data = keyword.charAt(0);
+//		String data2 = keyword.substring(1, keyword.length());
+//		if(data == '@') {	
+//			List<Map<String, Object>> sellerList =sosimService.getSellerList(data2);
+//			System.out.println("@@검색 결과 : " + );
+//			return "sosimham/searchSeller";
+//		}
+//		
+		
 		return "products/searchProduct";
 	}
 	               

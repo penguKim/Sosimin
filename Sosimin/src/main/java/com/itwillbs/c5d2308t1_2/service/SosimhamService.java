@@ -66,6 +66,11 @@ public class SosimhamService {
 		return SosimMapper.updateContent(content);
 	}
 	
+//	// 판매자 목록 검색
+//	public List<Map<String, Object>> getSellerList(String data2) {
+//		return SosimMapper.selectSellerList(data2);
+//	}
+	
 
 }
 

@@ -27,6 +27,8 @@ public interface SosimhamMapper {
 	int insertKeyword(String keyword);
 	// 인기검색어 삭제(delete_status 컬럼 1로 변경)
 	int updateContent(String content);
+	// 판매자 목록 조회
+//	List<Map<String, Object>> selectSellerList(String data2);
 	
 
 }

@@ -156,7 +156,7 @@
                             </h4>
                             <ul class="review">
                                 <li><span>${result.dong} | ${result.product_datetime}</span></li>
-                                <li><span>좋아요 수 ${result.product_like}</span></li>
+                                <li><span>좋아요 수 ${result.count}</span></li>
                             </ul>
                             <div class="price">
                             	<fmt:formatNumber value="${result.product_price}" pattern="###,###" var="formattedPrice" />
