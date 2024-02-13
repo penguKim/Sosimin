@@ -984,7 +984,7 @@ function buy() {
                                   <c:when  test="${Product.trade_status eq 1 }">
 	                                 <div class="col-lg-4 col-md-4 col-12">
 	                                     <div class="wish-button">
-	                                         <button class="btn" style="height: 60px;" id="productTradeIng"> 판매중 </button>
+	                                         <button class="btn" style="height: 60px;" id="productTradeIng"> 거래중 </button>
 	                                     </div>
                                  	</div>
                                   </c:when>
