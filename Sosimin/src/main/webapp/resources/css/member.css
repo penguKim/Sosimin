@@ -737,6 +737,13 @@ input[readonly] {
 	margin-bottom: 5px !important;
 }
 
+.singleProductPrice {
+	font-size: 17px;
+    font-weight: 700;
+    color: #39d274;
+    display: inline-block;
+}
+
 #singleProductButtonArea input[type="button"] {
 	margin-top: 0px;
 /* 	margin-left: 10px !important; */
@@ -808,7 +815,7 @@ input[readonly] {
     box-sizing: border-box;
 	margin-left: 253px;
     margin-bottom: 500px;
-    margin-top: 308px;
+    margin-top: 314px;
     z-index: 1000;
 }
 

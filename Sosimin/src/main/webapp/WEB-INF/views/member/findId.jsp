@@ -106,7 +106,7 @@
 // 							alert("정보와 일치하는 회원이 없습니다!");
 						} else {
 							$("#showIdArea").html("<br><br><h6>회원님의 ID는 </h6>"
-									+ "<div><h6>" + result.member_id + " 입니다.</h6></div>"
+									+ "<div><h6>  " + result.member_id + " 입니다.</h6></div>"
 							);
 							$(".modal-footer").html(
 									"<a href='MemberLogin?member_id=" + result.member_id + "'>"

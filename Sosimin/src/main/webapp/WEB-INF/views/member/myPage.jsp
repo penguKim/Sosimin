@@ -1796,13 +1796,15 @@
 								</b>
 								</div>
 								<div id="singleProductInfoArea">
-									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+									좋아요 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									좋아요 ${mypage.count}개
+									<span class="singleProductPrice">
+										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+									</span>
 <!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
@@ -1849,13 +1851,15 @@
 									</b>
 									</div>
 									<div id="singleProductInfoArea">
-										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+										좋아요 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										${mypage.product_datetime }
 									</div>
 									<div id="singleProductContactArea">
-										좋아요 ${mypage.count}개
+										<span class="singleProductPrice">
+											<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+										</span>
 	<!-- 										채팅 n회 -->
 										<c:forEach var="pay" items="${payUser }">
 											<c:if test="${pay.member_id eq mypage.member_id }">
@@ -1909,13 +1913,15 @@
 								</b>
 							</div>
 							<div id="singleProductInfoArea">
-								<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+								좋아요 ${mypage.count}개
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								${mypage.product_datetime }
 							</div>
 							<div id="singleProductContactArea">
-								좋아요 ${mypage.count}개
+								<span class="singleProductPrice">
+									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+								</span>
 <!-- 										채팅 n회 -->
 								<c:forEach var="pay" items="${payUser }">
 									<c:if test="${pay.member_id eq mypage.member_id }">
@@ -1957,13 +1963,15 @@
 								</b>
 								</div>
 								<div id="singleProductInfoArea">
-									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+									좋아요 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									좋아요 ${mypage.count}개
+									<span class="singleProductPrice">
+										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+									</span>
 <!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
@@ -2010,14 +2018,16 @@
 									</b>
 								</div>
 								<div id="singleProductInfoArea">
-									<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+									좋아요 ${mypage.count}개
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									${mypage.product_datetime }
 								</div>
 								<div id="singleProductContactArea">
-									좋아요 ${mypage.count}개
-<!-- 										채팅 n회 -->
+									<span class="singleProductPrice">
+										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+									</span>
+	<!-- 										채팅 n회 -->
 									<c:forEach var="pay" items="${payUser }">
 										<c:if test="${pay.member_id eq mypage.member_id }">
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -2054,13 +2064,15 @@
 									</b>
 									</div>
 									<div id="singleProductInfoArea">
-										<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+										좋아요 ${mypage.count}개
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										${mypage.product_datetime }
 									</div>
 									<div id="singleProductContactArea">
-										좋아요 ${mypage.count}개
+										<span class="singleProductPrice">
+											<fmt:formatNumber value="${mypage.product_price }" pattern="###,###"/>원
+										</span>
 	<!-- 										채팅 n회 -->
 										<c:forEach var="pay" items="${payUser }">
 											<c:if test="${pay.member_id eq mypage.member_id }">
