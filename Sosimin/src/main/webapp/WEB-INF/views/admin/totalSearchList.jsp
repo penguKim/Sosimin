@@ -63,7 +63,6 @@ function openModal(order_id) {
 <script type="text/javascript">
 function delKeyword(element) {
 	var content = $(element).data("content");
-	alert(content);
 	$.ajax({
 		type:"GET",
 		url:"deleteKeyword",
@@ -127,7 +126,13 @@ function delKeyword(element) {
 											<td>${loop.index + 1}</td>
 											<td>${data.search_content}</td>
 											<td>${data.search_count}</td>
-											<td><input type="button" value="검색어 삭제" data-content="${data.search_content}" onclick="delKeyword(this)"></td>
+											
+											<td>
+											<button type="button" class="btn btn-primary"  data-content="${data.search_content}" onclick="delKeyword(this)">
+												검색어 삭제
+											</button>
+												
+											</td>
 										</tr>
 									</c:forEach>
 								</tbody>
