@@ -60,7 +60,7 @@ public class ChatController {
 		String sId = (String) session.getAttribute("sId");
 		if (sId == null) {
 			model.addAttribute("msg", "로그인 후 사용 가능합니다.");
-			model.addAttribute("targetURL", "MemberLoginForm");
+			model.addAttribute("targetURL", "MemberLogin");
 			return "forward";
 		}
 //		System.out.println(">>>>>>> 뭐가 들긴 들었니? : " + map);
