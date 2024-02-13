@@ -1065,21 +1065,28 @@ function buy() {
             <div class="product-details-info">
             	<div class="single-block" id="relatedProductsBlock">
             		<span id="relatedProducts"><b>연관상품</b></span>
-	            	<div id="relatedProductsImage">
-	            		<div id="productImageName">
-	            			<c:forEach var="product" items="${RelatedProducts }" varStatus="status">
-	            				 <c:if test="${status.count <= 5 && product != null && !empty product.product_image1}">
-		            			<a href="ProductDetail?product_id=${product.product_id}">
-	            				   <img src="${pageContext.request.contextPath}/resources/upload/${product.product_image1}" id="current" alt="#" height="250px" width=250px;>
-			            	 	<div id="productName">${product.product_name}</div>
-			            	 	</a>
-            				   </c:if>
-	            			</c:forEach>
-	            	 	</div>
-<!-- 	            		<div id="productImageName"> -->
-<%-- 		            	 		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" id="current" alt="#" height="250px" width=250px;> --%>
-<!-- 	            	 	</div> -->
-	            	</div>
+            		<c:choose>
+						<c:when test="${not empty RelatedProducts }">
+			            	<div id="relatedProductsImage">
+			            		<div id="productImageName">
+			            			<c:forEach var="product" items="${RelatedProducts }" varStatus="status">
+			            				 <c:if test="${status.count <= 5 && product != null && !empty product.product_image1}">
+				            			<a href="ProductDetail?product_id=${product.product_id}">
+			            				   <img src="${pageContext.request.contextPath}/resources/upload/${product.product_image1}" id="current" alt="#" height="250px" width=250px;>
+						            	 	<div id="productName">${product.product_name}</div>
+					            	 	</a>
+		            				   </c:if>
+		            			</c:forEach>
+		            	 	   </div>
+		            		</div>
+						</c:when>    
+						<c:otherwise>
+							<div>
+							<br>
+								연관상품이 없습니다.
+							</div>
+						</c:otherwise>        		
+            		</c:choose>
             	</div>
             </div>
             <div class="product-details-info">
