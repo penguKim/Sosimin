@@ -86,7 +86,8 @@ public class SchedulerService {
 	}
 	
 	// 위치 재인증
-//	@Scheduled(cron="*/10 * * * * *")
+	// 매일 0시 0분에 실행되며, */3 부분이 3일 간격으로 실행됨
+	@Scheduled(cron="0 0 0 */3 * *")
 	public void neighbor() {
 		List<MemberVO> memberList = memberMapper.selectMemberAuthRequired();
 		LocalDateTime now = LocalDateTime.now();
@@ -102,7 +103,8 @@ public class SchedulerService {
 	}
 	
 	// 탈퇴 회원 정보 삭제
-//	@Scheduled(cron="*/10 * * * * *")
+	// 매년 1월 1일 0시 0분에 실행되며, */2 부분이 2년 간격으로 실행됨
+	@Scheduled(cron="0 0 0 1 1 */2")
 	public void memberWithdraw() {
 		List<MemberVO> memberList = memberMapper.selectWithdrawMember();
 		LocalDate now = LocalDate.now();
