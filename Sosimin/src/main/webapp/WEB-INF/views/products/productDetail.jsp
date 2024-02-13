@@ -462,7 +462,56 @@
   animation-timing-function: ease-out; 
   /* 애니메이션 속도 곡선을 설정합니다. */
 }
+/* The Modal (background) */
+#myModal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 100; /* Sit on top */
+  padding-top: 200px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
 
+/* Modal Content (Image) */
+#myModal .modal-content {
+  margin: auto;
+  display: block;
+  width: 70%;
+  max-width: 600px;
+}
+
+/* Add Animation - Zoom in the Modal */
+#myModal .modal-content {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
 </style>
 <script>
 
@@ -496,6 +545,17 @@ $(function() {
 			}
 		});
  
+	// 모달 닫기 버튼 클릭 이벤트
+	$(".close").on("click", function() {
+	  $("#myModal").hide(); <%-- div 영역 숨김 --%>
+	});
+	// 모달 외부 영역 클릭 시 모달 닫기
+	$(window).on("click", function(event) {
+		if ($(event.target).is("#myModal")) { <%-- 클릭한 곳이 모달창 바깥 영역일 경우 --%>
+			$("#myModal").hide(); <%-- div 영역 숨김 --%>
+		}
+	});
+	
 $("#likeButton").on("click", function () {
 	$.ajax({
 		type: "POST",
@@ -566,8 +626,17 @@ $("#likeButton").on("click", function () {
 
 
 
-//메인사진 클릭 시 등록한 전체 사진 다 띄우기 <사용할지 안할지 모름> 
 
+
+
+function imageModal(image) {
+	console.log($(image).attr("src"));
+	let modal = $("#myModal");
+	$(".modal-content").attr("src", $(image).attr("src"));
+	modal.show();
+}		
+
+//메인사진 클릭 시 등록한 전체 사진 다 띄우기 <사용할지 안할지 모름> 
 function openPopup() {
 var images = document.querySelectorAll('.images img');
 var imageSrcs = [];
@@ -842,18 +911,18 @@ function buy() {
                             <c:choose>
                             	<c:when test="${Product.trade_status eq 0}">
                                 <div class="main-img">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imageModal(this)">
 <%--                                     <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="openPopup(this.src)"> --%>
                                 </div>
                             	</c:when>
                             	<c:when test="${Product.trade_status eq 1}">
                                 <div class="main-img">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imageModal(this)">
                                 </div>
                             	</c:when>
                             	<c:when test="${Product.trade_status eq 2}">
                                 <div class="main-img" id="singleProductArea">
-                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imageModal(this)">
                            			<span id="dealComplete">
 										<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png" id="checkmark"><br>
 										<span id="tradeEnd">판매 완료</span>
@@ -862,6 +931,12 @@ function buy() {
                             	</c:when>
                             </c:choose>
 <!--                                 </div> -->
+	<div id="myModal" class="modal">
+		<!-- The Close Button -->
+		<span class="close">&times;</span>
+		<!-- Modal Content (The Image) -->
+		<img class="modal-content" id="img01">
+	</div>
                                 <div class="images">
 					             <c:forEach var="i" begin="1" end="5">
 									 <c:set var="i" value="product_image${i}" />
