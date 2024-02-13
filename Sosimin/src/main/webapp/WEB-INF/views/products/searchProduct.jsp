@@ -494,10 +494,10 @@ function filtering(data) {
 				let productList = data[0];
 			    let pageInfo = data[1];
 			    let pageNum = data[2];
+			    let payUser = data[3];
 			    $(".productList").empty();
 			    $(".pageing").empty();
 			    let singleProduct = '';
-			    
 			    
 			    if(productList.length == 0) {
 			    	singleProduct += '<div id="resultProduct">검색 결과 상품이 없습니다!</div>'
@@ -524,35 +524,42 @@ function filtering(data) {
 								        + ' </a>'
 								}
 		 							
-									singleProduct += ' <div class="product-info heartPosition">'
-										+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
+								singleProduct += ' <div class="product-info heartPosition">'
+									+ '<h6 class="txtChange">' + productList[i].product_name + '</h6>'
 										
-										if(id != "") {
-											if(productList[i].member_id == id) {
-												singleProduct += '<div class="myProduct">MY</div>'
-											} else if (productList[i].member_id != id) {
-												singleProduct += ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
-											}
-										} 
+								if(id != "") {
+									if(productList[i].member_id == id) {
+										singleProduct += '<div class="myProduct">MY</div>'
+									} else if (productList[i].member_id != id) {
+										singleProduct += ' <div class="heart" id="heartLike'+i+'" onclick="heartLike('+ i + ','+ productList[i].product_id +' )"></div>'
+									}
+								} 
 										
-										singleProduct += ' <ul class="review">'
-											+ ' <li><span>' +  productList[i].dong + '</span></li>'
-											+ ' <li><span>|</span></li>'
-											+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
-											+ ' <li><img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"'
+								singleProduct += ' <ul class="review">'
+									+ ' <li><span>' +  productList[i].dong + '</span></li>'
+									+ ' <li><span>|</span></li>'
+									+ ' <li><span>' + productList[i].product_datetime + '</span></li>'
+									
+									
+									for(let user of payUser) {
+										if(productList[i].member_id == user.member_id) {
+											singleProduct += ' <li><img src="${pageContext.request.contextPath}/resources/images/product-details/소심페이.png"'
 			                            	+ 'style="height: 20px;" id="payImage"></li>' 
-										+ ' </ul>'
-										+ ' <div class="price">'
-											+ ' <span>' + productList[i].product_price.toLocaleString() + '원</span>'
-										+ ' </div>'
-										+ ' <div>'
-										+ ' </div>'
+										} 
+									}	
+										
+									singleProduct += ' </ul>'
+									+ ' <div class="price">'
+										+ ' <span>' + productList[i].product_price.toLocaleString() + '원</span>'
+									+ ' </div>'
+									+ ' <div>'
 									+ ' </div>'
 								+ ' </div>'
-						+ ' </div>'
-					} <%-- 반복문 끝 --%>
-				
-			    }
+							+ ' </div>'
+					+ ' </div>'
+					}
+					
+				}
 				
 				$(".productList").append(singleProduct);
 				
@@ -573,7 +580,9 @@ function filtering(data) {
 				    + '<li class="page-item" id="prevPage">'
 				   		 + '<a href="SearchProduct?pageNum=' + (pageNum - 1) + url + '" class="page-link">&laquo;</a>'
 				    + '</li>';
-				   
+				  
+				    
+				    
 		        for (let i = pageInfo.startPage; i < pageInfo.endPage+1; i++) {
 		            if (pageNum == i) {
 		                pages += '<li class="page-item active"><span class="page-link">' + i + '</span></li>';
