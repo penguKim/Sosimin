@@ -745,11 +745,27 @@ function chat() {
 // 바로 구매 시
 function buy() {
 	let product_id = ${param.product_id};
-	
+	let sId = "${sId}";	
 // 	console.log(product_id);
 	
-	
-	if(${payStatus.member_id ne Product.member_id}) {
+	if(sId == "") {
+		Swal.fire({
+	        title: '회원만 사용가능합니다.',
+	        text: '로그인 페이지로 이동하시겠습니까?',
+	        icon: 'error',
+	        showCancelButton: true,
+	        confirmButtonColor: '#39d274',
+	        cancelButtonColor: '#d33',
+	        confirmButtonText: '이동',
+	        cancelButtonText: '취소',
+	        reverseButtons: true,
+	        allowOutsideClick: false
+	    }).then((result) => {
+	        if (result.isConfirmed) {
+	        	location.href="MemberLogin";
+	        }
+	    });
+		} else if(${payStatus.member_id ne Product.member_id}) {
 		Swal.fire({
 			position: 'center',
 			icon: 'error',
@@ -758,9 +774,9 @@ function buy() {
 			timer: 2000,
 			toast: true
 		});	
-	} else {
-		location.href="DirectPayment?product_id=" + product_id;		
-	}	
+		} else {
+			location.href="DirectPayment?product_id=" + product_id;		
+		}	
 
 }
 	

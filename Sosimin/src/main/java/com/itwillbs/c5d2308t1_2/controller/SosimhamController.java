@@ -57,7 +57,7 @@ public class SosimhamController {
 	
 	@GetMapping("AboutUs")
 	public String aboutUs() {
-		return"AboutUs";
+		return"sosimham/AboutUs";
 	}
 	
 	@GetMapping("ProhibitionOnsale")

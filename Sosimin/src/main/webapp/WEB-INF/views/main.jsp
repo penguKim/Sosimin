@@ -97,7 +97,7 @@
                                        <br> 제공하는 다양한 제품들과 함께 당신만의 느낌을 찾아보세요.</p>
                                     <h3><span>Pay by </span>Sosim Pay</h3>
                                     <div class="button">
-                                        <a href="SearchProduct?keyword=나이키아우터" class="btn">구매하기</a>
+                                        <a href="SearchProduct?keyword=나이키" class="btn">구매하기</a>
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +113,7 @@
                                        <br>신발의 새로군 컬러웨이를 지금 바로 만나 보세요.</p>
                                     <h3><span>Pay by </span>Sosim Pay</h3>
                                     <div class="button">
-                                        <a href="SearchProduct?keyword=나이키신발" class="btn">구매하기</a>
+                                        <a href="SearchProduct?keyword=나이키" class="btn">구매하기</a>
                                     </div>
                                 </div>
                             </div>
@@ -146,12 +146,12 @@
                     <div class="single-product">
                         <div class="product-image">
                             <a href="ProductDetail?product_id=${result.product_id}" >
-                            	<img src="${pageContext.request.contextPath}/resources/upload/${result.product_image1}" alt="#" width="280px" height="380px">
+                            	<img src="${pageContext.request.contextPath}/resources/upload/${result.product_image1}" alt="#" width="287" height="287">
                             </a>
                         </div>
                         <div class="product-info">
                             <span class="category">${result.product_category}</span>
-                            <h4 class="title">
+                            <h4 class="title product_name">
                                 ${result.product_name}
                             </h4>
                             <ul class="review">
@@ -211,7 +211,7 @@
                     	style="background-image:url('${pageContext.request.contextPath}/resources/images/MainPhoto/중고거래2.jpg')" >
                         <div class="content">
                             <h2>안전한 중고거래 문화</h2>
-                            <p>소심페이 안전결제</p>
+                            <p>간편하고 안전한<br><b>Sosim Pay</b></p>
                             <div class="button">
                                 <a href="PayInfo" class="btn">소심페이 바로가기</a>
                             </div>

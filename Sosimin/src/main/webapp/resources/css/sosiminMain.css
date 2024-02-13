@@ -33,3 +33,13 @@
 	background-size: 700px!important;
     background-position: 500px 100px!important;
 }
+
+.slider1{
+	border-right: none;
+}
+
+.product_name{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
