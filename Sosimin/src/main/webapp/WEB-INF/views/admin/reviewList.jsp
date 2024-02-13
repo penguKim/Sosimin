@@ -202,25 +202,25 @@
 					<div class="card">
 						<div class="card-body">
 							<!-- Table with stripped rows -->
-							<table class="table datatable">
+							<table class="table datatable text-center table-hover">
 								<thead>
 									<tr>
-										<th>리뷰번호</th>
-										<th>상품명</th>
-										<th>결제 번호</th>
-										<th>보낸 회원</th>
-										<th>받는 회원</th>
-										<th>상세보기</th>
+										<th class="text-center">리뷰번호</th>
+										<th class="text-center">상품명</th>
+										<th class="text-center">결제 번호</th>
+										<th class="text-center">보낸 회원</th>
+										<th class="text-center">받는 회원</th>
+										<th class="text-center">상세보기</th>
 									</tr>
 								</thead>
 								<tbody>
 									<c:forEach var="review" items="${reviewList}">
 										<tr class="review_${review.review_id }">
-											<td>${review.review_id}</td>
-											<td>${review.product_name}</td>
-											<td>${review.order_id}</td>
-											<td>${review.member_id}</td>
-											<td>${review.target_member_id}</td>
+											<td class="align-middle">${review.review_id}</td>
+											<td class="text-start align-middle ps-5">${review.product_name}</td>
+											<td class="align-middle">${review.order_id}</td>
+											<td class="align-middle">${review.member_id}</td>
+											<td class="align-middle">${review.target_member_id}</td>
 											<td class="green">
 												<button type="button" class="btn btn-primary" data-id="${review.review_id }" data-bs-toggle="modal" data-bs-target="#reviewModal_${review.review_id}" onclick="reviewView(this)">
 													상세보기

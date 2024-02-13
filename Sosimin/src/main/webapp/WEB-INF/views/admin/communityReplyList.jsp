@@ -88,13 +88,13 @@
 								<tbody>
 									<c:forEach var="com" items="${comReList}">
 										<tr>
-											<td>${com.reply_id}</td>
+											<td class="align-middle">${com.reply_id}</td>
 											<td class="admin-title text-start" onclick="location.href='CommunityDetail?community_id=${com.community_id }#replyTr_${com.reply_id }'">
-												<span class="d-inline-block ellipsis ps-3">${com.reply_content }</span>
+												<span class="d-inline-block align-middle ellipsis ps-3">${com.reply_content }</span>
 											</td>
-											<td>${com.reply_writer}</td>
-											<td>${com.community_id }</td>
-											<td>
+											<td class="align-middle">${com.reply_writer}</td>
+											<td class="align-middle">${com.community_id }</td>
+											<td class="align-middle">
 												<c:set var="datetime" value="${fn:split(com.reply_datetime, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
 												${date}

@@ -90,9 +90,9 @@
 								<tbody>
 									<c:forEach var="com" items="${comList}">
 										<tr>
-											<td>${com.community_id}</td>
-											<td class="text-start"><span class="pe-2">${com.gu } ${com.dong }</span></td>
-											<td>
+											<td class="align-middle">${com.community_id}</td>
+											<td class="text-start align-middle"><span class="pe-2">${com.gu } ${com.dong }</span></td>
+											<td class="align-middle">
 												<c:choose>
 													<c:when test="${com.community_category eq '1' }">동네소식</c:when>
 													<c:when test="${com.community_category eq '2' }">동네질문</c:when>
@@ -100,13 +100,13 @@
 												</c:choose>
 											</td>
 											<td class="admin-title text-start" onclick="location.href='CommunityDetail?community_id=${com.community_id }'">
-												<span class="d-inline-block ellipsis ps-3">${com.community_subject }</span>
+												<span class="d-inline-block align-middle ellipsis ps-3">${com.community_subject }</span>
 											</td>
-											<td>${com.community_writer}</td>
+											<td class="align-middle">${com.community_writer}</td>
 											<td>
 												${com.community_readcount }
 											</td>
-											<td>
+											<td class="align-middle">
 												<c:set var="datetime" value="${fn:split(com.community_datetime, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
 												${date}
