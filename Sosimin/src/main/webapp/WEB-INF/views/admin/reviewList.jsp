@@ -187,11 +187,11 @@
 	<main id="main" class="main">
 
 		<div class="pagetitle">
-			<h1>리뷰관리</h1>
+			<h1>후기관리</h1>
 			<nav>
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="AdminMain">Home</a></li>
-					<li class="breadcrumb-item active">리뷰관리</li>
+					<li class="breadcrumb-item active">후기관리</li>
 				</ol>
 			</nav>
 		</div><!-- End Page Title -->
@@ -205,7 +205,7 @@
 							<table class="table datatable text-center table-hover">
 								<thead>
 									<tr>
-										<th class="text-center">리뷰번호</th>
+										<th class="text-center">후기번호</th>
 										<th class="text-center">상품명</th>
 										<th class="text-center">결제 번호</th>
 										<th class="text-center">보낸 회원</th>
