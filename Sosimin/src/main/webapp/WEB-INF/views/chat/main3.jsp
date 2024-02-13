@@ -162,6 +162,40 @@
     border: none;
     border-radius: 5px;
 	}
+	
+	#tradeOk:hover, #payOk:hover, #buyOk:hover, #stopBtn:hover{
+		background-color: #001828;
+	}
+	#tradeOk, #payOk, #buyOk, #stopBtn{
+		display: inline-block;
+		width: 100px;
+	}
+	#stopBtn{
+		position: relative;
+		top: 26px;
+		left: 322px;
+	}
+	#buyOk{
+		position: relative;
+		top: 79px;
+		left: 210px;
+	}
+	#payOk{
+		position: relative;
+		top: 132px;
+		left: 95px;
+	}
+	#tradeOk{
+		position: relative;
+		top: 185px;
+		right: 20px;
+	}
+	
+	#tradeButtonDiv{
+		display: inline-block;
+		position: relative;
+	}
+	
 </style>
 <script src="${pageContext.request.contextPath }/resources/js/jquery-3.7.1.js"></script>
 <script>
@@ -657,6 +691,7 @@ function payment() {
 	var product_id = product;
 // 	var product_id = "${param.product_id}";
 	location.href="Payment?product_id=" + product_id;
+	alert(product_id);
 }
 
 
@@ -918,7 +953,7 @@ function stopPayment2() {
 		<div class="d-none">
 			<!-- 상대방 아이디를 직접 입력하여 채팅방 생성 -->
 			<!-- 실제 환경에서는 게시물 내의 상대방 아이디를 클릭하여 채팅하기 등을 클릭했을 경우 -->
-			상대방 아이디 : <input type="text" id="receiver_id"> 
+			<input type="text" id="receiver_id"> 
 			<input type="button" value="채팅 시작" id="btnJoin">
 			<input type="button" value="채팅방 나가기" id="btnQuit">
 		</div>
@@ -935,7 +970,7 @@ function stopPayment2() {
 						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="구매확정" onclick="confirmPayment()" id="buyOk">
 					</div>
 					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton2">
-						<input type="button" id="stopBtn" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="거래중단" onclick="stopPayment()">
+						<input type="button"class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="거래중단" onclick="stopPayment()" id="stopBtn" >
 					</div>
 				</div>
 			</div>

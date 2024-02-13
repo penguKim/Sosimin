@@ -830,7 +830,7 @@ public class PaymentController {
 	@GetMapping("Payment")
 	public String payUse(@RequestParam Map<String, Object> map, HttpSession session, Model model) {
 		String product_buyer = (String)session.getAttribute("sId"); // 구매자 정보
-		
+		System.out.println("구매자정보 : " + product_buyer);
 		// DB에서 페이 가입 여부 조회하고 정보 가져오기(페이 미가입자는 현금거래만 가능)
 		Map<String, Object> payInfo = service.getPayInfo(product_buyer);
 		if(product_buyer == null) {
