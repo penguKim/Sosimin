@@ -666,7 +666,7 @@
 											<div class="col-auto pe-0">
 												<p>${reply.dong }</p>
 											</div>
-											<div class="col">
+											<div class="col-auto pe-0">
 												<c:choose>
 													<c:when test="${reply.reply_writer eq 'admin' }">
 														<span class="badge rounded-pill text-bg-secondary" style="background-color: #000;">관리자</span>
