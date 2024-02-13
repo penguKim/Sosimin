@@ -859,7 +859,7 @@
 			let product_id = $(this).data("id");
 // 			let order_id = $(this).data("order");
 			let btn = $(this);
-// 			let parent = $(btn).parent();
+			let parent = $(btn).parent();
 // 			alert(product_id);
 			// 채팅방에서 produtct_id 들고오기
 			event.preventDefault();
@@ -928,7 +928,7 @@
 									timer: 2000,
 									toast: true
 								});
-								$(btn).remove();
+								$(parent).html('<input type="button" value="수정" onclick="location.href=\'ProductModify?product_id=' + product_id + '\'">');
 							} else {
 								Swal.fire({
 									position: 'center',
