@@ -54,6 +54,19 @@
 	function itemdong(dong){
 		var dong = $(dong).text();
 		$('.btndong').text(dong);
+		if(dong == '초량동'){
+			changeImage(
+					"${pageContext.request.contextPath}/resources/images/sosimham/초량동.jpg"
+					, 35.121209637658666
+					, 129.03976168551299);
+		}else if(dong == '좌천동'){
+			changeImage(
+					"${pageContext.request.contextPath}/resources/images/sosimham/좌천동.jpg"
+					, 35.13032932937977
+					, 129.04911568191497);
+		}
+			
+			
 	}
 	</script>
 </head>
@@ -256,6 +269,18 @@
 								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/해운대구.jpg",
 								    lat: 35.16308713064507,
 								    lng: 129.16358565267765
+								  },
+								  {
+								    id: "초량동",
+								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/초량동.jpg",
+								    lat: 35.121209637658666,
+								    lng: 129.03976168551299
+								  },
+								  {
+								    id: "좌천동",
+								    imageSrc: "${pageContext.request.contextPath}/resources/images/sosimham/좌천동.jpg",
+								    lat: 35.13032932937977,
+								    lng: 129.04911568191497
 								  }
 								];
 							 
