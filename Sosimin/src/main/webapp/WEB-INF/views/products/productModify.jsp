@@ -861,6 +861,11 @@ function removeImage(button) {
     selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
   }
   
+  if (selectedFiles.length === 0) {
+	    var fileInput = document.getElementById('product_image');
+	    fileInput.value = '';
+	  }
+  
   if (imageItem.querySelector(".mainImage")) {
     var nextImageItem = imageContainer.children[1]; 
     if (nextImageItem && !nextImageItem.querySelector(".mainImage")) {

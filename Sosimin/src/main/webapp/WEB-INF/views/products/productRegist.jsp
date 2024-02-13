@@ -1087,6 +1087,11 @@ function removeImage(button) {
   if (index > -1) {
     selectedFiles.splice(index, 1);  // selectedFiles 배열에서 해당 파일을 제거합니다.
   }
+  
+  if (selectedFiles.length === 0) {
+	    var fileInput = document.getElementById('product_image');
+	    fileInput.value = '';
+	  }
 //   selectedFiles = Array.from(imageContainer.children)
 //   .slice(1)  // 첫 번째 요소는 이미지 추가 버튼이므로 제외합니다.
 //   .map(function(imageItem) {
