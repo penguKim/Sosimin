@@ -15,7 +15,7 @@ public interface ChatMapper {
 	void insertChatRoom(List<ChatRoomVO> chatRoom);
 
 	// 채팅방 목록 조회
-	List<ChatRoomVO> selectChatRoomList(String sender_id);
+	List<Map<String, Object>> selectChatRoomList(String sender_id);
 
 	// 채팅 메세지 저장
 	void insertMessage(ChatMessage2 chatMessage);

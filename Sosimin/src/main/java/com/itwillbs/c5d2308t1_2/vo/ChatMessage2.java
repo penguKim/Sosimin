@@ -36,6 +36,7 @@ public class ChatMessage2 {
 	public static final String TYPE_CONFIRM = "CONFIRM";   // 거래수락 버튼 클릭
 	public static final String TYPE_PAY_CONFIRM = "PAY_CONFIRM";   // 구매확정 버튼 클릭
 	public static final String TYPE_STOP_PAY = "STOP_PAY";   // 거래중 버튼 클릭
+	public static final String TYPE_INFO = "INFO";   // 거래중 버튼 클릭
 }
 
 

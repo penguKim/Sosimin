@@ -39,6 +39,12 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <style type="text/css">
+.btn-primary:hover, .btn-primary:active {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+
 	/* 채팅방 전체 영역 */
 	#chatRoomArea {
 		width: 450px;
@@ -269,7 +275,7 @@
 	// 상대방과의 채팅 시작(이미 채팅페이지 접속 시점에 웹소켓은 생성되어 있음)
 	function startChat() {
 		if(product != 0){
-			ws.send(getJsonString("START", current_user_id, $("#receiver_id").val(), "", "", ${param.product_id}));
+			ws.send(getJsonString("START", current_user_id, $("#receiver_id").val(), "", $("#receiver_id").val() + " 님과의 채팅방입니다.", ${param.product_id}));
 		}
 		// 채팅 시작을 알리는 웹소켓 메세지 전송
 		// => 타입(START), 사용자아이디, 상대방아이디, 나머지 2개 널스트링
@@ -277,7 +283,7 @@
 	
 	// ===============================================================
 	// 판매자가 거래수락 버튼을 누를 경우
-	function acceptPayment() {
+	function acceptPayment(room_id, receiver_id, product_id) {
 		// 거래 수락을 알리는 웹소켓 메세지 전송
 		// => 타입(CONFIRM), 사용자아이디, 상대방아이디, 나머지 2개 널스트링
 		Swal.fire({
@@ -292,14 +298,14 @@
 	        reverseButtons: true,
 	    }).then((result) => {
 	    	if (result.isConfirmed) {
-				ws.send(getJsonString("CONFIRM", current_user_id, $("#receiver_id").val(), "", "", product));
+				ws.send(getJsonString("CONFIRM", current_user_id, receiver_id, room_id, "", product_id));
 	    	}
 	    });
 	}
 	
 	// ===============================================================
 	// 구매자가 구매확정 버튼을 누를 경우
-	function confirmPayment() {
+	function confirmPayment(room_id, receiver_id, product_id) {
 		// 채팅방에서 produtct_id 들고오기
 //	 	location.href="ConfirmPayment?product_id=303";
 		event.preventDefault();
@@ -315,13 +321,13 @@
 	        reverseButtons: true,
 	    }).then((result) => {
 	    	if (result.isConfirmed) {
-				ws.send(getJsonString("PAY_CONFIRM", current_user_id, $("#receiver_id").val(), "", "", product));
+				ws.send(getJsonString("PAY_CONFIRM", current_user_id, receiver_id, room_id, "", product_id));
 	    	}
 	    });	
 	}//confirmPayment 끝
 	// ===============================================================
 	// 거래중단 버튼을 누를 경우
-	function stopPayment() {
+	function stopPayment(room_id, receiver_id, product_id) {
 		// 채팅방에서 produtct_id 들고오기
 		event.preventDefault();
 		Swal.fire({
@@ -336,7 +342,7 @@
 	        reverseButtons: true,
 	    }).then((result) => {
 	    	if (result.isConfirmed) {
-				ws.send(getJsonString("STOP_PAY", current_user_id, $("#receiver_id").val(), "", "", product));
+				ws.send(getJsonString("STOP_PAY", current_user_id, receiver_id, room_id, "", product_id));
 	    	}
 	    });
 	}//stopPayment 끝
@@ -378,22 +384,23 @@
 		
 		if(type != "TALK") { // // 시스템 메세지 판별
 			// 메세지만 표시(사용자 아이디 생략), 가운데 정렬
-			chat_text = "> " + message + " <";
-			message_div = "<div class='message message_align_center'><span class='chat_text'>" + chat_text + "</span></div>";
+			message_div = "<div class='message message_align_center border rounded w-75 my-2 mx-auto bg-secondary'><span class='chat_text text-white'>" + message + "</span></div>";
 		} else if(sender_id == current_user_id) { // 자신의 메세지(발신자가 자신일 경우)
 			// 메세지와 시각 표시(사용자 아이디 생략), 우측 정렬
 			chat_text = message;
-			message_div = "<div class='message message_align_right'><span class='send_time'>" + send_time + "</span><span class='chat_text'>" + chat_text + "</span></div>";
+			message_div = "<div class='message message_align_right mb-2'><span class='send_time'>" + send_time + "</span><span class='px-2 py-1 mb-2 bg-primary text-white rounded-pill me-1'>" + chat_text + "</span></div>";
 		} else if(receiver_id == current_user_id) { // 상대방의 메세지(수신자가 자신일 경우)
 			// 발신자 아이디와 메세지와 시각 표시, 좌측 정렬
 			chat_text = sender_id + " : " + message;
-			message_div = "<div class='message message_align_left'><span class='chat_text'>" + chat_text + "</span><span class='send_time'>" + send_time + "</span></div>";
+			message_div = "<div class='message message_align_left mb-2'><span class='px-2 py-1 mb-2 bg-warning text-dark rounded-pill ms-1'>" + chat_text + "</span><span class='send_time'>" + send_time + "</span></div>";
 		}
 		
 		// ================================================================
 		// 단순히 메세지만 표시(임시)
 		// 1) 현재 채팅방 찾기
 		//    => #chatRoomArea 의 자식들 중 클래스 선택자(.)가 room_id 인 채팅방 탐색
+		console.log("룸아이디는");
+		console.log(room_id);
 		let chatRoom = $("#chatRoomArea").find("." + room_id);
 		// 2) 현재 채팅방의 자식들 중 메세지 표시 영역(클래스 선택자 chatMessageArea) 탐색
 		let chatMessageArea = $(chatRoom).find(".chatMessageArea");
@@ -441,11 +448,11 @@
 			if(data.sender_id == current_user_id) { // 내가 보낸 메세지
 				// 채팅창의 수신자 아이디를 그대로 설정
 // 				createRoom(data.room_id, data.receiver_id, data.product_id);
-// 				appendChatRoomToRoomList(data.room_id, data.receiver_id, "채팅-" + data.receiver_id, null);
+// 				appendChatRoomToRoomList(data.room_id, data.receiver_id, data.receiver_id + "님과의 채팅방", null, data.product_id, data.receiver_member_profile);
 			} else { // 상대방이 보낸 메세지
 				// 채팅창의 수신자 아이디를 상대방(발신자 아이디)으로 설정
 // 				createRoom(data.room_id, data.sender_id, data.product_id);
-				appendChatRoomToRoomList(data.room_id, data.sender_id, "채팅-" + data.sender_id, null, data.product_id, data.receiver_member_profile);
+// 				appendChatRoomToRoomList(data.room_id, data.sender_id, data.sender_id + "님과의 채팅방", null, data.product_id, data.receiver_member_profile);
 			}
 			
 			// =============================================
@@ -465,7 +472,7 @@
 			console.log(data.room_id + ", " + data.receiver_id);
 			// 기존 채팅방 목록에 새 채팅방 추가
 			// => 룸ID, 상대방ID, 채팅방 제목, status 값(null) 전달
-			let title = "Id-" + data.receiver_id;
+			let title = data.receiver_id + " 님과의 채팅방";
 			appendChatRoomToRoomList(data.room_id, data.receiver_id, title, null, data.product_id, data.receiver_member_profile);
 		} else if(data.type == "LIST") {
 			// 전체 채팅방 목록 표시
@@ -528,6 +535,10 @@
 							timer: 2000,
 							toast: true
 						});
+// 						$("#tradeButton1").after("<div class='col px-1' id='tradeButton2'>"
+// 			 					+ "					<input type='button' class='btn btn-primary' value='거래중단' onclick='stopPayment(\"" + data.room_id + "\", \"" + data.receiver_id + "\", \"" + data.product_id + "\")'>"
+// 			 					+ "				</div>");
+						$("#tradeButton1").blur();
 					} else if(data == "inconsistency") {
 						Swal.fire({
 							position: 'center',
@@ -559,6 +570,10 @@
 
 		} else if(data.type == "STOP_PAY"){
 			stopPayment2();
+			$("#tradeButton2").blur();
+		} else if(data.type="INFO") {
+			appendMessageToTargetRoom(
+					data.room_id, data.sender_id, data.receiver_id, data.message, data.type, data.send_time);
 		}
 		
 	}
@@ -579,18 +594,33 @@
 			ws.send(getJsonString("MESSAGE_LIST", current_user_id, receiver_id, room_id, "", product_id));
 			// ===========================================================
 			// 채팅방 생성
-			
+			console.log("룸아이디" + room_id);
 			let room = "<div class='chatRoom " + room_id + " product_" + product_id + "'>"
-						+ "		<div class='chatMessageArea'></div>"
-						+ "			<div class='commandArea'>"
-						+ "				<input type='hidden' class='room_id' value='" + room_id + "'>"
-						+ "				<input type='hidden' class='receiver_id' value='" + receiver_id + "'>"
-						+ "				<input type='hidden' class='product_id' value='" + product_id + "'>"
-						+ "				<input type='text' class='chatMsg' onkeypress='checkEnter(this)' placeholder='메세지를 입력해주세요.'>"
-						+ "				<input type='button' class='btnSend' value='전송' onclick='sendMessage(this)'>"
-						+ "				<input type='button' class='btnQuitRoom' value='나가기' onclick='quitRoom(this)'>"
-						+ "			</div>"
-						+ "</div>"
+					+ "		<div class='chatMessageArea'>"
+					+ "			<div class='row position-sticky top-0 w-100 mx-auto mt-1 my-3 bg-white py-2'>"
+					+ "				<div class='col px-1' id='tradeButton1'>"
+					+ "					<input type='button' class='btn btn-primary' value='거래수락' onclick='acceptPayment(\"" + room_id + "\", \"" + receiver_id + "\", \"" + product_id + "\")'>"
+					+ "				</div>"
+// 					+ "				<div class='col px-1' id='tradeButton3'>"
+// 					+ "					<input type='button' class='btn btn-primary' value='결제하기' onclick='payment(\"" + room_id + "\", \"" + receiver_id + "\", \"" + product_id + "\")'>"
+// 					+ "				</div>"
+// 					+ "				<div class='col px-1' id='tradeButton2' >"
+// 					+ "					<input type='button' class='btn btn-primary' value='구매확정' onclick='confirmPayment(\"" + room_id + "\", \"" + receiver_id + "\", \"" + product_id + "\")'>"
+// 					+ "				</div>"
+					+ "				<div class='col px-1' id='tradeButton2'>"
+					+ "					<input type='button' class='btn btn-primary' value='거래중단' onclick='stopPayment(\"" + room_id + "\", \"" + receiver_id + "\", \"" + product_id + "\")'>"
+					+ "				</div>"
+					+ "			</div>"
+					+ "		</div>"
+					+ "		<div class='commandArea'>"
+					+ "			<input type='hidden' class='room_id' value='" + room_id + "'>"
+					+ "			<input type='hidden' class='receiver_id' value='" + receiver_id + "'>"
+					+ "			<input type='hidden' class='product_id' value='" + product_id + "'>"
+					+ "			<input type='text' class='chatMsg' onkeypress='checkEnter(this)' placeholder='메세지를 입력해주세요.'>"
+					+ "			<input type='button' class='btnSend' value='전송' onclick='sendMessage(this)'>"
+					+ "			<input type='button' class='btnQuitRoom' value='나가기' onclick='quitRoom(this)'>"
+					+ "		</div>"
+					+ "</div>";
 			
 						
 			$("#chatRoomArea").append(room);
@@ -604,11 +634,23 @@
 	function appendChatRoomToRoomList(room_id, receiver_id, title, status, product_id, receiver_member_profile) {
 		// 채팅방 목록 1개 정보에 chatRoomList 와 room_id 값을 class 선택자로 추가
 		// => 단, 해당 채팅방 목록이 없을 경우에만 추가
-		console.log(receiver_member_profile);
 		if(!$(".chatRoomList").hasClass(room_id)) {
-			let room = "<div class='chatRoomList " + room_id + " id_" + product_id + "'>"
-						+ "		<div class='chatRoomTitle' ondblclick='createRoom(\"" + room_id + "\", \"" + receiver_id + "\", \"" + product_id + "\")'><img class='rounded-circle' src='${pageContext.request.contextPath}/resources/upload/" + receiver_member_profile + "' style='width: 40px; height: 40px;'><span id='chatSpan'>" + title + "</span></div>"	+ "</div>";
+			let room = "<div class='" + room_id + " id_" + product_id + "'>"
+// 			let room = "<div class='chatRoomList " + data.room_id + " id_" + data.product_id + "'>"
+					+ "		<div class='row mt-2 py-2 mx-auto border-bottom' ondblclick='createRoom(\"" + room_id + "\", \"" + receiver_id + "\", \"" + product_id + "\")'>"
+// 					+ "		<div class='chatRoomTitle' ondblclick='createRoom(\"" + data.room_id + "\", \"" + data.receiver_id + "\", \"" + data.product_id + "\")'>"
+					+ "			<div class='col-3 ms-2'>";
+			if(receiver_member_profile != null && receiver_member_profile != "") {
+				room +=	"				<img class='rounded-circle' src='${pageContext.request.contextPath}/resources/upload/" + receiver_member_profile + "' style='width: 40px; height: 40px;'>"
+			} else {
+				room +=	"				<img class='rounded-circle' src='${pageContext.request.contextPath}/resources/images/member/Default_pfp.svg' style='width: 40px; height: 40px;'>"
+			}
 			
+			room += "			</div>"
+					+ "			<span class='col-auto align-self-center fs-6 text-truncate ps-0'>" + title + "</span>"
+// 					+ "			<span id='chatSpan'>" + data.receiver_nickname + " | " + data.product_name + "</span>"
+					+ "		</div>"	
+					+ "</div>";
 			$("#chatRoomListArea").append(room);
 		}
 	}
@@ -693,7 +735,7 @@
 	
 	//===============================================================
 		
-function payment() {
+function payment(room_id, receiver_id, product_id) {
 	// 채팅방에서 produtct_id 들고오기
 	var product_id = product;
 // 	var product_id = "${param.product_id}";
@@ -965,20 +1007,20 @@ function stopPayment2() {
 		</div>
 		<hr>
 			<div>
-				<div id="tradeButtonDiv">
-					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton1" >
-						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="거래수락" onclick="acceptPayment()" id="tradeOk">
-					</div>
-					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton3" >
-						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="결제하기" onclick="payment()" id="payOk">
-					</div>
-					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton2" >
-						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="구매확정" onclick="confirmPayment()" id="buyOk">
-					</div>
-					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton2">
-						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="거래중단" onclick="stopPayment()" id="stopBtn">
-					</div>
-				</div>
+<!-- 				<div id="tradeButtonDiv"> -->
+<!-- 					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton1" > -->
+<!-- 						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="거래수락" onclick="acceptPayment()" id="tradeOk"> -->
+<!-- 					</div> -->
+<!-- 					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton3" > -->
+<!-- 						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="결제하기" onclick="payment()" id="payOk"> -->
+<!-- 					</div> -->
+<!-- 					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton2" > -->
+<!-- 						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="구매확정" onclick="confirmPayment()" id="buyOk"> -->
+<!-- 					</div> -->
+<!-- 					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton2"> -->
+<!-- 						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="거래중단" onclick="stopPayment()" id="stopBtn"> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 			</div>
 		
 		<div id="chatRoomListArea"><%-- 현재 사용자의 채팅방 목록 추가될 위치 --%></div>

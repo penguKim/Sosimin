@@ -21,13 +21,13 @@ public class ChatService {
 		// => 이 때, 2명의 사용자 정보를 각각의 레코드로 추가하기 위해 List 객체로 저장
 		// => 채팅방 제목은 "채팅-상대방아이디" 형식으로 지정
 		List<ChatRoomVO> chatRoom = new ArrayList<ChatRoomVO>();
-		chatRoom.add(new ChatRoomVO(chatMessage.getRoom_id(), chatMessage.getSender_id(), chatMessage.getReceiver_id(), "채팅-" + chatMessage.getReceiver_id(), null, chatMessage.getProduct_id(), chatMessage.getReceiver_member_profile()));
-		chatRoom.add(new ChatRoomVO(chatMessage.getRoom_id(), chatMessage.getReceiver_id(), chatMessage.getSender_id(), "채팅-" + chatMessage.getSender_id(), null, chatMessage.getProduct_id(), chatMessage.getSender_member_profile()));
+		chatRoom.add(new ChatRoomVO(chatMessage.getRoom_id(), chatMessage.getSender_id(), chatMessage.getReceiver_id(), chatMessage.getReceiver_id() + "님과의 채팅방", null, chatMessage.getProduct_id(), chatMessage.getReceiver_member_profile()));
+		chatRoom.add(new ChatRoomVO(chatMessage.getRoom_id(), chatMessage.getReceiver_id(), chatMessage.getSender_id(), chatMessage.getSender_id()  + "님과의 채팅방", null, chatMessage.getProduct_id(), chatMessage.getSender_member_profile()));
 		mapper.insertChatRoom(chatRoom);
 	}
 
 	// 채팅방 목록 조회 요청
-	public List<ChatRoomVO> getChatRoomList(String sender_id) {
+	public List<Map<String, Object>> getChatRoomList(String sender_id) {
 		return mapper.selectChatRoomList(sender_id);
 	}
 

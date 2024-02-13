@@ -101,7 +101,7 @@ public class MyWebSocketHandler2 extends TextWebSocketHandler {
 			// ChatService - getChatRoomList() 메서드 호출
 			// => 파라미터 : 자신의 아이디(sender_id)   
 			//    리턴타입 : List<ChatRoomVO>(chatRoomList)
-			List<ChatRoomVO> chatRoomList = chatService.getChatRoomList(sender_id);
+			List<Map<String, Object>> chatRoomList = chatService.getChatRoomList(sender_id);
 			System.out.println("채팅방 조회 >>>>>>>>>>> : " + chatRoomList);
 //			System.out.println(chatRoomList);
 			// 조회 결과를 JSON 형식으로 변환하여 메세지로 설정
@@ -125,7 +125,9 @@ public class MyWebSocketHandler2 extends TextWebSocketHandler {
 				for(Entry<String, List<String>> room : rooms.entrySet()) {
 					// 해당 방의 참가자 목록 꺼내기(Entry 객체의 getValue() 메서드 활용)
 					List<String> roomUsers = room.getValue();
-					
+					System.out.println("roomUsers >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+					System.out.println(roomUsers);
+					System.out.println("roomUsers >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 					// 상대방과 나의 채팅방 존재 여부 판별
 					// => 채팅방의 참가자 수가 2명(생략 가능)이고
 					//    참가자 아이디에 자신과 상대방의 아이디가 포함된 경우 기존 채팅방으로 취급
@@ -207,14 +209,18 @@ public class MyWebSocketHandler2 extends TextWebSocketHandler {
 			System.out.println("거래수락버튼을 눌러야합닏아!!!!!!!");
 			System.out.println("chatMessage 테스트 ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"  + chatMessage);
 			sendMessage(session, chatMessage);
-			
-			
+			chatMessage.setType(ChatMessage2.TYPE_INFO);
+			chatMessage.setMessage("판매자가 거래를 수락하였습니다.");
 		}else if(chatMessage.getType().equals(ChatMessage2.TYPE_PAY_CONFIRM)) {
 			System.out.println("구매확정 버튼!!!!!!!");
 			sendMessage(session, chatMessage);
+			chatMessage.setType(ChatMessage2.TYPE_INFO);
+			chatMessage.setMessage("구매자가 구매를 확정하였습니다.");
 		}else if(chatMessage.getType().equals(ChatMessage2.TYPE_STOP_PAY)) {
 			System.out.println("거래중단 버튼!!!!!!!");
 			sendMessage(session, chatMessage);
+			chatMessage.setType(ChatMessage2.TYPE_INFO);
+			chatMessage.setMessage("구매자가 구매를 중단하였습니다.");
 		}
 		
 		
@@ -230,37 +236,41 @@ public class MyWebSocketHandler2 extends TextWebSocketHandler {
 			if(currentRoomUserList != null) {
 				for(String roomUserId : currentRoomUserList) {
 					// wsSession 객체에서 사용자ID 에 해당하는 세션아이디로 탐색하여 세션 꺼내기
-					WebSocketSession userSession = wsSessions.get(users.get(roomUserId));
-					
-					// sendMessage() 메서드를 호출하여 메세지 전송
-					// => 파라미터 : WebSocketSession 객체, ChatMessage2 객체
-					// => 단, 자신의 세션이 아닌 세션에만 메세지 전송
-					//    (현재 채팅방 사용자 아이디와 전송된 메세지 발신자 아이디가 일치하지 않을 경우)
-					if(!roomUserId.equals(chatMessage.getSender_id())) { // 자신의 세션이 아닐 경우
-						// 메세지 타입 판별(ChatMessage 객체의 type 멤버변수값 활용)
-						if(chatMessage.getType().equals(ChatMessage.TYPE_ENTER)) { // 입장
-							// ChatMessage 객체의 메세지를 "XXX 님이 입장하셨습니다" 로 설정(변경)
-							chatMessage.setMessage(chatMessage.getSender_id() + " 님이 입장하셨습니다.");
-						} else if(chatMessage.getType().equals(ChatMessage.TYPE_LEAVE)) { // 퇴장
-							// ChatMessage 객체의 메세지를 "XXX 님이 퇴장하셨습니다" 로 설정(변경)
-							chatMessage.setMessage(chatMessage.getSender_id() + " 님이 퇴장하셨습니다.");
+					String user = users.get(roomUserId);
+					if(user instanceof String) {
+						WebSocketSession userSession = wsSessions.get(users.get(roomUserId));
+						System.out.println("유저세션 : " + userSession);
+						// sendMessage() 메서드를 호출하여 메세지 전송
+						// => 파라미터 : WebSocketSession 객체, ChatMessage2 객체
+						// => 단, 자신의 세션이 아닌 세션에만 메세지 전송
+						//    (현재 채팅방 사용자 아이디와 전송된 메세지 발신자 아이디가 일치하지 않을 경우)
+						if(!roomUserId.equals(chatMessage.getSender_id())) { // 자신의 세션이 아닐 경우
+							// 메세지 타입 판별(ChatMessage 객체의 type 멤버변수값 활용)
+							if(chatMessage.getType().equals(ChatMessage.TYPE_ENTER)) { // 입장
+								// ChatMessage 객체의 메세지를 "XXX 님이 입장하셨습니다" 로 설정(변경)
+								chatMessage.setMessage(chatMessage.getSender_id() + " 님이 입장하셨습니다.");
+							} else if(chatMessage.getType().equals(ChatMessage.TYPE_LEAVE)) { // 퇴장
+								// ChatMessage 객체의 메세지를 "XXX 님이 퇴장하셨습니다" 로 설정(변경)
+								chatMessage.setMessage(chatMessage.getSender_id() + " 님이 퇴장하셨습니다.");
+							}
+						} else if(chatMessage.getType().equals(ChatMessage.TYPE_LEAVE)) { 
+							// 자신의 세션일 경우 LEAVE 타입인지 판별하여 채팅방 정보 제거
+							// chatService - removeChatRoomUser() 메서드 호출하여 채팅방 정보 제거
+							// => 파라미터 : ChatMessage2 객체   리턴타입 : int(currentRoomUserCnt)
+							int currentRoomUserCnt = chatService.removeChatRoomUser(chatMessage);
+							
+							// 해당 채팅방 사용자가 아무도 없을 경우
+							// rooms 객체에서 채팅방 제거
+							if(currentRoomUserCnt == 0) {
+								rooms.remove(chatMessage.getRoom_id());
+							} 
+//						} else if(chatMessage.getType().equals(ChatMessage2.TYPE_INFO)) {
+//							chatMessage.setMessage("판매자님이 거래를 수락하였습니다.");
 						}
-					} else if(chatMessage.getType().equals(ChatMessage.TYPE_LEAVE)) { 
-						// 자신의 세션일 경우 LEAVE 타입인지 판별하여 채팅방 정보 제거
-						// chatService - removeChatRoomUser() 메서드 호출하여 채팅방 정보 제거
-						// => 파라미터 : ChatMessage2 객체   리턴타입 : int(currentRoomUserCnt)
-						int currentRoomUserCnt = chatService.removeChatRoomUser(chatMessage);
-						
-						// 해당 채팅방 사용자가 아무도 없을 경우
-						// rooms 객체에서 채팅방 제거
-						if(currentRoomUserCnt == 0) {
-							rooms.remove(chatMessage.getRoom_id());
-						} 
+						// 메세지 전송
+						// => 주의! 현재 채팅방 사용자의 세션(userSession) 객체 활용
+						sendMessage(userSession, chatMessage);
 					}
-					
-					// 메세지 전송
-					// => 주의! 현재 채팅방 사용자의 세션(userSession) 객체 활용
-					sendMessage(userSession, chatMessage);
 				} // 반복문 종료
 				
 				// ChatService - addMessage() 메서드 호출하여 채팅메세지 DB 에 저장

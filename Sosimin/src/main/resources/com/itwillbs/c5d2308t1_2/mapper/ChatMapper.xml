@@ -21,9 +21,10 @@
 	</insert>
 	
 	<!-- 자신의 채팅방 목록 조회 -->
-	<select id="selectChatRoomList" resultType="chatRoom">
+	<select id="selectChatRoomList" resultType="map">
+<!-- 	<select id="selectChatRoomList" resultType="chatRoom"> -->
 		SELECT *
-		FROM chat_room_list
+		FROM chatView
 		WHERE sender_id = #{sender_id}
 	</select>
 	

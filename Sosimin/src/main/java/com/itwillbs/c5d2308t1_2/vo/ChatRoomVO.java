@@ -25,6 +25,11 @@ public class ChatRoomVO {
 	private String status; // 16글자
 	private String product_id;
 	private String member_profile;
+//	private String sender_nickname;
+//	private String receiver_nickname;
+//	private String product_name;
+//	private String product_price;
+//	private String product_category;
 }
 
 
