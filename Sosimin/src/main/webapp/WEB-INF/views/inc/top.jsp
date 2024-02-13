@@ -204,7 +204,9 @@ $(function(){
 		}else{
 			keyword = pkeyword;
 		}
-
+		
+		keyword = keyword.trim();
+		
 		if(keyword != "" && keyword != null){
 			//@@@@@@@@@@@@@@@@@@로컬스토리지 설정@@@@@@@@@@@@@@@@@@@@@
 			// 로컬스토리지에 저장할 키의 이름
@@ -304,17 +306,13 @@ $(function(){
 						+'		<a class="popularWordColorTd marginLeftRank">'
 						+   		rank1
 						+'		</a>'
-						+'		<a onclick="sendKeyword(this)">'
-						+			withoutQuotesList[i]
-						+'		</a>'
+						+'		<a onclick="sendKeyword(this)">'+withoutQuotesList[i]+'</a>'
 						+'	</td>'
 						+'	<td>'
 						+'		<a class="popularWordColorTd marginLeftRank">'
 						+   		rank2
 						+'		</a>'
-						+'		<a onclick="sendKeyword(this)">'
-						+			withoutQuotesList[i+10]
-						+'		</a>'
+						+'		<a onclick="sendKeyword(this)">'+withoutQuotesList[i+10]+'</a>'
 						+'	</td>'
 						+'</td>'
 				};

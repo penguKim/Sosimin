@@ -30,6 +30,9 @@ public class MainPageController {
 	@ResponseBody
 	@GetMapping("RelationSearchKeyWord")
 	public List<String> relationSearchKeyWord(@RequestParam String searchKeyWord) {
+		
+		searchKeyWord = searchKeyWord.trim();
+		
 		log.info("입력한 검색어 : " + searchKeyWord);
 		List<String> relationKeyWord = service.getRelationKeyWord(searchKeyWord);
 		log.info("조회한 연관검색어 : " + relationKeyWord);
@@ -39,6 +42,7 @@ public class MainPageController {
 	
 	@GetMapping("FindMyPage")
 	public String findStore(@RequestParam String q) {
+		
 		log.info("조회할 닉네임 : " + q);
 		String member_id = service.getMemberid(q);
 		log.info("조회한 멤버아이디 : " + member_id);
@@ -74,6 +78,7 @@ public class MainPageController {
 	@ResponseBody
 	@GetMapping("SaveSearchKeyword")
 	public String saveSearchKeyword(@RequestParam String keyword) {
+		keyword = keyword.trim();
 		int insertCount = service.saveKeyword(keyword);
 		
 		return"";
