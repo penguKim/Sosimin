@@ -547,7 +547,7 @@ $(function(){
                     <!-- navbar search start -->
                     <div class="navbar-search search-style-5">
                         <div class="search-input">
-                            <input type="text" id="searchKeyword" placeholder="상품명 입력" value="${param.keyword}" maxlength="100">
+                            <input type="text" id="searchKeyword" placeholder="상품명 입력, 닉네임 입력" value="${param.keyword}" maxlength="100">
                         </div>
                         <div class="search-btn">
                             <button onclick="searchKeyword()">

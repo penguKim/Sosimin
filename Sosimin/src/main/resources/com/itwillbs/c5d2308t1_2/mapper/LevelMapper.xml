@@ -110,6 +110,7 @@
 	<select id="selectAllReviewList" resultType="map">
 		SELECT *
 		FROM ReviewView
+		ORDER BY review_id DESC
 	</select>
 	
 	<!-- 회원의 리뷰 조회 -->

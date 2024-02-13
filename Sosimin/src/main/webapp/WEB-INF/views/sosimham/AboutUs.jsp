@@ -112,7 +112,7 @@ html {
 <body>
     <!-- /End Preloader -->
 	<header class="header navbar-area">
-		<jsp:include page="inc/top.jsp"></jsp:include>
+		<jsp:include page="../inc/top.jsp"></jsp:include>
 	</header>
 	
 	<!-- Start Breadcrumbs -->
@@ -242,7 +242,7 @@ html {
 	</article>
 	
 	<footer class="footer">
-		<jsp:include page="inc/bottom.jsp"></jsp:include>
+		<jsp:include page="../inc/bottom.jsp"></jsp:include>
 	</footer>
 
     <!-- ========================= scroll-top ========================= -->

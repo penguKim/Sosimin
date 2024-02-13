@@ -590,12 +590,14 @@
 	<select id="selectAllList" resultType="map">
 		SELECT *
 		FROM CommunityAllView
+		ORDER BY community_id DESC
 	</select>
 	
 	<!-- 커뮤니티 댓글 조회 -->
 	<select id="selectAllReList">
 		SELECT *
 		FROM CommunityReply
+		ORDER BY reply_id DESC
 	</select>
 	<!-- 회원 조회 -->
 	<select id="selectMemberLevel">

@@ -36,13 +36,13 @@
 	</select>
 	
 	<select id="selectPopularList" resultType="map">
-		select p.product_image1, t.dong , p.product_datetime , p.product_price , pl.product_like , p.product_category, p.product_id, p.product_name
-		from Product p join ProductLike pl
+		select p.product_image1, t.dong , p.product_datetime , p.product_price , pl.count , p.product_category, p.product_id, p.product_name
+		from Product p join ProductLikeCount  pl
 		on p.product_id = pl.product_id 
 		join Town t  
 		on p.town_id = t.town_id 
-		order by pl.product_like desc
-		limit 8; 
+		order by pl.count  desc
+		limit 8;
 	</select>
 	
 	<select id="selectWord" resultType="int">
@@ -82,6 +82,16 @@
 		SET delete_status = 1
 		WHERE search_content = #{content}
 	</update>
+	
+<!-- 	<select id="selectSellerList" resultType="map"> -->
+<!-- 		SELECT m.member_profile , m.member_nickname , -->
+<!-- 		(SELECT COUNT(*) -->
+<!-- 		 FROM Product p -->
+<!-- 		 WHERE p.member_id  = m.member_id) AS 'product_count',  -->
+<!-- 		 m.member_level , m.report_real_count  -->
+<!-- 		FROM `Member` m -->
+<!-- 		WHERE m.member_nickname LIKE '%#{data2}%'; -->
+<!-- 	</select> -->
 	
 </mapper>
 

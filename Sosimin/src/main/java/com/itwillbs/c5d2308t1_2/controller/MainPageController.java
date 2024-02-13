@@ -42,6 +42,9 @@ public class MainPageController {
 		log.info("조회할 닉네임 : " + q);
 		String member_id = service.getMemberid(q);
 		log.info("조회한 멤버아이디 : " + member_id);
+		if(member_id == null) {
+			return "sosimham/NoSearchResult";
+		}
 		return "redirect:/SellerInfo?member_id="+member_id;
 	}
 	

@@ -540,7 +540,7 @@
 								</a>								
 								<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
-									<span id="dealInProcess">거래중</span>
+									<span class="dealInProcess" id="dealInProcess">거래중</span>
 								</c:if>
 								<div id="singleProductTitleArea">
 									<b>
@@ -638,7 +638,7 @@
 								<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
 							</a>							
 							<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
-							<span id="dealInProcess">거래중</span>
+							<span class="dealInProcess" id="dealInProcess">거래중</span>
 							<div id="singleProductTitleArea">
 								<b>
 								<c:choose>
@@ -733,7 +733,7 @@
 								</a>				
 								<span class="heart <c:if test='${sessionScope.sId eq mypage.member_id }'>isSameUser</c:if>"></span>
 								<c:if test="${mypage.trade_status eq '1' }"> <%-- 거래(판매) 중 --%>
-									<span id="dealInProcess">거래중</span>
+									<span class="dealInProcess" id="dealInProcess">거래중</span>
 								</c:if>
 								<div id="singleProductTitleArea">
 									<b>
