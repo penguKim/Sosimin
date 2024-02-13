@@ -221,27 +221,50 @@
 	</select>
 
 	<!-- 연관상품 조회 -->
+<!-- 	<select id="selectRelatedProducts" resultType="map"> -->
+<!--     SELECT * -->
+<!--     FROM Product -->
+<!--     WHERE (tag_name1 LIKE CONCAT('%', #{tag_name1}, '%')  -->
+<!--     OR tag_name1 LIKE CONCAT('%', #{tag_name2}, '%') -->
+<!--     OR tag_name1 LIKE CONCAT('%', #{tag_name3}, '%') -->
+<!--     OR tag_name1 LIKE CONCAT('%', #{tag_name4}, '%') -->
+<!--     OR tag_name2 LIKE CONCAT('%', #{tag_name1}, '%') -->
+<!--     OR tag_name2 LIKE CONCAT('%', #{tag_name2}, '%') -->
+<!--     OR tag_name2 LIKE CONCAT('%', #{tag_name3}, '%') -->
+<!--     OR tag_name2 LIKE CONCAT('%', #{tag_name4}, '%') -->
+<!--     OR tag_name3 LIKE CONCAT('%', #{tag_name1}, '%') -->
+<!--     OR tag_name3 LIKE CONCAT('%', #{tag_name2}, '%') -->
+<!--     OR tag_name3 LIKE CONCAT('%', #{tag_name3}, '%') -->
+<!--     OR tag_name3 LIKE CONCAT('%', #{tag_name4}, '%') -->
+<!--     OR tag_name4 LIKE CONCAT('%', #{tag_name1}, '%') -->
+<!--     OR tag_name4 LIKE CONCAT('%', #{tag_name2}, '%') -->
+<!--     OR tag_name4 LIKE CONCAT('%', #{tag_name3}, '%') -->
+<!--     OR tag_name4 LIKE CONCAT('%', #{tag_name4}, '%') -->
+<!--     OR product_category = #{product_category} -->
+<!--     OR product_name LIKE CONCAT('%', #{product_name}, '%')) AND product_id != #{product_id} AND trade_status = 0 -->
+<!-- 	</select> -->
 	<select id="selectRelatedProducts" resultType="map">
-    SELECT *
-    FROM Product
-    WHERE (tag_name1 LIKE CONCAT('%', #{tag_name1}, '%') 
-    OR tag_name1 LIKE CONCAT('%', #{tag_name2}, '%')
-    OR tag_name1 LIKE CONCAT('%', #{tag_name3}, '%')
-    OR tag_name1 LIKE CONCAT('%', #{tag_name4}, '%')
-    OR tag_name2 LIKE CONCAT('%', #{tag_name1}, '%')
-    OR tag_name2 LIKE CONCAT('%', #{tag_name2}, '%')
-    OR tag_name2 LIKE CONCAT('%', #{tag_name3}, '%')
-    OR tag_name2 LIKE CONCAT('%', #{tag_name4}, '%')
-    OR tag_name3 LIKE CONCAT('%', #{tag_name1}, '%')
-    OR tag_name3 LIKE CONCAT('%', #{tag_name2}, '%')
-    OR tag_name3 LIKE CONCAT('%', #{tag_name3}, '%')
-    OR tag_name3 LIKE CONCAT('%', #{tag_name4}, '%')
-    OR tag_name4 LIKE CONCAT('%', #{tag_name1}, '%')
-    OR tag_name4 LIKE CONCAT('%', #{tag_name2}, '%')
-    OR tag_name4 LIKE CONCAT('%', #{tag_name3}, '%')
-    OR tag_name4 LIKE CONCAT('%', #{tag_name4}, '%')
-    OR product_category = #{product_category}
-    OR product_name LIKE CONCAT('%', #{product_name}, '%')) AND product_id != #{product_id} AND trade_status = 0
+		SELECT *
+		FROM Product
+		WHERE ((tag_name1 IS NOT NULL AND (tag_name1 LIKE CONCAT('%', #{tag_name1}, '%') 
+		OR tag_name1 LIKE CONCAT('%', #{tag_name2}, '%')
+		OR tag_name1 LIKE CONCAT('%', #{tag_name3}, '%')
+		OR tag_name1 LIKE CONCAT('%', #{tag_name4}, '%')))
+		OR (tag_name2 IS NOT NULL AND (tag_name2 LIKE CONCAT('%', #{tag_name1}, '%')
+		OR tag_name2 LIKE CONCAT('%', #{tag_name2}, '%')
+		OR tag_name2 LIKE CONCAT('%', #{tag_name3}, '%')
+		OR tag_name2 LIKE CONCAT('%', #{tag_name4}, '%')))
+		OR (tag_name3 IS NOT NULL AND (tag_name3 LIKE CONCAT('%', #{tag_name1}, '%')
+		OR tag_name3 LIKE CONCAT('%', #{tag_name2}, '%')
+		OR tag_name3 LIKE CONCAT('%', #{tag_name3}, '%')
+		OR tag_name3 LIKE CONCAT('%', #{tag_name4}, '%')))
+		OR (tag_name4 IS NOT NULL AND (tag_name4 LIKE CONCAT('%', #{tag_name1}, '%')
+		OR tag_name4 LIKE CONCAT('%', #{tag_name2}, '%')
+		OR tag_name4 LIKE CONCAT('%', #{tag_name3}, '%')
+		OR tag_name4 LIKE CONCAT('%', #{tag_name4}, '%')))
+		OR product_category = #{product_category}) 
+		AND product_id != #{product_id} 
+		AND trade_status = 0
 	</select>
 	
 	<!-- 관심 갯수 판별 -->

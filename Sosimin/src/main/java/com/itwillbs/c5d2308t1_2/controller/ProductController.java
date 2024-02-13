@@ -370,10 +370,45 @@ public class ProductController {
 		    return String.valueOf(successInsert);
 		}
 
+		
+		
+		// 태그네임과 상품이름을 받아 2글자 이상일 때만 비교하는 메서드
+//		public List<Map<String,Object>> filterRelatedProducts(List<Map<String,Object>> relatedProducts, String productName, String tagName) {
+//		    List<Map<String,Object>> filteredProducts = new ArrayList<>();
+//
+//		    for (Map<String, Object> product : relatedProducts) {
+//		        String productTag = (String)product.get("tag_name");
+//		        String productNameInList = (String)product.get("product_name");
+//
+//		        if (isMatching(productTag, tagName) || isMatching(productNameInList, productName)) {
+//		            filteredProducts.add(product);
+//		        }
+//		    }
+//
+//		    return filteredProducts;
+//		}
+//
+//		public boolean isMatching(String str1, String str2) {
+//		    if (str1 == null || str2 == null) {
+//		        return false;
+//		    }
+//
+//		    for (int i = 0; i < str1.length() - 1; i++) {
+//		        String subStr1 = str1.substring(i, i + 2);
+//		        if (str2.contains(subStr1)) {
+//		            return true;
+//		        }
+//		    }
+//
+//		    return false;
+//		}
+
+		
 
 		// 상품 상세페이지
 				@GetMapping("ProductDetail")
 				public String productDetail(@RequestParam Map<String, String> map , MemberVO member, Model model, HttpSession session, String tag_name, String product_name) {
+					
 					
 					
 //					System.out.println(" 나는 프로 덕트다 " + product);
@@ -394,7 +429,6 @@ public class ProductController {
 					List<Map<String,Object>> Product2 = service.selectProduct2(member);
 					// 연관상품을 뿌리기 위한 조회
 					List<Map<String,Object>> RelatedProducts = service.selectRelatedProducts(Product);
-					System.out.println("------------------연관상품 : " + RelatedProducts);
 			        // 판매자정보 조회
 					Map<String,String> SellerInfo = service.selectSellerInfo(map);
 					// 판매자판매 상품 조회
@@ -414,6 +448,12 @@ public class ProductController {
 					// 판매자 후기 조회
 					int SellerReview = service.selectReviewCount(SellerInfo);
 					
+					
+//					List<Map<String,Object>> RelatedProducts = service.selectRelatedProducts(Product);
+//				    RelatedProducts = filterRelatedProducts(RelatedProducts, Product.get("product_name"), Product.get("tag_name"));
+					
+					System.out.println("------------------연관상품 : " + RelatedProducts);
+				    
 					
 					System.out.println("판매자의!!!정보는!! : " + payStatus);
 					
@@ -506,6 +546,8 @@ public class ProductController {
 								System.out.println("여기에 뭐가들었니? : " + percentage);
 								System.out.println("여기에 몇개 카운트가 들었니? : " + SellerReview);
 								
+								
+								System.out.println("연관상품 잘들어왔니..? :" + RelatedProducts);
 								
 								RelatedProducts = service.selectRelatedProducts(Product);
 								Collections.shuffle(RelatedProducts); // 
