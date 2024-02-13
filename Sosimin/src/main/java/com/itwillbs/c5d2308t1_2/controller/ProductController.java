@@ -48,17 +48,18 @@ public class ProductController {
 	
 	// 메인 상품 목록 페이지 이동
 	@GetMapping("SearchProduct")
-	public String searchProduct(@RequestParam String keyword) {
-		
+	public String searchProduct() {
+//		
 //		char data = keyword.charAt(0);
 //		String data2 = keyword.substring(1, keyword.length());
 //		if(data == '@') {	
 //			List<Map<String, Object>> sellerList =sosimService.getSellerList(data2);
-//			System.out.println("@@검색 결과 : " + );
+//			System.out.println("TEST$#$ : " + sellerList);
+//			model.addAttribute("data", data2);
 //			return "sosimham/searchSeller";
 //		}
 //		
-		
+//		
 		return "products/searchProduct";
 	}
 	               

@@ -90,7 +90,7 @@
 <!-- 		 WHERE p.member_id  = m.member_id) AS 'product_count',  -->
 <!-- 		 m.member_level , m.report_real_count  -->
 <!-- 		FROM `Member` m -->
-<!-- 		WHERE m.member_nickname LIKE '%#{data2}%'; -->
+<!-- 		WHERE m.member_nickname LIKE '%#{data2}%' -->
 <!-- 	</select> -->
 	
 </mapper>
