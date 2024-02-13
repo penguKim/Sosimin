@@ -161,9 +161,9 @@ function deleteList(order_id) {
 								<tbody>
 									<c:forEach var="order_list" items="${orderList}">
 										<tr>
-											<td>${order_list.order_id}</td>
-											<td>${order_list.product_name}</td>
-											<td>
+											<td style="vertical-align: middle;">${order_list.order_id}</td>
+											<td style="width: 500px; text-align: left; vertical-align: middle;">${order_list.product_name}</td>
+											<td style="vertical-align: middle;">
 												<c:choose>
 													<c:when test="${order_list.order_status eq 0}">
 														금액확인중
@@ -177,15 +177,15 @@ function deleteList(order_id) {
 													</c:otherwise>
 												</c:choose>
 											</td>
-											<td>${order_list.product_seller}</td>
-											<td>${order_list.product_buyer}</td>
-											<td>
+											<td style="vertical-align: middle;">${order_list.product_seller}</td>
+											<td style="vertical-align: middle;">${order_list.product_buyer}</td>
+											<td style="vertical-align: middle;">
 												<c:choose>
 													<c:when test="${order_list.order_status eq 0}">거래진행</c:when>
 													<c:when test="${order_list.order_status eq 1}">거래완료</c:when>
 												</c:choose>
 											</td>
-											<td>
+											<td style="vertical-align: middle;">
 											<c:choose>
 												<c:when test="${order_list.order_status eq 0}">거래진행중</c:when>
 												<c:otherwise>
@@ -195,7 +195,7 @@ function deleteList(order_id) {
 												</c:otherwise>
 											</c:choose>
 											</td>
-											<td class="green">
+											<td class="green" style="vertical-align: middle;">
 												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${order_list.order_id}">
 													상세보기
 												</button>
