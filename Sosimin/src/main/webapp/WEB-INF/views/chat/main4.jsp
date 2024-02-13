@@ -492,7 +492,7 @@
 				data: {
 					"product_id": data.product_id,
 //		 			"product_id": "${sellProduct.product_id}",
-					"product_buyer": current_user_id
+					"product_buyer": data.receiver_id
 //		 			"product_buyer": "leess"
 				},
 				success:  function(data) {
@@ -566,6 +566,7 @@
 		$("#chatRoomArea").empty();
 		product = product_id;
 		console.log("내가 원하는 상품의 아이디는 : " + product);	
+		$("#receiver_id").val(receiver_id);
 		if(!$(".chatRoom").hasClass(room_id)) {
 			console.log("채팅방 새로 생성!");
 			// ===========================================================
