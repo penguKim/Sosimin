@@ -50,6 +50,7 @@ public class ChatController {
 		productChat.put("member_id", productChat.get("member_id"));
 //		Map<String,String> buyerInfo = service.selectBuyerInfo(productChat);
 //		System.out.println(">>>>>>> 뭐를 들고 돌아왔어? : " + buyerInfo);
+//		System.out.println(">>>>>>> 뭐를 들고 돌아왔어? : " + buyerInfo);
 //		model.addAttribute("buyerInfo", buyerInfo);
 		
 		return "chat/main3";
