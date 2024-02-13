@@ -207,6 +207,8 @@ public class MyWebSocketHandler2 extends TextWebSocketHandler {
 			System.out.println("거래수락버튼을 눌러야합닏아!!!!!!!");
 			System.out.println("chatMessage 테스트 ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"  + chatMessage);
 			sendMessage(session, chatMessage);
+			
+			
 		}else if(chatMessage.getType().equals(ChatMessage2.TYPE_PAY_CONFIRM)) {
 			System.out.println("구매확정 버튼!!!!!!!");
 			sendMessage(session, chatMessage);

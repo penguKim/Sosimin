@@ -439,7 +439,7 @@
 			} else { // 상대방이 보낸 메세지
 				// 채팅창의 수신자 아이디를 상대방(발신자 아이디)으로 설정
 // 				createRoom(data.room_id, data.sender_id, data.product_id);
-				appendChatRoomToRoomList(data.room_id, data.sender_id, "채팅-" + data.sender_id, null, data.product_id, data.receiver_member_profile);
+				appendChatRoomToRoomList(data.room_id, data.sender_id, "Id-" + data.sender_id, null, data.product_id, data.receiver_member_profile);
 			}
 			
 			// =============================================
@@ -459,7 +459,7 @@
 			console.log(data.room_id + ", " + data.receiver_id);
 			// 기존 채팅방 목록에 새 채팅방 추가
 			// => 룸ID, 상대방ID, 채팅방 제목, status 값(null) 전달
-			let title = "채팅-" + data.receiver_id;
+			let title = "Id-" + data.receiver_id;
 			appendChatRoomToRoomList(data.room_id, data.receiver_id, title, null, data.product_id, data.receiver_member_profile);
 		} else if(data.type == "LIST") {
 			// 전체 채팅방 목록 표시
@@ -600,7 +600,7 @@
 		console.log(receiver_member_profile);
 		if(!$(".chatRoomList").hasClass(room_id)) {
 			let room = "<div class='chatRoomList " + room_id + " id_" + product_id + "'>"
-						+ "		<div class='chatRoomTitle' ondblclick='createRoom(\"" + room_id + "\", \"" + receiver_id + "\", \"" + product_id + "\")'><img class='rounded-circle' src='${pageContext.request.contextPath}/resources/upload/" + receiver_member_profile + "' style='width: 40px; height: 40px;'><span id='chatSpan'>" + title + ", 상품 : " + product_id + "</span></div>"	+ "</div>";
+						+ "		<div class='chatRoomTitle' ondblclick='createRoom(\"" + room_id + "\", \"" + receiver_id + "\", \"" + product_id + "\")'><img class='rounded-circle' src='${pageContext.request.contextPath}/resources/upload/" + receiver_member_profile + "' style='width: 40px; height: 40px;'><span id='chatSpan'>" + title + "</span></div>" + "</div>";
 			
 			$("#chatRoomListArea").append(room);
 		}

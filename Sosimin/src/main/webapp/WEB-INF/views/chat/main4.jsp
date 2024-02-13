@@ -221,6 +221,8 @@
 		
 	});
 	
+	
+	
 	// ===============================================================
 	// 웹소켓 연결 요청
 	let ws; // 웹소켓 연결 시 웹소켓 객체를 저장할 변수 선언
@@ -256,18 +258,21 @@
 		setTimeout(function() {
 			// 채팅 페이지 접속 시 웹소켓 연결 후 초기화 메세지 전송
 			// => 메세지타입(INIT), 사용자 아이디, 3개 널스트링
-			ws.send(getJsonString("INIT", current_user_id, "", "", "", ${param.product_id}));
-			
-			startChat(); // 채팅 시작
-		}, 300);
+					ws.send(getJsonString("INIT", current_user_id, "", "", "", ${param.product_id}));
+					startChat(); // 채팅 시작
+			}, 300);
+		
 	}
+	
 	
 	// ================================================================
 	// 상대방과의 채팅 시작(이미 채팅페이지 접속 시점에 웹소켓은 생성되어 있음)
 	function startChat() {
+		if(product != 0){
+			ws.send(getJsonString("START", current_user_id, $("#receiver_id").val(), "", "", ${param.product_id}));
+		}
 		// 채팅 시작을 알리는 웹소켓 메세지 전송
 		// => 타입(START), 사용자아이디, 상대방아이디, 나머지 2개 널스트링
-		ws.send(getJsonString("START", current_user_id, $("#receiver_id").val(), "", "", ${param.product_id}));
 	}
 	
 	// ===============================================================
@@ -460,7 +465,7 @@
 			console.log(data.room_id + ", " + data.receiver_id);
 			// 기존 채팅방 목록에 새 채팅방 추가
 			// => 룸ID, 상대방ID, 채팅방 제목, status 값(null) 전달
-			let title = "채팅-" + data.receiver_id;
+			let title = "Id-" + data.receiver_id;
 			appendChatRoomToRoomList(data.room_id, data.receiver_id, title, null, data.product_id, data.receiver_member_profile);
 		} else if(data.type == "LIST") {
 			// 전체 채팅방 목록 표시
@@ -602,7 +607,7 @@
 		console.log(receiver_member_profile);
 		if(!$(".chatRoomList").hasClass(room_id)) {
 			let room = "<div class='chatRoomList " + room_id + " id_" + product_id + "'>"
-						+ "		<div class='chatRoomTitle' ondblclick='createRoom(\"" + room_id + "\", \"" + receiver_id + "\", \"" + product_id + "\")'><img class='rounded-circle' src='${pageContext.request.contextPath}/resources/upload/" + receiver_member_profile + "' style='width: 40px; height: 40px;'><span id='chatSpan'>" + title + ", 상품 : " + product_id + "</span></div>"	+ "</div>";
+						+ "		<div class='chatRoomTitle' ondblclick='createRoom(\"" + room_id + "\", \"" + receiver_id + "\", \"" + product_id + "\")'><img class='rounded-circle' src='${pageContext.request.contextPath}/resources/upload/" + receiver_member_profile + "' style='width: 40px; height: 40px;'><span id='chatSpan'>" + title + "</span></div>"	+ "</div>";
 			
 			$("#chatRoomListArea").append(room);
 		}
