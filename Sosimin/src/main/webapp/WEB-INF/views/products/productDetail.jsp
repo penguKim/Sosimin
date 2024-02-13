@@ -826,6 +826,11 @@ function buy() {
                                     <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
                                 </div>
                             	</c:when>
+                            	<c:when test="${Product.trade_status eq 1}">
+                                <div class="main-img">
+                                    <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
+                                </div>
+                            	</c:when>
                             	<c:when test="${Product.trade_status eq 2}">
                                 <div class="main-img" id="singleProductArea">
                                     <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
