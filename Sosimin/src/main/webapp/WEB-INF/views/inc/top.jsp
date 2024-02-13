@@ -53,7 +53,6 @@ $(function(){
 	    if (clickCount === 3) {
 	    	var keywords = ["테스트1", "테스트2", "테스트3", "테스트4", "테스트5", "테스트6", "테스트7", "테스트8", "테스트9", "테스트10"];
 	    	localStorage.setItem("keywords", JSON.stringify(keywords));
-	    	alert("keywords 배열이 로컬 스토리지에 저장되었습니다.");
 	    	updateTable();
 	    	clickCount = 0;
 	   	}
