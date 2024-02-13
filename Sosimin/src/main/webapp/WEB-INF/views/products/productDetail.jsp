@@ -566,28 +566,29 @@ $("#likeButton").on("click", function () {
 
 
 
-//메인사진 클릭시 전체 사진 다 띄우기 <사용할지 안할지 모름> 
+//메인사진 클릭 시 등록한 전체 사진 다 띄우기 <사용할지 안할지 모름> 
 
-//function openPopup() {
-//var images = document.querySelectorAll('.images img');
-//var imageSrcs = [];
+function openPopup() {
+var images = document.querySelectorAll('.images img');
+var imageSrcs = [];
 
-//images.forEach(function(image) {
-// imageSrcs.push(image.src);
-//});
+images.forEach(function(image) {
+imageSrcs.push(image.src);
+});
 
-//var popupWindow = window.open('', '_blank', 'width=900,height=620');
+var popupWindow = window.open('', '_blank', 'width=900,height=620');
 
-//popupWindow.document.write('<div style="display:flex; flex-direction: row;">');
+popupWindow.document.write('<div style="display:flex; flex-direction: row;">');
 
-//imageSrcs.forEach(function(src) {
-// popupWindow.document.write('<img src="' + src + '" style="width: 540px; height: 540px; margin-right: 10px; margin-top : 20px;">');
-//});
+imageSrcs.forEach(function(src) {
+popupWindow.document.write('<img src="' + src + '" style="width: 540px; height: 540px; margin-right: 10px; margin-top : 20px;">');
+});
 
-//popupWindow.document.write('</div>');
-//popupWindow.document.close();
-//}
+popupWindow.document.write('</div>');
+popupWindow.document.close();
+}
 
+// 메인 사진 클릭 시 한장만 뜸
 function imagePopup(src) {
 var newWindow = window.open('', '_blank', 'width=800,height=600');
 newWindow.document.write('<html><head><title>Image</title></head><body style="background-color: black; margin: 0; display: flex; justify-content: center; align-items: center;"><img src="' + src + '" style="max-width: 100%; max-height: 100%;"></body></html>');
@@ -842,6 +843,7 @@ function buy() {
                             	<c:when test="${Product.trade_status eq 0}">
                                 <div class="main-img">
                                     <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="imagePopup(this.src)">
+<%--                                     <img src="${pageContext.request.contextPath}/resources/upload/${Product.product_image1 }" id="current" alt="#" height="620px" style="display:block; width:100%;" class="mx-auto" onclick="openPopup(this.src)"> --%>
                                 </div>
                             	</c:when>
                             	<c:when test="${Product.trade_status eq 1}">
@@ -1127,26 +1129,22 @@ function buy() {
                                 		</a>
                                 	</div>
                                 </div>
-                                <div style="height: 150px">
-                                	<div id="myProductImage">
-                                		<c:forEach var="SellerProductInfo" items="${SellerProductInfo }" begin="0" end="2" >
-	                                	<a href="ProductDetail?product_id=${SellerProductInfo.product_id}" style="height: 150px;">
-	                                		<img src="${pageContext.request.contextPath}/resources/upload/${SellerProductInfo.product_image1 }" class="img" alt="#" height="150px" width="150px">
-	                                		<div id="imgPrice">
-	                                			<span><fmt:formatNumber value="${SellerProductInfo.product_price }" pattern="###,###"/></span>원
-	                                		</div>
-	                                	</a>
-                                		</c:forEach>
-                                	</div>
-<!--                                 	<div id="myProductImage"> -->
-<!-- 	                                	<a href="" style="height: 150px;"> -->
-<%-- 	                                		<img src="${pageContext.request.contextPath}/resources/images/product-details/iu2.jpg" class="img" alt="#" height="150px" width="150px"> --%>
-<!--                     						<div id="imgPrice"> -->
-<!-- 	                                			<span>160,000</span>원 -->
-<!-- 	                                		</div> -->
-<!-- 	                                	</a> -->
-<!--                                 	</div> -->
-                                </div>
+                                <c:choose>
+									<c:when test="${not empty SellerProductInfo}">
+		                                <div style="height: 150px">
+		                                	<div id="myProductImage">
+		                                		<c:forEach var="SellerProductInfo" items="${SellerProductInfo }" begin="0" end="2" >
+			                                	<a href="ProductDetail?product_id=${SellerProductInfo.product_id}" style="height: 150px;">
+			                                		<img src="${pageContext.request.contextPath}/resources/upload/${SellerProductInfo.product_image1 }" class="img" alt="#" height="150px" width="150px">
+			                                		<div id="imgPrice">
+			                                			<span><fmt:formatNumber value="${SellerProductInfo.product_price }" pattern="###,###"/></span>원
+			                                		</div>
+			                                	</a>
+		                                		</c:forEach>
+		                                	</div>
+		                                </div>
+									</c:when>								                                
+                                </c:choose>
                                 <div style="text-align: center; margin-top: 20px;">
                                 	<a href="SellerInfo?member_id=${SellerInfo.member_id }" id="productPlus">
                                 		<span id="productCount">${SellerProductCount }개</span>
