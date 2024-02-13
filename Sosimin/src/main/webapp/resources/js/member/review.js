@@ -194,7 +194,7 @@
 					}
 				}
 				
-				$(".modal-footer").html(
+				$("#footer_" + order_id).html(
 						'<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="reviewClose_' + order_id + '">창닫기</button>'
 						+ '<button type="button" class="btn btn-primary" id="reviewBtn" onclick="reviewDelete(' + order_id + ')">'
 						+'후기 삭제</button>'	
