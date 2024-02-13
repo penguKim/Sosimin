@@ -4,6 +4,12 @@ input[readonly] {
 	background-color: #e0e0e0 !important;
 }
 
+.btn-primary:hover {
+    color: #fff;
+    background-color: #000 !important;
+    border-color: #000 !important;
+}
+
 /* =================== 회원가입 & 로그인 CSS =======================  */
 /* ============== */
 /* 회원가입 메인 */
@@ -65,7 +71,7 @@ input[readonly] {
 }
 
 .form-group input[type="button"]:hover {
-    background-color: #081828;
+    background-color: #000;
 }
 
 .form-group input[type="button"] {
@@ -509,7 +515,7 @@ input[readonly] {
 }
 
 .btnProfilePicModify:hover {
-	background-color: #081828;
+	background-color: #000;
 }
 
 #profilePicFile {
@@ -761,7 +767,7 @@ input[readonly] {
     overflow: hidden;
 }
 #singleProductButtonArea input[type="button"]:hover {
-	background-color: #081828;
+	background-color: #000;
 }
 
 .dealInProcess {
@@ -853,7 +859,7 @@ input[readonly] {
 }
 
 #communityButtonArea input[type="button"]:hover {
-	background-color: #081828;
+	background-color: #000;
 }
 
 #wholeCommunityArea {
