@@ -16,7 +16,7 @@
 		separator 속성 : 각 묶음을 구분할 SQL 구문에서의 구분자
 		-->
 		<foreach item="chatRoom" collection="list" separator=",">
-			(#{chatRoom.room_id}, #{chatRoom.sender_id}, #{chatRoom.receiver_id}, #{chatRoom.title}, null)  -- List 객체수만큼 반복
+			(#{chatRoom.room_id}, #{chatRoom.sender_id}, #{chatRoom.receiver_id}, #{chatRoom.title}, null, #{chatRoom.product_id}, #{chatRoom.member_profile})  -- List 객체수만큼 반복
 		</foreach>
 	</insert>
 	
@@ -82,6 +82,13 @@
 		FROM Product
 		WHERE
 			product_id = #{product_id}
+	</select>
+	
+	<select id="selectBuyerInfo" resultType="string">
+		SELECT member_profile
+		FROM Member
+		WHERE
+		member_id = #{receiver_id}
 	</select>
 </mapper>
 

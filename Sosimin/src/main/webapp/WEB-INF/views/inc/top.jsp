@@ -585,12 +585,10 @@ $(function(){
 	                	<span class="rightMenu">좋아요</span>   
                 	</a>
 <%--                 	<a href="chat/main2?member_id=${sId }"> --%>
-                	<a href="ChatMain2">
+                	<a href="ChatMain4">
 	                	<img src="https://m.bunjang.co.kr/pc-static/resource/32554a59cf002b3def10.png" width="23" height="24" alt="번개톡버튼 이미지">
-	                	<span class="rightMenu">채팅톡</span>  
+	                	<span class="rightMenu">채팅톡</span>
                 	</a>
-
-
                 </div>
             </div>
         </div>

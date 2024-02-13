@@ -21,8 +21,8 @@ public class ChatService {
 		// => 이 때, 2명의 사용자 정보를 각각의 레코드로 추가하기 위해 List 객체로 저장
 		// => 채팅방 제목은 "채팅-상대방아이디" 형식으로 지정
 		List<ChatRoomVO> chatRoom = new ArrayList<ChatRoomVO>();
-		chatRoom.add(new ChatRoomVO(chatMessage.getRoom_id(), chatMessage.getSender_id(), chatMessage.getReceiver_id(), "채팅-" + chatMessage.getReceiver_id(), null));
-		chatRoom.add(new ChatRoomVO(chatMessage.getRoom_id(), chatMessage.getReceiver_id(), chatMessage.getSender_id(), "채팅-" + chatMessage.getSender_id(), null));
+		chatRoom.add(new ChatRoomVO(chatMessage.getRoom_id(), chatMessage.getSender_id(), chatMessage.getReceiver_id(), "채팅-" + chatMessage.getReceiver_id(), null, chatMessage.getProduct_id(), chatMessage.getReceiver_member_profile()));
+		chatRoom.add(new ChatRoomVO(chatMessage.getRoom_id(), chatMessage.getReceiver_id(), chatMessage.getSender_id(), "채팅-" + chatMessage.getSender_id(), null, chatMessage.getProduct_id(), chatMessage.getSender_member_profile()));
 		mapper.insertChatRoom(chatRoom);
 	}
 
@@ -52,6 +52,10 @@ public class ChatService {
 	public Map<String, String> selectSellInfo(Map<String, String> map) {
 		
 		return mapper.selectSellInfo(map);
+	}
+
+	public String selectBuyerInfo(String receiver_id) {
+		return mapper.selectBuyerInfo(receiver_id);
 	}
 
 }

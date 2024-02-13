@@ -360,7 +360,91 @@ function confirmPayment() {
 	});
 	
 }		
-		
+
+
+//임시로 테스트용 거래중단 버튼 추가(에이젝스)
+function stopPayment() {
+	// 채팅방에서 produtct_id 들고오기
+	event.preventDefault();
+	Swal.fire({
+        title: "거래를 중단하시겠습니까?",
+        text: "확인을 누르시면 거래가 중단됩니다.",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#39d274',
+        cancelButtonColor: '#d33',
+        confirmButtonText: "중단",
+        cancelButtonText: '취소',
+        reverseButtons: true,
+    }).then((result) => {
+    	if (result.isConfirmed) {
+			<%-- 서블릿 요청 --%>
+			$.ajax({
+				type: "GET",
+				url: "StopPayment",
+				data: {
+					"product_id": 80
+				},
+				success:  function(data) {
+					if(data == "not-login") {
+						Swal.fire({
+							icon: 'warning',
+							title: '로그인을 해주세요!',
+							text: '로그인 페이지로 이동합니다!',
+							allowOutsideClick: false
+						}).then((result) => {
+								location.href="MemberLogin";
+						});	
+					} else if(data == "none") {
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '거래 중단 가능한 상품이 없습니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});				
+					} else if(data == "inconsistency") {
+							Swal.fire({
+								position: 'center',
+								icon: 'error',
+								title: '판매자 정보가 일치하지 않습니다.',
+								showConfirmButton: false,
+								timer: 2000,
+								toast: true
+						});			
+					} else if(data == "true") {
+						Swal.fire({
+							position: 'center',
+							icon: 'success',
+							title: '거래를 중단했습니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});
+					} else {
+						Swal.fire({
+							position: 'center',
+							icon: 'error',
+							title: '거래 중단을 실패했습니다.',
+							showConfirmButton: false,
+							timer: 2000,
+							toast: true
+						});			
+					}
+			
+				},
+				error: function(request, status, error) {
+			      // 요청이 실패한 경우 처리할 로직
+			      console.log("AJAX 요청 실패:", status, error); // 예시: 에러 메시지 출력
+				}
+			});
+    	} else {
+			event.preventDefault();
+		}
+   });
+	
+}
 		
 		
 	
@@ -700,14 +784,6 @@ function confirmPayment() {
 	
 	<article id="article">
 		<!-- 본문 표시 영역 -->
-		<h1>채팅 페이지</h1>
-		<hr>
-		<!-- 상대방 아이디를 직접 입력하여 채팅방 생성 -->
-		<!-- 실제 환경에서는 게시물 내의 상대방 아이디를 클릭하여 채팅하기 등을 클릭했을 경우 -->
-		상대방 아이디 : <input type="text" id="receiver_id"> 
-		<input type="button" value="채팅 시작" id="btnJoin">
-		<input type="button" value="채팅방 나가기" id="btnQuit">
-		<hr>
 			<div>
 				<div id="tradeButtonDiv">
 					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton1" >
@@ -716,8 +792,11 @@ function confirmPayment() {
 					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton3" >
 						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="결제하기" onclick="payment()" id="payOk" disabled="disabled">
 					</div>
-					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton2" >
+					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton4" >
 						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" value="구매확정" onclick="confirmPayment()" id="buyOk" disabled="disabled">
+					</div>
+					<div class="mx-auto mt-1 mb-3 row d-flex justify-content-between" id="tradeButton2" >
+						<input type="button" class="btn btn-primary col-xl-2 col-md-3 col-12 float-end" id="stopBtn" value="거래중단" onclick="stopPayment()" id="tradeCancel" disabled="disabled">
 					</div>
 				</div>
 			</div>
@@ -728,33 +807,8 @@ function confirmPayment() {
 	<footer class="footer">
 		<jsp:include page="../inc/bottom.jsp"></jsp:include>
 	</footer>
-    <!-- ========================= scroll-top ========================= -->
-    <a href="#" class="scroll-top">
-        <i class="lni lni-chevron-up"></i>
-    </a>
-	
-	   <div class="breadcrumbs">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6 col-12">
-                    <div class="breadcrumbs-content">
-                        <h1 class="page-title">1:1채팅</h1>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-12">
-                    <ul class="breadcrumb-nav">
-                        <li><a href="./"><i class="lni lni-home"></i> 홈</a></li>
-                        <li>1:1 채팅</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-			<div><input type="button" value="채팅방 입장" id="btnJoin" onclick="onOpen()"></div>
-			<div><input type="button" value="채팅방 나가기" id="btnQuit" onclick="btnQuit()"></div>
-				
-				
-	
+<!-- 			<div><input type="button" value="채팅방 입장" id="btnJoin" onclick="onOpen()"></div> -->
+<!-- 			<div><input type="button" value="채팅방 나가기" id="btnQuit" onclick="btnQuit()"></div> -->
 	
 	    <!-- ========================= JS here ========================= -->
  	<script src="${pageContext.request.contextPath}/resources/js/main/bootstrap.min.js"></script>

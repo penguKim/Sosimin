@@ -23,6 +23,8 @@ public class ChatRoomVO {
 	private String receiver_id; // 16글자
 	private String title; // 50글자
 	private String status; // 16글자
+	private String product_id;
+	private String member_profile;
 }
 
 

@@ -31,6 +31,9 @@ public interface ChatMapper {
 	// 채팅방에서 판매자 조회
 	Map<String, String> selectSellInfo(Map<String, String> map);
 
+	// 채팅방에서 구매자 조회
+	String selectBuyerInfo(String receiver_id);
+
 }
 
 

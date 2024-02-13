@@ -19,6 +19,9 @@ public class ChatMessage2 {
 	private String room_id;
 	private String message;
 	private String send_time;
+	private String product_id;
+	private String sender_member_profile;
+	private String receiver_member_profile;
 	
 	// 타입(type) 으로 사용할 문자열을 상수로 제공
 	public static final String TYPE_ENTER = "ENTER"; // 입장 메세지
@@ -30,6 +33,9 @@ public class ChatMessage2 {
 	public static final String TYPE_LIST_ADD = "LIST_ADD";   // 채팅방 목록 추가
 	public static final String TYPE_REMOVE = "REMOVE";   // 채팅방 제거
 	public static final String TYPE_MESSAGE_LIST = "MESSAGE_LIST";   // 채팅방 이전 채팅 내용 표시
+	public static final String TYPE_CONFIRM = "CONFIRM";   // 거래수락 버튼 클릭
+	public static final String TYPE_PAY_CONFIRM = "PAY_CONFIRM";   // 구매확정 버튼 클릭
+	public static final String TYPE_STOP_PAY = "STOP_PAY";   // 구매확정 버튼 클릭
 }
 
 
