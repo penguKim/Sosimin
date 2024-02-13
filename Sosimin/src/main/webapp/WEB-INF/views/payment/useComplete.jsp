@@ -38,6 +38,15 @@ $(function() {
 		}
 	});
 });
+
+function goChatRoom() {
+	console.log("됨");
+	
+	let product_buyer = "${sessionScope.sId}";
+	let product_id = "${param.product_id}";
+	
+	location.href='ChatMain3?product_id=' + product_id + '&product_buyer=' + product_buyer;
+}
 </script>
 <style type="text/css">
 .effect1{
@@ -176,7 +185,7 @@ $(function() {
 								<p class="info-msg">- 페이머니는 환급하기 페이지에서 무료로 즉시 인출 가능합니다</p>
 	                            <div class="button col-lg-6 col-md-6 col-12">
 <!-- 	                                <button class="btn" onclick="location.href='MyPage?member_id=leess&category=2'">구매 내역보기</button> -->
-	                                <button class="btn" onclick="location.href='ChatMain3?product_id=' + ${param.product_id} + '&product_buyer=' + ${sessionScope.sId}">채팅방 돌아가기</button>
+	                                <button class="btn" onclick="goChatRoom()">채팅방 돌아가기</button>
 	                            </div>
 	                            <div class="button col-lg-6 col-md-6 col-12">
 	                            	<c:choose>
