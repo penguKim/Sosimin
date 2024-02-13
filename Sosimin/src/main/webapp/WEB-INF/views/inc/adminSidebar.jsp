@@ -11,6 +11,13 @@
 	</li><!-- End Dashboard Nav -->
 
 	<li class="nav-item">
+		<a class="nav-link collapsed" href="TotalSearchList">
+			<i class="bi bi-search"></i>
+			<span>인기 검색어 관리</span>
+		</a>
+	</li><!-- End Profile Page Nav -->
+
+	<li class="nav-item">
 		<a class="nav-link collapsed" href="MemberList">
 			<i class="bi bi-person"></i>
 			<span>회원관리</span>
@@ -23,7 +30,6 @@
 			<span>상품관리</span>
 		</a>
 	</li><!-- End Contact Page Nav -->
-
 
 	<li class="nav-item">
 		<a class="nav-link collapsed" href="OrderList">
@@ -39,15 +45,6 @@
 		</a>
 	</li><!-- End Profile Page Nav -->
 
-
-	<li class="nav-item">
-		<a class="nav-link collapsed" href="TotalSearchList">
-			<i class="bi bi-search"></i>
-			<span>인기 검색어 관리</span>
-		</a>
-	</li><!-- End Profile Page Nav -->
-
-	
 	<li class="nav-item">
 		<a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
 			<i class="bi bi-cash-coin"></i><span>페이관리</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -104,6 +101,23 @@
 		</ul>
 	</li><!-- End Components Nav -->
 
+	<li class="nav-item">
+		<a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+			<i class="bi bi-chat-dots"></i><span>커뮤니티관리</span><i class="bi bi-chevron-down ms-auto"></i>
+		</a>
+		<ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+			<li>
+				<a href="CommunityList">
+					<i class="bi bi-circle"></i><span>게시글관리</span>
+				</a>
+			</li>
+			<li>
+				<a href="CommunityReplyList">
+					<i class="bi bi-circle"></i><span>댓글관리</span>
+				</a>
+			</li>
+		</ul>
+	</li><!-- End Tables Nav -->
 
 	<li class="nav-item">
 		<a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
@@ -123,23 +137,5 @@
 		</ul>
 	</li><!-- End Icons Nav -->
 
-
-	<li class="nav-item">
-		<a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-			<i class="bi bi-chat-dots"></i><span>커뮤니티관리</span><i class="bi bi-chevron-down ms-auto"></i>
-		</a>
-		<ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-			<li>
-				<a href="CommunityList">
-					<i class="bi bi-circle"></i><span>게시글관리</span>
-				</a>
-			</li>
-			<li>
-				<a href="CommunityReplyList">
-					<i class="bi bi-circle"></i><span>댓글관리</span>
-				</a>
-			</li>
-		</ul>
-	</li><!-- End Tables Nav -->
 
 </ul>

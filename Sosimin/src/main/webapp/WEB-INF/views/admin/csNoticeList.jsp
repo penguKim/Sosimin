@@ -111,21 +111,21 @@
 								<tbody>
 									<c:forEach var="notice" items="${csNoticeList}">
 										<tr>
-											<td>${notice.cs_type_list_num}</td>
-											<td>
+											<td style="vertical-align: middle;">${notice.cs_type_list_num}</td>
+											<td style="vertical-align: middle;">
 												<c:choose>
 													<c:when test="${notice.cs_type_detail eq '1'}">공지</c:when>
 													<c:when test="${notice.cs_type_detail eq '2'}">정책변경</c:when>
 													<c:when test="${notice.cs_type_detail eq '3'}">사기예방</c:when>
 												</c:choose>
 											</td>
-											<td>${notice.cs_subject}</td>
-											<td>
+											<td style="width: 500px; text-align: left; vertical-align: middle;">${notice.cs_subject}</td>
+											<td style="vertical-align: middle;">
 												<c:set var="datetime" value="${fn:split(notice.cs_date, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
 												${date}
 											</td>
-											<td class="green">
+											<td class="green" style="vertical-align: middle;">
 												<a href="CsNoticeModifyForm?cs_id=${notice.cs_id}">
 													<button type="button" class="btn btn-primary">
 														상세보기

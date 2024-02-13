@@ -97,25 +97,25 @@ function MemberAccountDetail(pay_id) {
 								<tbody>
 									<c:forEach var="pay_list" items="${payHistoryList}">
 										<tr>
-											<td>${pay_list.pay_history_id}</td>
-											<td>${pay_list.pay_id}</td>
-											<td>${pay_list.member_id}</td>
-											<td>
+											<td style="vertical-align: middle;">${pay_list.pay_history_id}</td>
+											<td style="vertical-align: middle;">${pay_list.pay_id}</td>
+											<td style="vertical-align: middle;">${pay_list.member_id}</td>
+											<td style="vertical-align: middle;">
 												<c:choose>
 													<c:when test="${pay_list.pay_history_type eq '1'}">충전</c:when>
 													<c:when test="${pay_list.pay_history_type eq '2'}">환급</c:when>
 												</c:choose>
 											</td>
-											<td>
+											<td style="vertical-align: middle;">
 												<c:set var="payAmount" value="${pay_list.pay_amount}" />
 												<fmt:formatNumber value="${payAmount}" pattern="#,##0" />원
 											</td>
-											<td>
+											<td style="vertical-align: middle;">
 												<c:set var="datetime" value="${fn:split(pay_list.pay_history_date, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
 												${date}
 											</td>
-											<td class="green">
+											<td class="green" style="vertical-align: middle;">
 												<button type="button" class="btn btn-primary" onclick="MemberAccountDetail('${pay_list.pay_id}')">
 													상세보기
 												</button>

@@ -111,8 +111,8 @@
 								<tbody>
 									<c:forEach var="faq" items="${csFaqList}">
 										<tr>
-											<td>${faq.cs_type_list_num}</td>
-											<td>
+											<td style="vertical-align: middle;">${faq.cs_type_list_num}</td>
+											<td style="vertical-align: middle;">
 												<c:choose>
 													<c:when test="${faq.cs_type_detail eq '4'}">회원</c:when>
 													<c:when test="${faq.cs_type_detail eq '5'}">거래분쟁</c:when>
@@ -120,13 +120,13 @@
 													<c:when test="${faq.cs_type_detail eq '7'}">사이트이용</c:when>
 												</c:choose>
 											</td>
-											<td>${faq.cs_subject}</td>
-											<td>
+											<td style="width: 500px; text-align: left; vertical-align: middle;">${faq.cs_subject}</td>
+											<td style="vertical-align: middle;">
 												<c:set var="datetime" value="${fn:split(faq.cs_date, 'T')}" />
 												<c:set var="date" value="${datetime[0]}" />
 												${date}
 											</td>
-											<td class="green">
+											<td class="green" style="vertical-align: middle;">
 												<a href="CsFaqModifyForm?cs_id=${faq.cs_id}">
 													<button type="button" class="btn btn-primary">
 														상세보기
