@@ -46,14 +46,6 @@ let recentClick = true;
 let popularClick = true; 
 	
 $(function(){
-// 	var searchList = ${contentArr};
-// 	localStorage.setItem("popularSearchKeyword", JSON.stringify(searchList));
-// 	alert("popularSearchKeyword 배열이 로컬 스토리지에 저장되었습니다.");
-	
-// 	let popularHtml = "";
-// 	for(let i=0; i<20; i++){
-// 		popularHtml += ""
-// 	}
 // ######################테스트 데이터 설정######################
 	var clickCount = 0;
 	$('.nav-inner').click(function() {
@@ -190,7 +182,6 @@ $(function(){
 				
 			},
 			error:function(){
-// 				alert("통신 실패.")
 			}
 		});
 	}
@@ -265,7 +256,6 @@ $(function(){
 			url:"SaveSearchKeyword",
 			data: {keyword : keyword},
 			success:function(res){
-				alert(res);
 			}
 		});
 	}
