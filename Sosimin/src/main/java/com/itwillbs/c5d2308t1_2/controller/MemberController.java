@@ -34,8 +34,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.c5d2308t1_2.service.CommunityService;
+import com.itwillbs.c5d2308t1_2.service.LevelService;
 import com.itwillbs.c5d2308t1_2.service.MemberService;
 import com.itwillbs.c5d2308t1_2.service.PaymentService;
+import com.itwillbs.c5d2308t1_2.vo.CommunityReplyVO;
 import com.itwillbs.c5d2308t1_2.vo.CommunityVO;
 import com.itwillbs.c5d2308t1_2.vo.MemberVO;
 import com.itwillbs.c5d2308t1_2.vo.PageDTO;
@@ -52,6 +54,10 @@ public class MemberController {
 	
 	@Autowired
 	private PaymentService paymentService;
+	
+	@Autowired
+	private LevelService levelService;
+
 	
 	// ****************** 회원가입 ****************
 	
@@ -728,6 +734,36 @@ public class MemberController {
 			return "false";
 		}
 	} 
+	
+	// 커뮤니티 댓글 삭제 AJAX
+	@ResponseBody
+	@GetMapping("deleteCommunityReply")
+	public String communityReplyDelete(CommunityReplyVO reply, HttpSession session) {
+		
+		String sId = (String)session.getAttribute("sId");
+		if(sId == null) {
+			return "invalidSession";
+		}
+		
+		// 댓글 작성자 조회
+		reply = communityService.getReplyWriter(reply);
+		
+		if(sId.equals(reply.getReply_writer()) || sId.equals("admin")) {
+			// 댓글 삭제 요청
+			int deleteCount = communityService.removeReply(reply);
+			
+			if(deleteCount > 0) {
+				// 댓글 삭제 시 경험치 감소
+				levelService.updateComReExp(reply, false);
+				return "true";
+			} else {
+				return "false";
+			}
+		} else {
+			return "invalidSession";
+		}	
+	}
+	
 	
 	
 	// *********** 판매자 페이지 **************

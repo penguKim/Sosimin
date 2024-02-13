@@ -1548,7 +1548,7 @@
 		
 	}
 	
-	// 커뮤니티 글 삭제
+	// 커뮤니티 댓글 삭제
 	function deleteCommunityReply(reply_id, btn) {
 		Swal.fire({
 	        title: '댓글을 삭제하시겠습니까?',
@@ -1564,7 +1564,7 @@
 	        if (result.isConfirmed) {
 	    		$.ajax({
 	    			type: "GET",
-	    			url: "CommunityReplyDelete",
+	    			url: "deleteCommunityReply",
 	    			data: {
 	    				"reply_id":reply_id
 	    			},
@@ -2187,7 +2187,7 @@
 									</a></b><br>
 								</div>
 								<div class="col d-flex justify-content-end">
-									<input type="button" class="btn btn-primary btnCommunityReplyDelete" value="삭제" onclick="deleteCommunity('${mypage.community_id }', this)">
+									<input type="button" class="btn btn-primary btnCommunityReplyDelete" value="삭제" onclick="deleteCommunityReply('${mypage.reply_id }', this)">
 								</div>
 							</div>
 							<div id="communityReplyMiddleArea">
