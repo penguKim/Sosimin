@@ -145,6 +145,8 @@
 			}
 		});
 		
+		let category = ${category}
+		
 		// 좋아요 버튼 클릭 이벤트
 		$(".heart").on("click", function () {
 			if($(this).hasClass("isSameUser")) {
@@ -166,7 +168,7 @@
 					},
 		//     			dataType: "json",
 					success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
-						if(result == 'false') { // 좋아요을 등록하는 경우
+						if(result == 'false') { // 좋아요를 등록하는 경우
 							$(heart).addClass("is-active");
 		    				Swal.fire({
 		    					position: 'center',
@@ -176,9 +178,14 @@
 		    					timer: 2000,
 		    					toast: true
 		    				});
-						} else if(result == 'true') { // 좋아요을 삭제하는 경우
+						} else if(result == 'true') { // 좋아요를 삭제하는 경우
 							$(heart).removeClass("is-active");
-							$(heart).parent().remove();
+// 							alert(category);
+							if(category == 3 && $(heart).parent().attr("id") == "singleProductAreaDealComplete") {
+								$(heart).parent().parent().remove();
+							} else if(category == 3) {
+								$(heart).parent().remove();
+							}
 		    				Swal.fire({
 		    					position: 'center',
 		    					icon: 'success',
@@ -1928,11 +1935,11 @@
 							</jsp:include>
 							</c:when>						
 							<c:when test="${mypage.order_status eq '1'}"> <%-- 거래(구매)완료 --%>
-								<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
-									<a href="ProductDetail?product_id=${mypage.product_id }">
-										<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
-									</a>											
-									<span id="dealComplete">
+							<div class="single-block list${status.index} col-4"  data-id="${mypage.product_id }" id="singleProductAreaDealComplete">
+								<a href="ProductDetail?product_id=${mypage.product_id }">
+									<img src="${pageContext.request.contextPath}/resources/upload/${mypage.product_image1}">
+								</a>											
+								<span id="dealComplete">
 									<img src="${pageContext.request.contextPath}/resources/images/member/checkmark.png"><br>
 									<b>구매 완료</b>
 								</span>				

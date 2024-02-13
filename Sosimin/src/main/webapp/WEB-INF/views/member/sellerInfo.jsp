@@ -115,7 +115,7 @@
 	//     			dataType: "json",
 	    			success: function(result) { <%-- 응답 결과가 문자열로 전송 --%>
 // 	    				alert(result);
-	    				if(result == 'false') { // 좋아요을 등록하는 경우
+	    				if(result == 'false') { // 좋아요를 등록하는 경우
 							$(heart).addClass("is-active");
 	        				Swal.fire({
 	        					position: 'center',
@@ -125,7 +125,7 @@
 	        					timer: 2000,
 	        					toast: true
 	        				});
-	    				} else if(result == 'true') { // 좋아요을 삭제하는 경우
+	    				} else if(result == 'true') { // 좋아요를 삭제하는 경우
 							$(heart).removeClass("is-active");
 	// 						$(heart).parent().remove();
 	        				Swal.fire({
