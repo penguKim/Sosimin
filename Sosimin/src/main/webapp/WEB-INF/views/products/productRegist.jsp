@@ -1295,6 +1295,7 @@ function checkInput() {
 				</div>
 				
 				
+								
 				<hr>
 				<div id="categoryDiv">
 					<div id="divLine">
