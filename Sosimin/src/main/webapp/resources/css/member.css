@@ -764,7 +764,7 @@ input[readonly] {
 	background-color: #081828;
 }
 
-#dealInProcess {
+.dealInProcess {
 	background: transparent;
     font-size: 14px;
     color: #fecb00;
