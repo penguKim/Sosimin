@@ -31,7 +31,15 @@
 <!--     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet"> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	
-	
+	<style>
+		.btngu:hover, .btndong:hover {
+			background-color: #081828;
+		}
+		.btn-primary:focus{
+			background-color: #081828;
+			border-color: #081828;
+		}
+	</style>
 	<script>
 	$(function(){
 		// 드롭다운 메뉴 아이템이 클릭되었을 때 실행되는 함수
