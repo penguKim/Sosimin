@@ -112,7 +112,7 @@
 		<if test="start_date != null and !start_date.equals('') and end_date != null and !end_date.equals('')">
 			AND DATE(pay_history_date) BETWEEN #{start_date} AND #{end_date}
 		</if>
-		ORDER BY pay_history_date DESC
+		ORDER BY pay_history_id DESC
 		<if test="startRow != null and !startRow.equals('') and listLimit != null and !listLimit.equals('')">
 			LIMIT #{startRow}, #{listLimit}
 		</if>
@@ -390,6 +390,7 @@
 		WHERE product_id = #{product_id}
 	</update>
 	
+	<!-- 거래 내역 삭제 -->
 	<delete id="deleteOrders">
 		DELETE FROM Orders
 		WHERE product_buyer = #{product_buyer}

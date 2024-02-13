@@ -990,9 +990,10 @@ public class PaymentController {
 	public String payUsePro(@RequestParam Map<String, Object> map, HttpSession session, Model model, RedirectAttributes rttr) {
 		log.info("PaymentPro : " + map.toString());
 		
-		
+		rttr.addAttribute("product_id", map.get("product_id"));
 		String product_buyer = (String)session.getAttribute("sId"); // 구매자 정보
 		map.put("product_buyer", product_buyer);
+		map.put("member_id", product_buyer);
 		
 		session.setAttribute("PaymentPro", "PaymentPro" + product_buyer); // 세션에 거래 요청 정보를 저장
 		
@@ -1093,6 +1094,7 @@ public class PaymentController {
 				
 				// 이체 용도(송금(TR), 결제(ST), 충전(RC) 등) 지정
 				map.put("transfer_purpose", "RC");
+				map.put("pay_history_message", "페이충전");
 				
 				// PayHistory에 있는 bank_tran_id 를 조회하여
 				// 이미 이루어진 거래면 거래 못하도록 막기
@@ -1147,7 +1149,12 @@ public class PaymentController {
 		// product_price는 필요없을 것 같은데????
 
 		// PaymentPro : {product_id=276, product_price=100000000, pay_balance=200000, order_amount=100000000, pay_id=2, user_name=박가영, fintech_use_num=120211385488932395653791}
-		
+		if(difference > 0) {
+			int new_balance = pay_balance + difference;
+			map.put("pay_balance", new_balance);			
+		} else {
+			map.put("pay_balance", pay_balance);			
+		}
 		// pay_history_type을 사용으로 지정
 		map.put("pay_history_type", 3);
 		map.put("pay_history_message", "상품구매");
