@@ -24,7 +24,7 @@
 	<select id="selectChatRoomList" resultType="map">
 <!-- 	<select id="selectChatRoomList" resultType="chatRoom"> -->
 		SELECT *
-		FROM chatView
+		FROM chat_room_list
 		WHERE sender_id = #{sender_id}
 	</select>
 	
