@@ -334,6 +334,8 @@ $(function(){
 	}
 	
 	function localStorageClean(){
+		
+		
 		window.localStorage.removeItem('keywords');
 		// 테이블 생성
 		let tableHTML = '<table>';
@@ -343,7 +345,7 @@ $(function(){
 			+'		<a onclick="RecentSearchs()" class="recentWordColor">최근검색어</a>'
 			+'	</td>'
 			+'	<td class="PopularborderBottom">'
-			+'		<a onclick="PopularSearches()" class="popularWordColor">인기검색어</a>'
+			+'		<a onclick="PopularSearches()" class="popularWordColor" style="color:black;">인기검색어</a>'
 			+'	</td>'
 			+'</tr>';
 			
@@ -368,7 +370,6 @@ $(function(){
 			
 			
 		tableHTML += '</table>';
-	
 		// HTML 영역에 테이블 추가
 		$("#Recent").html(tableHTML);
 	}
