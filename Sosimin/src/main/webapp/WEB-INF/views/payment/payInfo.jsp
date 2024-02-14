@@ -842,7 +842,7 @@ function stopPayment() {
 						        <input type="radio" name="options" class="btn-check" id="btn-check5" value="4" autocomplete="off">
 							    <label class="btn btn-outline-primary" for="btn-check5">수익</label>
 							</div>
-							<div id="date_select"><button id="select_date_modal" data-bs-toggle="modal" data-bs-target="#date_modal">전체기간<i class="fa fa-caret-down"></i></button></div>
+							<div id="date_select"><button id="select_date_modal" data-bs-toggle="modal" data-bs-target="#date_modal">기간선택<i class="fa fa-caret-down"></i></button></div>
 							
 							<div id="period_info">
 								<div id="info_left"></div>
