@@ -806,7 +806,7 @@ function filtering(data) {
                                     <nav>
                                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         	<a href="javascript:filtering(1)">최신순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span>  
-                                        	<a href="javascript:filtering(2)">인기순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span> 
+<!--                                         	<a href="javascript:filtering(2)">인기순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span>  -->
                                         	<a href="javascript:filtering(3)">낮은 가격순</a><span style="padding-left: 2px; padding-right: 2px;"> | </span> 
                                         	<a href="javascript:filtering(4)">높은 가격순</a>
                                         </div>
